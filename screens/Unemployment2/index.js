@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, ImageBackground} from 'react-native';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import moment from "moment";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+
+//========================바뀐부분A===============================
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+//========================바뀐부분A===============================
 
 class UnemploymentScreen2 extends Component{
 
@@ -282,8 +289,8 @@ class UnemploymentScreen2 extends Component{
                 ['-', '-']
             ],
             types1: [{label: '예', value: 0}, {label: '아니오', value: 1}],
-            value1: 1,
-            value1Index: 1,
+            value1: 0,
+            value1Index: 0,
         }
     }
 
@@ -291,15 +298,21 @@ class UnemploymentScreen2 extends Component{
         const state = this.state;
         const{DateOfBirth,Period, Age, OneDayUnemploymentBenefitAmount,UnemploymentBenefitAmount, PaymentDays} = this.state
         return (
+//========================바뀐부분 여기 아래애ㅐ===============================
+            <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
             <View  style={styles.container}>
             <ScrollView>
-                <Text>실업급여 모의계산 : 일용 근로자{'\n'}</Text>
-                <Text>“모의 계산은 실직(폐업) 시 수급 받을 수 있는 실업급여를 추정해 보는 것입니다” {'\n'}
-                        고용보험에 가입해 있는 피보험자가 실직할 경우 받게 될 실업급여를 모의 계산해 볼 수 있습니다.{'\n'}
-                        “실제 수급일수 및 수급액과는 차이가 있을 수 있습니다“{'\n'}
-                </Text>
-                <View style={styles.rowView}>
-                    <Text style={styles.textMargin}>생년월일</Text>
+                <View style={styles.titleArea}>
+                    <Text style={styles.textTitle}>실업급여 모의계산 : 일용 근로자</Text>
+                </View>
+                <View style={styles.textArea}>
+                    <Text style={styles.textLineStyle}>"모의 계산은 실직(폐업) 시 수급 받을 수 있는 실업급여를 추정해 보는 것입니다" {'\n'}
+                            고용보험에 가입해 있는 피보험자가 실직할 경우 받게 될 실업급여를 모의 계산해 볼 수 있습니다.{'\n'}
+                            "실제 수급일수 및 수급액과는 차이가 있을 수 있습니다"
+                    </Text>
+                </View>
+                <View style={styles.textAreaRow}>
+                    <Text style={styles.textStyle}>생년월일</Text>
                     <TextInput
                         value={this.state.DateOfBirth}
                         autoFocus={true}
@@ -307,19 +320,20 @@ class UnemploymentScreen2 extends Component{
                         onSubmitEditing={() => { this.TextInput1.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'19901013'}
-                        style={styles.input}
+                        style={styles.textinputStyle}
                     />
                 </View>
-                <View style={styles.rowView}>
-                    <Text style={styles.textMargin}>장애인 여부</Text>
+                <View style={styles.textAreaRow}>
+                    <Text style={styles.textStyle}>장애인 여부</Text>
                     <RadioForm
                         ref="radioForm"
                         radio_props={this.state.types1}
-                        initial={1}
-                        formHorizontal={false}
+                        initial={0}
+                        formHorizontal={true}
                         labelHorizontal={true}
-                        buttonColor={'#2196f3'}
-                        labelColor={'#000'}
+                        buttonColor={'#67C8BA'}
+                        selectedButtonColor={'#67C8BA'}
+                        labelStyle={{fontSize:  wp('4.2%'), color: '#040525', marginRight:wp('3%'), fontFamily:"NanumSquare"}}
                         animation={true}
                         onPress={(value, index) => {
                             this.setState({
@@ -330,8 +344,8 @@ class UnemploymentScreen2 extends Component{
                     />
                     {/* <Text>selected: {this.state.types1[this.state.value1Index].label}</Text> */}
                 </View>                
-                <View style={styles.rowView}>
-                    <Text style={styles.textMargin}>고용보험 총 가입기간</Text>
+                <View style={styles.textAreaRow2}>
+                    <Text style={styles.textStyle}>고용보험 총 가입기간</Text>
                     <TextInput
                         value={this.state.JoinMonth}
                         onChangeText={(JoinMonth) => this.setState({JoinMonth})}
@@ -339,12 +353,12 @@ class UnemploymentScreen2 extends Component{
                         onSubmitEditing={() => { this.TextInput2.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'5'}
-                        style={styles.input}
+                        style={styles.textinputDayStyle}
                         />
-                    <Text style={styles.textMargin}>개월 </Text>
-                </View>
-                <View style={styles.rowView}>
-                    <Text style={styles.textMargin}>마지막 근무일</Text>
+                    <Text style={styles.textStyle}>개월 </Text>
+                    </View>
+                    <View style={styles.textAreaRow}>
+                    <Text style={styles.textStyle}>마지막 근무일</Text>
                     <TextInput
                         value={this.state.LastYear}
                         onChangeText={(LastYear) => this.setState({LastYear})}
@@ -352,9 +366,9 @@ class UnemploymentScreen2 extends Component{
                         onSubmitEditing={() => { this.TextInput3.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'2015'}
-                        style={styles.input}
+                        style={styles.textinputYearStyle}
                     />
-                    <Text style={styles.textMargin}>년 </Text>
+                    <Text style={styles.textStyle}>년 </Text>
                     <TextInput
                         value={this.state.LastMonth}
                         onChangeText={(LastMonth) => this.setState({LastMonth})}
@@ -362,60 +376,229 @@ class UnemploymentScreen2 extends Component{
                         onSubmitEditing={() => { this.TextInput4.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'5'}
-                        style={styles.input}
+                        style={styles.textinputDayStyle}
                         />
-                    <Text style={styles.textMargin}>월 </Text>
+                    <Text style={styles.textStyle}>월 </Text>
                     <TextInput
                         value={this.state.LastDay}
                         onChangeText={(LastDay) => this.setState({LastDay})}
                         ref={(input) => { this.TextInput4 = input; }}
                         placeholder={'25'}
-                        style={styles.input}
+                        style={styles.textinputDayStyle}
                     />
-                    <Text style={styles.textMargin}>일 </Text>
+                    <Text style={styles.textStyle}>일 </Text>
                 </View>
-                <Text>{'\n'}실업급여 모의계산 결과는 실제 수급액, 수급자격 인정 여부와 차이가 있을 수 있으며, 특히 근무기간이 6∼7개월인 경우 피보험단위기간(무급휴일 제외) 180일 요건을 충족하지 못하여 수급자격이 인정되지 않을 수 있으므로 정확한 수급자격인정여부는 거주지 관할 고용센터에 직접 문의하시기 바랍니다.{'\n'}</Text>
-                <Button
-                    title="확인하기"
-                    onPress={()=>{this.updateState()}}/>
-                <Text style={styles.textCenter}>퇴사당시 만 나이 : 만 {Age}세</Text>
-                <Text style={styles.textCenter}>고용보험 총 가입기간 : {Period}개월</Text>
+                
+                <View style={styles.textArea}>
+                    <Text style={styles.textLineStyle}>{'\n'}실업급여 모의계산 결과는 실제 수급액, 수급자격 인정 여부와 차이가 있을 수 있으며, 특히 근무기간이 6∼7개월인 경우 피보험단위기간(무급휴일 제외) 180일 요건을 충족하지 못하여 수급자격이 인정되지 않을 수 있으므로 정확한 수급자격인정여부는 거주지 관할 고용센터에 직접 문의하시기 바랍니다.{'\n'}</Text>
+                </View>
 
-                <View  style={styles.marginTop}>
-                    <Text style={styles.marginTop}>* 계산기간 : 일직일 이전 4개월 중 최종 1개월을 제외한 3개월</Text>
+                <View style={styles.buttonArea}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={()=>{this.updateState()}}>
+                    <Text style={styles.buttonTitle}>확인하기</Text>
+                </TouchableOpacity>
+                </View>
+
+                <View style={styles.textArea}>
+                    <Text style={styles.textStyle}>퇴사당시 만 나이 : 만 {Age}세</Text>
+                    <Text style={styles.textStyle}>고용보험 총 가입기간 : {Period}개월</Text>
+                </View>
+
+                <View  style={styles.tableArea}>
+                    <Text style={styles.textLineStyle}>* 계산기간 : 퇴직일 이전 4개월 중 최종 1개월을 제외한 3개월</Text>
                     <Table borderStyle={{borderWidth: 1}}>
-                        <Row data={state.tableHead} flexArr={[1, 1, 1]} style={styles.head} textStyle={styles.text}/>
+                        <Row data={state.tableHead} flexArr={[1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
                         <TableWrapper style={styles.wrapper}>
-                        <Col data={state.tableTitle} style={styles.title} heightArr={[28,28]} textStyle={styles.text}/>
-                        <Rows data={state.tableData} flexArr={[1, 1]} style={styles.row} textStyle={styles.text}/>
+                        <Col data={state.tableTitle} style={styles.title} heightArr={[hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%')]} textStyle={styles.tableText}/>
+                        <Rows data={state.tableData} flexArr={[1, 1]} style={styles.row} textStyle={styles.tableText}/>
                         </TableWrapper>
                     </Table>
-                    <Button
-                    title="평균 임금, 보험료 확인하기"
-                    onPress={()=>{this.updateState()}}/>
                 </View>
-                <View style={styles.marginTop}>
-                    <Button
-                        title="실업급여 모의 계산"
-                        onPress={()=>{this.calculation()}}/>
-                    <Button
-                        title="초기화"
-                        color="#FF3232"
-                        onPress={()=>{this.resetData()}}/> 
-                    <Text style={styles.textCenter}>1일 실업급여 수급액 : {OneDayUnemploymentBenefitAmount} 원</Text>
-                    <Text style={styles.textCenter}>예상 지급일 수 : {PaymentDays}일</Text>
-                    <Text style={styles.textCenter}>총 예상수급액 : {UnemploymentBenefitAmount}원</Text>
+                <View style={styles.buttonArea}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={()=>{this.updateState()}}>
+                        <Text style={styles.buttonTitle}>평균 임금, 보험료 확인하기</Text>
+                    </TouchableOpacity> 
                 </View>
 
-                <Text style={styles.textMargin}>
-                {'\n'}※예상지급일 수는 퇴직 당시 연령 과 고용보험 가입기간에 따라 최소 120일에서 최대 270일까지로 계산 됩니다.(이직일이 2019.10.1 이전은 최소 90일에서 최대 240일)
+                <View style={styles.buttonArea2}>
+                    <Text style={styles.textStyle1}>* 평균 임금, 보험료 확인하기 버튼을 누른 후 퇴직금 실업급여 모의계산 버튼을 누르시오.</Text>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={()=>{this.calculation()}}>
+                        <Text style={styles.buttonTitle}>실업급여 모의계산</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.buttonReset}
+                        onPress={()=>{this.resetData()}}>
+                        <Text style={styles.buttonResetTitle}>초기화</Text>
+                    </TouchableOpacity> 
+                </View>
+
+                <View style={styles.textArea}>
+                    <Text style={styles.textStyle}>* 실업급여 계산 결과</Text>
+                    <Text style={styles.textResultStyle}>1일 실업급여 수급액 : {OneDayUnemploymentBenefitAmount} 원</Text>
+                    <Text style={styles.textResultStyle}>예상 지급일 수 : {PaymentDays}일</Text>
+                    <Text style={styles.textResultStyle}>총 예상수급액 : {UnemploymentBenefitAmount}원</Text>
+                </View>
+
+                <View style={styles.textArea}>
+                <Text style={styles.textLineStyle}>※예상지급일 수는 퇴직 당시 연령 과 고용보험 가입기간에 따라 최소 120일에서 최대 270일까지로 계산 됩니다.(이직일이 2019.10.1 이전은 최소 90일에서 최대 240일)
                 {'\n'}※ 실업급여 모의계산 결과는 실제 수급액, 수급자격 인정 여부와 차이가 있을 수 있으며, 특히 근무기간이 6∼7개월인 경우 피보험단위기간(무급휴일 제외) 180일 요건을 충족하지 못하여 수급자격이 인정되지 않을 수 있으므로 정확한 수급자격인정여부는 거주지 관할 고용센터에 직접 문의하시기 바랍니다.
                 </Text>
+                </View>
 
             </ScrollView>
             </View>
+            </ImageBackground>
         )
     }
 }
 
 export default UnemploymentScreen2;
+
+const styles = StyleSheet.create({
+    container: { padding:wp('3%'), width: "100%", height: "100%",},
+    row: {  height: hp('5.5%') },
+    wrapper: { flexDirection: 'row' },
+    head: {  height: hp('5.5%'),  backgroundColor: 'white'  },
+    title: { flex: 1, backgroundColor: 'white' },
+    image:{ 
+        alignItems: 'center', justifyContent:"center",
+        width: "100%", height: "103%", 
+    },
+    
+    titleArea:{
+        alignItems:"center"
+    },
+    textTitle:{
+        fontSize: wp('5.55%'),
+        fontFamily:"NanumSquareB",
+        color: '#040525',
+        marginBottom:hp('2%'),
+        marginTop:hp('2%')
+    },
+    textAreaRow:{ 
+        marginTop:hp('1.5%'),
+        marginBottom:hp('2%'),
+        marginLeft:wp('1.5%'),
+        flexDirection:'row'
+    },
+    textAreaRow2:{ 
+        marginTop:hp('1.5%'),
+        marginLeft:wp('1.5%'),
+        flexDirection:'row'
+    },
+    textArea:{
+        marginTop:hp('2%'),
+        marginBottom:hp('2%'),
+        marginLeft:wp('1.5%')
+    },
+    textLineStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        color: '#040525',
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+        lineHeight:wp('6.5%')
+    },
+    textStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        color: '#040525',
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+    },  
+    tableTextStyle:{
+        textAlign:"center",
+        color: '#040525',
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+    },
+    textStyle1:{
+      fontSize:wp('4.2%'),
+      fontFamily:"NanumSquare",
+      color: '#040525',
+      marginLeft:wp('1.5%'),
+      marginTop:wp('7%'),
+      marginBottom:wp('2.5%'),
+      marginRight:wp('2%'),
+      lineHeight:wp('6.5%')
+    },
+    textinputStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('3%'),
+        width:wp('35%'),
+    },
+    textinputYearStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        width:wp('11%')
+    },
+    textinputDayStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('2%'),
+        width:wp('7%'),
+    },
+    
+    textResultStyle:{
+        fontSize:wp('5.05%'),
+        fontFamily:"NanumSquareB",
+        color: '#040525',
+        marginLeft:wp('3%'),
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+  
+      },
+    buttonArea: {
+        alignItems:"center",
+        width: '100%', height: hp('6%'),
+        marginBottom:hp('2%'),
+    },
+    buttonArea2:{
+        alignItems:"center",
+        width: '100%', height: hp('27%'),
+        marginBottom:hp('2%'),
+    },
+    button: {
+          backgroundColor: "#67C8BA",
+          width:wp('80%'), height: hp('6%'),
+          justifyContent: 'center', alignItems:"center",
+          borderRadius:wp('4%'),
+          marginTop:hp('2%'),
+    },
+    buttonReset: {
+        backgroundColor: "#040525",
+        width:wp('80%'), height: hp('6%'),
+        justifyContent: 'center', alignItems:"center",
+        borderRadius:wp('4%'),
+        marginTop:hp('2%'),
+    },
+    buttonTitle: {
+          color: '#040525',
+          fontFamily:"NanumSquareB",
+          fontSize:wp('4.8%'),
+    },
+    buttonResetTitle: {
+          color: 'white',
+          fontFamily:"NanumSquare",
+          fontSize:wp('4.8%'),
+    },
+    tableArea:{
+        marginTop:hp('2%'), marginBottom:hp('3%'),
+    },
+    tableText: { 
+        textAlign: 'center', 
+        fontFamily:"NanumSquare", 
+        color: '#040525',
+        fontSize: wp('3.8%') },
+});

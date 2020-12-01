@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "ilggun",
     "name": "pro1",
     "slug": "pro1",
     "version": "1.0.0",
@@ -17,7 +18,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config":{
+        "googleSignIn":{
+          "reservedClientId":"com.googleusercontent.apps.215538713502-tdra6mancl9oukjevu4mhmc0441in4vu"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

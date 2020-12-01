@@ -1,9 +1,15 @@
 import React, {Component} from "react";
-import { View, Text, StyleSheet, Button, TextInput,FlatList, Alert } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput,FlatList, Alert, ImageBackground} from 'react-native';
 import TimePicker from 'react-native-simple-time-picker';
 
 import CheckboxGroup from 'react-native-checkbox-group'
+// ==============바뀐부분A=====================================
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
+// ==============바뀐부분A=====================================
 
 let arrItem = [];
 
@@ -44,8 +50,9 @@ class ExpenseScreen2 extends Component {
             <View  
                 style={{  
                     height: 1,  
-                    width: "100%",  
-                }}  
+                    width: "100%",
+                }}
+
             />  
         );  
     };  
@@ -105,41 +112,56 @@ class ExpenseScreen2 extends Component {
             HourlyWage, WithholdingTax, Salary, RealSalary} = this.state
 
         return (
+// ==============바뀐부분 여기 아래 모두=====================================
+            <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
             <View style={styles.container}>
-                <View style={styles.paddingView2}>
-                    <View style={styles.textA}>
-                        <Text>시급</Text>
-                        <Text style={styles.marginText}>*2020년 법정 최저 시급 : 8,590원</Text>
-                    </View>
-                    <TextInput 
-                        value={this.state.HourlyWage}
-                        onChangeText={(HourlyWage) => this.setState({HourlyWage})}
-                        autoFocus={true}
-                        placeholder={'시급을 입력해주세요.'}/>
+            <ScrollView>
+                <View style={styles.titleArea}>
+                    <Text style={styles.textTitle}>인건비 계산하기(단기/일용직)</Text>
                 </View>
-                 
-                <Text>시간 선택하기</Text>
+                <View style={styles.textArea}>
+                    <View style={styles.rowView}>
+                        <Text style={styles.textStyle}>*시급을 입력해주세요.</Text>
+                        <Text style={styles.textStyle2}>(2020년 법정 최저 시급 : 8,590원)</Text>
+                    </View>
+                    <View style={styles.rowView}>
+                        <TextInput
+                            value={this.state.HourlyWage}
+                            onChangeText={(HourlyWage) => this.setState({HourlyWage})}
+                            autoFocus={true}
+                            placeholder={'8590'}
+                            style={styles.textinputStyle}
+                            />
+                        <Text style={styles.textStyle}>원</Text>
+                    </View>
+                </View>
+
+                <View style={styles.timeSelectArea}>
+                <Text style={styles.textStyle}>시간 선택하기</Text>
+                <ScrollView>
             
                 <FlatList  
                     data={arrItem}
-                    backgroundColor='#D3D3D3'
+                    backgroundColor='white'
                     renderItem={({item}) => 
-                        <View>
+                        <View style={styles.pickerArea}>
                             <CheckboxGroup
                                 callback={(selected) => { console.log(selected) }}
                                 iconColor={"#00a2dd"}
-                                iconSize={30}
+                                iconSize={wp('10%')}
                                 checkedIcon="ios-checkbox-outline"
                                 uncheckedIcon="ios-square-outline"
                                 checkboxes={[
                                     {
-                                    label:<Text>{item.week}</Text>,
+                                    label:<Text style={styles.listText}>{item.week}</Text>,
                                     //label: "월요일", // label for checkbox item
                                     value: 1, // selected value for item, if selected, what value should be sent?
                                     },
                                 ]}
                                 labelStyle={{
-                                    color: '#333'
+                                    color: '#040525',
+                                    marginTop:hp('1%'),
+                                    marginLeft:hp('1.,5%'),
                                 }}
                                 rowStyle={{
                                     flexDirection: 'row'
@@ -149,7 +171,7 @@ class ExpenseScreen2 extends Component {
                                 <Text style={styles.item} 
                                     onPress={this.getListViewItem.bind(this, item)}>{item.week}</Text> 
                             </View>*/}
-                            <Text>출근시간 {item.goToWorkHour}hr : {item.goToWorkMin}min</Text>
+                            <Text style={styles.listText}>출근시간) {item.goToWorkHour}시간 : {item.goToWorkMin}분</Text>
                             <TimePicker
                                 key={item.key}
                                 selectedHoursGoToWork={selectedHoursGoToWork} //initial Hourse value
@@ -158,61 +180,51 @@ class ExpenseScreen2 extends Component {
                                     //this.setState({ selectedHoursGoToWork: hours, selectedMinutesGoToWork: minutes })}
                                     this.handleChange('goToWork', item.key, hours, minutes)
                                 }
+
+                                
                             />
-                            <Text>퇴근시간 {item.offWorkHour}hr : {item.offWorkMin}min</Text>
+                            <Text style={styles.listText}>퇴근시간) {item.offWorkHour}시간 : {item.offWorkMin}분</Text>
                             <TimePicker
                                 selectedHoursOffWork={selectedHoursOffWork} //initial Hourse value
                                 selectedMinutesOffWork={selectedMinutesOffWork} //initial Minutes value
                                 onChange={(hours, minutes) =>
                                     //this.setState({ selectedHoursOffWork: hours, selectedMinutesOffWork: minutes })}
                                     this.handleChange('offWork', item.key, hours, minutes)
-                                }
+                                } 
                             />
-                            <Text>ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</Text>
+                            <Text style={styles.listText}>ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</Text>
                         </View>
                         }  
                     ItemSeparatorComponent={this.renderSeparator}  
                 />  
-
-                {/* <View>
-                    <Text>시간선택</Text>
-                </View>
-                <TimePicker
-                    selectedHours={selectedHours}
-                    //initial Hourse value
-                    selectedMinutes={selectedMinutes}
-                    //initial Minutes value
-                    onChange={(selectedHours) => this.setState({selectedHours})}
-                    onChange={(selectedMinutes) => this.setState({selectedMinutes})}
-                /> */}
                 
-                <View style={styles.paddingView}>
-                    <View style={styles.buttonView}>
-                        <Button
-                            title="계산하기"
-                            onPress={()=>{this.updateState()}}/>
-                        <Button
-                            title="초기화"
-                            color="#FF3232"
-                            onPress={()=>{this.resetData()}}/>
-                    </View>
-                    <View style={styles.paddingView}>
-                        <View style={styles.rowView}>
-                            <Text>월 급여</Text>
-                            <Text style={styles.marginText}>{Salary}</Text>
-                        </View>
-                        <View style={styles.rowView}>
-                            <Text>원천세</Text>
-                            <Text style={styles.marginText}>{WithholdingTax}</Text>
-                        </View>
-                        <View style={styles.rowView}>
-                            <Text>실질 급여</Text>
-                            <Text style={styles.marginText}>{RealSalary}</Text>
-                        </View>
-                    </View>
- 
+                </ScrollView>
                 </View>
+
+                <View style={styles.buttonArea}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={()=>{this.updateState()}}>
+                        <Text style={styles.buttonTitle}>인건비 계산하기</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.buttonReset}
+                        onPress={()=>{this.resetData()}}>
+                    <Text style={styles.buttonResetTitle}>초기화</Text>       
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.resultArea}>
+                    <Text style={styles.textStyle}>* 인건비 계산 결과</Text>
+                    <Text style={styles.textResultStyle}>월 급여 : {Salary} 원</Text>    
+                    <Text style={styles.textResultStyle}>원천세 : {WithholdingTax} 원</Text>
+                    <Text style={styles.textResultStyle}>실질 급여 : {RealSalary} 원</Text>
+                </View> 
+
+                
+            </ScrollView>
             </View>
+            </ImageBackground>
         );
     }
     
@@ -221,13 +233,109 @@ class ExpenseScreen2 extends Component {
 export default ExpenseScreen2;
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-    checkboxContainer : {flexDirection:"row", marginBottom:20},
-    textD : {marginTop:5},
-    textA : {flexDirection:"row"},
-    marginText : {marginLeft:10},
-    paddingView : { paddingTop: 20},
-    paddingView2 : { paddingBottom: 20},
-    buttonView : {flexDirection:"row", paddingTop: 20},
-    rowView : {flexDirection:"row"}
+    container: {padding:wp('4.5%'), width: "100%", height: "100%", },
+    rowView : {flexDirection:"row"},
+
+    image:{ 
+        alignItems: 'center', justifyContent:"center",
+        width: "100%", height: "103%", 
+    },
+    buttonArea: {
+        alignItems:"center",
+        width: '100%', height: hp('10%'),
+        marginBottom:hp('12%'),
+    },
+    titleArea:{
+      alignItems:"center"
+    },
+    button: {
+        backgroundColor: "#67C8BA",
+        width:wp('80%'), height: hp('6%'),
+        justifyContent: 'center', alignItems:"center",
+        borderRadius:wp('4%'),
+        marginTop:hp('2%'),
+    },
+    buttonReset: {
+        backgroundColor: "#040525",
+        width:wp('80%'), height: hp('6%'),
+        justifyContent: 'center', alignItems:"center",
+        borderRadius:wp('4%'),
+        marginTop:hp('2%'),
+    },
+    buttonTitle: {
+        color: '#040525',
+        fontFamily:"NanumSquareB",
+        fontSize: wp('4.8%'),
+    },  
+    buttonResetTitle: {
+        color: 'white',
+        fontFamily:"NanumSquare",
+        fontSize: wp('4.8%'),
+    },  
+    textTitle:{
+        fontSize: wp('5.55%'),
+        fontFamily:"NanumSquareB",
+        marginBottom:hp('2%'),
+        marginTop:hp('2%'),
+        color:'#040525',
+    },
+    textArea:{
+        marginTop:hp('2%'),
+        marginBottom:hp('2%'),
+        marginLeft:wp('1.5%')
+    },
+    textStyle:{
+        fontSize: wp('4.2%'),
+        fontFamily:"NanumSquare",
+        color:'#040525',
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+    },  
+    textStyle2:{
+        fontSize:wp('3.35%'),
+        fontFamily:"NanumSquare",
+        marginTop:wp('1.5%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+        color:'#040525',
+    },  
+    textinputStyle:{
+      fontSize: wp('4.2%'),
+      fontFamily:"NanumSquare",
+      marginLeft:wp('3%'),
+      width:wp('35%'), height:hp('4.5%'), textAlign:"center", justifyContent:"center",
+      borderBottomWidth:hp('0.5%'),
+      borderBottomColor:'#67C8BA'
+  },
+    timeSelectArea:{
+        marginTop:hp('3%'),
+        marginBottom:hp('5%'),
+        height:hp('40%'),
+    },  
+    pickerArea:{
+        padding:wp('2%')
+    },
+    textResultStyle:{
+      fontSize:wp('5.05%'),
+      fontFamily:"NanumSquareB",
+      marginLeft:wp('3%'),
+      marginTop:wp('1%'),
+      marginBottom:wp('1.5%'),
+      marginRight:wp('2%'),
+    },
+    resultArea:{
+        marginBottom:hp('5%')
+    },
+    listText1:{
+        fontSize:wp('3.6%'),
+        fontFamily:"NanumSquare",
+        marginTop:hp('0.5%'),
+        color:'#040525',
+    },  
+    listText:{
+        fontSize:wp('3.6%'),
+        fontFamily:"NanumSquare",
+        color:'#040525',
+    },  
 });

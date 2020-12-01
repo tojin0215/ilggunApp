@@ -1,39 +1,80 @@
-import React, {Component} from 'react';
-import { View, Text, Platform, Image, ScrollView, WebView , Button} from 'react-native'
+import React from "react"
+import { StyleSheet, Text, View, Image, Button } from "react-native"
+import Expo from "expo"
+import * as Google from 'expo-google-app-auth';
 
-import { StackActions, NavigationActions } from 'react-navigation';
-
-export default class LoginExScreen extends Component{
-    static navigationOptions = {
-      title: 'login',
-    };
-
-  naverLogin = async() => {
-    const uri = await this.props.getNaverUri();
-    this.props.navigation.push('WebLogin',{
-      uri : uri,
-      login:this.insertLogin,
-      loginFail:this.loginFail,
-    })
+export default class LoginExScreen extends React.Component {
+  constructor(props) {
+      super(props)
+      this.state = {signedIn: false, name: "", photoUrl: ""}
   }
-
-  insertLogin = () => {
-    console.log("SettingScreen insertLogin")
-  }
-
-  loginFail = () => {
-    console.log("SettingScreen loginFail")
-    this.props.navigation.goBack();
-    alert("로그인에 실패하였습니다. 잠시 후 다시 시도해주세요.");
-  }
-  
-
-    render() {
-        return (
-            <View>
-                <Button title={"Facebook Login"} onPress={this.facebookLogin}/>
-                <Button title={"Naver Login"} onPress={this.naverLogin}/>
-            </View>
-          );
+  signIn = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: "215538713502-hrpk6s7lontr7l1vvlb39rgdqe0f41k1.apps.googleusercontent.com",
+        //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
+        scopes: ["profile", "email"]
+      })
+      if (result.type === "success") {
+        console.log(result)
+        this.setState({
+          signedIn: true,
+          name: result.user.name,
+          photoUrl: result.user.photoUrl
+        })
+      } else {
+        console.log("cancelled")
       }
+    } catch (e) {
+      console.log("error", e)
+    }
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        {this.state.signedIn ? (
+          <LoggedInPage name={this.state.name} photoUrl={this.state.photoUrl} />
+        ) : (
+          <LoginPage signIn={this.signIn} />
+        )}
+      </View>
+    )
+  }
 }
+
+const LoginPage = props => {
+  return (
+    <View>
+      <Text style={styles.header}>Sign In With Google</Text>
+      <Button title="Sign in with Google" 
+       onPress={() => props.signIn()} />
+    </View>
+  )
+}
+const LoggedInPage = props => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Welcome:{props.name}</Text>
+      <Image style={styles.image} source={{ uri: props.photoUrl }}/>
+    </View>
+  )
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  header: {
+    fontSize: 25
+  },
+  image: {
+    marginTop: 15,
+    width: 150,
+    height: 150,
+    borderColor: "rgba(0,0,0,0.2)",
+    borderWidth: 3,
+    borderRadius: 150
+  }
+})

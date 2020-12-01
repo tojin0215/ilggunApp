@@ -1,43 +1,59 @@
 import React, { useEffect, useState} from 'react';
 import { AsyncStorage } from 'react-native';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, TouchableOpacity,ImageBackground } from 'react-native';
+// ======================바뀐부분A==================================================================
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
   },
+  image:{
+    
+    justifyContent: "flex-start",
+    alignItems:"center",
+    width: "100%", height: "100%",
+  },
   text: {
-    fontSize: 30,
+    fontSize: wp('15%'),
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
+    fontFamily:"NanumSquare",
   },
   buttonArea: {
+    marginTop:hp('7%'),
     width: '100%',
-    height: hp('5%'),
+    height: hp('6%'),
     alignItems: 'center',
   },
   button: {
-    backgroundColor: "#46c3ad",
-    width: "70%",
+    backgroundColor: "#7085DF",
+    width: "75%",
     height: "100%",
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius:wp('5%'),
+    marginTop:hp('2.5%')
   },
   buttonTitle: {
-      color: 'white',
+      color: '#040525',
+      fontSize:wp('5.9%'),
+      fontFamily:"NanumSquare",
   },
   addbutton: {
-    backgroundColor: 'green',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 50,
-    height: 50,
-    marginBottom: 30,
-    borderRadius: 35,
-    
-
+    backgroundColor: '#7085DF',
+    position:"absolute",
+    alignItems:"center",
+    bottom: hp('2%'),
+    width: "100%",
+    width: wp('15%'),
+    height: wp('15%'),
+    marginBottom: hp('5%'),
+    borderRadius: wp('15%'),
+    /*
     ...Platform.select({
         ios: {
             shadowColor: 'rgba(0,0,0,0.2)',
@@ -50,13 +66,13 @@ const styles = StyleSheet.create({
             elevation: 0,
             marginHorizontal: 30,
         },
-      })
+    })*/
   },
-
 }); 
 
 const WorkerBusinessListScreen = ({navigation}) => {
   const [business, setBusiness] = useState([]);
+  const [clicked, setClicked] = useState(-1);
   //const [idid, setId] = useState('');
 
   /*const [password, setPassword] = useState('');
@@ -90,9 +106,10 @@ const WorkerBusinessListScreen = ({navigation}) => {
               }),
             }).then(res => res.json())
             .then(res => {
+              if(res[0]){
                 console.log(JSON.parse(res[0].bang));
                 setBusiness(JSON.parse(res[0].bang));
-
+              }
             });
             
             /*.then((response) => response.json())
@@ -120,32 +137,40 @@ const WorkerBusinessListScreen = ({navigation}) => {
     //});
     
     return (
-        <View style={styles.container}>
+        <View>
+        <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+
         {
           <View style={styles.buttonArea}>{
+            business?
             Object.entries(business).map(([key, value]) => (
               <>
-                <Text></Text><Text></Text>
                 <TouchableOpacity 
                   key = {key}
-                  style={styles.button}
+                  style={{
+                    backgroundColor: clicked==key?"#7085DF":"#D3DDFF",
+                    width: "75%",
+                    height: "100%",
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius:wp('5%'),
+                    marginTop:hp('2.5%')}}
                   onPress={() => {
+                    setClicked(key)
                     AsyncStorage.setItem("bangCode", key)
                     .then(() =>{
+                      setClicked(-1)
                       navigation.navigate('Worker Home')
                     })
                   }}>
                   <Text style={styles.buttonTitle}>{key}</Text>
                 </TouchableOpacity>
-                
-              </>
-            ))}
+              </>)
+            )      
+          :<Text>초대받은 사업장이 없습니다.</Text>}
             </View>
-
         }
-        <TouchableOpacity style={styles.addbutton} onPress={() => navigation.navigate('Add Business')}>
-          <Text style={styles.text}>+</Text>
-        </TouchableOpacity>
+        </ImageBackground>
         </View>
     );
 };

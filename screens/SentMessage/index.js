@@ -35,6 +35,7 @@ const sentMessageScreen = ({ navigation }) => {
   const [visibility, setVisibility] = useState([]);
   const [visibility2, setVisibility2] = useState([]);
   const [message, setMessage] = useState('');
+  
   async function fetchData() { 
       try {
           let res = await fetch('http://192.168.43.253:3000/selectSentMessage', {

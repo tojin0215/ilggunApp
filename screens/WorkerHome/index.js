@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { View, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Button, Text, StyleSheet, TouchableOpacity,Image,ImageBackground } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -9,25 +9,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonArea: {
-    width: '100%',
-    height: hp('5%'),
+  image:{
+    justifyContent:"flex-start",
     alignItems: 'center',
+    width: "100%", height: "100%",
+  },
+  buttonArea1: {
+    flexDirection:"row",
+    alignItems: 'center',
+    marginTop:hp('10%')
+  },
+  buttonArea2: {
+    flexDirection:"row",
+    alignItems: 'center',
+    marginTop:hp('1%')
   },
   button: {
-    backgroundColor: "#46cccd",
-    width: "70%",
-    height: "100%",
+    width: wp('40%'),
+    height: wp('40%'),
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonTitle: {
-      color: 'white',
-  },
+  buttonImg:{
+    width: wp('40%'),
+    height: wp('40%'),
+  }
 });
+
 const WorkerHomeScreen = ({ navigation, props }) => {
-    const [business, setBusiness] = useState([]);
-    const [commute, setCommute] = useState([]);
+  const [business, setBusiness] = useState([]);
+  const [commute, setCommute] = useState([]);
+  const [todo, setTodo] = useState([]);
+    
   useEffect(()=>{ 
     AsyncStorage.getItem("bangCode")
       .then((bangCode) =>{
@@ -37,7 +50,8 @@ const WorkerHomeScreen = ({ navigation, props }) => {
         setBusiness(bangCode);
       });
       fetchData();
-  },[business, setBusiness])
+      
+  },[business, setBusiness, todo, setTodo])
   
   async function fetchData() { 
     try {
@@ -87,22 +101,43 @@ const WorkerHomeScreen = ({ navigation, props }) => {
             console.error(e);
           }
         }
+
+        
+    //출근퇴근
+    const commuteImg = require('../../img/workManagement_purple.png')
+    const commuteImgChecked = require('../../img/workManagement_purple_clicked.png')
+    const commuteI = {commuteImg, commuteImgChecked}
+    const [commuteImgSelected, setCommuteImgSelected] = useState(commuteI.commuteImg)
+
+    const commuteChangeImg =(com)=>{
+      if(com == '출근'){
+        setCommuteImgSelected(commuteI.commuteImgChecked)
+      } else{
+        setCommuteImgSelected(commuteI.commuteImg)
+      }
+    }
+
+    
+  const [clicked, setClicked] = useState(-1);
+   
+    
   return (
-    <View style={styles.buttonArea}>
-      <Text></Text>
-      <Text></Text>
+    <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+    <View style={styles.buttonArea1}>
       <TouchableOpacity 
         style={styles.button}
         onPress={() => { //출근/퇴근기록
             setCommute(commute=='출근'?'퇴근':'출근')
             commuteData();
+            commuteChangeImg(commute=='출근'?'퇴근':'출근');
         }}>
+        <Image style={styles.buttonImg} source={commuteImgSelected}/>
         <Text style={styles.buttonTitle}>{commute}</Text>
       </TouchableOpacity>
-      <Text></Text><Text></Text>
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
+            setClicked(0);
             var week = ["Sun",'Mon','Tue',"Wed","Thu","Fri","Sat"]
             var day = new Date().getDay();
             var month = new Date().getMonth() + 1; //To get the Current Month
@@ -111,22 +146,39 @@ const WorkerHomeScreen = ({ navigation, props }) => {
             let dt = week[day]+" "+ month+" " +date+" "+ year;
             console.log(dt);
             navigation.navigate(('Vacation Request'),{date:dt})
-        }}>
-        <Text style={styles.buttonTitle}>휴가 요청</Text>
+            setTimeout(() => {setClicked(-1)},500);
+          }}>
+        <Image style={styles.buttonImg} source={clicked==0?require('../../img/vacation_clicked.png'):require('../../img/vacation.png')}></Image>
       </TouchableOpacity>
-      <Text></Text><Text></Text>
+      </View>
+      <View style={styles.buttonArea2}>
+      <TouchableOpacity 
+       style={styles.button}
+       onPress={() => {
+         setClicked(0); 
+         navigation.navigate('WCalculating')
+         setTimeout(() => {setClicked(-1)},500);
+      }}>
+      <Image style={styles.buttonImg} source={clicked==0?require('../../img/calculate_purple_clicked.png'):require('../../img/calculate_purple.png')}/>
+      </TouchableOpacity>
       <TouchableOpacity 
         style={styles.button}
-        onPress={() => navigation.navigate('Calculating')}>
-        <Text style={styles.buttonTitle}>계산하기</Text>
+        onPress={() => {
+          setClicked(0);
+          navigation.navigate('Worker Document')
+          setTimeout(() => {setClicked(-1)},500);
+          }}>
+        <Image style={styles.buttonImg} source={clicked==0?require('../../img/document_clicked.png'):require('../../img/document.png')}></Image>
       </TouchableOpacity>
-      <Text></Text><Text></Text>
+      </View>
+      <View style={styles.buttonArea2}>
       <TouchableOpacity 
         style={styles.button}
-        onPress={() => navigation.navigate('Worker Document')}>
-        <Text style={styles.buttonTitle}>문서함</Text>
+        onPress={() => navigation.navigate('WorkTodo')}>
+        <Text style={styles.buttonTitle}>오늘 할 일</Text>
       </TouchableOpacity>
-    </View>
+      </View>
+    </ImageBackground>
   );
 };
  

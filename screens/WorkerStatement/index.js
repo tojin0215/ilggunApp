@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Animated} from 'react-native';
+import { StyleSheet, Text, ImageBackground, View, Button,Alert, Animated} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper,  Col, Cols, Cell } from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
 import StatementScreen1 from '../Statemanet1';
 import { AsyncStorage } from 'react-native';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
@@ -277,37 +281,53 @@ class WorkerStatementScreen extends Component{
         const{PaymentSum, DeductionSum, Difference, Name, WorkingType} = this.state
         //PaymentSum:지급합계, DeductionSum:공제합계, Difference:차이
         return (
-            <View  style={styles.container}>
-                <View style={styles.marginView}>
-                    <Text>이름 : {Name}</Text>
-                    <Text>근무형태 : {WorkingType}</Text>
-                </View>
-                <View style={styles.marginTop}>
-                    <Table style={styles.wrapper} borderStyle={{borderWidth: 1}}>
-                         {/* Left Wrapper */}
-                        <TableWrapper style={{width:150}} >
-                            <Cell data="내역" style={styles.singleHead} textStyle={styles.text}/>
-                            <TableWrapper style={styles.wrapper}>
-                                <Col data={['지급','공제']} style={styles.title1} heightArr={[84, 168]} textStyle={styles.text}/>
-                                <Col data={state.tableTitle} style={styles.title} heightArr={[28, 28, 28, 28, 28, 28, 28, 28, 28, 28]} textStyle={styles.text}/>
-                            </TableWrapper>
-                            <Cell data="지급액계" style={styles.singleHead1_1} textStyle={styles.text}/>
-                            <Cell data="공제액계" style={styles.singleHead1_1} textStyle={styles.text}/>
-                            <Cell data="차인지급액계" style={styles.singleHead1_1} textStyle={styles.text}/>
-                        </TableWrapper>
-
-                        <TableWrapper style={{flex:1}}>
-                            <Cell data="금액" style={styles.singleHead1} textStyle={styles.text}/>
-                            <Cols data={state.tableData} heightArr={[28, 28, 28, 28, 28, 28, 28, 28, 28, 28]} textStyle={styles.text}/>
-                            
-                            <Cell data={PaymentSum} style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data={DeductionSum} style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data={Difference} style={styles.singleHead1_2} textStyle={styles.text}/>
-                        </TableWrapper>
-                    </Table>
-                </View>
-              <Button title="엑셀 공유" onPress={()=> this.clickHandler()}/>
+          <View>
+          <ImageBackground style={styles.image} source={require('../../img/page2_2.png')}>
+        <ScrollView>
+            <View style={styles.textArea}>
+                <Text style={styles.textStyle}>이름 : {Name}</Text>
+                <Text style={styles.textStyle}>근무형태 : {WorkingType}</Text>
             </View>
+            <View style={styles.textArea}>
+                <Table style={styles.wrapper} borderStyle={{borderWidth: 1}}>
+                     {/* Left Wrapper */}
+                    <TableWrapper style={{width:wp('40%')}} >
+                        <Cell data="내역" style={styles.singleHead} textStyle={styles.tableTitleText}/>
+                        <TableWrapper style={styles.wrapper}>
+                            <Col data={['지급','공제']} style={styles.title1} heightArr={[hp('16.5%'), hp('33%')]} textStyle={styles.tableTitleText}/>
+                            <Col data={state.tableTitle} style={styles.title} heightArr={[hp('5.5%'), hp('5.5%'), hp('5.5%'),hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%')]} textStyle={styles.tableTitleText}/>
+                        </TableWrapper>
+                        <Cell data="지급액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
+                        <Cell data="공제액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
+                        <Cell data="차인지급액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
+                    </TableWrapper>
+
+                    <TableWrapper style={{flex:1}}>
+                        <Cell data="금액" style={styles.singleHead1} textStyle={styles.tableTitleText}/>
+                        <Cols data={state.tableData} heightArr={[hp('5.5%'), hp('5.5%'), hp('5.5%'),hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%')]} textStyle={styles.tableText}/>
+                        
+                        <Cell data={PaymentSum} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
+                        <Cell data={DeductionSum} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
+                        <Cell data={Difference} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
+                    </TableWrapper>
+                </Table>
+            </View>
+            <View style={styles.buttonArea}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={()=> this.clickHandler()}>
+
+              <Text style={styles.buttonTitle}>엑셀 공유</Text> 
+            </TouchableOpacity>
+
+            </View>
+
+          <View style={styles.tableArea}><Text></Text></View>
+        </ScrollView>
+        
+        <Button title="엑셀 공유" onPress={()=> this.clickHandler()}/>
+        </ImageBackground>
+        </View>
         )
     }
 }
@@ -315,16 +335,56 @@ class WorkerStatementScreen extends Component{
 export default WorkerStatementScreen;
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-    wrapper: { flexDirection: 'row' },
-    singleHead: { width: 150, height: 40, backgroundColor: '#c8e1ff'},
-    singleHead1: {height: 40, backgroundColor: '#c8e1ff' },
-    singleHead1_1: { width: 150, height: 30, backgroundColor: '#c8e1ff'},
-    singleHead1_2: {height: 30, backgroundColor: '#c8e1ff' },
-    marginTop : {marginTop:10},
-    marginView: {marginTop:20, marginLeft:10},
-    head: {  height: 40,  backgroundColor: '#f1f8ff'  },
-    title: { flex: 3, backgroundColor: '#f6f8fa' },
-    title1: { flex: 1, backgroundColor: '#f6f8fa' },
-    text: { textAlign: 'center' },
+  image:{
+      width: "100%", height: "103%", 
+  },
+  textArea:{
+    padding:wp('5%'),
+    marginTop:hp('2%'),
+    marginLeft:wp('1.5%')
+  },
+  tableArea:{
+    marginTop:hp('1%'),
+    marginBottom:hp('5%'),
+    width:wp('90%'),
+  },
+  buttonArea:{
+    padding:wp('5%'), 
+  },
+  button: {
+    backgroundColor: "#7085DF",
+    width:wp('90%'), height:hp('6%'),
+    justifyContent: 'center', alignItems:"center",
+    borderRadius:wp('1.7%'),
+  },
+  buttonTitle: {
+    color: '#040525',
+    fontFamily:"NanumSquareB",
+    fontSize:wp('4.8%'),
+  },
+  textStyle:{
+    fontSize:wp('4.2%'),
+    fontFamily:"NanumSquare",
+    color: '#040525',
+    marginTop:wp('1%'),
+    marginBottom:wp('1.5%'),
+    marginRight:wp('2%'),
+  },  
+  wrapper: { flexDirection: 'row' },
+  singleHead: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#7085DF'},
+  singleHead1: {height: hp('5.5%'), backgroundColor: '#7085DF' },
+  singleHead1_1: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#7085DF'},
+  singleHead1_2: {height: hp('5.5%'), backgroundColor: '#7085DF' },
+  title: { flex: 3, backgroundColor: 'white' },
+  title1: { flex: 1, backgroundColor: 'white' },
+  tableText: { 
+      textAlign: 'center', 
+      fontFamily:"NanumSquare", 
+      color: '#040525',
+      fontSize: wp('3.35%') },
+  tableTitleText: { 
+      textAlign: 'center', 
+      fontFamily:"NanumSquare", 
+      color: '#040525',
+      fontSize: wp('3.8%') },
 });

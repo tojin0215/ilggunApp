@@ -1,41 +1,49 @@
 import React, { useEffect, useState} from 'react';
 import { AsyncStorage } from 'react-native';
-import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, Button, StyleSheet, TouchableOpacity, ImageBackground} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
   },
+  image:{
+    
+    justifyContent: "flex-start",
+    alignItems:"center",
+    width: "100%", height: "100%",
+  },
   text: {
-    fontSize: 30,
+    fontSize: wp('15%'),
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
+    fontFamily:"NanumSquare",
   },
   buttonArea: {
+    marginTop:hp('7%'),
     width: '100%',
-    height: hp('5%'),
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: "#46c3ad",
-    width: "70%",
-    height: "100%",
-    justifyContent: 'center',
+    height: hp('6%'),
     alignItems: 'center',
   },
   buttonTitle: {
-      color: 'white',
+      color: '#040525',
+      fontSize:wp('5.9%'),
+      fontFamily:"NanumSquare",
   },
   addbutton: {
-    backgroundColor: 'green',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 50,
-    height: 50,
-    marginBottom: 30,
-    borderRadius: 35,
+    backgroundColor: '#67C8BA',
+    position:"absolute",
+    alignItems:"center",
+    bottom: hp('2%'),
+    width: "100%",
+    width: wp('15%'),
+    height: wp('15%'),
+    marginBottom: hp('5%'),
+    borderRadius: wp('15%'),
     
 
     ...Platform.select({
@@ -48,7 +56,7 @@ const styles = StyleSheet.create({
 
         android: {
             elevation: 0,
-            marginHorizontal: 30,
+            marginHorizontal:  hp('5%'),
         },
       })
   },
@@ -57,8 +65,11 @@ const styles = StyleSheet.create({
 
 const BusinessListScreen = ({navigation}) => {
   const [business, setBusiness] = useState([]);
-  //const [idid, setId] = useState('');
-
+  const [clicked, setClicked] = useState(-1);
+  const [id, setId] = useState('');
+  AsyncStorage.getItem("userData").then((userData) =>{
+    setId(JSON.parse(userData));
+  });
   /*const [password, setPassword] = useState('');
   const storeToken = async(user) => {
     try {
@@ -91,10 +102,6 @@ const BusinessListScreen = ({navigation}) => {
             }).then(res => res.json())
             .then(res => setBusiness(res));
             
-            /*.then((response) => response.json())
-            .then((res) => {
-                //setBusiness(res);
-            })*/
         } catch (e) {
             console.error(e);
           }
@@ -114,20 +121,46 @@ const BusinessListScreen = ({navigation}) => {
 
       //return unsubscribe;
     //});
+    /*const fetchFonts = () => {
+      return Font.loadAsync({
+      'NanumSquare': require("../../assets/fonts/NanumSquare_acR.ttf")
+      });
+    };
+    
+    const [dataLoaded, setDataLoaded] = useState(false);
+    if(!dataLoaded){
+      return(
+        <AppLoading
+          startAsync={fetchFonts}
+          onFinish={()=>setDataLoaded(true)}
+        />
+      )
+    }*/
     
     return (
-        <View style={styles.container}>
+      <View >
+      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+
         {
           <View style={styles.buttonArea}>{
             business.map((b, id) => (
               <>
-                <Text></Text><Text></Text>
                 <TouchableOpacity 
                   key = {id}
-                  style={styles.button}
+                  style={{
+                    backgroundColor: clicked==id?"#67C8BA":"#E2F2EF",
+                    width: "75%",
+                    height: "100%",
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius:wp('5%'),
+                    marginTop:hp('2.5%')
+                  }}
                   onPress={() => {
+                    setClicked(id)
                     AsyncStorage.setItem("bangCode", b.title)
                     .then(() =>{
+                      setClicked(-1)
                       navigation.navigate('Home')
                     })
                   }}>
@@ -142,7 +175,9 @@ const BusinessListScreen = ({navigation}) => {
         <TouchableOpacity style={styles.addbutton} onPress={() => navigation.navigate('Add Business')}>
           <Text style={styles.text}>+</Text>
         </TouchableOpacity>
-        </View>
+      </ImageBackground>
+      </View>
+
     );
 };
 export default BusinessListScreen;

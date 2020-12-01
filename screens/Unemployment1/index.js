@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, ImageBackground} from 'react-native';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import moment from "moment";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+
+//=======================바뀐부분A===============================
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+//=======================바뀐부분A===============================
 
 
 class UnemploymentScreen1 extends Component{
@@ -60,9 +67,9 @@ class UnemploymentScreen1 extends Component{
                     //(1일 평균급여액 = 최근 3개월 급여액 / 최근 3개월 근무기간)
                     //월 납부 보험료 = 월 평균급여(1일평균급여*30) X 0.8%)
                 tableData: [
-                    [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} autoFocus={true} placeholder={'1000000'} onSubmitEditing={() => { this.TextInput11.focus(); }} blurOnSubmit={false} style={styles.input} />],
-                    [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.input} />],
-                    [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput12 = input; }} style={styles.input} />],
+                    [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} autoFocus={true} placeholder={'1000000'} onSubmitEditing={() => { this.TextInput11.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput12 = input; }} style={styles.tableText} />],
                     ['-', '-'],
                     [diff1+diff2+diff3, 
                         ((parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay))/(diff1+diff2+diff3)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")],
@@ -96,10 +103,10 @@ class UnemploymentScreen1 extends Component{
                     Term2_1.format('YYYY.MM.DD')+'\n~'+Term2.format('YYYY.MM.DD'), 
                     Term1_1.format('YYYY.MM.DD')+'\n~'+Term1.format('YYYY.MM.DD'), '1일 평균 급여액','월 납부 보험료'],
                 tableData: [
-                    [diff4, <TextInput value={this.state.term4BasePay} onChangeText={(term4BasePay) => this.setState({term4BasePay})} autoFocus={true} placeholder={'1000000'} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.input} />],
-                    [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.input} />],
-                    [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.input} />],
-                    [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} ref={(input) => { this.TextInput15 = input; }} style={styles.input} />],
+                    [diff4, <TextInput value={this.state.term4BasePay} onChangeText={(term4BasePay) => this.setState({term4BasePay})} autoFocus={true} placeholder={'1000000'} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} ref={(input) => { this.TextInput15 = input; }} style={styles.tableText} />],
                     [diff1+diff2+diff3+diff4,
                         ((parseInt(this.state.term4BasePay)+parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay))/(diff1+diff2+diff3+diff4)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")],
                     ['',
@@ -137,7 +144,7 @@ class UnemploymentScreen1 extends Component{
             ['-', '-'],
             ['-', '-']
           ],
-          JoinYear:0, JoinMonth:0, JoinDay:0, 
+          JoinYear:0, JoinMonth:0, JoinDay:0, DateOfBirth:0,
           LeaveYear:0, LeaveMonth:0, LeaveDay:0, 
           term4BasePay:0,term3BasePay:0, term2BasePay:0,term1BasePay:0,
           OneDayUnemploymentBenefitAmount:0, UnemploymentBenefitAmount:0, PaymentDays:0
@@ -327,8 +334,8 @@ class UnemploymentScreen1 extends Component{
                 ['-', '-']
             ],
             types1: [{label: '예', value: 0}, {label: '아니오', value: 1}],
-            value1:1,
-            value1Index: 1,
+            value1:0,
+            value1Index: 0,
         }
     }
 
@@ -337,15 +344,22 @@ class UnemploymentScreen1 extends Component{
         const{DateOfBirth, Age, Period, OneDayUnemploymentBenefitAmount,UnemploymentBenefitAmount, PaymentDays} = this.state
     
         return (
+//=======================바뀐부분 여기 아래 쭉===============================
+            <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
             <View  style={styles.container}>
             <ScrollView>
-                <Text>실업급여 모의계산 : 일반{'\n'}</Text>
-                <Text>“모의 계산은 실직(폐업) 시 수급 받을 수 있는 실업급여를 추정해 보는 것입니다” {'\n'}
-                        고용보험에 가입해 있는 피보험자가 실직할 경우 받게 될 실업급여를 모의 계산해 볼 수 있습니다.{'\n'}
-                        “실제 수급일수 및 수급액과는 차이가 있을 수 있습니다“{'\n'}
-                </Text>
-                <View style={styles.rowView}>
-                    <Text style={styles.textMargin}>생년월일</Text>
+                
+                <View style={styles.titleArea}>
+                    <Text style={styles.textTitle}>실업급여 모의계산 : 일반</Text>
+                </View>
+                <View style={styles.textArea}>
+                    <Text style={styles.textLineStyle}>"모의 계산은 실직(폐업) 시 수급 받을 수 있는 실업급여를 추정해 보는 것입니다" {'\n'}
+                            고용보험에 가입해 있는 피보험자가 실직할 경우 받게 될 실업급여를 모의 계산해 볼 수 있습니다.{'\n'}
+                            "실제 수급일수 및 수급액과는 차이가 있을 수 있습니다"{'\n'}
+                    </Text>
+                </View>
+                <View style={styles.textAreaRow}>
+                    <Text style={styles.textStyle}>생년월일</Text>
                     <TextInput
                         value={this.state.DateOfBirth}
                         autoFocus={true}
@@ -353,19 +367,20 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput2.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'19901013'}
-                        style={styles.input}
+                        style={styles.textinputStyle}
                     />
                 </View>
-                <View style={styles.rowView}>
-                    <Text style={styles.textMargin}>장애인 여부</Text>
+                <View style={styles.textAreaRow}>
+                    <Text style={styles.textStyle}>장애인 여부</Text>
                     <RadioForm
                         ref="radioForm"
                         radio_props={this.state.types1}
-                        initial={1}
-                        formHorizontal={false}
+                        initial={0}
+                        formHorizontal={true}
                         labelHorizontal={true}
-                        buttonColor={'#2196f3'}
-                        labelColor={'#000'}
+                        buttonColor={'#67C8BA'}
+                        selectedButtonColor={'#67C8BA'}
+                        labelStyle={{fontSize: wp('4.2%'), color: '#040525', marginRight:wp('3%'), fontFamily:"NanumSquare"}}
                         animation={true}
                         onPress={(value, index) => {
                             this.setState({
@@ -376,8 +391,9 @@ class UnemploymentScreen1 extends Component{
                     />
                     {/* <Text>selected: {this.state.types1[this.state.value1Index].label}</Text> */}
                 </View> 
-                <Text style={styles.textMargin}>고용보험 총 가입기간</Text>  
-                <View style={styles.rowView}>
+                <View style={styles.textArea}>
+                <Text style={styles.textStyle}>고용보험 총 가입기간</Text>  
+                <View style={styles.rowPeriod}>
                     <TextInput
                         value={this.state.JoinYear}
                         onChangeText={(JoinYear) => this.setState({JoinYear})}
@@ -385,9 +401,9 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput3.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'2015'}
-                        style={styles.input}
+                        style={styles.textinputYearStyle}
                     />
-                    <Text style={styles.textMargin}>년 </Text>
+                    <Text style={styles.textStyle}>년 </Text>
                     <TextInput
                         value={this.state.JoinMonth}
                         onChangeText={(JoinMonth) => this.setState({JoinMonth})}
@@ -395,9 +411,9 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput4.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'5'}
-                        style={styles.input}
+                        style={styles.textinputDayStyle}
                         />
-                    <Text style={styles.textMargin}>월 </Text>
+                    <Text style={styles.textStyle}>월 </Text>
                     <TextInput
                         value={this.state.JoinDay}
                         onChangeText={(JoinDay) => this.setState({JoinDay})}
@@ -405,20 +421,22 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput5.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'25'}
-                        style={styles.input}
+                        style={styles.textinputDayStyle}
                     />
-                    <Text style={styles.textMargin}>일 ~ </Text>
-                    
+                    <Text style={styles.textStyle}>일 </Text>
+                </View>
+                <View style={styles.rowPeriod2}>
+                    <Text style={styles.textStyle}>~ </Text>
                     <TextInput
-                        value={this.state.LeaveYear}
-                        onChangeText={(LeaveYear) => this.setState({LeaveYear})}
-                        ref={(input) => { this.TextInput5 = input; }}
-                        onSubmitEditing={() => { this.TextInput6.focus(); }}
-                        blurOnSubmit={false}
-                        placeholder={'2020'}
-                        style={styles.input}
-                    />
-                    <Text style={styles.textMargin}>년 </Text>
+                            value={this.state.LeaveYear}
+                            onChangeText={(LeaveYear) => this.setState({LeaveYear})}
+                            ref={(input) => { this.TextInput5 = input; }}
+                            onSubmitEditing={() => { this.TextInput6.focus(); }}
+                            blurOnSubmit={false}
+                            placeholder={'2020'}
+                            style={styles.textinputYearStyle}
+                        />
+                    <Text style={styles.textStyle}>년 </Text>
                     <TextInput
                         value={this.state.LeaveMonth}
                         onChangeText={(LeaveMonth) => this.setState({LeaveMonth})}
@@ -426,58 +444,83 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput7.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'9'}
-                        style={styles.input}
+                        style={styles.textinputDayStyle}
                         />
-                    <Text style={styles.textMargin}>월 </Text>
+                    <Text style={styles.textStyle}>월 </Text>
                     <TextInput
                         value={this.state.LeaveDay}
                         onChangeText={(LeaveDay) => this.setState({LeaveDay})}
                         ref={(input) => { this.TextInput7 = input; }}
                         placeholder={'18'}
-                        style={styles.input}
+                        style={styles.textinputDayStyle}
                     />
-                    <Text style={styles.textMargin}>일</Text>
+                    <Text style={styles.textStyle}>일</Text>
                 </View>
-                
-                <Text>{'\n'}실업급여 모의계산 결과는 실제 수급액, 수급자격 인정 여부와 차이가 있을 수 있으며, 특히 근무기간이 6∼7개월인 경우 피보험단위기간(무급휴일 제외) 180일 요건을 충족하지 못하여 수급자격이 인정되지 않을 수 있으므로 정확한 수급자격인정여부는 거주지 관할 고용센터에 직접 문의하시기 바랍니다.{'\n'}</Text>
-                <Button
-                    title="확인하기"
-                    onPress={()=>{this.updateState()}}/>
-                <Text style={styles.textCenter}>퇴사당시 만 나이 : 만 {Age}세 / 가입기간일수 :  {Period} 일</Text>
-                
-                <View  style={styles.marginTop}>
-                    <Table borderStyle={{borderWidth: 1}}>
-                        <Row data={state.tableHead} flexArr={[1, 1, 1]} style={styles.head} textStyle={styles.text}/>
-                        <TableWrapper style={styles.wrapper}>
-                        <Col data={state.tableTitle} style={styles.title} heightArr={[28,28]} textStyle={styles.text}/>
-                        <Rows data={state.tableData} flexArr={[1, 1]} style={styles.row} textStyle={styles.text}/>
-                        </TableWrapper>
-                    </Table>
-                    <Button
-                    title="평균급여액, 보험료 확인하기"
-                    onPress={()=>{this.updateState()}}/>
                 </View>
-            
-                <View style={styles.marginTop}>
-                    <Button
-                        title="실업급여 모의 계산"
-                        onPress={()=>{this.calculation()}}/>
-                    <Button
-                        title="초기화"
-                        color="#FF3232"
-                        onPress={()=>{this.resetData()}}/> 
-                    <Text style={styles.textCenter}>1일 실업급여 수급액 : {OneDayUnemploymentBenefitAmount} 원</Text>
-                    <Text style={styles.textCenter}>예상 지급일 수 : {PaymentDays}일</Text>
-                    <Text style={styles.textCenter}>총 예상수급액 : {UnemploymentBenefitAmount}원</Text>
+                <View style={styles.textArea}>
+                    <Text style={styles.textLineStyle}>{'\n'}실업급여 모의계산 결과는 실제 수급액, 수급자격 인정 여부와 차이가 있을 수 있으며, 특히 근무기간이 6∼7개월인 경우 피보험단위기간(무급휴일 제외) 180일 요건을 충족하지 못하여 수급자격이 인정되지 않을 수 있으므로 정확한 수급자격인정여부는 거주지 관할 고용센터에 직접 문의하시기 바랍니다.{'\n'}</Text>
+                </View>
+                <View style={styles.buttonArea}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={()=>{this.updateState()}}>
+                    <Text style={styles.buttonTitle}>확인하기</Text>
+                </TouchableOpacity>
                 </View>
 
-                <Text style={styles.textMargin}>
-                {'\n'}※예상지급일 수는 퇴직 당시 연령 과 고용보험 가입기간에 따라 최소 120일에서 최대 270일까지로 계산 됩니다.(이직일이 2019.10.1 이전은 최소 90일에서 최대 240일)
-                {'\n'}※실업급여 모의계산 결과는 실제 수급액, 수급자격 인정 여부와 차이가 있을 수 있으며, 특히 근무기간이 6∼7개월인 경우 피보험단위기간(무급휴일 제외) 180일 요건을 충족하지 못하여 수급자격이 인정되지 않을 수 있으므로 정확한 수급자격인정여부는 거주지 관할 고용센터에 직접 문의하시기 바랍니다.
-                </Text>
+                <View style={styles.textArea}>
+                    <Text style={styles.textStyle}>퇴사당시 만 나이 : 만 {Age}세</Text>
+                    <Text style={styles.textStyle}>가입기간일수 :  {Period} 일</Text>
+                </View>
+
+                <View  style={styles.tableArea}>
+                    <Table borderStyle={{borderWidth: 1}}>
+                        <Row data={state.tableHead} flexArr={[1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
+                        <TableWrapper style={styles.wrapper}>
+                        <Col data={state.tableTitle} style={styles.title} heightArr={[hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%')]} textStyle={styles.tableText}/>
+                        <Rows data={state.tableData} flexArr={[1, 1]} style={styles.row} textStyle={styles.tableText}/>
+                        </TableWrapper>
+                    </Table>
+                </View>
+
+                <View style={styles.buttonArea}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={()=>{this.updateState()}}>
+                        <Text style={styles.buttonTitle}>평균급여액, 보험료 확인하기</Text>
+                    </TouchableOpacity> 
+                </View>
+            
+                <View style={styles.buttonArea2}>
+                    <Text style={styles.textStyle1}>* 평균급여액, 보험료 확인하기 버튼을 누른 후 퇴직금 실업급여 모의계산 버튼을 누르시오.</Text>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={()=>{this.calculation()}}>
+                        <Text style={styles.buttonTitle}>실업급여 모의계산</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.buttonReset}
+                        onPress={()=>{this.resetData()}}>
+                        <Text style={styles.buttonResetTitle}>초기화</Text>
+                    </TouchableOpacity> 
+                </View>
+
+                <View style={styles.textArea}>
+                    <Text style={styles.textStyle}>* 실업급여 계산 결과</Text>
+                    <Text style={styles.textResultStyle}>1일 실업급여 수급액 : {OneDayUnemploymentBenefitAmount} 원</Text>
+                    <Text style={styles.textResultStyle}>예상 지급일 수 : {PaymentDays}일</Text>
+                    <Text style={styles.textResultStyle}>총 예상수급액 : {UnemploymentBenefitAmount}원</Text>
+                </View>
+
+                <View style={styles.textArea}>
+                    <Text style={styles.textLineStyle}>※예상지급일 수는 퇴직 당시 연령 과 고용보험 가입기간에 따라 최소 120일에서 최대 270일까지로 계산 됩니다. (이직일이 2019.10.1 이전은 최소 90일에서 최대 240일)
+                    {'\n'}※실업급여 모의계산 결과는 실제 수급액, 수급자격 인정 여부와 차이가 있을 수 있으며, 특히 근무기간이 6∼7개월인 경우 피보험단위기간(무급휴일 제외) 180일 요건을 충족하지 못하여 수급자격이 인정되지 않을 수 있으므로 정확한 수급자격인정여부는 거주지 관할 고용센터에 직접 문의하시기 바랍니다.
+                    </Text>
+                </View> 
 
             </ScrollView>
             </View>
+            </ImageBackground>
         )
     }
 }
@@ -485,15 +528,147 @@ class UnemploymentScreen1 extends Component{
 export default UnemploymentScreen1;
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-    rowView: { flexDirection: 'row' },
-    marginTop : {marginTop:10},
-    textMargin:{marginTop:5, marginLeft:5, marginRight:5},
-    textCenter:{marginTop:5, marginLeft:5, marginRight:5, textAlign:"center"},
+    container: { padding:wp('3%'), width: "100%", height: "100%",},
+    row: {  height: hp('5.5%') },
     wrapper: { flexDirection: 'row' },
-    head: {  height: 40,  backgroundColor: '#f1f8ff'  },
-    title: { flex: 1, backgroundColor: '#f6f8fa' },
-    row: {  height: 28 },
-    text: { textAlign: 'center' },
-    textMargin:{marginTop:5, marginLeft:5, marginRight:5}
+    head: {  height: hp('5.5%'),  backgroundColor: 'white'  },
+    title: { flex: 1, backgroundColor: 'white' },
+    image:{ 
+        alignItems: 'center', justifyContent:"center",
+        width: "100%", height: "103%", 
+    },
+    
+    titleArea:{
+        alignItems:"center"
+    },
+    textTitle:{
+        fontSize:wp('5.55%'),
+        fontFamily:"NanumSquareB",
+        color: '#040525',
+        marginBottom:hp('2%'),
+        marginTop:hp('2%')
+    },
+    textAreaRow:{ 
+        marginTop:hp('1.5%'),
+        marginBottom:hp('2%'),
+        marginLeft:wp('1.5%'),
+        flexDirection:'row'
+    },
+    rowPeriod:{
+        flexDirection:'row',
+        marginLeft:wp('5%')
+    },
+    rowPeriod2:{
+        flexDirection:'row',
+        marginLeft:wp('15%')
+    },
+    textArea:{
+        marginTop:hp('2%'),
+        marginBottom:hp('2%'),
+        marginLeft:wp('1.5%')
+    },
+    textLineStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        color: '#040525',
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+        lineHeight:wp('6.5%')
+    },
+    textStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        color: '#040525',
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+    },  
+    tableTextStyle:{
+        textAlign:"center",
+        color: '#040525',
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+    },
+    textStyle1:{
+      fontSize:wp('4.2%'),
+      fontFamily:"NanumSquare",
+      color: '#040525',
+      marginLeft:wp('1.5%'),
+      marginTop:wp('7%'),
+      marginBottom:wp('2.5%'),
+      marginRight:wp('2%'),
+      lineHeight:wp('6.5%')
+    },
+    textinputStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('3%'),
+        width:wp('35%'),
+    },
+    textinputYearStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        width:wp('11%')
+    },
+    textinputDayStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('2%'),
+        width:wp('7%'),
+    },
+    
+    textResultStyle:{
+        fontSize:wp('5.05%'),
+        fontFamily:"NanumSquareB",
+        color: '#040525',
+        marginLeft:wp('3%'),
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+  
+      },
+    buttonArea: {
+        alignItems:"center",
+        width: '100%', height: hp('6%'),
+        marginBottom:hp('2%'),
+    },
+    buttonArea2:{
+        alignItems:"center",
+        width: '100%', height: hp('27%'),
+        marginBottom:hp('2%'),
+    },
+    button: {
+          backgroundColor: "#67C8BA",
+          width:wp('80%'), height: hp('6%'),
+          justifyContent: 'center', alignItems:"center",
+          borderRadius:wp('4%'),
+          marginTop:hp('2%'),
+    },
+    buttonReset: {
+        backgroundColor: "#040525",
+        width:wp('80%'), height: hp('6%'),
+        justifyContent: 'center', alignItems:"center",
+        borderRadius:wp('4%'),
+        marginTop:hp('2%'),
+    },
+    buttonTitle: {
+          color: '#040525',
+          fontFamily:"NanumSquareB",
+          fontSize:wp('4.8%'),
+    },
+    buttonResetTitle: {
+          color: 'white',
+          fontFamily:"NanumSquare",
+          fontSize:wp('4.8%'),
+    },
+    tableArea:{
+        marginTop:hp('2%'), marginBottom:hp('3%'),
+    },
+    tableText: { 
+        textAlign: 'center', 
+        fontFamily:"NanumSquare", 
+        color: '#040525',
+        fontSize: wp('3.8%')},
 });

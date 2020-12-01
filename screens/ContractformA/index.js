@@ -3,19 +3,32 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert} from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import CheckboxGroup from 'react-native-checkbox-group'
+import { AsyncStorage } from 'react-native';
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
+import { WebView } from 'react-native-webview'
 
-class ContractformAScreen extends Component{
+class ContractformAScreen extends React.Component{
   state={
   }
   
   constructor(props) {
+    
     super(props);
     this.state = {
+        type:1,
       types1: [{label: '없음   ', value: 0}, {label: '있음', value: 1}], 
       types2: [{label: '없음   ', value: 0}, {label: '있음', value: 1}], 
       types3: [{label: '근로자에게 직접지급   ', value: 0}, {label: '근로자 명의 예금통장에 입금', value: 1}], 
-      value1: 0, value1Index:0, value2: 0, value2Index:0, value3: 0, value3Index:0,value4: 0
+      value1: 0, value1Index:0, value2: 0, value2Index:0, value3: 0, value3Index:0,value4: 0,
+      Employee: this.props.route.params.workername, id:this.props.route.params.workername, bang:'', types4:[0,0,0,0,0]
     };
+    
+    AsyncStorage.getItem("bangCode")
+      .then((bangCode) => {
+        this.setState({bang: bangCode});
+        this.initfetchHtml(bangCode);
+      })
   }
 
   handleSubmit(){
@@ -29,7 +42,6 @@ class ContractformAScreen extends Component{
         ||this.state.ContractDay==null||this.state.BusinessName==null||this.state.BusinessAddress==null
         ||this.state.BusinessOwner1==null||/*this.state.EmployeeAddress==null||this.state.EmployeePhone==null
         ||this.state.EmployeeName==null||*/this.state.BusinessPhone==null){
-        this.fetchHtml();
         Alert.alert('빈칸을 채워주세요.') 
     } else{
         console.log(this.state);
@@ -37,6 +49,64 @@ class ContractformAScreen extends Component{
         Alert.alert('저장되었습니다.')    
     }
   }
+  initfetchHtml = async(bangCode) => {
+    await fetch('http://192.168.43.253:3000/selectContractform', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          bang:bangCode,
+          id: this.props.route.params.workername
+        }),
+      }).then(res => res.json())
+      .then(res => {
+          //res.types1 = JSON.parse(res.types1);
+          //res.types2 = JSON.parse(res.types2);
+          //res.types3 = JSON.parse(res.types3);
+          console.log(res[0]);
+          console.log('--------------')
+          
+          if(res[0]!=undefined){
+               if(res[0].type==3){
+            this.StatementScreen()
+          }
+            if(JSON.parse(res[0].types1)[0].value == 1){
+                res[0].types1 = "없음"
+            }
+            else{
+                res[0].types1 = "있음"
+            }
+            
+            if(JSON.parse(res[0].types2)[0].value == 1){
+                res[0].types2 = "없음"
+            }
+            else{
+                res[0].types2 = "있음"
+            }
+
+            if(JSON.parse(res[0].types3)[0].value == 1){
+                res[0].types3 = "근로자에게 직접 지급"
+            }
+            else{
+                res[0].types3 = "근로자 명의 예금통장에 입금"
+            }
+            let t4 = [0,0,0,0,0];
+            console.log('dddd')
+            let n = JSON.parse(res[0].value4);
+            for(let i=0 ; i<n.length ; i++){
+                t4[n[i]]=1;
+            }
+            console.log("whyyyyyyyyyyyyyyyyyyyyy?"+t4);
+            res[0].types4 = t4;
+
+            this.setState(res[0]);
+            console.log(res[0].types4);
+            this.setState(res[0]);
+            }
+      })     
+    }
   fetchHtml = async(a) => {
     await fetch('http://192.168.43.253:3000/writeContractform', {
         method: 'POST',
@@ -129,12 +199,421 @@ class ContractformAScreen extends Component{
             EmployeeName: this.state.EmployeeName}*/
         ),
       }).then(res => res.json())
-      .then(res => {})     
+      .then(res => {
+        this.initfetchHtml(this.state.bangCode);
+      })     
     }
+
+    StatementScreen = async() => {
+        fetch("http://192.168.43.253:3000/selectImg",{
+          method: 'POST',})
+            .then(res => 
+              {
+                console.log(res)
+                console.log("나와라ㅏㅏㅏㅏ");
+              const htmlContent = `
+              <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>근로계약서 정규/계약</title>
+        </head>
+        <style>
+            body{margin:30px 30px 30px 30px; line-height: 30px;}
+            span{font-weight: bold;  font-size:1.5em; position:relative; left:50%; margin-left: -100px;}
+            .text_underline {text-decoration: underline;}
+            .margin_left{margin-left:15px;}
+            .margin_left2{margin-left:65px;}
+            .text_underline_margin_left{text-decoration: underline;margin-left:50px;}
+            .contract_day{position:relative; left:50%; margin-left: -100px;}
+        </style>
+        <body>
+            <span>표준근로계약서</span>
+            <form>
+                <hr><br>
+    
+                <label class="text_underline">${this.state.Employer}</label>
+                <label>(이하 "사업주"라 함) 과(와)</label>
+                <label class="text_underline">${this.state.Employee}</label>
+                <label>(이하 "근로자"라 함) 은 다음과 같이 근로계약을 체결한다.</label><br><br>
+        
+                <label>1. 근로계약기간 :</label> 
+                <label class="text_underline">${this.state.StartYear}</label>
+                <label>년</label>
+                <label class="text_underline">${this.state.StartMonth}</label>
+                <label>월</label>
+                <label class="text_underline">${this.state.StartDay}</label>
+                <label>일부터</label>
+    
+                <label class="text_underline">${this.state.EndYear}</label>
+                <label>년</label>
+                <label class="text_underline">${this.state.EndMonth}</label>
+                <label>월</label>
+                <label class="text_underline">${this.state.EndDay}</label>
+                <label>일까지</label><br>
+                
+                <label>2. 근 무 장 소 : </label>
+                <label>${this.state.WorkPlace}</label><br>
+                
+                
+                <label>3. 업무의 내용 : </label>
+                <label>${this.state.WorkReference}</label><br>
+    
+                <label>4. 소정근로시간 :</label> 
+                <label class="text_underline">${this.state.StartTimeHour}</label>
+                <label>시</label>
+                <label class="text_underline">${this.state.StartTimeHMin}</label>
+                <label>분부터 </label>
+                <label class="text_underline">${this.state.EndTimeHour}</label>
+                <label>시</label>
+                <label class="text_underline">${this.state.EndTimeHMin}</label>
+                <label>분까지</label>
+                <label>(휴게시간 : </label>
+                <label class="text_underline">${this.state.BreakTimeStartHour}</label>
+                <label>시</label>
+                <label class="text_underline">${this.state.BreakTimeStartMin}</label>
+                <label>분~</label>
+                <label class="text_underline">${this.state.BreakTimeEndHour}</label>
+                <label>시</label>
+                <label class="text_underline">${this.state.BreakTimeEndMin}</label>
+                <label>분)</label><br>
+    
+                <label>5. 근무일/휴일 : 매주</label> 
+                <label class="text_underline">${this.state.WorkingDays}</label>
+                <label>일(또는 매일단위)근무, 주휴일 매주</label>
+                <label class="text_underline">${this.state.Holiday}</label>
+                <label>일</label><br>
+        
+                <label>6. 임 금</label><br>
+                <label class="margin_left">- 월(일, 시간)급 : </label>
+                <label class="text_underline">${this.state.Salary}</label>
+                <Text>원</Text><br>
+    
+                <label class="margin_left">- 상여금 : </label>
+                <input type="radio" id="bonusYes" name="bonus" value="bonusYes">
+                <label for="bonusYes">${this.state.types1}</label>
+                <label class="text_underline">${this.state.Bonus}</label>
+                <label>원</label>
+                <input type="radio" id="bonusNo" name="bonus" value="bonusNo"  class="margin_left">
+                <label for="bonusNo">없음</label><br>
+    
+                <label class="margin_left">- 기타급여(제수당 등) : </label>
+                <label for="bonus2Yes">${this.state.types2}</label>
+                <label class="text_underline_margin_left">${this.state.Bonus1}</label>
+                <label>원, </label>
+                <label class="text_underline_margin_left">${this.state.Bonus2}</label>
+                <label>원 </label><br>
+                <label class="text_underline_margin_left">${this.state.Bonus3}</label>
+                <label>원, </label>
+                <label class="text_underline_margin_left">${this.state.Bonus4}</label>
+                <label>원 </label><br>
+                <label class="margin_left">- 임금지급일 : 매월(매주 또는 매일)</label>
+                <label class="text_underline">10</label>
+                <label>일 (휴일의 경우에는 전일 지급)</label><br>
+                <label class="margin_left">- 지급방법 : </label>
+                <input type="radio" id="wayOfPayment1" name="wayOfPayment" value="wayOfPayment1">
+                <label for="wayOfPayment1">근로자에게 직접지급</label>
+                <input type="radio" id="wayOfPayment2" name="wayOfPayment" value="wayOfPayment2" class="margin_left">
+                <label for="wayOfPayment2">근로자 명의 예금통장에 입금</label><br><br>
+    
+                <label>7. 연차유급휴가</label><br>
+                <label class="margin_left"> - 연차유급휴가는 근로기준법에서 정하는 바에 따라 부여함.</label><br>
+    
+                <label>8. 사대보험 적용여부(해당란에 체크)</label> <br>
+                
+                <label class="margin_left">고용보험 ${this.state.types4[1]==1?'O':'X'}</label>
+                <label class="margin_left">산재보험 ${this.state.types4[2]==1?'O':'X'}</label>
+                <label class="margin_left">국민연금 ${this.state.types4[3]==1?'O':'X'}</label>
+                <label class="margin_left">건강보험 ${this.state.types4[4]==1?'O':'X'}</label><br>
+      
+                <label>9. 근로계약서 교부</label> <br>
+                <label class="margin_left"> - '사업주'는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부요구와 관계없이 '근로자'에게 교부함(근로기준법 제17조 이행)</label><br>
+    
+                <label>10. 기타</label><br>
+                <label class="margin_left"> - 이 계약에 정함이 없는 사항은 근로기준법령에 의함</label><br><br>
+                
+                <div class="contract_day">
+                <label>${this.state.ContractYear}</label>
+                <label>년</label>
+                <label>${this.state.ContractMonth}</label>
+                <label>월</label>
+                <label>${this.state.ContractDay}</label>
+                <label>일</label></div><br>
+              
+                <label>(사업주)</label>
+                <label>사업체명 : </label>
+                <label>${this.state.BusinessName}</label>
+                <label class="margin_left2">(전 화 : </label>
+                <label>${this.state.BusinessPhone}</label>
+                <label>) </label><br>
+                <label class="margin_left2">주    소 : </label>
+                <label>${this.state.BusinessAddress}</label><br>
+                <label class="margin_left2">대 표 자 : </label>
+                <label>${this.state.BusinessOwner1}</label>
+                <label class="margin_left2">(서명)</label><br><br>
+    
+                <label>(근로자)</label>
+                <label>주 소 : </label>
+                <label>${this.state.EmployeeAddress}</label><br>
+                <label class="margin_left2">연 락 처 : </label>
+                <label>${this.state.EmployeePhone}</label><br>
+                <label class="margin_left2">성    명 : </label>
+                <label>${this.state.EmployeeName}</label>
+                <label class="margin_left2">(서명)</label>
+                <div>
+                   <img style="left: 270px; height:10px; width: 10px; bottom: 400px; font-size: 1.8em; font-weight: bold; position: absolute;" src="http://192.168.43.253:3000/11.jpg">
+                    
+                  </div>
+            </form>
+    
+                  
+              </body>
+              </html>
+              `
+    
+              this.setState({htmlContent : htmlContent})
+    
+            
+            });
+          
+      }
+      createAndSavePDF = async (html) => {
+          try {
+            const { uri } = await Print.printToFileAsync({ html },base64=true);
+            Sharing.shareAsync(uri);  
+          } catch (error) {
+            console.error(error);
+          }
+        };
   render() {
     return (
+
       <View style={styles.container}>
         <Text style={styles.head}> 근로계약서_정규/계약</Text>
+        {
+            console.log(">>>>>>>>>>>>>>>>"+this.state.type)
+        }
+        {
+            
+            this.state.type==2?
+            <ScrollView>
+            <View style={styles.marginBottom1}>
+                <View style={styles.rowView}>
+                <Text style={styles.textinput}>{this.state.Employer}</Text>
+                <Text>(이하 "사업주"라 함) 과(와)</Text>
+                </View>
+                <View style={styles.rowView}>
+                <Text style={styles.textinput}>{this.state.Employee}</Text>
+                <Text>(이하 "근로자"라 함) 은 다음과 같이 근로계약을 체결한다.</Text>
+                </View>
+            </View>
+    
+            <View style={styles.marginBottom2}>
+                <Text style={styles.marginText}>1. 근로계약기간 :</Text> 
+                <View style={styles.rowView}>
+                <Text style={styles.textinput1}>{this.state.StartYear}</Text>
+                <Text>년</Text>
+                <Text style={styles.textinput2}>{this.state.StartMonth}</Text>
+                <Text>월</Text>
+                <Text style={styles.textinput2}>{this.state.StartDay}</Text>
+                <Text>일부터</Text>
+    
+                <Text style={styles.textinput1}>{this.state.EndYear}</Text>
+                <Text>년</Text>
+                <Text style={styles.textinput2}>{this.state.EndMonth}</Text>
+                <Text>월</Text>
+                <Text style={styles.textinput2}>{this.state.EndDay}</Text>
+                <Text>일까지</Text>
+                </View>
+            </View>
+            
+            <View style={styles.marginBottom2}>
+                <View style={styles.rowView}>
+                <Text style={styles.marginText}>2. 근무장소 : </Text>
+                <Text style={styles.textinput}>{this.state.WorkPlace}</Text>
+                </View>
+            </View>
+            
+            
+            <View style={styles.marginBottom2}>
+            <View style={styles.rowView}>
+              <Text style={styles.marginText}>3. 업무의 내용 : </Text>
+              <Text style={styles.textinput}>{this.state.WorkReference}</Text>
+            </View>
+            </View>
+    
+    
+            <View style={styles.marginBottom2}>
+            <View style={styles.rowView}>
+            <Text style={styles.marginText}>4. 소정근로시간 :</Text> 
+                <Text style={styles.textinput2}>{this.state.StartTimeHour}</Text> 
+                <Text>시</Text>
+                <Text style={styles.textinput2}>{this.state.StartTimeHMin}</Text>
+                <Text>분 ~ </Text>
+                <Text style={styles.textinput2}>{this.state.EndTimeHour}</Text>
+                <Text>시</Text>
+                <Text style={styles.textinput2}>{this.state.EndTimeHMin}</Text>
+                <Text>분 </Text>
+            </View>
+            <View style={styles.rowView3}>
+                <Text>휴게시간</Text>
+                <Text style={styles.textinput2}>{this.state.BreakTimeStartHour}</Text>
+                <Text>시</Text>
+                <Text style={styles.textinput2}>{this.state.BreakTimeStartMin}</Text>
+                <Text>분 ~ </Text>
+                <Text style={styles.textinput2}>{this.state.BreakTimeEndHour}</Text>
+                <Text>시</Text>
+                <Text style={styles.textinput2}>{this.state.BreakTimeEndMin}</Text>
+                <Text>분 </Text>
+            </View>
+            </View>
+    
+    
+            <View style={styles.marginBottom2}>
+            <View style={styles.rowView}>
+                <Text style={styles.marginText}>5. 근무일/휴일 : </Text> 
+                <Text>매주 </Text>
+                <Text style={styles.textinput2}>{this.state.WorkingDays}</Text>
+                <Text>일(또는 매일단위)근무, 주휴일 매주</Text>
+                <Text style={styles.textinput2}>{this.state.Holiday}</Text>
+                <Text>일 </Text>
+            </View>
+            </View>
+    
+    
+            <View style={styles.marginBottom2}>
+            <Text style={styles.marginText}>6. 임금</Text> 
+            <View style={styles.rowView3}>
+                <Text>-월(일, 시간)급 : </Text>
+                <Text style={styles.textinput}>{this.state.Salary}</Text>
+                <Text>원</Text>
+            </View>
+            <View style={styles.rowView3}>
+                <Text>-상여금 : </Text>
+                <Text style={styles.textinput}>{this.state.types1}</Text>
+                <Text>, </Text>
+                <Text style={styles.textinput}>{this.state.Bonus}</Text>
+                <Text>원</Text>
+            </View>
+            <View style={styles.rowView3}>
+                <Text>-기타급여(제수당 등) : </Text>
+                <Text style={styles.textinput}>{this.state.types2}</Text>
+            </View>
+            <View style={styles.rowView3}>
+                <Text style={styles.textinput}>{this.state.Bonus1}</Text>
+                <Text>원, </Text>
+                <Text style={styles.marginLeft1}></Text>
+                <Text style={styles.textinput}>{this.state.Bonus2}</Text>
+                <Text>원</Text>
+            </View>
+                    <View style={styles.rowView3}>
+                    <Text style={styles.textinput}>{this.state.Bonus3}</Text>
+                <Text>원, </Text>
+                <Text style={styles.marginLeft1}></Text>
+                <Text style={styles.textinput}>{this.state.Bonus4}</Text>
+                <Text>원</Text>
+            </View>
+            <View style={styles.rowView3}>
+                <Text>-임금지급일 : 매월(매주 또는 매일)</Text>
+                <Text style={styles.textinput2}>{this.state.SalaryDay}</Text>
+                <Text>일 (휴일의 경우에는 전일 지급)</Text>
+            </View>
+            <View style={styles.rowView3}>
+                <Text>-지급방법 : </Text>
+                <Text style={styles.textinput3}>{this.state.types3}</Text>
+            </View>
+            </View>
+    
+            
+            <View style={styles.marginBottom2}>
+                <Text style={styles.marginText}>7. 연차유급휴가</Text> 
+                <Text style={styles.marginText}> - 연차유급휴가는 근로기준법에서 정하는 바에 따라 부여함</Text>
+            </View>
+    
+            <View style={styles.marginBottom2}>
+                <Text style={styles.marginText}>8. 사대보험 적용여부(해당란에 체크)</Text> 
+        <Text style={styles.marginText}>고용보험:</Text><Text style={styles.textinput1}>{this.state.types4[1]==1?'O':'X'}</Text>
+                <Text style={styles.marginText}>, 산재보험:</Text><Text style={styles.textinput1}>{this.state.types4[2]==1?'O':'X'}</Text>
+                <Text style={styles.marginText}>, 국민연금:</Text><Text style={styles.textinput1}>{this.state.types4[3]==1?'O':'X'}</Text>
+                <Text style={styles.marginText}>, 건강보험:</Text><Text style={styles.textinput1}>{this.state.types4[4]==1?'O':'X'}</Text>
+    </View>
+            <View style={styles.marginBottom2}>
+                <Text style={styles.marginText}>9. 근로계약서 교부</Text> 
+                <Text style={styles.marginText}> - 사업주는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부요구와 관계없이 근로자에게 교부함(근로기준법 제17조 이행)</Text>
+            </View>
+    
+            <View style={styles.marginBottom2}>
+                <Text style={styles.marginText}>10. 기타</Text> 
+                <Text style={styles.marginText}> - 이 계약에 정함이 없는 사항은 근로기준법령에 의함</Text>
+            </View>
+            
+    
+            <View style={styles.rowView2}> 
+              <Text style={styles.textinput1}>{this.state.ContractYear}</Text>
+              <Text>년</Text>
+              <Text style={styles.textinput2}>{this.state.ContractMonth}</Text>
+              <Text>월</Text>
+              <Text style={styles.textinput2}>{this.state.ContractDay}</Text>         
+              <Text>일</Text>       
+            </View>
+          
+          <View>
+            <Text style={styles.head2}>사업주</Text>
+            <View style={styles.rowView4}>
+                <Text>사업체명 : </Text>
+                <Text style={styles.textinput3}>{this.state.BusinessName}</Text>
+            </View>
+            <View style={styles.rowView4}>
+                <Text>주소 : </Text>
+                <Text style={styles.textinput3}>{this.state.BusinessAddress}</Text>
+            </View>        
+            <View style={styles.rowView4}>
+                <Text>전화번호 : </Text>
+                <Text style={styles.textinput3}>{this.state.BusinessPhone}</Text>
+            </View>
+            <View style={styles.rowView4}>
+                <Text>대표자 : </Text>
+                <Text style={styles.textinput3}>{this.state.BusinessOwner1}</Text>
+            </View>
+          </View>
+    
+          <View>
+        <Text style={styles.head2}>근로자</Text>
+            <View style={styles.rowView4}>
+                <Text>주소 : 근로자가 입력하는 칸입니다.</Text>
+            </View>
+            <View style={styles.rowView4}>
+                <Text>연락처 : 근로자가 입력하는 칸입니다.</Text>
+            </View>
+            <View style={styles.rowView4}>
+                <Text>성명 : 근로자가 입력하는 칸입니다.</Text>
+            </View>
+        </View>
+    
+          <View style={styles.buttonBottom}>
+              <Button 
+                title="저장하기"
+                onPress={()=>{
+                    this.state.type=2;
+                    this.handleSubmit()
+                }}/>
+            </View>
+          </ScrollView>
+          :
+          this.state.type==3?
+          <>
+            <WebView
+                originWhitelist={['*']}
+                source={{ html: this.state.htmlContent }}
+                style={{ marginTop: 20 }}
+            />
+            <Button
+              title="공유하기"
+              color="#FF3232"
+              onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}/>
+            </>
+
+          :
         <ScrollView>
         <View style={styles.marginBottom1}>
             <View style={styles.rowView}>
@@ -379,7 +858,7 @@ class ContractformAScreen extends Component{
             <Text>-상여금 : </Text>
             <RadioForm
                 ref="radioForm"
-                radio_props={this.state.types1}
+                radio_props={this.state.types1=="있음"||this.state.types1=="없음"?[{"label":"없음   ","value":0},{"label":"있음","value":0}]:this.state.types1}
                 initial={0}
                 formHorizontal={true}
                 labelHorizontal={true}
@@ -406,7 +885,7 @@ class ContractformAScreen extends Component{
             <Text>-기타급여(제수당 등) : </Text>
             <RadioForm
                 ref="radioForm"
-                radio_props={this.state.types2}
+                radio_props={this.state.types2=="있음"||this.state.types2=="없음"?[{"label":"없음   ","value":0},{"label":"있음","value":0}]:this.state.types2}
                 initial={0}
                 formHorizontal={true}
                 labelHorizontal={true}
@@ -476,7 +955,7 @@ class ContractformAScreen extends Component{
             <Text>-지급방법 : </Text>
             <RadioForm
                 ref="radioForm"
-                radio_props={this.state.types3}
+                radio_props={this.state.types3=="있음"||this.state.types3=="없음"?[{"label":"없음   ","value":0},{"label":"있음","value":0}]:this.state.types3}
                 initial={0}
                 formHorizontal={false}
                 labelHorizontal={true}
@@ -628,22 +1107,26 @@ class ContractformAScreen extends Component{
       <View>
         <Text style={styles.head2}>근로자</Text>
         <View style={styles.rowView4}>
-            <Text>주소 : 사용자가 입력하는 칸입니다.</Text>
+            <Text>주소 : 근로자가 입력하는 칸입니다.</Text>
         </View>
         <View style={styles.rowView4}>
-            <Text>연락처 : 사용자가 입력하는 칸입니다.</Text>
+            <Text>연락처 : 근로자가 입력하는 칸입니다.</Text>
         </View>
         <View style={styles.rowView4}>
-            <Text>성명 : 사용자가 입력하는 칸입니다.</Text>
+            <Text>성명 : 근로자가 입력하는 칸입니다.</Text>
         </View>
       </View>
 
       <View style={styles.buttonBottom}>
           <Button 
             title="저장하기"
-            onPress={()=>{this.handleSubmit()}}/>
+            onPress={()=>{
+                this.state.type=2;
+                this.handleSubmit()    
+            }}/>
         </View>
       </ScrollView>
+    }
       </View>
     )
   }

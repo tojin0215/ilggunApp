@@ -1,16 +1,67 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, ScrollView, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, ImageBackground} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { AsyncStorage } from 'react-native';
+import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height :1000,
+  },
+  image:{
+    alignItems: 'center',
+    width: "100%", height: "100%", 
+  },
+  timeArea:{
+    marginLeft:wp('4%'),
+    marginBottom:hp('1.5%')
+  }, 
+  timeText:{
+    fontSize:wp('5.05%'),
+    fontFamily:"NanumSquareB",
   },
   dropdown : {
-    flexDirection: 'row',
+    flexDirection: 'row', backgroundColor:'white', 
+    width:wp('90%'), height:hp('18%'), borderRadius:wp('4.5%')
   },
+  dropdownBox : {
+    flexDirection: 'row', 
+    width:wp('90%'), height:hp('50%'), borderRadius:wp('4.5%')
+  },
+  dropdownWokerArea:{
+    marginTop:hp('8%'),
+    marginBottom:hp('5%'),
+    justifyContent:"center",
+    alignItems:"center"
+  },
+  buttonArea: {
+    position:"absolute",
+    bottom: hp('5%'),
+    justifyContent:"center",
+    width: wp('100%'), height: hp('6%'),
+  },
+  button: {
+      backgroundColor: "#67C8BA",
+      width:wp('90%'), height: hp('6%'),
+      justifyContent: 'center', alignItems:"center",
+      borderRadius:wp('4%'),
+      marginTop:hp('2%'),
+  },
+  buttonTitle: {
+      color: 'white',
+      fontFamily:"NanumSquare",
+      fontSize:wp('4.8%'),
+  },
+  dropText:{
+    fontSize:wp('8.5%'),
+    justifyContent:"center", alignItems:"center",
+    marginTop:hp('0.5%')
+  }
 });
 
 class AlterWorkerScreen extends Component{
@@ -132,12 +183,30 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
     const {workernames} = this.state
     
     return (
-      <View style={styles.container}>
-        <DropDownPicker
+      <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+        <View style={styles.container}>
+          <View style={styles.dropdownWokerArea}>
+            <DropDownPicker
                 items={workernames}
                 defaultValue=''//{this.state.itemC}
-                containerStyle={{height: 40, width:120}}
-                placeholder="직원이름"
+                containerStyle={{height:hp('8%'), width:wp('90%'), }}
+                style={{
+                  borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%'),
+                  borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'), 
+                }}
+                placeholder="직원을 선택하세요."
+               
+                dropDownStyle={{backgroundColor: 'white', 
+                      borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
+                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                itemStyle={{justifyContent: 'center'}}
+                labelStyle={{
+                  height:hp('4%'),
+                  textAlign: 'center',
+                  color:'#040525',
+                  fontFamily:"NanumSquare",
+                  fontSize: wp('5.3%'),
+                }}
                 isVisible={this.state.isVisibleC}
                 onOpen={() => this.changeVisibility({
                     isVisibleC: true
@@ -146,10 +215,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     isVisibleC: false
                 })}
                 onChangeItem={item => {
-                    console.log(item);
-                    //console.log(item.label);
-                        //console.log(item.value);
-                    console.log("///");
+                    
 
                     this.setState({
                         itemC: item.value.workername,
@@ -157,6 +223,11 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     })
                 }}
             />
+            </View>
+            <View style={styles.timeArea}>
+            <Text style={styles.timeText}>시간</Text>
+          </View>
+          <View style={styles.dropdownBox}>
             <View style={styles.dropdown}>
           <DropDownPicker
                 items={[
@@ -186,8 +257,23 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '23', value: '23'},
                 ]}
                 defaultValue={this.state.itemA}
-                containerStyle={{height: 40, width:70}}
-            
+                containerStyle={{height: hp('8%'), width:wp('20%')}}
+                dropDownStyle={{backgroundColor: 'white', 
+                      borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
+                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                itemStyle={{justifyContent: 'center'}}
+
+                style={{
+                  borderTopLeftRadius:  wp('4.5%'), borderTopRightRadius:  wp('4.5%'),
+                  borderBottomLeftRadius:  wp('4.5%'), borderBottomRightRadius:  wp('4.5%'),
+                  borderColor:"white"
+                }}
+
+                labelStyle={{
+                  height:hp('3%'),
+                  fontSize: wp('4.8%'),
+                  fontFamily:"NanumSquare",
+                }}
                 isVisible={this.state.isVisibleA}
                 onOpen={() => this.changeVisibility({
                     isVisibleA: true
@@ -198,9 +284,9 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                 onChangeItem={item => {
                   this.setState({
                     itemA: item.value
-                })
-                console.log(item.label, item.value);
-              }}
+                  })
+                  console.log(item.label, item.value);
+                }}
               
             />
           
@@ -220,9 +306,23 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '55', value: '55'},
                 ]}
                 defaultValue={this.state.itemB}
-                containerStyle={{height: 40, width:100}}
-            
-                isVisible={this.state.isVisibleB}
+                containerStyle={{height: hp('8%'), width:wp('20%')}}
+                dropDownStyle={{backgroundColor: 'white', 
+                      borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
+                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                itemStyle={{justifyContent: 'center'}}
+
+                style={{
+                  borderTopLeftRadius:  wp('4.5%'), borderTopRightRadius:  wp('4.5%'),
+                  borderBottomLeftRadius:  wp('4.5%'), borderBottomRightRadius:  wp('4.5%'),
+                  borderColor:"white"
+                }}
+
+                labelStyle={{
+                  height:hp('3%'),
+                  fontSize: wp('4.8%'),
+                  fontFamily:"NanumSquare",
+                }}
                 onOpen={() => this.changeVisibility({
                     isVisibleB: true
                 })}
@@ -233,7 +333,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     itemB: item.value
                 })}
             />
-            <Text> : </Text>
+            <Text style={styles.dropText}> : </Text>
             <DropDownPicker
                 items={[
                     {label: '0', value: '0'},
@@ -262,8 +362,26 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '23', value: '23'},
                 ]}
                 defaultValue={this.state.itemAA}
-                containerStyle={{height: 40, width:70}}
+                containerStyle={{height: hp('8%'), width:wp('20%')}}
+                dropDownStyle={{backgroundColor: 'white', 
+                      borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
+                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                itemStyle={{justifyContent: 'center'}}
+                placeholder="16"
+                
+                style={{
+                  borderTopLeftRadius:  wp('4.5%'), borderTopRightRadius:  wp('4.5%'),
+                  borderBottomLeftRadius:  wp('4.5%'), borderBottomRightRadius:  wp('4.5%'),
+                  borderColor:"white"
+                }}
             
+
+                labelStyle={{
+                  height:hp('3%'),
+                  fontSize: wp('4.8%'),
+                  fontFamily:"NanumSquare",
+                }}
+
                 isVisible={this.state.isVisibleAA}
                 onOpen={() => this.changeVisibility({
                     isVisibleAA: true
@@ -296,8 +414,25 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '55', value: '55'},
                 ]}
                 defaultValue={this.state.itemBB}
-                containerStyle={{height: 40, width:100}}
-            
+                containerStyle={{height: hp('8%'), width:wp('20%')}}
+                dropDownStyle={{backgroundColor: 'white', 
+                      borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
+                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                itemStyle={{justifyContent: 'center'}}
+                
+                style={{
+                  borderTopLeftRadius:  wp('4.5%'), borderTopRightRadius:  wp('4.5%'),
+                  borderBottomLeftRadius:  wp('4.5%'), borderBottomRightRadius:  wp('4.5%'),
+                  borderColor:"white"
+                }}
+
+                
+                labelStyle={{
+                  height:hp('3%'),
+                  fontSize: wp('4.8%'),
+                  fontFamily:"NanumSquare",
+                }}
+
                 isVisible={this.state.isVisibleBB}
                 onOpen={() => this.changeVisibility({
                     isVisibleBB: true
@@ -310,16 +445,20 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                 })}
             />
         </View>
-            <Button 
-                title="완료"
+        </View>
+        <View style={styles.buttonArea}>
+            <TouchableOpacity 
+            style={styles.button}
                 onPress={() => {
-                    this.savedData(this.state.bangCode,this.state.itemC,this.state.monthh,this.state.datee,this.state.dayy, this.state.yearr,(this.state.itemA<10?'0'+this.state.itemA:this.state.itemA)+(this.state.itemB<10?'0'+this.state.itemB:this.state.itemB) + (this.state.itemAA<10?'0'+this.state.itemAA:this.state.itemAA)+(this.state.itemBB<10?'0'+this.state.itemBB:this.state.itemBB)) 
+                    this.savedData(this.state.bangCode,this.state.itemC,this.state.monthh,this.state.datee,this.state.dayy, this.state.yearr,(this.state.itemA.length<2?'0'+this.state.itemA:this.state.itemA)+(this.state.itemB.length<2?'0'+this.state.itemB:this.state.itemB) + (this.state.itemAA)+(this.state.itemBB)) 
                     this.props.navigation.navigate('Work Management');
-                }}
-                //onPress={() => this.props.navigation.navigate('Work Management')}
-            />
+                }}>
+                <Text style={styles.buttonTitle}>변경 완료</Text>
+             </TouchableOpacity>     
+        </View>
       </View>
-        
+      </ImageBackground>
+    
     )
   }
 }

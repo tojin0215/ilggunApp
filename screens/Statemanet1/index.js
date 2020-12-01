@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Animated} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
 import StatementScreen from '../Statemanet';
 import { AsyncStorage } from 'react-native';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import XLSX from 'xlsx';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
 
 //data 순서 : 입사일/월급(보수총액)->DB/추가금액->DB/공제액->계산/실지금액->계산
 
@@ -60,6 +68,8 @@ class StatementScreen1 extends React.Component {
                 }),
               }).then(res => res.json())
               .then(res => {
+                console.log("???");
+                  console.log(res);
                 let dic ={};
                 for(let i=0 ; i<res.length ; i++){
                   if(!dic[res[i].workername]){
@@ -69,8 +79,10 @@ class StatementScreen1 extends React.Component {
                     dic[res[i].workername] += res[i].subt;   //this.setState({addtime :{...this.state.addtime, n : s}});
                   }
                 }
+                console.log("???");
                   console.log(dic);
                 this.setState({addtime : dic})
+                
 
               });
           let res = await fetch('http://192.168.43.253:3000/selectWorker', {
@@ -95,8 +107,6 @@ class StatementScreen1 extends React.Component {
                 week[(it-i)%7]++;
               }
 
-              
-
             let rowall = []
             for (let i = 0; i < res.length; i++) {
               if(res[i].type==1){
@@ -106,7 +116,10 @@ class StatementScreen1 extends React.Component {
                   console.log((eachtime[i]*1) , week[i]);
                   sum += (eachtime[i]*1) * week[i];
                 }
-                rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res[i].workername, "알바", String(res[i].pay), String(sum*8500/*시급설정할수있게 해야함*/) , String(this.state.addtime[res[i].workername])]);
+                console.log(">>>");
+                console.log(res);
+                console.log(">>>");
+                rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res[i].workername, "알바", String(res[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res[i].workername]?this.state.addtime[res[i].workername]:0)*8560/*시급*/)]);
               }
               else{
                 rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res[i].workername, "정규직", String(res[i].pay), String(this.state.addtime[res[i].workername]?this.state.addtime[res[i].workername]:0)]);
@@ -121,9 +134,45 @@ class StatementScreen1 extends React.Component {
         }
         this.show();
     }
-    state={
-    }
+    clickHandler = async() => {
+      console.log(this.state.tableTitle);
+      console.log(this.state.arrName)
+      let t = this.state.tableData;
+      var data = [
+        {
+          "년월":this.state.arrName[0][0]
+        }
+      ];
+      for(let i=0 ; i<t.length ; i++)
+      {
+        data.push({
+          "이름" : this.state.tableTitle[i],
+          "분류" : t[i][0],
+          "보수총액(신고금액)" : t[i][1] ,
+          "추가금" : t[i][2],
+          "공제" : t[i][3],
+          "실지금액" : t[i][4],
+        })
+      }
+      var ws = XLSX.utils.json_to_sheet(data);
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Cities");
+      const wbout = XLSX.write(wb, {
+        type: 'base64',
+        bookType: "xlsx"
+      });
+      const uri = FileSystem.cacheDirectory + 'statement.xlsx';
+      console.log(`Writing to ${JSON.stringify(uri)} with text: ${wbout}`);
+      await FileSystem.writeAsStringAsync(uri, wbout, {
+        encoding: FileSystem.EncodingType.Base64
+      });
 
+      await Sharing.shareAsync(uri, {
+        mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        dialogTitle: 'MyWater data',
+        UTI: 'com.microsoft.excel.xlsx'
+      });
+    }
     show(){
       //console.log(this.state.itemA);
       //console.log(this.state.itemB);
@@ -241,10 +290,12 @@ class StatementScreen1 extends React.Component {
         const state = this.state;
 
         return (
-            <View  style={styles.container}>
-            <ScrollView>
-                <Text>월별 근로자 급여대장{'\n'} </Text>
-                <View style={styles.rowView}>
+          <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+          <ScrollView>
+            <View style={styles.titleArea}>
+            <Text style={styles.textTitle}>월별 급여대장</Text>
+            </View>
+              <View style={styles.dropDownArea}>
                 <DropDownPicker
                     items={[
                         {label: '2016년', value: '2016년'},
@@ -254,7 +305,17 @@ class StatementScreen1 extends React.Component {
                         {label: '2020년', value: '2020년'},
                     ]}
                     defaultValue={this.state.itemA}
-                    containerStyle={{height: 40, width:130}}
+                    containerStyle={{height: hp('6%'), width:wp('40%')}}
+                    dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
+                    itemStyle={{justifyContent: 'center', }}
+                    labelStyle={{
+                      height:hp('4%'),
+                      textAlign: 'center',
+                      color:'#040525',
+                      fontFamily:"NanumSquare",
+                      fontSize: wp('4.8%'),
+                      marginTop:hp('1%')
+                    }}
                     isVisible={this.state.isVisibleA}
                     onOpen={() => this.changeVisibility({
                         isVisibleA: true
@@ -286,8 +347,17 @@ class StatementScreen1 extends React.Component {
                     {label: '12월', value: '12월'},
                     ]}
                     defaultValue={this.state.itemB}
-                    containerStyle={{height: 40, width:100}}
-                
+                    containerStyle={{height: hp('6%'), width:wp('30%')}}
+                    dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
+                    itemStyle={{justifyContent: 'center'}}
+                    labelStyle={{
+                      height:hp('4%'),
+                      textAlign: 'center',
+                      color:'#040525',
+                      fontFamily:"NanumSquare",
+                      fontSize: wp('4.8%'),
+                      marginTop:hp('1%')
+                    }}
                     isVisible={this.state.isVisibleB}
                     onOpen={() => this.changeVisibility({
                         isVisibleB: true
@@ -299,31 +369,34 @@ class StatementScreen1 extends React.Component {
                         itemB: item.value
                     })}
                 />
-                <Button
-                    title="조회하기"
-                    onPress={()=>{
-                      this.fetchData(this.state.bangcode)
-                      this.show()
-                    }
-                      }/>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={()=>{
+                    this.fetchData(this.state.bangcode)
+                    this.show()}
+                  }>
+                  <Text style={styles.buttonTitle}>조회하기</Text>
+                </TouchableOpacity>
                 </View>
 
-                <View>
-                    <Text style={styles.textMargin}>{this.state.itemA +' '+ this.state.itemB} 근로자 급여대장 </Text>
+                <View style={styles.textArea}> 
+                    <Text style={styles.textStyle}>{this.state.itemA +' '+ this.state.itemB} 근로자 급여대장 </Text>
                 </View>
 
-                <View  style={styles.marginTop}>
+                <View  style={styles.tableArea}>
                     <Table borderStyle={{borderWidth: 1}}>
-                        <Row data={state.tableHead} flexArr={[1, 0.8, 1, 1, 1, 1]} style={styles.head} textStyle={styles.text}/>
+                        <Row data={state.tableHead} flexArr={[1, 0.8, 1, 1, 1, 1]} style={styles.head} textStyle={styles.tableTitleText}/>
                         <TableWrapper style={styles.wrapper}>
-                        <Col data={state.tableTitle} style={styles.title} heightArr={[28,28]} textStyle={styles.text}/>
-                        <Rows data={state.tableData} flexArr={[0.8, 1, 1, 1, 1]} style={styles.row} textStyle={styles.text}/>
+                        <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%')]} textStyle={styles.tableText}/>
+                        <Rows data={state.tableData} flexArr={[0.8, 1, 1, 1, 1]} style={styles.row} textStyle={styles.tableText}/>
                         </TableWrapper>
                     </Table>
                 </View>
 
-            </ScrollView>
-            </View>
+           
+                <Button title="엑셀 공유" onPress={()=> this.clickHandler()}/>
+             </ScrollView>
+          </ImageBackground>
         )
     }
 }
@@ -331,14 +404,69 @@ class StatementScreen1 extends React.Component {
 export default StatementScreen1;
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-    rowView: { flexDirection: 'row' },
-    marginTop : {marginTop:10},
-    textMargin:{marginTop:5, marginLeft:5, marginRight:5},
-    textCenter:{marginTop:5, marginLeft:5, marginRight:5, textAlign:"center"},
-    wrapper: { flexDirection: 'row' },
-    head: {  height: 40,  backgroundColor: '#f1f8ff'  },
-    title: { flex: 1, backgroundColor: '#f6f8fa' },
-    row: {  height: 28 },
-    text: { textAlign: 'center' },
+  image:{
+    alignItems: 'center', justifyContent:"center",
+      width: "100%", height: "103%", 
+  },
+  
+  titleArea:{
+    alignItems:"center"
+  },
+  textTitle:{
+      fontSize:wp('5.5%'),
+      color: '#040525',
+      fontFamily:"NanumSquareB",
+      marginBottom:hp('1%'),
+      marginTop:hp('4%')
+  },
+  dropDownArea:{
+    flexDirection:'row',
+    marginTop:hp('3%'),
+    marginBottom:hp('2%'),
+    width:wp('90%'), height:hp('6%'),
+    alignItems:"center", justifyContent:"center"
+  },
+  button: {
+    backgroundColor: "#67C8BA",
+    width:wp('20%'), height: hp('6%'),
+    justifyContent: 'center', alignItems:"center",
+    borderRadius:wp('1.7%'),
+  },
+  buttonTitle: {
+    color: '#040525',
+    fontFamily:"NanumSquareB",
+    fontSize: wp('4.8%'),
+  },
+  tableArea:{
+    marginTop:hp('1%'),
+    marginBottom:hp('2%'),
+    width:wp('90%'),
+  },
+  textArea:{
+    marginTop:hp('2%'),
+    marginLeft:wp('1.5%')
+  },
+  textStyle:{
+    fontSize:wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color: '#040525',
+    marginTop:wp('1%'),
+    marginBottom:wp('1.5%'),
+    marginRight:wp('2%'),
+  },  
+  wrapper: { flexDirection: 'row' },
+  head: {  height: hp('6%'),  backgroundColor: 'white'  },
+  title: { flex: 1, backgroundColor: 'white' },
+  row: {  height: hp('6%') },
+  tableText: { 
+      textAlign: 'center', 
+      fontFamily:"NanumSquare", 
+      color: '#040525',
+      fontSize: wp('3.35%') },
+  tableTitleText: { 
+      textAlign: 'center', 
+      color: '#040525',
+      fontFamily:"NanumSquare", 
+      fontSize: wp('3.6%') },
+  
 });
