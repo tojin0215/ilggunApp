@@ -86,8 +86,9 @@ class WExpenseScreen1 extends Component{
     
     return (
       
-//=================바뀐부분 여기 아래로 모두.=========================================================
-      <ImageBackground style={styles.image} source={require('../../img/page2_2.png')}>
+//=========================바뀐부분A.=========================================================
+      <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+{/* //=========================바뀐부분A.========================================================= */}
       <View style={styles.container}>
         <View style={styles.titleArea}>
         <Text style={styles.textTitle}>인건비 계산하기(정규직)</Text>
@@ -118,13 +119,16 @@ class WExpenseScreen1 extends Component{
         </TouchableOpacity>
         </View>
 
-        <Table borderStyle={{borderWidth: 1}}>
+{/* //=========================바뀐부분B========================================================= */}
+        <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
           <Row data={state.tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.tableTextStyle}/>
           <TableWrapper style={styles.wrapper}>
             <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%'),hp('6%'),hp('6%') ]} textStyle={styles.tableTextStyle}/>
             <Rows data={state.tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.tableTextStyle}/>
           </TableWrapper>
         </Table>
+{/* //=========================바뀐부분B========================================================= */}
+
 {/* 
         <Text></Text>
         <Text>사대보험 : {SocialInsurance}</Text>
@@ -140,19 +144,23 @@ class WExpenseScreen1 extends Component{
 
 export default WExpenseScreen1;
 
+//============================================바뀐부분 스타일=============================
 const styles = StyleSheet.create({
   container: { padding:wp('4.5%'), width: "100%", height: "100%",},
   wrapper: { flexDirection: 'row' },
   head: {  
     height: hp('6%'),  
-    backgroundColor: 'white'  
+    backgroundColor: '#D3DDFF',
+    borderTopRightRadius:wp('4%'), 
+    borderTopLeftRadius:wp('4%')
   },
   titleArea:{
     alignItems:"center"
   },
   title: { 
     flex: 1, 
-    backgroundColor: 'white' 
+    backgroundColor: '#D3DDFF',
+    borderBottomLeftRadius:wp('4%')
   },
   row: {  height:hp('6%') },
   image:{ 
@@ -200,21 +208,21 @@ const styles = StyleSheet.create({
   },
   button: {
       backgroundColor: "#7085DF",
-      width:wp('80%'), height: hp('6%'),
+      width:wp('90%'), height: hp('5.5%'),
       justifyContent: 'center', alignItems:"center",
-      borderRadius:wp('4%'),
+      borderRadius:wp('6%'),
       marginTop:hp('2%'),
   },
   buttonReset: {
     backgroundColor: "#040525",
-    width:wp('80%'), height: hp('6%'),
+    width:wp('90%'), height: hp('5.5%'),
     justifyContent: 'center', alignItems:"center",
-    borderRadius:wp('4%'),
-    marginTop:hp('2%'),
+    borderRadius:wp('6%'),
+    marginTop:hp('1%'),
   },
   buttonTitle: {
-      color: '#040525',
-      fontFamily:"NanumSquareB",
+      color: 'white',
+      fontFamily:"NanumSquare",
       fontSize: wp('4.8%'),
   },
   buttonResetTitle: {

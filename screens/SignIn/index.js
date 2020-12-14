@@ -15,6 +15,9 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import Expo from "expo"
 import * as Font from 'expo-font'
 import * as Network from 'expo-network';
+import axios from 'axios';
+
+//axios.create({baseURL:'',timeout:1000})
 
 const SignInScreen = ({ onSignIn, navigation }) => {
   const [id, setId] = useState('');
@@ -55,11 +58,11 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           setName(result.user.name);
           setPhotoUrl(result.user.photoUrl)
           setId(result.user.email); setPassword(result.user.id)
-          fetch('http://192.168.43.253:3000/signup', {
+          fetch('https://www.kwonsoryeong.tk:3000/signup', {
           method: 'POST',
           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             id:result.user.email,
@@ -68,13 +71,12 @@ const SignInScreen = ({ onSignIn, navigation }) => {
             sign:''
           }),
         }).then(async(res)=> {
-          
-          fetch('http://192.168.43.253:3000/signin', {
+          fetch('https://www.kwonsoryeong.tk:3000/signin', {
             credentials: 'include',
             method: 'POST',
             headers: {
               'Accept': 'application/json',
-              'Content-Type': 'application/json',
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify({
               id: result.user.email,
@@ -84,7 +86,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
             response.json()
           )
           .then((responseData) => {
-            
+            console.log("-----------------------------------");
             console.log(responseData);
             storeToken(responseData[0].id);
             
@@ -121,24 +123,36 @@ const SignInScreen = ({ onSignIn, navigation }) => {
      }*/
     try {
       console.log(id, password, "빨리 끝내자!");
-      let res = await fetch('http://192.168.43.253:3000/signin', {
+      let err ;
+      await axios.post('https://www.kwonsoryeong.tk:3000/signin', { id: id,
+        password: password, headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+      })
+        /*a.then(res => {
+          console.log(res);
+          console.log(res.data);
+        })
+        console.log("???")
+      let res = await fetch('https://www.kwonsoryeong.tk:3000/signin', {
         credentials: 'include',
         method: 'POST',
+        
         headers: {
-          'Accept': 'application/json',
+          //'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           id: id,
           password: password,
-        }),
-      }).then((response) => 
+        }),})
+      .then((response) => 
         response.json()
-      )
+      )*/
       .then((responseData) => {
-        
-        console.log(responseData);
-        storeToken(responseData[0].id);
+        err=responseData.data.status;
+        //console.log(responseData.data[0]);
+        storeToken(responseData.data[0].id);
         
         getToken();
 
@@ -149,18 +163,30 @@ const SignInScreen = ({ onSignIn, navigation }) => {
         //AsyncStorage.getItem("TOKEN").then(token => {
             // token value could be used
         //});
-        console.log(responseData);
-        if(responseData[0].id){
+     
+        if(responseData.data[0].id){
           onSignIn();
-         
           navigation.navigate('Select Page');
         }
         else{
 
         }
       })
-      .catch((error)=>{
-        console.log('Error fetching man',error);
+      .catch(function(error) {
+        console.log("에러")
+
+        console.log(err);
+        if (!error.response) {
+          // network error
+          console.log('hh'+error)
+        } else {
+          // http status code
+          const code = error.response.status
+          // response data
+          const response = error.response.data
+          console.log(code)
+          console.log(response)
+        }
       });
       
       //res = await res;
@@ -172,6 +198,8 @@ const SignInScreen = ({ onSignIn, navigation }) => {
     } catch (e) {
       console.error(e);
     }
+
+    
   }
   const fetchFonts = () => {
     return Font.loadAsync({
@@ -190,8 +218,10 @@ const SignInScreen = ({ onSignIn, navigation }) => {
     }
 
     setTimeout(() => {setIsReady(true)},3000);
+    console.ignoredYellowBox = [
+      'Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).',
+    ];
   return (
-      //<ImageBackground style={styles.image} source={require('../../11.png')} style={styles.image}>
       <View>
         {isReady?
         <>
@@ -223,14 +253,14 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           <TouchableOpacity 
               style={styles.button}
               onPress={SignPost}>
-              <Text style={styles.buttonTitle}>로그인</Text>
+              <Text style={styles.buttonLoginTitle}>로그인</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
             style={styles.button1}
             onPress={googleLogin}>
-            <Text style={styles.buttonTitle}>구글 로그인</Text>
-          </TouchableOpacity>
+            <Image style={styles.googleImg} source={require('../../img/google_icon.png')}/>
+            <Text style={styles.buttonGoogleTitle}>구글 로그인</Text></TouchableOpacity>
          
           <TouchableOpacity 
             style={styles.button2}
@@ -252,7 +282,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           <Text style={styles.text1L}>반갑습니다.</Text>
           <Text style={styles.text2L}>오늘도 일꾼과 함께 화이팅해요.</Text>
         </View>
-        <View style={styles.buttonlogoArea}>
+        <View style={styles.buttonlogoAreaL}>
           <Image style={styles.logobottom} source={require('../../img/mainlogowhite.png') }/> 
         </View>
       </View>
@@ -275,7 +305,7 @@ const styles = StyleSheet.create({
   logo:{
     justifyContent: "center",alignItems:"center",
     width: wp('30%'), height: wp('30%'),
-    marginTop:hp('17%')
+    marginTop:hp('20%')
   }, 
   container: {
       width: "100%", height: "100%",
@@ -306,9 +336,10 @@ const styles = StyleSheet.create({
     width:wp('16%'), height:wp('5%'),
     marginLeft:wp('1.3%'), marginTop:hp('3.5%'), marginRight:wp('8%'),
   },
+  
   pwdImg:{
     width:wp('18%'), height:wp('4.3%'),
-    marginLeft:wp('1.3%'), marginTop:hp('3.9%'), marginRight:wp('6.2%'),
+    marginLeft:wp('1.2%'), marginTop:hp('3.9%'), marginRight:wp('6%'),
   },
   textForm: {
       width: '60%',
@@ -316,13 +347,13 @@ const styles = StyleSheet.create({
       paddingLeft: wp('1.2%'),
       paddingRight: wp('1.2%'),
       marginTop:  hp('2%'),
-      fontSize: wp('4.8%'), fontFamily:"NanumSquare",
+      fontSize: wp('4%'), fontFamily:"NanumSquare",
       color:'#040525',
   },
   buttonArea: {
       width: '100%',
       height: hp('17%'),
-      marginBottom: hp('12%'),
+      marginBottom: hp('15%'),
       backgroundColor:'white'
   },
   button: {
@@ -335,13 +366,17 @@ const styles = StyleSheet.create({
       borderRadius: wp('6%'),
   },
   button1: {
-    backgroundColor: "#67C8BA",
+    flexDirection:'row',
+    backgroundColor: "#f4f4f4",
     width: "100%",
     height: hp('6%'),
-    marginBottom:wp('1.3%'),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: wp('6%'),
+  },
+  googleImg:{
+    position:"absolute", top:hp('1%'), left:wp('5%'),
+    width:wp('7%'), height:wp('7%')
   },
   button2: {
       backgroundColor: "white",
@@ -351,25 +386,30 @@ const styles = StyleSheet.create({
       alignItems:'flex-end' ,
       paddingRight: wp('5%')
   },
+  buttonLoginTitle:{
+    color: 'white', fontSize: wp('4.8%'),
+    fontFamily:"NanumSquare",
+  },
+  buttonGoogleTitle: {
+      color: '#040525', fontSize: wp('4.5%'),
+      fontFamily:"NanumSquare",
+  },
   buttonTitle: {
-      color: '#040525', fontSize: wp('5.05%'),
+      color: '#040525', fontSize: wp('4.2%'),
       fontFamily:"NanumSquare",
   },
   buttonlogoArea: {
-      justifyContent:'flex-end',
-      alignItems:"center",
-      bottom: hp('2%'),
-      width: "100%",
-      height: hp('5%'),
+    justifyContent:'flex-end',
+    alignItems:"center",
+    bottom: hp('2%'),
+    width: "100%",
+    height: hp('5%'),
   },
   logobottom:{
     width:wp('22%'), height:wp('3%'), 
     justifyContent:"flex-end",
     alignItems:"center",
   },
-
-  
-
   containerL: {
     backgroundColor:"#67C8BA",
     width: "100%", height: "100%",
@@ -399,8 +439,12 @@ const styles = StyleSheet.create({
   },
   logoL:{
     justifyContent: "center",
-    width: wp('30%'), height: wp('30%'),
+    width: wp('32%'), height: wp('30%'),
   }, 
+  buttonlogoAreaL:{
+    position:'absolute',
+    bottom:hp('3%'), left:0, right:0, justifyContent:"center", alignItems:"center"
+  }
 })
 
 export default SignInScreen;

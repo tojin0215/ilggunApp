@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground, Image} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper,  Col, Cols, Cell } from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -9,7 +9,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import axios from 'axios';
 
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
@@ -51,7 +51,15 @@ class StatementScreen2 extends Component{
     fetchData = async(flag) => { 
       try {
         console.log(this.state.itemAA.split('년')[0] + " \\\\\\\\\\\\ "+ this.state.itemBB.split('월')[0]);
-        await fetch('http://192.168.43.253:3000/selectOvertimework', {
+        axios.post('https://www.kwonsoryeong.tk:3000/selectOvertimework', {
+          year : this.state.itemAA.split('년')[0]*1,
+          month : this.state.itemBB.split('월')[0]*1,
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*await fetch('https://www.kwonsoryeong.tk:3000/selectOvertimework', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -61,17 +69,17 @@ class StatementScreen2 extends Component{
               year : this.state.itemAA.split('년')[0]*1,
               month : this.state.itemBB.split('월')[0]*1,
             }),
-          }).then(res => res.json())
+          }).then(res => res.json())*/
           .then(res => {
             console.log("???");
-              console.log(res);
+              console.log(res.data);
             let dic ={};
-            for(let i=0 ; i<res.length ; i++){
-              if(!dic[res[i].workername]){
-                dic[res[i].workername] = res[i].subt;   
+            for(let i=0 ; i<res.data.length ; i++){
+              if(!dic[res.data[i].workername]){
+                dic[res.data[i].workername] = res.data[i].subt;   
               }
               else{
-                dic[res[i].workername] += res[i].subt;   //this.setState({addtime :{...this.state.addtime, n : s}});
+                dic[res.data[i].workername] += res.data[i].subt;   //this.setState({addtime :{...this.state.addtime, n : s}});
               }
             }
             console.log("???");
@@ -80,7 +88,14 @@ class StatementScreen2 extends Component{
             
 
           });
-      let res = await fetch('http://192.168.43.253:3000/selectWorker', {
+          axios.post('https://www.kwonsoryeong.tk:3000/selectWorker', {
+            business : this.state.bangCode
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+      /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorker', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -89,7 +104,7 @@ class StatementScreen2 extends Component{
         body: JSON.stringify({
           business : this.state.bangCode
         }),
-      }).then(res => res.json())
+      }).then(res => res.json())*/
       .then(res => {
         let week=[4,4,4,4,4,4,4];
         let t1=[];
@@ -104,24 +119,24 @@ class StatementScreen2 extends Component{
           }
 
         let rowall = []
-        for (let i = 0; i < res.length; i++) {
-          if(res[i].type==1){
+        for (let i = 0; i < res.data.length; i++) {
+          if(res.data[i].type==1){
             let sum = 0;
-            let eachtime = res[i].eachtime.split('/');
+            let eachtime = res.data[i].eachtime.split('/');
             for(let i=0 ; i<7 ; i++){
               console.log((eachtime[i]*1) , week[i]);
               sum += (eachtime[i]*1) * week[i];
             }
             console.log(">>>");
-            console.log(res);
+            console.log(res.data);
             console.log(">>>");
-            console.log(this.state.addtime[res[i].workername]);
-            rowall.push([res[i].workername, "알바", String(res[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res[i].workername]?this.state.addtime[res[i].workername]:0)*8560/*추가근로*/)]);
-                t1.push({label: res[i].workername, value: res[i].workername})
+            console.log(this.state.addtime[res.data[i].workername]);
+            rowall.push([res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8560/*추가근로*/)]);
+                t1.push({label: res.data[i].workername, value: res.data[i].workername})
               }
               else{
-                rowall.push([res[i].workername, "정규직", String(res[i].pay), '0', String((this.state.addtime[res[i].workername]?this.state.addtime[res[i].workername]:0)*8560/*시급*/)]);
-                t2.push({label: res[i].workername, value: res[i].workername})
+                rowall.push([res.data[i].workername, "정규직", String(res.data[i].pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8560/*시급*/)]);
+                t2.push({label: res.data[i].workername, value: res.data[i].workername})
               }
             }
             this.setState({nname: rowall, type1:t1, type2:t2})
@@ -263,7 +278,74 @@ class StatementScreen2 extends Component{
 
         // WithholdingTax:원천과세(IncomeTax+InhabitantsTax)
         // IncomeTax : 갑근세(소득세) : 보수총액*3.0%
-        let IncomeTax = (parseInt(MonthlySalary)*0.03).toFixed(0)
+        //let IncomeTax = (parseInt(MonthlySalary)*0.03).toFixed(0)
+        var IncomeTax =0; 
+       
+        if(parseInt(MonthlySalary)<1060000){
+          IncomeTax = 0
+        }
+        else if(parseInt(MonthlySalary)>=1060000 & parseInt(MonthlySalary) <=1100000){
+          IncomeTax = 1600
+        }
+        else if(parseInt(MonthlySalary)>1100000 & parseInt(MonthlySalary) <=1200000){
+          IncomeTax = 2990
+        }
+        else if(parseInt(MonthlySalary)>1200000 & parseInt(MonthlySalary) <=1300000){
+          IncomeTax = 4740
+        }
+        else if(parseInt(MonthlySalary)>1300000 & parseInt(MonthlySalary) <=1400000){
+          IncomeTax = 6800
+        }
+        else if(parseInt(MonthlySalary)>1400000 & parseInt(MonthlySalary) <=1500000){
+          IncomeTax = 8920
+        }
+        else if(parseInt(MonthlySalary)>1500000 & parseInt(MonthlySalary) <=1600000){
+          IncomeTax = 10980
+        }
+        else if(parseInt(MonthlySalary)>1600000 & parseInt(MonthlySalary) <=1700000){
+          IncomeTax = 13050
+        }
+        else if(parseInt(MonthlySalary)>1700000 & parseInt(MonthlySalary) <=1800000){
+          IncomeTax = 15110
+        }
+        else if(parseInt(MonthlySalary)>1800000 & parseInt(MonthlySalary) <=1900000){
+          IncomeTax = 17180
+        }
+        else if(parseInt(MonthlySalary)>1900000 & parseInt(MonthlySalary) <=2000000){
+          IncomeTax = 19520
+        }
+        else if(parseInt(MonthlySalary)>2000000 & parseInt(MonthlySalary) <=2100000){
+          IncomeTax = 22740
+        }
+        else if(parseInt(MonthlySalary)>2100000 & parseInt(MonthlySalary) <=2200000){
+          IncomeTax = 25950
+        }
+        else if(parseInt(MonthlySalary)>2200000 & parseInt(MonthlySalary) <=2300000){
+          IncomeTax = 29160
+        }
+        else if(parseInt(MonthlySalary)>2300000 & parseInt(MonthlySalary) <=2400000){
+          IncomeTax = 33570
+        }
+        else if(parseInt(MonthlySalary)>2400000 & parseInt(MonthlySalary) <=2500000){
+          IncomeTax = 41630
+        }
+        else if(parseInt(MonthlySalary)>2500000 & parseInt(MonthlySalary) <=2600000){
+          IncomeTax = 50190
+        }
+        else if(parseInt(MonthlySalary)>2600000 & parseInt(MonthlySalary) <=2700000){
+          IncomeTax = 58750
+        }
+        else if(parseInt(MonthlySalary)>2700000 & parseInt(MonthlySalary) <=2800000){
+          IncomeTax = 67300
+        }
+        else if(parseInt(MonthlySalary)>2800000 & parseInt(MonthlySalary) <=2900000){
+          IncomeTax = 75860
+        }
+        else if(parseInt(MonthlySalary)>2900000 & parseInt(MonthlySalary) <=3000000){
+          IncomeTax = 84850
+        }
+        console.log('--------------------------------'+MonthlySalary)
+        console.log('--------------------------------'+IncomeTax)
         // InhabitantsTax : 주민세 (갑근세의 10%)
         let InhabitantsTax = (parseInt(IncomeTax)*0.1).toFixed(0)
 
@@ -303,7 +385,7 @@ class StatementScreen2 extends Component{
                       IncomeTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),InhabitantsTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")]],
                       DeductionSum : TotalDeduction.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
                       PaymentSum:TotalPayment.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-                      Difference:ActualSalary,
+                      Difference:ActualSalary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
                   })
               } else{ // ------알바-------
                   this.setState({
@@ -332,8 +414,7 @@ class StatementScreen2 extends Component{
 
         return (
             
-          <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
-
+          <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
           <ScrollView>
             <View style={styles.titleArea}>
               <Text style={styles.textTitle}>근로자 급여명세서</Text>
@@ -348,7 +429,7 @@ class StatementScreen2 extends Component{
                         {label: '2020년', value: '2020년'},
                     ]}
                     defaultValue={this.state.itemAA}
-                    containerStyle={{height: hp('6%'), width: wp('35%')}}
+                    containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('3%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: 5, borderBottomRightRadius: 5}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
@@ -356,8 +437,8 @@ class StatementScreen2 extends Component{
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
-                      fontSize: wp('4.2%'),
-                      marginTop:hp('1%')
+                      fontSize: wp('4%'),
+                      marginTop:hp('1.4%')
                     }}
                     isVisible={this.state.isVisibleAA}
                     onOpen={() => this.changeVisibility({
@@ -390,7 +471,7 @@ class StatementScreen2 extends Component{
                     {label: '12월', value: '12월'},
                     ]}
                     defaultValue={this.state.itemBB}
-                    containerStyle={{height: hp('6%'), width: wp('35%')}}
+                    containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('1%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
@@ -398,8 +479,8 @@ class StatementScreen2 extends Component{
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
-                      fontSize: wp('4.2%'),
-                      marginTop:hp('1%')
+                      fontSize: wp('4%'),
+                      marginTop:hp('1.4%')
                     }}
                 
                     isVisible={this.state.isVisibleBB}
@@ -416,12 +497,12 @@ class StatementScreen2 extends Component{
                 </View>
             
                 
-                <View style={styles.wrapper}>
+                <View style={styles.dropDownArea2}>
                 <DropDownPicker
                     items={this.state.type2}
                     placeholder='정규직/계약직'
                     defaultValue={this.state.itemA}
-                    containerStyle={{height: hp('6%'), width: wp('35%')}}
+                    containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('3%'), marginTop:wp('1%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: 5, borderBottomRightRadius: 5}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
@@ -429,8 +510,8 @@ class StatementScreen2 extends Component{
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
-                      fontSize: wp('4.2%'),
-                      marginTop:hp('1%')
+                      fontSize: wp('3.8%'),
+                      marginTop:hp('0.1%')
                     }}
                     isVisible={this.state.isVisibleA}
                     onOpen={() => this.changeVisibility({
@@ -449,7 +530,7 @@ class StatementScreen2 extends Component{
                     items={this.state.type1}
                     placeholder='알바/일용근로자'
                     defaultValue={this.state.itemB}
-                    containerStyle={{height: hp('6%'), width: wp('35%')}}
+                    containerStyle={{height: hp('6%'), width: wp('30%'),backgroundColor: 'white', marginLeft:wp('1%'), marginTop:wp('1%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
@@ -457,8 +538,8 @@ class StatementScreen2 extends Component{
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
-                      fontSize: wp('4.2%'),
-                      marginTop:hp('1%')
+                      fontSize: wp('3.8%'),
+                      marginTop:hp('0.1%')
                     }}
 
                     isVisible={this.state.isVisibleB}
@@ -485,13 +566,13 @@ class StatementScreen2 extends Component{
 
                 <View style={styles.textArea}>
                     <Text style={styles.textStyle}>이름 : {Name}</Text>
-                    <Text style={styles.textStyle}>근무형태 : {WorkingType}</Text>
+                    <Text style={styles.textStyle}>, 근무형태 : {WorkingType}</Text>
                 </View>
-
-                <View style={styles.textArea}>
-                    <Table style={styles.wrapper} borderStyle={{borderWidth: 1}}>
-                         {/* Left Wrapper */}
-                        <TableWrapper style={{width:wp('40%')}} >
+                <ScrollView>
+                <View style={styles.tableArea}>
+                    <Table style={styles.wrapper} borderStyle={{borderWidth: 1,borderColor:'white'}}>
+                      {/* Left Wrapper */}
+                      <TableWrapper style={{width:wp('40%')}} >
                             <Cell data="내역" style={styles.singleHead} textStyle={styles.tableTitleText}/>
                             <TableWrapper style={styles.wrapper}>
                                 <Col data={['지급','공제']} style={styles.title1} heightArr={[hp('16.5%'), hp('33%')]} textStyle={styles.tableTitleText}/>
@@ -499,33 +580,41 @@ class StatementScreen2 extends Component{
                             </TableWrapper>
                             <Cell data="지급액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
                             <Cell data="공제액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
-                            <Cell data="차인지급액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
+                            <Cell data="차인지급액계" style={styles.singleHead1_1_1} textStyle={styles.tableTitleText}/>
                         </TableWrapper>
 
                         <TableWrapper style={{flex:1}}>
                             <Cell data="금액" style={styles.singleHead1} textStyle={styles.tableTitleText}/>
                             <Cols data={state.tableData} heightArr={[hp('5.5%'), hp('5.5%'), hp('5.5%'),hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%')]} textStyle={styles.tableText}/>
 
-                            <Cell data={PaymentSum} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
-                            <Cell data={DeductionSum} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
-                            <Cell data={Difference} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
+                            <Cell data={PaymentSum} style={styles.singleHead1_2} textStyle={styles.tableTitleWhiteText}/>
+                            <Cell data={DeductionSum} style={styles.singleHead1_2} textStyle={styles.tableTitleWhiteText}/>
+                            <Cell data={Difference} style={styles.singleHead1_2_1} textStyle={styles.tableTitleWhiteText}/>
                         </TableWrapper>
                     </Table>
                 </View>
-            <View style={styles.tableArea}><Text></Text></View>
+
+                <View style={{marginTop:hp('10%')}}><Text></Text></View>
+            <View style={styles.buttonArea}>
+                    <TouchableOpacity
+                        style={styles.button1}
+                        onPress={()=> this.clickHandler()}>
+                        <Image style={styles.excelBtn} source={require('../../img/excel.png')}></Image>
+                    </TouchableOpacity>
+                </View>
+                </ScrollView>
             </ScrollView>
-            <Button title="엑셀 공유" onPress={()=> this.clickHandler()}/>
-            </ImageBackground>
+          </ImageBackground>
 
         )
     }
 }
 
 export default StatementScreen2;
+
 const styles = StyleSheet.create({
   image:{
-      alignItems: 'center', justifyContent:"center",
-        width: "100%", height: "103%", 
+    width: "100%", height: "103%", 
   },
   titleArea:{
     alignItems:"center"
@@ -540,29 +629,40 @@ const styles = StyleSheet.create({
   dropDownArea:{
     flexDirection:'row',
     marginTop:hp('3%'),
+    marginBottom:hp('0.1%'),
+    width:wp('90%'), height:hp('6%'),
+    alignItems:"center", justifyContent:"flex-start",
+    marginLeft:wp('5%')
+  },
+  dropDownArea2:{
+    flexDirection:'row',
+    marginTop:hp('0.1%'),
     marginBottom:hp('2%'),
     width:wp('90%'), height:hp('6%'),
-    alignItems:"center", justifyContent:"center"
+    alignItems:"center", justifyContent:"flex-start",
+    marginLeft:wp('5%')
   },
   button: {
-    backgroundColor: "#67C8BA",
+    backgroundColor: "#67C8BA", marginLeft:wp('2%'),marginTop:wp('1%'),
     width:wp('20%'), height: hp('6%'),
     justifyContent: 'center', alignItems:"center",
     borderRadius:wp('1.7%'),
   },
   buttonTitle: {
-    color: '#040525',
-    fontFamily:"NanumSquareB",
+    color: 'white',
+    fontFamily:"NanumSquare",
     fontSize:wp('4.8%'),
   },
   tableArea:{
     marginTop:hp('1%'),
     marginBottom:hp('5%'),
     width:wp('90%'),
+    marginLeft:wp('5%')
   },
   textArea:{
-    marginTop:hp('2%'),
-    marginLeft:wp('1.5%')
+    marginTop:hp('1%'),
+    marginLeft:wp('7%'),
+    flexDirection:"row"
   },
   textStyle:{
     fontSize:wp('4.2%'),
@@ -573,12 +673,14 @@ const styles = StyleSheet.create({
     marginRight:wp('2%'),
   },  
   wrapper: { flexDirection: 'row' },
-  singleHead: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#67C8BA'},
-  singleHead1: {height: hp('5.5%'), backgroundColor: '#67C8BA' },
-  singleHead1_1: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#67C8BA'},
+  singleHead: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#A3E5DA', borderTopLeftRadius:wp('4%')},
+  singleHead1: {height: hp('5.5%'), backgroundColor: '#A3E5DA', borderTopRightRadius:wp('4%')},
+  singleHead1_1: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#A3E5DA'},
+  singleHead1_1_1: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#A3E5DA',borderBottomLeftRadius:wp('4%')},
   singleHead1_2: {height: hp('5.5%'), backgroundColor: '#67C8BA' },
-  title: { flex: 3, backgroundColor: 'white' },
-  title1: { flex: 1, backgroundColor: 'white' },
+  singleHead1_2_1:{height: hp('5.5%'), backgroundColor: '#67C8BA',borderBottomRightRadius:wp('4%')},
+  title: { flex: 3, backgroundColor: '#E2F2EF' },
+  title1: { flex: 1, backgroundColor: '#A3E5DA' },
   
   tableText: { 
       textAlign: 'center', 
@@ -590,4 +692,24 @@ const styles = StyleSheet.create({
       fontFamily:"NanumSquare", 
       color: '#040525',
       fontSize: wp('3.8%') },
+  tableTitleWhiteText: { 
+      textAlign: 'center', 
+      fontFamily:"NanumSquare", 
+      color: 'white',
+      fontSize: wp('3.8%') },
+  buttonArea: {
+    position:'absolute', backgroundColor:'white',
+    bottom:0, left:0, right:0, 
+    alignItems:"center", justifyContent:"center",
+    width: '100%', height: hp('14%'),
+    paddingBottom:hp('7%'), paddingTop:hp('3%')
+  },
+  button1: {
+    width:wp('90%'),height:hp('8%'),
+    justifyContent: 'center', alignItems:"center",
+    marginTop:hp('2%')
+  },
+  excelBtn:{
+  width:wp('85%'), height:hp('5.6%')
+  }
 });

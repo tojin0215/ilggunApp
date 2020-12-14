@@ -12,8 +12,8 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 const styles = StyleSheet.create({
   container: {
     marginTop:  hp('13%'),
-    padding:hp('3%')
-    
+    paddingRight:wp('10%'),
+    paddingLeft:wp('10%'),
   },
   image:{
     alignItems: 'center',
@@ -98,7 +98,7 @@ const CalendarScreen = ({navigation, route}) => {
     let splitD = String(date).split(' ');
     let mon = {'Jan':1, 'Feb':2, 'Mar':3, 'Apr':4, 'May':5, 'Jun':6, 'Jul':7, 'Aug':8, 'Sept':9, 'Oct':10, 'Nov':11, 'Dec':12 }
     let D= splitD[0]+' '+mon[splitD[1]]+' '+splitD[2]+' '+splitD[3];
-    navigation.navigate('Work Management',{selecteddate : String(D)});
+    navigation.replace('Work Management',{selecteddate : String(D)});
   }
   
   useEffect(() => {
@@ -107,7 +107,7 @@ const CalendarScreen = ({navigation, route}) => {
   }, [])
 
   return (
-    <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+    <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
     <View style={styles.container}>
       
       <CalendarPicker
@@ -122,9 +122,9 @@ const CalendarScreen = ({navigation, route}) => {
         selectedDayColor={'#67C8BA'}
         todayBackgroundColor={'#67C8BA'}
 
-        monthYearHeaderWrapperStyle={{marginBottom:hp('7%')}}
-        previousTitleStyle={{marginBottom:hp('7%'), marginLeft:wp('3%'),fontSize:wp('6%'),fontFamily:"NanumSquare"}}
-        nextTitleStyle={{marginBottom:hp('7%'), marginRight:wp('3%'),fontSize:wp('6%'),fontFamily:"NanumSquare"}}
+        monthYearHeaderWrapperStyle={{marginBottom:hp('3%')}}
+        previousTitleStyle={{marginBottom:hp('3%'), marginLeft:wp('3%'),fontSize:wp('6%'),fontFamily:"NanumSquare"}}
+        nextTitleStyle={{marginBottom:hp('3%'), marginRight:wp('3%'),fontSize:wp('6%'),fontFamily:"NanumSquare"}}
         textStyle={{
           fontFamily:"NanumSquareB",
           color:'#040525',

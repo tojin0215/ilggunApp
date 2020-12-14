@@ -1,15 +1,12 @@
 import React, {Component} from "react";
 import { View, Text, StyleSheet, Button, TextInput,FlatList, Alert, ImageBackground} from 'react-native';
 import TimePicker from 'react-native-simple-time-picker';
-
-import CheckboxGroup from 'react-native-checkbox-group'
-// ==============바뀐부분A=====================================
+import CheckboxGroup from 'react-native-checkbox-group';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
-// ==============바뀐부분A=====================================
 
 let arrItem = [];
 
@@ -112,8 +109,9 @@ class ExpenseScreen2 extends Component {
             HourlyWage, WithholdingTax, Salary, RealSalary} = this.state
 
         return (
-// ==============바뀐부분 여기 아래 모두=====================================
-            <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+//============================================바뀐부분A==============================================
+            <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+{/* //============================================바뀐부분A============================================== */}
             <View style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
@@ -122,22 +120,30 @@ class ExpenseScreen2 extends Component {
                 <View style={styles.textArea}>
                     <View style={styles.rowView}>
                         <Text style={styles.textStyle}>*시급을 입력해주세요.</Text>
-                        <Text style={styles.textStyle2}>(2020년 법정 최저 시급 : 8,590원)</Text>
+{/* //============================================바뀐부분B============================================== */}
+                        <Text style={styles.textStyle2}>(2021년 법정 최저 시급 : 8,720원)</Text>
+{/* //============================================바뀐부분B============================================== */}
                     </View>
                     <View style={styles.rowView}>
                         <TextInput
                             value={this.state.HourlyWage}
                             onChangeText={(HourlyWage) => this.setState({HourlyWage})}
                             autoFocus={true}
-                            placeholder={'8590'}
+//============================================바뀐부분C=============================================
+                            placeholder={'8720'}
+//============================================바뀐부분C=============================================
                             style={styles.textinputStyle}
                             />
                         <Text style={styles.textStyle}>원</Text>
                     </View>
                 </View>
 
+{/* //============================================바뀐부분D============================================== */}
+                <View style={{marginTop:hp('2%')}}>
+                    <Text style={styles.textStyle}>시간 선택하기</Text>
+                </View>
+{/* //============================================바뀐부분D============================================== */}
                 <View style={styles.timeSelectArea}>
-                <Text style={styles.textStyle}>시간 선택하기</Text>
                 <ScrollView>
             
                 <FlatList  
@@ -158,11 +164,13 @@ class ExpenseScreen2 extends Component {
                                     value: 1, // selected value for item, if selected, what value should be sent?
                                     },
                                 ]}
+//=====================================================바뀐부분E=======================================
                                 labelStyle={{
                                     color: '#040525',
                                     marginTop:hp('1%'),
                                     marginLeft:hp('1.,5%'),
                                 }}
+//=====================================================바뀐부분E=======================================
                                 rowStyle={{
                                     flexDirection: 'row'
                                 }}
@@ -192,7 +200,9 @@ class ExpenseScreen2 extends Component {
                                     this.handleChange('offWork', item.key, hours, minutes)
                                 } 
                             />
-                            <Text style={styles.listText}>ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</Text>
+{/* //============================================바뀐부분F====================================== */}
+{/* 여기 있던 <Text>ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</Text> 없어짐 */}
+{/* //============================================바뀐부분F====================================== */}
                         </View>
                         }  
                     ItemSeparatorComponent={this.renderSeparator}  
@@ -232,6 +242,7 @@ class ExpenseScreen2 extends Component {
 
 export default ExpenseScreen2;
 
+//===================================바뀐부분 스타일 전체=====================================
 const styles = StyleSheet.create({
     container: {padding:wp('4.5%'), width: "100%", height: "100%", },
     rowView : {flexDirection:"row"},
@@ -250,21 +261,21 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: "#67C8BA",
-        width:wp('80%'), height: hp('6%'),
+        width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
-        borderRadius:wp('4%'),
+        borderRadius:wp('6%'),
         marginTop:hp('2%'),
     },
     buttonReset: {
         backgroundColor: "#040525",
-        width:wp('80%'), height: hp('6%'),
+        width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
-        borderRadius:wp('4%'),
-        marginTop:hp('2%'),
+        borderRadius:wp('6%'),
+        marginTop:hp('1%'),
     },
     buttonTitle: {
-        color: '#040525',
-        fontFamily:"NanumSquareB",
+        color: 'white',
+        fontFamily:"NanumSquare",
         fontSize: wp('4.8%'),
     },  
     buttonResetTitle: {
@@ -309,12 +320,17 @@ const styles = StyleSheet.create({
       borderBottomColor:'#67C8BA'
   },
     timeSelectArea:{
-        marginTop:hp('3%'),
+        marginTop:hp('1%'),
         marginBottom:hp('5%'),
         height:hp('40%'),
+        borderColor:'#67C8BA', borderWidth:wp('0.5%'), 
+        borderRadius:wp('4%'),
+        padding:wp('2%')
     },  
     pickerArea:{
-        padding:wp('2%')
+        padding:wp('2%'), 
+        borderBottomColor:'#67C8BA', 
+        borderBottomWidth:hp('0.1%')
     },
     textResultStyle:{
       fontSize:wp('5.05%'),

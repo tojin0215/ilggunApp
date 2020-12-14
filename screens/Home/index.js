@@ -5,8 +5,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
-
-//-----------------------------------바뀐부분A-----
+//========================바뀐부분 스타일====================================
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -115,7 +114,7 @@ const [clicked, setClicked] = useState(-1);
 
   return (
     <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-    <View style={styles.buttonArea1}>
+      <View style={styles.buttonArea1}>
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {

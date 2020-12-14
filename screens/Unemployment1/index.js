@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, Button,BackHandler, Alert, ImageBackground, } from 'react-native';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import moment from "moment";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
-//=======================바뀐부분A===============================
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-//=======================바뀐부분A===============================
 
 
 class UnemploymentScreen1 extends Component{
 
+    
     state={
         DateOfBirth:0, BirDiff:0,yesORno:null,
         JoinYear:0, JoinMonth:0, JoinDay:0, //고용보험가입시작 년,월,일
@@ -344,8 +343,10 @@ class UnemploymentScreen1 extends Component{
         const{DateOfBirth, Age, Period, OneDayUnemploymentBenefitAmount,UnemploymentBenefitAmount, PaymentDays} = this.state
     
         return (
-//=======================바뀐부분 여기 아래 쭉===============================
-            <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+
+//====================================================바뀐부분A======================================
+            <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+{/* //====================================================바뀐부분A====================================== */}
             <View  style={styles.container}>
             <ScrollView>
                 
@@ -473,8 +474,9 @@ class UnemploymentScreen1 extends Component{
                     <Text style={styles.textStyle}>가입기간일수 :  {Period} 일</Text>
                 </View>
 
+{/* //====================================================바뀐부분B====================================== */}
                 <View  style={styles.tableArea}>
-                    <Table borderStyle={{borderWidth: 1}}>
+                    <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
                         <Row data={state.tableHead} flexArr={[1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
                         <TableWrapper style={styles.wrapper}>
                         <Col data={state.tableTitle} style={styles.title} heightArr={[hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%')]} textStyle={styles.tableText}/>
@@ -482,6 +484,7 @@ class UnemploymentScreen1 extends Component{
                         </TableWrapper>
                     </Table>
                 </View>
+{/* //====================================================바뀐부분B====================================== */}
 
                 <View style={styles.buttonArea}>
                     <TouchableOpacity
@@ -527,12 +530,22 @@ class UnemploymentScreen1 extends Component{
 
 export default UnemploymentScreen1;
 
+//===================================바뀐부분 스타일 전체======================================
 const styles = StyleSheet.create({
     container: { padding:wp('3%'), width: "100%", height: "100%",},
     row: {  height: hp('5.5%') },
-    wrapper: { flexDirection: 'row' },
-    head: {  height: hp('5.5%'),  backgroundColor: 'white'  },
-    title: { flex: 1, backgroundColor: 'white' },
+    wrapper: {flexDirection: 'row' },
+    head: { 
+        height: hp('5.5%'),  
+        backgroundColor: '#E2F2EF', 
+        borderTopRightRadius:wp('4%'), 
+        borderTopLeftRadius:wp('4%')
+    },
+    title: { 
+        flex: 1, 
+        backgroundColor: '#E2F2EF',  
+        borderBottomLeftRadius:wp('4%')
+    },
     image:{ 
         alignItems: 'center', justifyContent:"center",
         width: "100%", height: "103%", 
@@ -641,21 +654,21 @@ const styles = StyleSheet.create({
     },
     button: {
           backgroundColor: "#67C8BA",
-          width:wp('80%'), height: hp('6%'),
+          width:wp('90%'), height: hp('5.5%'),
           justifyContent: 'center', alignItems:"center",
-          borderRadius:wp('4%'),
+          borderRadius:wp('6%'),
           marginTop:hp('2%'),
     },
     buttonReset: {
         backgroundColor: "#040525",
-        width:wp('80%'), height: hp('6%'),
+        width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
-        borderRadius:wp('4%'),
-        marginTop:hp('2%'),
+        borderRadius:wp('6%'),
+        marginTop:hp('1%'),
     },
     buttonTitle: {
-          color: '#040525',
-          fontFamily:"NanumSquareB",
+          color: 'white',
+          fontFamily:"NanumSquare",
           fontSize:wp('4.8%'),
     },
     buttonResetTitle: {

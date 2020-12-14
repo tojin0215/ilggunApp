@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground, Image} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -9,6 +9,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import axios from 'axios';
 
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
@@ -56,7 +57,15 @@ class StatementScreen1 extends React.Component {
       try {
         
         console.log(bangCode);
-          await fetch('http://192.168.43.253:3000/selectOvertimework', {
+        await axios.post('https://www.kwonsoryeong.tk:3000/selectOvertimework', {
+          year : this.state.itemA.split('년')[0]*1,
+          month : this.state.itemB.split('월')[0]*1,
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*  await fetch('https://www.kwonsoryeong.tk:3000/selectOvertimework', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -66,17 +75,17 @@ class StatementScreen1 extends React.Component {
                   year : this.state.itemA.split('년')[0]*1,
                   month : this.state.itemB.split('월')[0]*1,
                 }),
-              }).then(res => res.json())
-              .then(res => {
+              }).then(res => res.json())*/
+              .then(async(res) => {
                 console.log("???");
-                  console.log(res);
+                  console.log(res.data);
                 let dic ={};
-                for(let i=0 ; i<res.length ; i++){
-                  if(!dic[res[i].workername]){
-                    dic[res[i].workername] = res[i].subt;   
+                for(let i=0 ; i<res.data.length ; i++){
+                  if(!dic[res.data[i].workername]){
+                    dic[res.data[i].workername] = res.data[i].subt;   
                   }
                   else{
-                    dic[res[i].workername] += res[i].subt;   //this.setState({addtime :{...this.state.addtime, n : s}});
+                    dic[res.data[i].workername] += res.data[i].subt;   //this.setState({addtime :{...this.state.addtime, n : s}});
                   }
                 }
                 console.log("???");
@@ -85,7 +94,15 @@ class StatementScreen1 extends React.Component {
                 
 
               });
-          let res = await fetch('http://192.168.43.253:3000/selectWorker', {
+
+              await axios.post('https://www.kwonsoryeong.tk:3000/selectWorker', {
+                business : bangCode
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+              })
+          /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorker', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -94,7 +111,7 @@ class StatementScreen1 extends React.Component {
             body: JSON.stringify({
               business : bangCode
             }),
-          }).then(res => res.json())
+          }).then(res => res.json())*/
           .then(res => {
             let week=[4,4,4,4,4,4,4];
       
@@ -108,31 +125,32 @@ class StatementScreen1 extends React.Component {
               }
 
             let rowall = []
-            for (let i = 0; i < res.length; i++) {
-              if(res[i].type==1){
+            for (let i = 0; i < res.data.length; i++) {
+              if(res.data[i].type==1){
                 let sum = 0;
-                let eachtime = res[i].eachtime.split('/');
+                let eachtime = res.data[i].eachtime.split('/');
                 for(let i=0 ; i<7 ; i++){
                   console.log((eachtime[i]*1) , week[i]);
                   sum += (eachtime[i]*1) * week[i];
                 }
                 console.log(">>>");
-                console.log(res);
+                console.log(res.data);
                 console.log(">>>");
-                rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res[i].workername, "알바", String(res[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res[i].workername]?this.state.addtime[res[i].workername]:0)*8560/*시급*/)]);
+                rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8560/*시급*/)]);
               }
               else{
-                rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res[i].workername, "정규직", String(res[i].pay), String(this.state.addtime[res[i].workername]?this.state.addtime[res[i].workername]:0)]);
+                rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(res.data[i].pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)]);
               }
             }
             this.setState({arrName: rowall})
             console.log(this.state.arrName);
-            
+            this.show();
           });
       } catch (e) {
           console.error(e);
+          
         }
-        this.show();
+        
     }
     clickHandler = async() => {
       console.log(this.state.tableTitle);
@@ -219,18 +237,82 @@ class StatementScreen1 extends React.Component {
                   let SocialInsurance = (parseInt(NationalPension)+parseInt(HealthInsurance)+parseInt(RegularCare)+parseInt(EmploymentInsurance)).toFixed(0);
       
                   // WithholdingTax:원천과세(IncomeTax+InhabitantsTax)
-                  // IncomeTax : 갑근세(소득세) : 보수총액*3.0%
-                  let IncomeTax = (parseInt(MonthlySalary)*0.03).toFixed(0)
-                  // InhabitantsTax : 주민세 (갑근세의 10%)
-                  let InhabitantsTax = (parseInt(IncomeTax)*0.1).toFixed(0)
-      
+                  var IncomeTax =0; 
+                  
+                    if(parseInt(MonthlySalary)<1060000){
+                      IncomeTax = 0
+                    }
+                    else if(parseInt(MonthlySalary)>=1060000 & parseInt(MonthlySalary) <=1100000){
+                      IncomeTax = 1600
+                    }
+                    else if(parseInt(MonthlySalary)>1100000 & parseInt(MonthlySalary) <=1200000){
+                      IncomeTax = 2990
+                    }
+                    else if(parseInt(MonthlySalary)>1200000 & parseInt(MonthlySalary) <=1300000){
+                      IncomeTax = 4740
+                    }
+                    else if(parseInt(MonthlySalary)>1300000 & parseInt(MonthlySalary) <=1400000){
+                      IncomeTax = 6800
+                    }
+                    else if(parseInt(MonthlySalary)>1400000 & parseInt(MonthlySalary) <=1500000){
+                      IncomeTax = 8920
+                    }
+                    else if(parseInt(MonthlySalary)>1500000 & parseInt(MonthlySalary) <=1600000){
+                      IncomeTax = 10980
+                    }
+                    else if(parseInt(MonthlySalary)>1600000 & parseInt(MonthlySalary) <=1700000){
+                      IncomeTax = 13050
+                    }
+                    else if(parseInt(MonthlySalary)>1700000 & parseInt(MonthlySalary) <=1800000){
+                      IncomeTax = 15110
+                    }
+                    else if(parseInt(MonthlySalary)>1800000 & parseInt(MonthlySalary) <=1900000){
+                      IncomeTax = 17180
+                    }
+                    else if(parseInt(MonthlySalary)>1900000 & parseInt(MonthlySalary) <=2000000){
+                      IncomeTax = 19520
+                    }
+                    else if(parseInt(MonthlySalary)>2000000 & parseInt(MonthlySalary) <=2100000){
+                      IncomeTax = 22740
+                    }
+                    else if(parseInt(MonthlySalary)>2100000 & parseInt(MonthlySalary) <=2200000){
+                      IncomeTax = 25950
+                    }
+                    else if(parseInt(MonthlySalary)>2200000 & parseInt(MonthlySalary) <=2300000){
+                      IncomeTax = 29160
+                    }
+                    else if(parseInt(MonthlySalary)>2300000 & parseInt(MonthlySalary) <=2400000){
+                      IncomeTax = 33570
+                    }
+                    else if(parseInt(MonthlySalary)>2400000 & parseInt(MonthlySalary) <=2500000){
+                      IncomeTax = 41630
+                    }
+                    else if(parseInt(MonthlySalary)>2500000 & parseInt(MonthlySalary) <=2600000){
+                      IncomeTax = 50190
+                    }
+                    else if(parseInt(MonthlySalary)>2600000 & parseInt(MonthlySalary) <=2700000){
+                      IncomeTax = 58750
+                    }
+                    else if(parseInt(MonthlySalary)>2700000 & parseInt(MonthlySalary) <=2800000){
+                      IncomeTax = 67300
+                    }
+                    else if(parseInt(MonthlySalary)>2800000 & parseInt(MonthlySalary) <=2900000){
+                      IncomeTax = 75860
+                    }
+                    else if(parseInt(MonthlySalary)>2900000 & parseInt(MonthlySalary) <=3000000){
+                      IncomeTax = 84850
+                    }
+                    console.log('--------------------------------'+MonthlySalary)
+                    console.log('--------------------------------'+IncomeTax)
+                    // InhabitantsTax : 주민세 (갑근세의 10%)
+                    let InhabitantsTax = (parseInt(IncomeTax)*0.1).toFixed(0)
                   // TotalDeduction:공제총액(사대보험+갑근세+주민세)
                   let TotalDeduction = parseInt(SocialInsurance) + parseInt(IncomeTax) + parseInt(InhabitantsTax)
       
       
                   // 실지급액(보수총액+추가급여-공제총액)
-                  let ActualSalary = parseInt(MonthlySalary) + parseInt(AddSalary) - parseInt(SocialInsurance) 
-      
+                  let ActualSalary = parseInt(MonthlySalary) + parseInt(AddSalary) - parseInt(TotalDeduction);
+
                   data=[WorkingType,MonthlySalary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   , AddSalary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   , TotalDeduction.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -290,8 +372,7 @@ class StatementScreen1 extends React.Component {
         const state = this.state;
 
         return (
-          <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
-          <ScrollView>
+          <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
             <View style={styles.titleArea}>
             <Text style={styles.textTitle}>월별 급여대장</Text>
             </View>
@@ -305,7 +386,7 @@ class StatementScreen1 extends React.Component {
                         {label: '2020년', value: '2020년'},
                     ]}
                     defaultValue={this.state.itemA}
-                    containerStyle={{height: hp('6%'), width:wp('40%')}}
+                    containerStyle={{height: hp('6%'), width:wp('35%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
@@ -313,8 +394,8 @@ class StatementScreen1 extends React.Component {
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
-                      fontSize: wp('4.8%'),
-                      marginTop:hp('1%')
+                      fontSize: wp('4.2%'),
+                      marginTop:hp('1.4%')
                     }}
                     isVisible={this.state.isVisibleA}
                     onOpen={() => this.changeVisibility({
@@ -347,7 +428,7 @@ class StatementScreen1 extends React.Component {
                     {label: '12월', value: '12월'},
                     ]}
                     defaultValue={this.state.itemB}
-                    containerStyle={{height: hp('6%'), width:wp('30%')}}
+                    containerStyle={{height: hp('6%'), width:wp('25%'), marginLeft:wp('0.5%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
                     itemStyle={{justifyContent: 'center'}}
                     labelStyle={{
@@ -355,8 +436,8 @@ class StatementScreen1 extends React.Component {
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
-                      fontSize: wp('4.8%'),
-                      marginTop:hp('1%')
+                      fontSize: wp('4.2%'),
+                      marginTop:hp('1.4%')
                     }}
                     isVisible={this.state.isVisibleB}
                     onOpen={() => this.changeVisibility({
@@ -383,32 +464,48 @@ class StatementScreen1 extends React.Component {
                     <Text style={styles.textStyle}>{this.state.itemA +' '+ this.state.itemB} 근로자 급여대장 </Text>
                 </View>
 
+
+                <ScrollView>
                 <View  style={styles.tableArea}>
-                    <Table borderStyle={{borderWidth: 1}}>
-                        <Row data={state.tableHead} flexArr={[1, 0.8, 1, 1, 1, 1]} style={styles.head} textStyle={styles.tableTitleText}/>
+                    <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
+                        <Row data={state.tableHead} flexArr={[1, 0.8, 1, 0.8, 1, 1]} style={styles.head} textStyle={styles.tableTitleText}/>
                         <TableWrapper style={styles.wrapper}>
                         <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%')]} textStyle={styles.tableText}/>
-                        <Rows data={state.tableData} flexArr={[0.8, 1, 1, 1, 1]} style={styles.row} textStyle={styles.tableText}/>
+                        <Rows data={state.tableData} flexArr={[0.8, 1, 0.8, 1, 1]} style={styles.row} textStyle={styles.tableText}/>
                         </TableWrapper>
                     </Table>
                 </View>
-
-           
-                <Button title="엑셀 공유" onPress={()=> this.clickHandler()}/>
-             </ScrollView>
+            
+                <View style={styles.buttonArea}>
+                    <TouchableOpacity
+                        style={styles.button1}
+                        onPress={()=> this.clickHandler()}>
+                        <Image style={styles.excelBtn} source={require('../../img/excel.png')}></Image>
+                    </TouchableOpacity>
+                </View>
+                
+                <View style={{marginTop:hp('5%')}}><Text></Text></View>
+                </ScrollView>
+             
+            
+             {/*<View style={styles.buttonArea}>
+                    <TouchableOpacity
+                        style={styles.button1}
+                        onPress={()=> this.clickHandler()}>
+                        <Image style={styles.excelBtn} source={require('../../img/excel.png')}></Image>
+                    </TouchableOpacity>
+                </View>*/}
           </ImageBackground>
         )
     }
 }
 
 export default StatementScreen1;
-
 const styles = StyleSheet.create({
   image:{
     alignItems: 'center', justifyContent:"center",
-      width: "100%", height: "103%", 
+    width: "100%", height: "103%", 
   },
-  
   titleArea:{
     alignItems:"center"
   },
@@ -422,29 +519,31 @@ const styles = StyleSheet.create({
   dropDownArea:{
     flexDirection:'row',
     marginTop:hp('3%'),
-    marginBottom:hp('2%'),
-    width:wp('90%'), height:hp('6%'),
-    alignItems:"center", justifyContent:"center"
+    marginLeft:wp('3%'),
+    width:wp('80%'), height:hp('20%'),
+    alignItems:"flex-start", justifyContent:"center",
   },
   button: {
     backgroundColor: "#67C8BA",
-    width:wp('20%'), height: hp('6%'),
+    width:wp('20%'), height: hp('5.9%'),
     justifyContent: 'center', alignItems:"center",
     borderRadius:wp('1.7%'),
+    marginLeft:wp('2%')
   },
   buttonTitle: {
-    color: '#040525',
-    fontFamily:"NanumSquareB",
+    color: 'white',
+    fontFamily:"NanumSquare",
     fontSize: wp('4.8%'),
   },
   tableArea:{
-    marginTop:hp('1%'),
-    marginBottom:hp('2%'),
-    width:wp('90%'),
+    marginBottom:hp('3%'),
+    width:wp('90%'), 
   },
   textArea:{
     marginTop:hp('2%'),
-    marginLeft:wp('1.5%')
+    marginLeft:wp('1.5%'),
+    position:"absolute",
+    top:hp('23%'),
   },
   textStyle:{
     fontSize:wp('4.5%'),
@@ -455,8 +554,17 @@ const styles = StyleSheet.create({
     marginRight:wp('2%'),
   },  
   wrapper: { flexDirection: 'row' },
-  head: {  height: hp('6%'),  backgroundColor: 'white'  },
-  title: { flex: 1, backgroundColor: 'white' },
+  head: { 
+    height: hp('6%'),
+    backgroundColor: '#E2F2EF', 
+    borderTopRightRadius:wp('4%'), 
+    borderTopLeftRadius:wp('4%')
+  },
+  title: {
+    flex: 1,
+    backgroundColor: '#E2F2EF',  
+    borderBottomLeftRadius:wp('4%')
+  },
   row: {  height: hp('6%') },
   tableText: { 
       textAlign: 'center', 
@@ -467,6 +575,20 @@ const styles = StyleSheet.create({
       textAlign: 'center', 
       color: '#040525',
       fontFamily:"NanumSquare", 
-      fontSize: wp('3.6%') },
+      fontSize: wp('3.6%') 
+  },
+  buttonArea: {
+    height:hp('8%'),
+    alignItems:"center", justifyContent:"center",
+    width: '100%', height: hp('8%'),
+  },
+  button1: {
+        width:wp('90%'),height:hp('8%'),
+        justifyContent: 'center', alignItems:"center",
+        marginTop:hp('2%')
+  },
+  excelBtn:{
+    width:wp('85%'), height:hp('5.6%')
+  }
   
 });

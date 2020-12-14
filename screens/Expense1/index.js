@@ -2,13 +2,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, ImageBackground} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
-
-//=====================바뀐부분A====================================
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-//=====================바뀐부분A====================================
 
 class ExpenseScreen1 extends Component{
   state={
@@ -84,9 +81,9 @@ class ExpenseScreen1 extends Component{
     const{MonthlySalary, SocialInsurance, NationalPension, HealthInsurance, RegularCare, EmploymentInsurance, TaxDeduction,TotalSalary} = this.state
     
     return (
-      
-//=====================바뀐부분 여기 아래 모두==================================
-      <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+//============================바뀐부분A================================================================
+      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+{/* //============================바뀐부분A================================================================ */}
       <View style={styles.container}>
         <View style={styles.titleArea}>
         <Text style={styles.textTitle}>인건비 계산하기(정규직)</Text>
@@ -116,14 +113,15 @@ class ExpenseScreen1 extends Component{
            <Text style={styles.buttonResetTitle}>초기화</Text>       
         </TouchableOpacity>
         </View>
-
-        <Table borderStyle={{borderWidth: 1}}>
+{/* //============================바뀐부분B================================================================ */}
+        <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
           <Row data={state.tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.tableTextStyle}/>
           <TableWrapper style={styles.wrapper}>
             <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%'),hp('6%'),hp('6%') ]} textStyle={styles.tableTextStyle}/>
             <Rows data={state.tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.tableTextStyle}/>
           </TableWrapper>
         </Table>
+{/* //============================바뀐부분B================================================================         */}
       </View>
       </ImageBackground>
     )
@@ -132,19 +130,23 @@ class ExpenseScreen1 extends Component{
 
 export default ExpenseScreen1;
 
+//============================바뀐부분 스타일전체================================================================   
 const styles = StyleSheet.create({
   container: { padding:wp('4.5%'), width: "100%", height: "100%",},
   wrapper: { flexDirection: 'row' },
   head: {  
     height: hp('6%'),  
-    backgroundColor: 'white'  
+    backgroundColor: '#E2F2EF', 
+    borderTopRightRadius:wp('4%'), 
+    borderTopLeftRadius:wp('4%')
   },
   titleArea:{
     alignItems:"center"
   },
   title: { 
     flex: 1, 
-    backgroundColor: 'white' 
+    backgroundColor: '#E2F2EF',  
+    borderBottomLeftRadius:wp('4%')
   },
   row: {  height:hp('6%') },
   image:{ 
@@ -192,21 +194,21 @@ const styles = StyleSheet.create({
   },
   button: {
       backgroundColor: "#67C8BA",
-      width:wp('80%'), height: hp('6%'),
+      width:wp('90%'), height: hp('5.5%'),
       justifyContent: 'center', alignItems:"center",
-      borderRadius:wp('4%'),
+      borderRadius:wp('6%'),
       marginTop:hp('2%'),
   },
   buttonReset: {
     backgroundColor: "#040525",
-    width:wp('80%'), height: hp('6%'),
+    width:wp('90%'), height: hp('5.5%'),
     justifyContent: 'center', alignItems:"center",
-    borderRadius:wp('4%'),
-    marginTop:hp('2%'),
+    borderRadius:wp('6%'),
+    marginTop:hp('1%'),
   },
   buttonTitle: {
-      color: '#040525',
-      fontFamily:"NanumSquareB",
+      color: 'white',
+      fontFamily:"NanumSquare",
       fontSize: wp('4.8%'),
   },
   buttonResetTitle: {

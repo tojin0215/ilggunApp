@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import {StyleSheet, Text, View, Button, TextInput, ScrollView, ImageBackground} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import moment from "moment";
-
-//========================바뀐부분A========================================
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-//========================바뀐부분A========================================
 
 class CalculatingScreen2 extends Component{
   state={
@@ -174,8 +171,9 @@ class CalculatingScreen2 extends Component{
     const{JoinYear, JoinMonth, JoinDay, LeaveYear, LeaveMonth, LeaveDay, AnnualBonus, AnnualAllowance, SeverancePay, AverageDailyWage} = this.state
     
     return(
-//========================바뀐부분B========================================
-      <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+//===================================================바뀐부분A========================================
+      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+{/* //===================================================바뀐부분A======================================== */}
       <View style={styles.container}>
      
         <ScrollView>
@@ -262,15 +260,18 @@ class CalculatingScreen2 extends Component{
             <Text style={styles.textStyle1}>재직일수 : {this.state.NumberOfWorkingDays}일</Text>
           </View>
 
+{/* //===================================================바뀐부분B======================================== */}
           <View style={styles.tableArea}>
-          <Table borderStyle={{borderWidth: 1}}>
-            <Row data={state.tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
+          <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
+            <Row data={state.tableHead} flexArr={[0.8, 1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
             <TableWrapper style={styles.wrapper}>
               <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%'),hp('6%'),hp('6%')]} textStyle={styles.tableText}/>
               <Rows data={state.tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.tableText}/>
             </TableWrapper>
           </Table>
           </View>
+
+{/* //===================================================바뀐부분B======================================== */}
 
           <View style={styles.textArea}>
             <Text style={styles.textStyle1}>*연간상여금과 연차수당 없으면 0으로 입력해주세요. </Text>
@@ -339,14 +340,15 @@ class CalculatingScreen2 extends Component{
 }
   
   export default CalculatingScreen2;
-  
+
+//===========================================바뀐부분 스타일 전체===========================================
   const styles = StyleSheet.create({
     container: {padding:wp('5%'), width: "100%", height: "100%",},
     rowView: { flexDirection: 'row' },
     marginTop : {marginTop: hp('1.3%')},
     wrapper: { flexDirection: 'row' },
-    head: {  height: hp('5%'),  backgroundColor: 'white'},
-    title: { flex: 1, backgroundColor: 'white'},
+    head: {  height: hp('6%'),  backgroundColor: '#E2F2EF', borderTopRightRadius:wp('4%'), borderTopLeftRadius:wp('4%') },
+    title: { flex: 0.8, backgroundColor: '#E2F2EF',  borderBottomLeftRadius:wp('4%')},
     row: {  height:hp('6%') },
     titleArea:{
       alignItems:"center"
@@ -394,7 +396,6 @@ class CalculatingScreen2 extends Component{
       marginTop:wp('1%'),
       marginBottom:wp('1.5%'),
       marginRight:wp('2%'),
-
     },
     textinputStyle:{
       fontSize:wp('4.2%'),
@@ -421,21 +422,21 @@ class CalculatingScreen2 extends Component{
     },
     button: {
         backgroundColor: "#67C8BA",
-        width:wp('80%'), height: hp('6%'),
+        width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
-        borderRadius:wp('4%'),
+        borderRadius:wp('6%'),
         marginTop:hp('2%'),
     },
     buttonReset: {
       backgroundColor: "#040525",
-      width:wp('80%'), height: hp('6%'),
+      width:wp('90%'), height: hp('5.5%'),
       justifyContent: 'center', alignItems:"center",
-      borderRadius:wp('4%'),
-      marginTop:hp('2%'),
+      borderRadius:wp('6%'),
+      marginTop:hp('1%'),
     },
     buttonTitle: {
-        color: '#040525',
-        fontFamily:"NanumSquareB",
+        color: 'white',
+        fontFamily:"NanumSquare",
         fontSize:wp('4.8%'),
     },
     buttonResetTitle: {
@@ -457,5 +458,3 @@ class CalculatingScreen2 extends Component{
     }
   });
   
-
-//========================바뀐부분B========================================

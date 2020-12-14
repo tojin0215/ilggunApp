@@ -2,11 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, Button,TouchableOpacity, ImageBackground,Image } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
+//==========================스타일도 바꿔주세용==============================================
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor:'white'
   },
   buttonArea: {
     marginTop:hp('5%'),
@@ -40,12 +42,16 @@ const styles = StyleSheet.create({
 
   }
 });
- 
+
+//==========================스타일도 바꿔주세용==============================================
+
 
 const CalculatingScreen = ({navigation}) => {
   return (
-       <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
-            
+//================================바뀐부분A============================================
+    <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+{/* //================================바뀐부분A============================================ */}
+          
     <View style={styles.buttonArea}>
       <TouchableOpacity 
         style={styles.button}

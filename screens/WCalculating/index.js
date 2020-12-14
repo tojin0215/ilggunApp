@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button,TouchableOpacity, ImageBackground, Image } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
+//====================================바뀐부분A======================================
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -39,30 +41,38 @@ const styles = StyleSheet.create({
 
   }
 });
- 
+
+//====================================바뀐부분A====================================== 
  
 const WCalculatingScreen = ({navigation}) => {
   return (
-    <ImageBackground style={styles.image} source={require('../../img/page2_2.png')}>
-            
-    <View style={styles.buttonArea}>
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => navigation.navigate('WCalculating1')}>
-        <Image style={styles.buttonImg} source={require('../../img/calculating1_purple.png')}/>
-     </TouchableOpacity>
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => navigation.navigate('WCalculating2')}>
-        <Image style={styles.buttonImg} source={require('../../img/calculating2_purple.png')}/>
-      </TouchableOpacity>
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => navigation.navigate('WCalculating3')}>
-        <Image style={styles.buttonImg} source={require('../../img/calculating3_purple.png')}/>
-      </TouchableOpacity>
-    </View>
-    </ImageBackground>
+//====================================바뀐부분B======================================
+          <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+{/* //====================================바뀐부분B====================================== */}
+            <View style={styles.buttonArea}>
+              <TouchableOpacity 
+                style={styles.button}
+                onPress={() => navigation.navigate('WCalculating1')}>
+{/* //====================================바뀐부분C====================================== */}
+                <Image style={styles.buttonImg} source={require('../../img/calculating1_purple.png')}/>  
+{/* //====================================바뀐부분C====================================== */}          
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.button}
+                onPress={() => navigation.navigate('WCalculating2')}>
+{/* //====================================바뀐부분D====================================== */}
+                <Image style={styles.buttonImg} source={require('../../img/calculating2_purple.png')}/>
+{/* //====================================바뀐부분D====================================== */}
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.button}
+                onPress={() => navigation.navigate('WCalculating3')}>
+{/* //====================================바뀐부분E====================================== */}
+                <Image style={styles.buttonImg} source={require('../../img/calculating3_purple.png')}/>
+{/* //====================================바뀐부분E====================================== */}
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
   );
 };
 export default WCalculatingScreen;

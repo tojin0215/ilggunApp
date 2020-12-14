@@ -17,11 +17,27 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "com.toojin.illgun"
+    },
     "ios": {
+      "bundleIdentifier": "com.tojin.ilggun",
       "supportsTablet": true,
       "config":{
         "googleSignIn":{
           "reservedClientId":"com.googleusercontent.apps.215538713502-tdra6mancl9oukjevu4mhmc0441in4vu"
+        }
+      },
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSExceptionDomains": {
+            "https://www.kwonsoryeong.tk:3000": {
+              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true
+            },
+            "https://www.kwonsoryeong.tk": {
+              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true
+            }
+          }
         }
       }
     },

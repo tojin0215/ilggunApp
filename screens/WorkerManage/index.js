@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity,ImageBackground,Image } from 'react-native';
 import { AsyncStorage } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import axios from 'axios';
 
-
- 
 const styles = StyleSheet.create({
   container: {
     width:'100%', height:'100%',
@@ -15,45 +15,47 @@ const styles = StyleSheet.create({
     flexDirection: 'row', height:hp('10%'), width:wp('90%'),
     justifyContent:"flex-start", alignItems:"center",
     paddingLeft:wp('7%'), 
-    borderBottomWidth:hp('0.3%'),
+    marginBottom:hp('2.5%'),
+    borderBottomWidth:hp('0.1%'),
     borderBottomColor:'#67C8BA'
   },
   buttonArea: {
-    position:"absolute",
     alignItems:"center",
-    bottom: hp('5%'),
     width: '100%', height: hp('10%'),
+    marginTop:hp('3%')
   },
   button: {
-      backgroundColor: "#67C8BA",
-      width:wp('80%'), height: hp('6%'),
-      justifyContent: 'center', alignItems:"center",
-      borderRadius:wp('4%'),
-      marginTop:hp('2%'),
+    paddingTop:hp('2%'),
+    width:wp('90%'), height: hp('10%'),
   },
-  buttonTitle: {
-      color: 'white',
-      fontFamily:"NanumSquare",
-      fontSize: wp('4.8%'),
+  imgStyle:{
+    width:wp('90%'),height:hp('5.91%'),
   },
   image:{
     justifyContent: "center",
     width: "100%", height: "103%",
-  },  
+  },
+  listArea:{
+    height:hp('64%'),
+    marginTop:hp('7%'),
+  },
   userImage:{
     marginRight:wp('3%'),
-    width:wp('6.5%'), height:wp('8%')
+    width:wp('5.5%'), height:wp('7.0%')
   },
   textTitle:{
       color: '#040525',
-      fontSize:wp('5.55%'),
+      fontSize:wp('4.8%'),
       fontFamily:"NanumSquareB",
   },
   ContbuttonArea: {
-    marginLeft:wp('7%'),
+    position:"absolute",
+    top:hp('0.5%'),right:wp('22%'),
     justifyContent: 'center', alignItems:"center",
   },
   contractImage:{
+    marginTop:hp('0.5%'),
+    marginLeft:hp('1.5%'),
     width:wp('25%'), height:hp('9%'),
   },
   deleteArea:{
@@ -67,8 +69,9 @@ const styles = StyleSheet.create({
     fontSize:wp('4.8%'),
     fontFamily:"NanumSquare",
     justifyContent: 'center', alignItems:"center",
-  }
-});
+  },
+}); 
+
 const WorkerManageScreen = ({navigation, route}) => {
     const [business, setBusiness] = useState([]);
     React.useEffect(() => {
@@ -77,13 +80,22 @@ const WorkerManageScreen = ({navigation, route}) => {
           AsyncStorage.getItem("bangCode")
           .then((bangCode) => {
             fetchData(bangCode)
+            console.log('?????');
           })
         });
     return unsubscribe;
-  }, [navigation, fetchData]);
+  }, []);
     async function fetchData(bangCode) { 
         try {
-            let res = await fetch('http://192.168.43.253:3000/selectWorkerByType', {
+          await axios.post('https://www.kwonsoryeong.tk:3000/selectWorkerByType', {
+            business : bangCode,
+                type : 2
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+          })
+            /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorkerByType', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -93,11 +105,10 @@ const WorkerManageScreen = ({navigation, route}) => {
                 business : bangCode,
                 type : 2
               }),
-            }).then(res => res.json())
+            }).then(res => res.json())*/
             .then(res => {
-              setBusiness(res)
-              console.log('//////')
-              console.log(res)
+              setBusiness(res.data)
+              console.log(res.data)
               console.log(business)
             }
             );
@@ -106,14 +117,22 @@ const WorkerManageScreen = ({navigation, route}) => {
           }
     }
     
-
-    
-    
     return (
-      <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
-    
+      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
       <View style={styles.container}>
-        <View style={{marginTop:hp('7%')}}>
+
+      <View style={styles.buttonArea}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => navigation.navigate(('Invite'),{type:2})}>
+{/* ==============================바뀐부분D============================================================   */}
+            <Image style={styles.imgStyle} source={require('../../img/invite.png')}></Image>
+{/* ==============================바뀐부분D============================================================   */}
+        </TouchableOpacity>
+      </View>
+
+        <View style={{marginTop:hp('3%')}}>
+      <ScrollView>
       {
           business.map((b, id) => (
           <View style={styles.worker}  key={id}>
@@ -141,14 +160,9 @@ const WorkerManageScreen = ({navigation, route}) => {
           </View>
           ))
       }
+      </ScrollView>
       </View>
-      <View style={styles.buttonArea}>
-        <TouchableOpacity 
-          style={styles.button}
-          onPress={() => navigation.navigate(('Invite'),{type:2})}>
-          <Text style={styles.buttonTitle}>근로자 초대</Text>
-        </TouchableOpacity>
-      </View>
+      
     </View>
     </ImageBackground>
     );

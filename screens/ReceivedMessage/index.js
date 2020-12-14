@@ -1,14 +1,92 @@
 import React, {useState} from 'react';
-import { View, Modal, Text, Button, StyleSheet } from 'react-native';
+import { View, Modal, Text, Button, StyleSheet, ImageBackground, Image } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import axios from 'axios';
 const styles = StyleSheet.create({
-  container: {
+  image:{
+    width:'100%', height:'104%', paddingTop:hp('5%'), backgroundColor:'white',
+    alignItems:"center"
+  },
+  listArea:{
+    alignItems:"center",
+    width:wp('100%'), height:hp('65%')
+  },
+  sendBtnArea:{
+    justifyContent:"flex-end", alignItems:"center",
+    width:'100%',
+    height:hp('9%'),
+    paddingBottom:hp('1%')
+  },
+  btnImgStyle:{
+    width:wp('50%'),
+    height:hp('6%')
+  },
+  messageArea:{
+    flexDirection:'row',
+    paddingLeft:wp('2%'), 
+    height:hp('9%'), width:wp('80%'), 
+    backgroundColor:'white',borderRadius:wp('3%'),
+    marginBottom:hp('2%'),marginTop:hp('1%'),
+    paddingTop:hp('1%'), paddingBottom:hp('1%'),
+    borderWidth:wp('0.5%'),
+    borderColor:'#DAE9F7'
+  },
+  userImage:{
+    marginLeft:wp('2%'),
+    width:wp('4.8%'), height:wp('5.7%'), marginTop:hp('1.6%'),
+  },
+  touchArea:{
+    width:wp('70%'), height:hp('7%'),
+    paddingTop:hp('2%'), paddingRight:wp('2%'),
+    marginLeft:wp('1%'),
+  },
+  textStyle: {
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+  },
+  modalContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white', 
+    paddingLeft: wp('10%'),
+    paddingRight: wp('10%'),
   },
+  modaltextStyle:{
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    paddingLeft:wp('3%'),
+    lineHeight:wp('6.5%'),
+  },
+  modalBtn:{
+    width:wp('80%'), height:hp('5.5%'),
+    textAlign:"center",
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    backgroundColor:'#DAE9F7',
+    borderRadius:wp('5%'),
+    marginTop:hp('4%'),
+    paddingTop:hp('1.2')
+  },
+  modalBtn2:{
+    width:wp('39%'), height:hp('5.5%'),
+    textAlign:"center",
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    backgroundColor:'#DAE9F7',
+    borderRadius:wp('5%'),
+    marginTop:hp('4%'),
+    marginRight:wp('1%'),
+    paddingTop:hp('1.2')
+  }
 });
  
 const ReceivedMessageScreen = ({ navigation }) => {
@@ -18,7 +96,7 @@ const ReceivedMessageScreen = ({ navigation }) => {
           fetchData()
       })
   return unsubscribe;
-  }, [navigation, this.fetchData]);
+  }, []);
 //===================================================
   const [business, setBusiness] = useState([]);
   const [visibility, setVisibility] = useState([]);
@@ -27,7 +105,13 @@ const ReceivedMessageScreen = ({ navigation }) => {
   const [message, setMessage] = useState('');
   async function fetchData() { 
       try {
-          let res = await fetch('http://192.168.43.253:3000/selectReceivedMessage', {
+        axios.post('https://www.kwonsoryeong.tk:3000/selectReceivedMessage', {
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+          /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectReceivedMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -35,11 +119,11 @@ const ReceivedMessageScreen = ({ navigation }) => {
             },
             body: JSON.stringify({
             }),
-          }).then(res => res.json())
+          }).then(res => res.json())*/
           .then(res => 
             {
-              console.log(res);
-              setBusiness(res);
+              console.log(res.data);
+              setBusiness(res.data);
               console.log("dddd" +business);
             });
       } catch (e) {
@@ -61,10 +145,8 @@ function setModalVisibility(visible, msg ,t) {
     }
   }
 
-  savedData = async() => { 
+  async function savedData() { 
     try {
-      
-
         let week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         let work = message.split('(')[0];
         let busi = message.split('(')[1].split(')')[0];
@@ -74,7 +156,15 @@ function setModalVisibility(visible, msg ,t) {
         let dd = d.split('-');
 
         let ori = 0;
-      let res = await fetch('http://192.168.43.253:3000/selectWorkerEach', {
+        axios.post('https://www.kwonsoryeong.tk:3000/selectWorkerEach', {
+          business: busi,
+          workername: work
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+      /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorkerEach', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -84,13 +174,28 @@ function setModalVisibility(visible, msg ,t) {
           business: busi,
           workername: work
          }),
-      }).then(res => res.json())
+      }).then(res => res.json())*/
       .then(res => {
-        ori = res[0].eachtime.split('/');
-        console.log("오리"+ori);
+        console.log(res)
+        //ori = res.data[0].eachtime.split('/');
+        //console.log("오리"+ori);
       });
       console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
-        res = await fetch('http://192.168.43.253:3000/addWork', {
+      axios.post('https://www.kwonsoryeong.tk:3000/addWork', {
+        business : busi,
+        workername : work,
+        month : dd[1]*1,
+        date : dd[2]*1,
+        day : dayOfWeek,
+        year : dd[0]*1,
+        time : 0,
+        subt : -ori[new Date(d).getDay()]
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*res = await fetch('https://www.kwonsoryeong.tk:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -106,7 +211,7 @@ function setModalVisibility(visible, msg ,t) {
             time : 0,
             subt : -ori[new Date(d).getDay()]
           }),
-        });
+        });*/
     } catch (e) {
         console.error(e);
       }
@@ -115,7 +220,15 @@ function setModalVisibility(visible, msg ,t) {
       try {
           let busi = message.split('(')[1].split(')')[0];
          console.log("pppppppppppppp "+busi);
-        let res = await fetch('http://192.168.43.253:3000/addBang', {
+
+        axios.post('https://www.kwonsoryeong.tk:3000/addBang', {
+          bang: busi
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/addBang', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -124,11 +237,18 @@ function setModalVisibility(visible, msg ,t) {
           body: JSON.stringify({
             bang: busi
           }),
-        }).then(res => res.json())
-        .then(res => {
+        }).then(res => res.json())*/
+   /*중복?     .then(res => {
           console.log(res)
         });
-        res = await fetch('http://192.168.43.253:3000/addBang', {
+        axios.post('https://www.kwonsoryeong.tk:3000/addBang', {
+          bang: busi
+        },
+        {  headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'}
+        })*/
+        /*res = await fetch('https://www.kwonsoryeong.tk:3000/addBang', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -137,11 +257,20 @@ function setModalVisibility(visible, msg ,t) {
           body: JSON.stringify({
             bang: busi
           }),
-        }).then(res => res.json())
+        }).then(res => res.json())*/
         .then(res => {
           console.log(res)
         });
-        res = await fetch('http://192.168.43.253:3000/alterState', {
+        axios.post('https://www.kwonsoryeong.tk:3000/alterState', {
+            bang: busi,
+            type : 1,
+            id : '/'
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*res = await fetch('https://www.kwonsoryeong.tk:3000/alterState', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -152,21 +281,37 @@ function setModalVisibility(visible, msg ,t) {
             type : 1,
             id : '/'
           }),
-        }).then(res => res.json())
+        }).then(res => res.json())*/
         .then(res => {
-          console.log(res)
+          console.log(res.data)
         });
       } catch (e) {
           console.error(e);
         }
     }
     return (
-      <View style={styles.container}>
+      <View>
+        <ImageBackground style={styles.image} source={require('../../img/pageMsg.png')}>
+        <View style={styles.listArea}>
+        <ScrollView>
         
         {
           business.map((b, id) => (
-
-              <Button onPress={() => setModalVisibility(true, b.message, b.type)} key={id} title={String(b.f+" : "+ b.message)}></Button>
+          <View style={styles.messageArea}>
+              
+              <Image style={styles.userImage} source={require('../../img/user_blue.png')}/>
+              <TouchableOpacity 
+                style={styles.touchArea}
+                onPress={() => setModalVisibility(true, b.message, b.type)} 
+              >
+                <Text 
+                  key={id} 
+                  style={styles.modaltextStyle}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                >{String(b.f+" : "+ b.message)}</Text>
+              </TouchableOpacity>
+            </View>
           ))
         }
 
@@ -176,15 +321,9 @@ function setModalVisibility(visible, msg ,t) {
           visible={visibility}
         >
           <View style={styles.modalContainer}>
-            <View>
-              <Text>{message}</Text>
-              <Button
-                color="#000"
-                onPress={() => setModalVisibility(!visibility,'')}
-                title="Hide Modal"
-              />
+            <Text style={styles.modaltextStyle}>{message}</Text>
+                <Text onPress={() => setModalVisibility(!visibility,'')} style={styles.modalBtn}>닫기</Text>
             </View>
-          </View>
         </Modal>
 
         <Modal
@@ -192,22 +331,23 @@ function setModalVisibility(visible, msg ,t) {
           transparent={false}
           visible={visibility2}
         >
+
           <View style={styles.modalContainer}>
-            <View>
-              <Text>{message}</Text>
-              <Button
-                color="#000"
-                onPress={() => {
-                  setModalVisibility(!visibility2,'',1)
-                  savedData();
-                }}
-                title="네"
-              />
-              <Button
-                color="#000"
-                onPress={() => setModalVisibility(!visibility2,'',1)}
-                title="아니오"
-              />
+          <View>
+              <Text style={styles.modaltextStyle}>{message}</Text>
+              <View style={{flexDirection:"row"}}>
+                <Text
+                  style={styles.modalBtn2}
+                  onPress={() => {
+                    setModalVisibility(!visibility2,'',2)
+                    savedData();
+                  }}
+                >네</Text>
+                <Text
+                  style={styles.modalBtn2}
+                  onPress={() => setModalVisibility(!visibility2,'',2)}
+                >아니오</Text>
+              </View>
               </View>
           </View>
         </Modal>
@@ -219,28 +359,36 @@ function setModalVisibility(visible, msg ,t) {
         >
           <View style={styles.modalContainer}>
             <View>
-              <Text>{message}</Text>
-              <Button
-                color="#000"
-                onPress={() => {
-                  setModalVisibility(!visibility3,'',1)
-                  addBang();
-                }}
-                title="네"
-              />
-              <Button
-                color="#000"
-                onPress={() => setModalVisibility(!visibility3,'',1)}
-                title="아니오"
-              />
+
+              <Text style={styles.modaltextStyle}>{message}</Text>
+              <View style={{flexDirection:"row"}}>
+                <Text
+                  style={styles.modalBtn2}
+                  onPress={() => {
+                    setModalVisibility(!visibility3,'',1)
+                    addBang();
+                  }}
+                >네</Text>
+                <Text
+                  style={styles.modalBtn2}
+                  onPress={() => setModalVisibility(!visibility3,'',1)}
+                >아니오</Text>
+              </View>
               </View>
           </View>
-        </Modal>
-        <Text></Text>
-        <Button
-        title="메세지 보내기"
-        onPress={() => navigation.navigate('Send Message')}
-      />
+        </Modal></ScrollView> 
+      </View>
+
+      <View style={styles.sendBtnArea}>
+      
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Send Message')}
+        >
+        <Image style={styles.btnImgStyle} source={require('../../img/message.png')}></Image>  
+        </TouchableOpacity>
+      </View>  
+        
+      </ImageBackground>
       </View>
     );
   };

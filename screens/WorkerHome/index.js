@@ -1,8 +1,10 @@
 import React, { useEffect, useState} from 'react';
-import { View, Button, Text, StyleSheet, TouchableOpacity,Image,ImageBackground } from 'react-native';
+import { View, Button, Text, StyleSheet, TouchableOpacity,Image,ImageBackground, Alert } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import axios from 'axios';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -33,29 +35,64 @@ const styles = StyleSheet.create({
   buttonImg:{
     width: wp('40%'),
     height: wp('40%'),
+  },
+  button2: {
+    width: wp('40%'),
+    height: wp('23%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  todobuttonImg:{
+    width: wp('80%'),
+    height: hp('7.2%')
   }
 });
 
-const WorkerHomeScreen = ({ navigation, props }) => {
-  const [business, setBusiness] = useState([]);
+
+const WorkerHomeScreen = ({ navigation, route }) => {
+  
   const [commute, setCommute] = useState([]);
   const [todo, setTodo] = useState([]);
-    
-  useEffect(()=>{ 
-    AsyncStorage.getItem("bangCode")
-      .then((bangCode) =>{
-        navigation.setOptions({
-          headerTitle: bangCode,
-        });
-        setBusiness(bangCode);
-      });
-      fetchData();
-      
-  },[business, setBusiness, todo, setTodo])
+  const [onlyOne, setOnlyOne] = useState(0);
+  const [business, setBusiness] = useState([]);
+  navigation.addListener('focus', () => {
+    navigation.setOptions({
+          headerTitle: route.params.bname,
+    });
+    setBusiness(route.params.bname);
+
+    let isMounted = true;
+    function f(){
+      if(isMounted){
+        fetchData(route.params.bname);    
+      }
+    }
+    f();
+    return() =>{
+      isMounted = false;
+    }
+  },[]);
   
-  async function fetchData() { 
+    //fetchData();
+    /*function useAsync(asyncFn, onSuccess) {
+      useEffect(() => {
+        let isMounted = true;
+        AsyncStorage.getItem("bangCode").then(data => {
+          if (isMounted) {
+            setBusiness(bangCode);
+            navigation.setOptions({
+              headerTitle: bangCode,
+            });
+            console.log(".................."+business);
+          }
+        });
+        return () => { isMounted = false };
+      }, []);
+    }*/
+      
+  async function fetchData(bangCode) { 
     try {
-        let res = await fetch('http://192.168.43.253:3000/selectBusinessByWorker', {
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectBusinessByWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -64,23 +101,41 @@ const WorkerHomeScreen = ({ navigation, props }) => {
           body: JSON.stringify({
             //id : idid
           }),
-        }).then(res => res.json())
+        })*/
+        await axios.post('https://www.kwonsoryeong.tk:3000/selectBusinessByWorker', {},
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })//.then(res => res.json())
         .then(res => {
-            let dic = JSON.parse(res[0].bang);
-            console.log(business+ " " +dic[String(business)]+"???");
-            setCommute(dic[String(business)]?'출근':'퇴근');
+            let dic = JSON.parse(res.data[0].bang);
+            //console.log(res.data[0].bang+" "+bangCode+ " " +dic[String(bangCode)]+"???");
+            
+            setCommute(dic[String(route.params.bname)]?'출근':'퇴근');
+            commuteChangeImg(dic[String(route.params.bname)]?'출근':'퇴근',1);
+            
+            //setBusiness(bangCode);
+            //console.log("..................//"+business);
         });
         /*.then((response) => response.json())
         .then((res) => {
-            //setBusiness(res);
+            setBusiness(res);
         })*/
     } catch (e) {
         console.error(e);
       }
     }
     async function commuteData() { 
-        try {
-            let res = await fetch('http://192.168.43.253:3000/updateCommute', {
+      let err;  
+      try {
+          console.log("되고있니?");
+          await axios.post('https://www.kwonsoryeong.tk:3000/updateCommute', {bang : route.params.bname},
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          
+          /*
+            let res = await fetch('https://www.kwonsoryeong.tk:3000/updateCommute', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -88,18 +143,20 @@ const WorkerHomeScreen = ({ navigation, props }) => {
               },
               body: JSON.stringify({
                 bang : business
-              }),
-            })//.then(res => res.json())
+              }),*/
+            }).then(res => err = res.status)
             //.then(res => {
                 
             //});
-            /*.then((response) => response.json())
+            //.then((response) => response.json())
             .then((res) => {
                 //setBusiness(res);
-            })*/
+            })
         } catch (e) {
+            console.log(err);
             console.error(e);
           }
+          
         }
 
         
@@ -109,11 +166,21 @@ const WorkerHomeScreen = ({ navigation, props }) => {
     const commuteI = {commuteImg, commuteImgChecked}
     const [commuteImgSelected, setCommuteImgSelected] = useState(commuteI.commuteImg)
 
-    const commuteChangeImg =(com)=>{
-      if(com == '출근'){
-        setCommuteImgSelected(commuteI.commuteImgChecked)
-      } else{
-        setCommuteImgSelected(commuteI.commuteImg)
+    const commuteChangeImg =(com,init)=>{
+      if(init){
+        if(com == '출근'){
+          setCommuteImgSelected(commuteI.commuteImgChecked)
+        } else{
+          setCommuteImgSelected(commuteI.commuteImg)
+        }
+      }else{
+        if(com == '출근'){
+          Alert.alert("출근 완료!");
+          setCommuteImgSelected(commuteI.commuteImgChecked)
+        } else{
+          Alert.alert("퇴근 완료!\n 오늘도 고생많으셨어요.");
+          setCommuteImgSelected(commuteI.commuteImg)
+        }
       }
     }
 
@@ -131,8 +198,8 @@ const WorkerHomeScreen = ({ navigation, props }) => {
             commuteData();
             commuteChangeImg(commute=='출근'?'퇴근':'출근');
         }}>
-        <Image style={styles.buttonImg} source={commuteImgSelected}/>
-        <Text style={styles.buttonTitle}>{commute}</Text>
+          <Image style={styles.buttonImg} source={commuteImgSelected}/>
+        {/* <Text style={styles.buttonTitle}>{commute}</Text> */}
       </TouchableOpacity>
       <TouchableOpacity 
         style={styles.button}
@@ -173,9 +240,9 @@ const WorkerHomeScreen = ({ navigation, props }) => {
       </View>
       <View style={styles.buttonArea2}>
       <TouchableOpacity 
-        style={styles.button}
-        onPress={() => navigation.navigate('WorkTodo')}>
-        <Text style={styles.buttonTitle}>오늘 할 일</Text>
+       style={styles.button2}
+       onPress={() => navigation.navigate('WorkTodo')}>
+       <Image style={styles.todobuttonImg} source={clicked==0?require('../../img/todo.png'):require('../../img/todo.png')}/>
       </TouchableOpacity>
       </View>
     </ImageBackground>

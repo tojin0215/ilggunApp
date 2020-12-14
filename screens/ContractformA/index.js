@@ -1,6 +1,6 @@
 const axios = require('axios');
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert, ImageBackground} from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import CheckboxGroup from 'react-native-checkbox-group'
 import { AsyncStorage } from 'react-native';
@@ -11,7 +11,6 @@ import { WebView } from 'react-native-webview'
 class ContractformAScreen extends React.Component{
   state={
   }
-  
   constructor(props) {
     
     super(props);
@@ -40,8 +39,7 @@ class ContractformAScreen extends React.Component{
         ||this.state.WorkingDays==null||this.state.Holiday==null||this.state.Salary==null
         ||this.state.SalaryDay==null||this.state.ContractYear==null||this.state.ContractMonth==null
         ||this.state.ContractDay==null||this.state.BusinessName==null||this.state.BusinessAddress==null
-        ||this.state.BusinessOwner1==null||/*this.state.EmployeeAddress==null||this.state.EmployeePhone==null
-        ||this.state.EmployeeName==null||*/this.state.BusinessPhone==null){
+        ||this.state.BusinessOwner1==null||this.state.BusinessPhone==null){
         Alert.alert('빈칸을 채워주세요.') 
     } else{
         console.log(this.state);
@@ -50,7 +48,16 @@ class ContractformAScreen extends React.Component{
     }
   }
   initfetchHtml = async(bangCode) => {
-    await fetch('http://192.168.43.253:3000/selectContractform', {
+    
+    axios.post('https://www.kwonsoryeong.tk:3000/selectContractform', {
+        bang:bangCode,
+        id: this.props.route.params.workername
+    },
+    {  headers:{
+        'Content-Type': 'application/json',
+      'Accept': 'application/json'}
+    })
+    /*await fetch('https://www.kwonsoryeong.tk:3000/selectContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -60,55 +67,61 @@ class ContractformAScreen extends React.Component{
           bang:bangCode,
           id: this.props.route.params.workername
         }),
-      }).then(res => res.json())
+      }).then(res => res.json())*/
       .then(res => {
           //res.types1 = JSON.parse(res.types1);
           //res.types2 = JSON.parse(res.types2);
           //res.types3 = JSON.parse(res.types3);
-          console.log(res[0]);
+          console.log(res.data[0]);
           console.log('--------------')
           
-          if(res[0]!=undefined){
-               if(res[0].type==3){
-            this.StatementScreen()
+          if(res.data[0]!=undefined){
+               if(res.data[0].type==3){
+                   
+                this.StatementScreen();
           }
-            if(JSON.parse(res[0].types1)[0].value == 1){
-                res[0].types1 = "없음"
+            if(JSON.parse(res.data[0].types1)[0].value == 1){
+                res.data[0].types1 = "없음"
             }
             else{
-                res[0].types1 = "있음"
+                res.data[0].types1 = "있음"
             }
             
-            if(JSON.parse(res[0].types2)[0].value == 1){
-                res[0].types2 = "없음"
+            if(JSON.parse(res.data[0].types2)[0].value == 1){
+                res.data[0].types2 = "없음"
             }
             else{
-                res[0].types2 = "있음"
+                res.data[0].types2 = "있음"
             }
 
-            if(JSON.parse(res[0].types3)[0].value == 1){
-                res[0].types3 = "근로자에게 직접 지급"
+            if(JSON.parse(res.data[0].types3)[0].value == 1){
+                res.data[0].types3 = "근로자에게 직접 지급"
             }
             else{
-                res[0].types3 = "근로자 명의 예금통장에 입금"
+                res.data[0].types3 = "근로자 명의 예금통장에 입금"
             }
             let t4 = [0,0,0,0,0];
             console.log('dddd')
-            let n = JSON.parse(res[0].value4);
+            let n = JSON.parse(res.data[0].value4);
             for(let i=0 ; i<n.length ; i++){
                 t4[n[i]]=1;
             }
             console.log("whyyyyyyyyyyyyyyyyyyyyy?"+t4);
-            res[0].types4 = t4;
+            res.data[0].types4 = t4;
 
-            this.setState(res[0]);
-            console.log(res[0].types4);
-            this.setState(res[0]);
+            this.setState(res.data[0]);
+            console.log(res.data[0].types4);
+            this.setState(res.data[0]);
             }
       })     
     }
   fetchHtml = async(a) => {
-    await fetch('http://192.168.43.253:3000/writeContractform', {
+    axios.post('https://www.kwonsoryeong.tk:3000/writeContractform', this.state,
+    {  headers:{
+        'Content-Type': 'application/json',
+      'Accept': 'application/json'}
+    })
+    /*await fetch('https://www.kwonsoryeong.tk:3000/writeContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -196,38 +209,58 @@ class ContractformAScreen extends React.Component{
             BusinessOwner1: this.state.BusinessOwner1,
             EmployeeAddress: this.state.EmployeeAddress,
             EmployeePhone: this.state.EmployeePhone,
-            EmployeeName: this.state.EmployeeName}*/
+            EmployeeName: this.state.EmployeeName}//
         ),
-      }).then(res => res.json())
+      }).then(res => res.json())*/
       .then(res => {
-        this.initfetchHtml(this.state.bangCode);
+        this.props.navigation.goBack();
+        //this.initfetchHtml(this.state.bangCode);
       })     
     }
 
     StatementScreen = async() => {
-        fetch("http://192.168.43.253:3000/selectImg",{
-          method: 'POST',})
-            .then(res => 
-              {
-                console.log(res)
-                console.log("나와라ㅏㅏㅏㅏ");
-              const htmlContent = `
-              <!DOCTYPE html>
-    <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>근로계약서 정규/계약</title>
-        </head>
-        <style>
-            body{margin:30px 30px 30px 30px; line-height: 30px;}
-            span{font-weight: bold;  font-size:1.5em; position:relative; left:50%; margin-left: -100px;}
-            .text_underline {text-decoration: underline;}
-            .margin_left{margin-left:15px;}
-            .margin_left2{margin-left:65px;}
-            .text_underline_margin_left{text-decoration: underline;margin-left:50px;}
-            .contract_day{position:relative; left:50%; margin-left: -100px;}
-        </style>
-        <body>
+        let sign="";
+      axios.post('https://www.kwonsoryeong.tk:3000/selectSign', {
+          id:this.props.route.params.workername
+      },
+      {  headers:{
+            'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+      })
+      /*fetch('https://www.kwonsoryeong.tk:3000/selectSign', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          //id : idid
+        }),
+      }).then(res => res.json())*/
+      .then(async(res) => {
+          sign = res.data[0].sign;
+          console.log(sign)
+          const htmlContent = `
+                <!DOCTYPE html>
+      <html>
+          <head>
+              <meta charset="UTF-8">
+              <title>근로계약서 정규/계약</title>
+          </head>
+          <style>
+              body{margin:30px 30px 30px 30px; line-height: 30px;}
+              span{font-weight: bold;  font-size:1.5em; position:relative; left:50%; margin-left: -100px;}
+              .text_underline {text-decoration: underline;}
+              .margin_left{margin-left:15px;}
+              .margin_left2{margin-left:65px;}
+              .text_underline_margin_left{text-decoration: underline;margin-left:50px;}
+              .contract_day{position:relative; left:50%; margin-left: -100px;}
+          </style>
+          <body>
+              <svg viewBox = "0 0 400 400" style="left: 230px; top:1570px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="${String(sign)}"
+              style="fill:none;stroke:black;stroke-width:3" />
+              </svg>
             <span>표준근로계약서</span>
             <form>
                 <hr><br>
@@ -360,10 +393,6 @@ class ContractformAScreen extends React.Component{
                 <label class="margin_left2">성    명 : </label>
                 <label>${this.state.EmployeeName}</label>
                 <label class="margin_left2">(서명)</label>
-                <div>
-                   <img style="left: 270px; height:10px; width: 10px; bottom: 400px; font-size: 1.8em; font-weight: bold; position: absolute;" src="http://192.168.43.253:3000/11.jpg">
-                    
-                  </div>
             </form>
     
                   
@@ -378,17 +407,17 @@ class ContractformAScreen extends React.Component{
           
       }
       createAndSavePDF = async (html) => {
-          try {
-            const { uri } = await Print.printToFileAsync({ html },base64=true);
-            Sharing.shareAsync(uri);  
-          } catch (error) {
-            console.error(error);
-          }
-        };
+        try {
+          const { uri } = await Print.printToFileAsync({ html },true);
+          Sharing.shareAsync(uri);  
+        } catch (error) {
+          console.error(error);
+        }
+      };
   render() {
     return (
-
-      <View style={styles.container}>
+        
+            <View style={styles.container}>
         <Text style={styles.head}> 근로계약서_정규/계약</Text>
         {
             console.log(">>>>>>>>>>>>>>>>"+this.state.type)
@@ -397,6 +426,7 @@ class ContractformAScreen extends React.Component{
             
             this.state.type==2?
             <ScrollView>
+                <Text>근로자가 확인하고 있습니다.</Text>
             <View style={styles.marginBottom1}>
                 <View style={styles.rowView}>
                 <Text style={styles.textinput}>{this.state.Employer}</Text>
@@ -590,14 +620,6 @@ class ContractformAScreen extends React.Component{
             </View>
         </View>
     
-          <View style={styles.buttonBottom}>
-              <Button 
-                title="저장하기"
-                onPress={()=>{
-                    this.state.type=2;
-                    this.handleSubmit()
-                }}/>
-            </View>
           </ScrollView>
           :
           this.state.type==3?
@@ -955,7 +977,7 @@ class ContractformAScreen extends React.Component{
             <Text>-지급방법 : </Text>
             <RadioForm
                 ref="radioForm"
-                radio_props={this.state.types3=="있음"||this.state.types3=="없음"?[{"label":"없음   ","value":0},{"label":"있음","value":0}]:this.state.types3}
+                radio_props={this.state.types3=="근로자에게 직접지급   "||this.state.types3=="근로자 명의 예금통장에 입금"?[{"label":"근로자에게 직접지급   ","value":0},{"label":"근로자 명의 예금통장에 입금","value":1}]:this.state.types3}
                 initial={0}
                 formHorizontal={false}
                 labelHorizontal={true}

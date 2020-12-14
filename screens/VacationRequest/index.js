@@ -1,27 +1,34 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, ScrollView, Button, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, TextInput, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { AsyncStorage } from 'react-native';
-//=========================바뀐부분A===========================================
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { abs } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-//=========================바뀐부분A===========================================
+import axios from 'axios';
 
-//=========================바뀐부분B===========================================
+
 const styles = StyleSheet.create({
   container: {
     width:'100%', height:'100%',
     backgroundColor:'white', padding:wp('5%')
   },
   textArea:{
-    marginTop:hp('5%'),
+    marginTop:hp('3%'),
     marginBottom:hp('2%')
   },
-  
+  dateTextStyle:{
+    marginTop:hp('2%'),
+    marginBottom:hp('2%'),
+    marginLeft:wp('0.5%'),
+    marginRight:wp('1%'),
+    fontSize:wp('4.5%'),
+    fontFamily:"NanumSquareB",
+    color: '#040525',
+  },  
   textStyle:{
     fontSize:wp('4.5%'),
     fontFamily:"NanumSquareB",
@@ -32,7 +39,7 @@ const styles = StyleSheet.create({
   },  
   textInputStyle:{
     fontSize:wp('4.5%'),
-    fontFamily:"NanumSquareB",
+    fontFamily:"NanumSquare",
     color: '#040525',
     paddingBottom:hp('1%'), paddingLeft:wp('2%'),
     borderBottomWidth:hp('0.5%'),
@@ -40,25 +47,33 @@ const styles = StyleSheet.create({
   },
   pickerArea:{
     flexDirection: 'row',
-    marginBottom:hp('2%'),
-    width:wp('80%'), height:hp('7%'),
-    justifyContent:"center",alignItems:"center",
-    marginRight:wp('2%'), marginLeft:wp('3%'),
+    marginTop:hp('1%'),
+    width:wp('90%'), height:hp('45%'),
+    justifyContent:"center",alignItems:"flex-start",
+    marginRight:wp('2%'),
+  },
+  textForm:{
+    height:hp('18%')
   },
   textinputArea:{
     width:wp('80%'), height:hp('7%'),
     marginLeft:wp('2%'),
   },
-
   buttonArea:{
     justifyContent:"flex-end", alignItems:"center",
-    height:hp('7%'), marginTop:hp('35%')
+    height:hp('10%'), 
   },
   button:{
     backgroundColor:'#7085DF',
-    width:wp('80%'), height:hp('6%'),
-    justifyContent:"center", alignItems:"center",
+    width:wp('90%'), height:hp('5.5%'),
+    justifyContent:"center", alignItems:"center",marginBottom:hp('1%'),
     borderRadius:wp('6%')
+  },
+  buttonTitle:{
+    fontSize:wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color: 'white',
+
   }
 });
 
@@ -72,19 +87,21 @@ class VacationRequestScreen extends Component{
     console.log("매개변수 : ");
     this.state = {
         bangCode:'',
-      itemA: null, //'2020년',
+      itemA: '2020', //'2020년',
       isVisibleA: false,
    
-      itemB: null,//'10월',
+      itemB: '1',//'10월',
       isVisibleB: false,
 
-      itemAA: null, //'2020년',
+      itemAA: '1', //'2020년',
       isVisibleAA: false,
 
       bangCode : null,
       originalTime : null,
       workernames: [],
       comment: '',
+
+      owner:'',
     }
 
     AsyncStorage.getItem("bangCode")
@@ -95,7 +112,44 @@ class VacationRequestScreen extends Component{
   }
   fetchData = async() => { 
     try {
-        let res = await fetch('http://192.168.43.253:3000/sendMessage', {
+if(this.state.comment){
+
+      await axios.post('https://www.kwonsoryeong.tk:3000/selectBusinessByName', {
+        bname : this.state.bangCode
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+      })
+      /*await fetch('https://www.kwonsoryeong.tk:3000/selectBusinessByName', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            bname : this.state.bangCode
+          }),
+        }).then(res => res.json())*/
+        .then(res => {
+          console.log("뭘까요?1")
+          console.log(res);
+          this.setState({owner : res.data[0].id});
+          
+        });
+
+        await axios.post('https://www.kwonsoryeong.tk:3000/sendMessage', {
+            type: 2,
+            f: 'system',
+            t : this.state.owner,
+            message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
+            time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/sendMessage', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -104,43 +158,30 @@ class VacationRequestScreen extends Component{
           body: JSON.stringify({
             type: 2,
             f: 'system',
-            t : 'a',
+            t : this.state.owner,
             message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
             time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA
           }),
-        }).then(res => res.json())
+        }).then(res => res.json())*/
         .then(res => {
+          console.log("뭘까요?2")
+          console.log(res.data);
           let rowall = []
-          for (let i = 0; i < res.length; i++) {
-            rowall.push({label: res[i].workername, value: res[i]});
+          for (let i = 0; i < res.data.length; i++) {
+            rowall.push({label: res.data[i].workername, value: res.data[i]});
           }
           this.setState({workernames: rowall})
+          this.props.navigation.navigate('Worker Home');
         });
+      }
+      else{
+        Alert.alert("휴가신청 사유를 입력해주세요.")
+      }
     } catch (e) {
+      Alert.alert("휴가 신청이 완료되었습니다.")
         console.error(e);
       }
-}
-savedData = async(bangCode, worker, month, date, day, year, time) => { 
-    try {
-        let res = await fetch('http://192.168.43.253:3000/addWork', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            business : bangCode,
-            workername : worker,
-            month : month,
-            date : date,
-            day :day,
-            year : year,
-          }),
-        });
-    } catch (e) {
-        console.error(e);
-      }
-}
+  }
 
   changeVisibility(state) {
     this.setState({
@@ -157,9 +198,34 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
     
     return (
       <View style={styles.container}>
+{/* =====================================================바뀐부분A====================================== */}
+<ScrollView>
+        <View style={styles.textForm}>
+          <View style={styles.textArea}>
+          <Text style={styles.textStyle}>휴가 신청 이유</Text>
+        </View>
+        <View style={styles.textinputArea}>
+        <TextInput 
+                onChangeText={item => {
+                    console.log(item);
+                    this.setState({
+                        comment: item
+                    })
+                    console.log(this.state.comment)
+                    console.log('///')
+                }
+                }
+                defaultValue={this.state.comment}
+                style={styles.textInputStyle} 
+                //underlineColorAndroid='#7085DF'
+                placeholder={"휴가 신청 사유를 입력하세요."}/>         
+        </View>
+        </View>
+
         <View style={styles.textArea}>
           <Text style={styles.textStyle}>날짜를 선택해주세요.</Text>
         </View>
+{/* =====================================================바뀐부분A====================================== */}
           <View style={styles.pickerArea}>
           <DropDownPicker
                 items={[
@@ -167,9 +233,9 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '2021', value: '2021'},
                 ]}
                 defaultValue={this.state.itemA}
-                containerStyle={{height:hp('7%'), width:wp('25%'),}}
+                containerStyle={{height:hp('7%'), width:wp('22%'),}}
                 style={{
-                  borderTopWidth:hp('0.5%'), borderBottomWidth:hp('0.5%'),
+                  borderTopWidth:hp('0.3%'), borderBottomWidth:hp('0.3%'),
                   borderTopLeftRadius:0, borderTopRightRadius:0, borderBottomLeftRadius:0, borderBottomRightRadius:0,
                   borderTopColor:'#7085DF', borderBottomColor:'#7085DF',
                   borderRightWidth:0, borderLeftWidth:0,
@@ -201,7 +267,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
               }}
               
             />
-            <Text style={styles.textStyle}>년</Text>
+            <Text style={styles.dateTextStyle}>년</Text>
             <DropDownPicker
                 items={[
                     {label: '1', value: '1'},
@@ -218,9 +284,9 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '12', value: '12'},
                 ]}
                 defaultValue={this.state.itemB}
-                containerStyle={{height:hp('7%'), width:wp('18%'), marginLeft:wp('3%')}}
+                containerStyle={{height:hp('7%'), width:wp('17%'), marginLeft:wp('3%')}}
                 style={{
-                  borderTopWidth:hp('0.5%'), borderBottomWidth:hp('0.5%'),
+                  borderTopWidth:hp('0.3%'), borderBottomWidth:hp('0.3%'),
                   borderRightWidth:0, borderLeftWidth:0,
                   borderTopLeftRadius:0, borderTopRightRadius:0, borderBottomLeftRadius:0, borderBottomRightRadius:0,
                   borderTopColor:'#7085DF', borderBottomColor:'#7085DF',
@@ -248,7 +314,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     itemB: item.value
                 })}
             />
-            <Text style={styles.textStyle}>월</Text>
+            <Text style={styles.dateTextStyle}>월</Text>
             <DropDownPicker
                 items={[
                     {label: '1', value: '1'},
@@ -284,9 +350,9 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '31', value: '31'},
                 ]}
                 defaultValue={this.state.itemAA}
-                containerStyle={{height:hp('7%'), width:wp('18%'), marginLeft:wp('3%') }}
+                containerStyle={{height:hp('7%'), width:wp('17%'), marginLeft:wp('3%') }}
                 style={{
-                  borderTopWidth:hp('0.5%'), borderBottomWidth:hp('0.5%'),
+                  borderTopWidth:hp('0.3%'), borderBottomWidth:hp('0.3%'),
                   borderRightWidth:0, borderLeftWidth:0,
                   borderTopLeftRadius:0, borderTopRightRadius:0, borderBottomLeftRadius:0, borderBottomRightRadius:0,
                   borderTopColor:'#7085DF', borderBottomColor:'#7085DF', 
@@ -318,38 +384,22 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
               }}
               
             />
-            <Text style={styles.textStyle}>일</Text>
+           <Text style={styles.dateTextStyle}>일</Text>
           </View>
-          <View style={styles.textArea}>
-          <Text style={styles.textStyle}>휴가 신청 이유</Text>
-        </View>
-        <View style={styles.textinputArea}>
-        <TextInput 
-                onChangeText={item => {
-                    console.log(item);
-                    this.setState({
-                        comment: item
-                    })
-                    console.log(this.state.comment)
-                    console.log('///')
-                }
-                }
-                defaultValue={this.state.comment}
-                style={styles.textInputStyle} 
-                //underlineColorAndroid='#7085DF'
-                placeholder={"휴가 신청 사유를 입력하세요."}/>         
-        </View>
-        <View style={styles.buttonArea}>
+          <View style={styles.buttonArea}>
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
                 this.fetchData() 
-                this.props.navigation.navigate('Worker Home');
+                
               }}>
-                <Text style={styles.textStyle}>완료</Text>
+{/* =====================================================바뀐부분J====================================== */}
+                <Text style={styles.buttonTitle}>완료</Text>
 
             </TouchableOpacity>
           </View>
+          </ScrollView>
+{/* =====================================================바뀐부분J====================================== */}
       </View>
         
     )

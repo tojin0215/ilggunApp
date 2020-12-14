@@ -4,48 +4,47 @@ import { ScrollView, View, Text, Button, StyleSheet, TouchableOpacity, ImageBack
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-
+import axios from 'axios';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  image:{
-    
-    justifyContent: "flex-start",
-    alignItems:"center",
-    width: "100%", height: "100%",
-  },
-  text: {
-    fontSize: wp('15%'),
-    textAlign: 'center',
-    color: 'white',
-    fontFamily:"NanumSquare",
-  },
-  buttonArea: {
-    marginTop:hp('7%'),
-    width: '100%',
-    height: hp('6%'),
-    alignItems: 'center',
-  },
-  buttonTitle: {
-      color: '#040525',
-      fontSize:wp('5.9%'),
+    container: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    image:{
+      
+      justifyContent: "flex-start",
+      alignItems:"center",
+      width: "100%", height: "100%",
+    },
+    text: {
+      fontSize: wp('15%'),
+      textAlign: 'center',
+      color: 'white',
       fontFamily:"NanumSquare",
-  },
-  addbutton: {
-    backgroundColor: '#67C8BA',
-    position:"absolute",
-    alignItems:"center",
-    bottom: hp('2%'),
-    width: "100%",
-    width: wp('15%'),
-    height: wp('15%'),
-    marginBottom: hp('5%'),
-    borderRadius: wp('15%'),
-    
-
+    },
+    buttonArea: {
+      marginTop:hp('7%'),
+      width: '100%',
+      height: hp('6%'),
+      alignItems: 'center',
+    },
+    buttonTitle: {
+        color: '#040525',
+        fontSize:wp('5%'),
+        fontFamily:"NanumSquare",
+    },
+    addbutton: {
+      backgroundColor: '#67C8BA',
+      position:"absolute",
+      alignItems:"center",
+      bottom: hp('2%'),
+      width: "100%",
+      width: wp('15%'),
+      height: wp('15%'),
+      marginBottom: hp('5%'),
+      borderRadius: wp('15%'),
+      
     ...Platform.select({
         ios: {
             shadowColor: 'rgba(0,0,0,0.2)',
@@ -67,9 +66,15 @@ const BusinessListScreen = ({navigation}) => {
   const [business, setBusiness] = useState([]);
   const [clicked, setClicked] = useState(-1);
   const [id, setId] = useState('');
+  
   AsyncStorage.getItem("userData").then((userData) =>{
     setId(JSON.parse(userData));
   });
+
+  React.useEffect(() => {
+    console.log("안녕");
+          fetchData();
+  },[]);
   /*const [password, setPassword] = useState('');
   const storeToken = async(user) => {
     try {
@@ -87,21 +92,29 @@ const BusinessListScreen = ({navigation}) => {
       console.log("Something went wrong", error);
     }
   }*/
+
+
     ///setId('dd');
     async function fetchData() { 
         try {
-            let res = await fetch('http://192.168.43.253:3000/selectBusiness', {
+          await axios.post('https://www.kwonsoryeong.tk:3000/selectBusiness', {},
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+            /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectBusiness', {
               method: 'POST',
               headers: {
-                Accept: 'application/json',
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
                 //id : idid
               }),
-            }).then(res => res.json())
-            .then(res => setBusiness(res));
-            
+            }).then(res => res.json())*/
+            .then(res => {
+              setBusiness(res.data)
+              console.log("여기용222");
+            });
         } catch (e) {
             console.error(e);
           }
@@ -115,9 +128,11 @@ const BusinessListScreen = ({navigation}) => {
         fetchData(JSON.parse(userData))
       })*/
       
-      /*const unsubscribe =*/ navigation.addListener('focus', () => {
-          fetchData();
-      });
+      /*const unsubscribe =*/ 
+      /*navigation.addListener('focus', () => {
+          
+          console.log("여기용");
+      });*/
 
       //return unsubscribe;
     //});
@@ -158,13 +173,13 @@ const BusinessListScreen = ({navigation}) => {
                   }}
                   onPress={() => {
                     setClicked(id)
-                    AsyncStorage.setItem("bangCode", b.title)
+                    AsyncStorage.setItem("bangCode", b.bname)
                     .then(() =>{
                       setClicked(-1)
                       navigation.navigate('Home')
                     })
                   }}>
-                  <Text style={styles.buttonTitle}>{b.title}</Text>
+                  <Text style={styles.buttonTitle}>{b.bname}</Text>
                 </TouchableOpacity>
                 
               </>

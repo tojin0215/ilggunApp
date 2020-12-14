@@ -5,7 +5,7 @@ import { View, Text, Button, StyleSheet, TouchableOpacity,ImageBackground } from
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
-
+import axios from 'axios';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -22,6 +22,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     fontFamily:"NanumSquare",
+  },
+  textStyle:{
+    fontFamily:"NanumSquare",
+    fontSize: wp('6%'),
+    color: '#040525',
+    marginTop:hp('10%')
   },
   buttonArea: {
     marginTop:hp('7%'),
@@ -40,7 +46,7 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
       color: '#040525',
-      fontSize:wp('5.9%'),
+      fontSize:wp('5%'),
       fontFamily:"NanumSquare",
   },
   addbutton: {
@@ -73,6 +79,14 @@ const styles = StyleSheet.create({
 const WorkerBusinessListScreen = ({navigation}) => {
   const [business, setBusiness] = useState([]);
   const [clicked, setClicked] = useState(-1);
+  React.useEffect(() => {
+    console.log("안녕");
+          fetchData();
+  },[]);
+
+      //return unsubscribe;
+    //});
+
   //const [idid, setId] = useState('');
 
   /*const [password, setPassword] = useState('');
@@ -95,7 +109,12 @@ const WorkerBusinessListScreen = ({navigation}) => {
     ///setId('dd');
     async function fetchData() { 
         try {
-            let res = await fetch('http://192.168.43.253:3000/selectBusinessByWorker', {
+          axios.post('https://www.kwonsoryeong.tk:3000/selectBusinessByWorker', {},
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+            /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectBusinessByWorker', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -104,11 +123,12 @@ const WorkerBusinessListScreen = ({navigation}) => {
               body: JSON.stringify({
                 //id : idid
               }),
-            }).then(res => res.json())
+            })
+            .then(res => res.json())*/
             .then(res => {
-              if(res[0]){
-                console.log(JSON.parse(res[0].bang));
-                setBusiness(JSON.parse(res[0].bang));
+              if(res.data[0]){
+                console.log(JSON.parse(res.data[0].bang));
+                setBusiness(JSON.parse(res.data[0].bang));
               }
             });
             
@@ -129,9 +149,11 @@ const WorkerBusinessListScreen = ({navigation}) => {
         fetchData(JSON.parse(userData))
       })*/
       
-      /*const unsubscribe =*/ navigation.addListener('focus', () => {
+      /*const unsubscribe =*/
+      
+      /*navigation.addListener('focus', () => {
           fetchData();
-      });
+      });*/
 
       //return unsubscribe;
     //});
@@ -160,14 +182,14 @@ const WorkerBusinessListScreen = ({navigation}) => {
                     AsyncStorage.setItem("bangCode", key)
                     .then(() =>{
                       setClicked(-1)
-                      navigation.navigate('Worker Home')
+                      navigation.navigate('Worker Home',{bname : key})
                     })
                   }}>
                   <Text style={styles.buttonTitle}>{key}</Text>
                 </TouchableOpacity>
               </>)
             )      
-          :<Text>초대받은 사업장이 없습니다.</Text>}
+          :<Text style={styles.textStyle}>초대받은 사업장이 없습니다.</Text>}
             </View>
         }
         </ImageBackground>

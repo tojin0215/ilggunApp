@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, ScrollView, Button, ImageBackground} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, ImageBackground, Alert} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { AsyncStorage } from 'react-native';
@@ -8,7 +8,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import axios from 'axios';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -27,11 +27,9 @@ const styles = StyleSheet.create({
   },
   dropdown : {
     flexDirection: 'row', backgroundColor:'white', 
-    width:wp('90%'), height:hp('18%'), borderRadius:wp('4.5%')
-  },
-  dropdownBox : {
-    flexDirection: 'row', 
-    width:wp('90%'), height:hp('50%'), borderRadius:wp('4.5%')
+    width:wp('90%'), height:hp('30%'), borderRadius:wp('4.5%'),
+    alignItems:"center", justifyContent:"center",
+    paddingBottom:hp('23%')
   },
   dropdownWokerArea:{
     marginTop:hp('8%'),
@@ -47,9 +45,9 @@ const styles = StyleSheet.create({
   },
   button: {
       backgroundColor: "#67C8BA",
-      width:wp('90%'), height: hp('6%'),
+      width:wp('90%'), height: hp('5.5%'),
       justifyContent: 'center', alignItems:"center",
-      borderRadius:wp('4%'),
+      borderRadius:wp('6%'),
       marginTop:hp('2%'),
   },
   buttonTitle: {
@@ -59,6 +57,8 @@ const styles = StyleSheet.create({
   },
   dropText:{
     fontSize:wp('8.5%'),
+    fontFamily:"NanumSquare",
+    color: '#040525',
     justifyContent:"center", alignItems:"center",
     marginTop:hp('0.5%')
   }
@@ -77,16 +77,16 @@ class AlterWorkerScreen extends Component{
         monthh: this.props.route.params["date"].split(' ')[1]*1,
         datee: this.props.route.params["date"].split(' ')[2]*1,
         yearr: this.props.route.params["date"].split(' ')[3]*1,
-      itemA: null, //'2020년',
+      itemA: '9', //'2020년',
       isVisibleA: false,
    
-      itemB: null,//'10월',
+      itemB: '00',//'10월',
       isVisibleB: false,
 
-      itemAA: null, //'2020년',
+      itemAA: '18', //'2020년',
       isVisibleAA: false,
    
-      itemBB: null,//'10월',
+      itemBB: '00',//'10월',
       isVisibleBB: false,
 
       itemC: null,
@@ -105,8 +105,16 @@ class AlterWorkerScreen extends Component{
   }
   fetchData = async(bangCode) => { 
     try {
-      console.log(bangCode);
-        let res = await fetch('http://192.168.43.253:3000/selectWorker', {
+         console.log(bangCode);
+          axios.post('https://www.kwonsoryeong.tk:3000/selectWorker', {
+            business : bangCode,
+            type : 1
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -116,11 +124,11 @@ class AlterWorkerScreen extends Component{
             business : bangCode,
             type : 1
           }),
-        }).then(res => res.json())
+        }).then(res => res.json())*/
         .then(res => {
           let rowall = []
-          for (let i = 0; i < res.length; i++) {
-            rowall.push({label: res[i].workername, value: res[i]});
+          for (let i = 0; i < res.data.length; i++) {
+            rowall.push({label: res.data[i].workername, value: res.data[i]});
           }
           this.setState({workernames: rowall})
         });
@@ -130,8 +138,9 @@ class AlterWorkerScreen extends Component{
 }
 savedData = async(bangCode, worker, month, date, day, year, time) => { 
     try {
+      if(this.state.itemC){
         console.log(bangCode, this.state.originalTime, time);
-        let s = this.state.originalTime.split('');
+        let s = this.props.route.params["date"].split(' ')[0].split('');
         let st = (s[0]+s[1])*1;
         let sm = (s[2]+s[3])*1;
         let et = (s[4]+s[5])*1;
@@ -144,8 +153,22 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
         let em2 = (s2[6]+s2[7])*1;
         let subTime2 = (((et2-st2)*60) + (em2-sm2));
         let subt = (subTime2-subTime)/60;
-
-        let res = await fetch('http://192.168.43.253:3000/addWork', {
+        axios.post('https://www.kwonsoryeong.tk:3000/addWork', {
+            business : bangCode,
+            workername : worker,
+            month : month,
+            date : date,
+            day :day,
+            year : year,
+            time : time,
+            subt : subt
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        }).then(res => {this.props.navigation.navigate('Work Management');})
+        
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -161,7 +184,10 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
             time : time,
             subt : subt
           }),
-        });
+        });*/
+      }else{
+        Alert.alert("직원을 선택해주세요.")
+      }
     } catch (e) {
         console.error(e);
       }
@@ -183,7 +209,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
     const {workernames} = this.state
     
     return (
-      <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
         <View style={styles.container}>
           <View style={styles.dropdownWokerArea}>
             <DropDownPicker
@@ -193,19 +219,22 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                 style={{
                   borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%'),
                   borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'), 
+                  backgroundColor:'#67C8BA',
                 }}
                 placeholder="직원을 선택하세요."
                
                 dropDownStyle={{backgroundColor: 'white', 
                       borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
-                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%'), 
+                      borderColor:'#67C8BA', borderWidth:wp('0.5%')}}
                 itemStyle={{justifyContent: 'center'}}
                 labelStyle={{
                   height:hp('4%'),
                   textAlign: 'center',
-                  color:'#040525',
+                  color:'black',
                   fontFamily:"NanumSquare",
                   fontSize: wp('5.3%'),
+                  paddingTop:hp('0.3%')
                 }}
                 isVisible={this.state.isVisibleC}
                 onOpen={() => this.changeVisibility({
@@ -257,16 +286,18 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '23', value: '23'},
                 ]}
                 defaultValue={this.state.itemA}
-                containerStyle={{height: hp('8%'), width:wp('20%')}}
+                containerStyle={{height: hp('7%'), width:wp('17%'), marginRight:wp('2%')}}
                 dropDownStyle={{backgroundColor: 'white', 
                       borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
-                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                     borderColor:"#E2F2EF",borderWidth:wp('0.5%')}}
                 itemStyle={{justifyContent: 'center'}}
+                
+                placeholder="09"
 
                 style={{
-                  borderTopLeftRadius:  wp('4.5%'), borderTopRightRadius:  wp('4.5%'),
-                  borderBottomLeftRadius:  wp('4.5%'), borderBottomRightRadius:  wp('4.5%'),
-                  borderColor:"white"
+                  borderBottomColor:"#E2F2EF",borderBottomWidth:hp('0.5%'),
+                  borderRightWidth:0, borderLeftWidth:0, borderTopWidth:0,
+                  borderBottomLeftRadius:0, borderBottomRightRadius:0
                 }}
 
                 labelStyle={{
@@ -306,16 +337,17 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '55', value: '55'},
                 ]}
                 defaultValue={this.state.itemB}
-                containerStyle={{height: hp('8%'), width:wp('20%')}}
+                containerStyle={{height: hp('7%'), width:wp('17%')}}
                 dropDownStyle={{backgroundColor: 'white', 
                       borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
-                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                      borderColor:"#E2F2EF",borderWidth:wp('0.5%')}}
                 itemStyle={{justifyContent: 'center'}}
+                placeholder="00"
 
                 style={{
-                  borderTopLeftRadius:  wp('4.5%'), borderTopRightRadius:  wp('4.5%'),
-                  borderBottomLeftRadius:  wp('4.5%'), borderBottomRightRadius:  wp('4.5%'),
-                  borderColor:"white"
+                  borderBottomColor:"#E2F2EF",borderBottomWidth:hp('0.5%'),
+                  borderRightWidth:0, borderLeftWidth:0, borderTopWidth:0,
+                  borderBottomLeftRadius:0, borderBottomRightRadius:0
                 }}
 
                 labelStyle={{
@@ -362,19 +394,19 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '23', value: '23'},
                 ]}
                 defaultValue={this.state.itemAA}
-                containerStyle={{height: hp('8%'), width:wp('20%')}}
+                containerStyle={{height: hp('7%'), width:wp('17%'), marginRight:wp('2%')}}
+                
                 dropDownStyle={{backgroundColor: 'white', 
                       borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
-                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                      borderColor:"#E2F2EF",borderWidth:wp('0.5%')}}
                 itemStyle={{justifyContent: 'center'}}
                 placeholder="16"
                 
                 style={{
-                  borderTopLeftRadius:  wp('4.5%'), borderTopRightRadius:  wp('4.5%'),
-                  borderBottomLeftRadius:  wp('4.5%'), borderBottomRightRadius:  wp('4.5%'),
-                  borderColor:"white"
+                  borderBottomColor:"#E2F2EF",borderBottomWidth:hp('0.5%'),
+                  borderRightWidth:0, borderLeftWidth:0, borderTopWidth:0,
+                  borderBottomLeftRadius:0, borderBottomRightRadius:0
                 }}
-            
 
                 labelStyle={{
                   height:hp('3%'),
@@ -414,18 +446,18 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     {label: '55', value: '55'},
                 ]}
                 defaultValue={this.state.itemBB}
-                containerStyle={{height: hp('8%'), width:wp('20%')}}
+                containerStyle={{height: hp('7%'), width:wp('17%'), marginRight:wp('2%')}}
+                
                 dropDownStyle={{backgroundColor: 'white', 
                       borderBottomLeftRadius: wp('4.5%'), borderBottomRightRadius: wp('4.5%'),
-                      borderTopLeftRadius: wp('4.5%'), borderTopRightRadius: wp('4.5%')}}
+                      borderColor:"#E2F2EF",borderWidth:wp('0.5%')}}
                 itemStyle={{justifyContent: 'center'}}
                 
                 style={{
-                  borderTopLeftRadius:  wp('4.5%'), borderTopRightRadius:  wp('4.5%'),
-                  borderBottomLeftRadius:  wp('4.5%'), borderBottomRightRadius:  wp('4.5%'),
-                  borderColor:"white"
+                  borderBottomColor:"#E2F2EF",borderBottomWidth:hp('0.5%'),
+                  borderRightWidth:0, borderLeftWidth:0, borderTopWidth:0,
+                  borderBottomLeftRadius:0, borderBottomRightRadius:0
                 }}
-
                 
                 labelStyle={{
                   height:hp('3%'),
@@ -450,8 +482,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
             <TouchableOpacity 
             style={styles.button}
                 onPress={() => {
-                    this.savedData(this.state.bangCode,this.state.itemC,this.state.monthh,this.state.datee,this.state.dayy, this.state.yearr,(this.state.itemA.length<2?'0'+this.state.itemA:this.state.itemA)+(this.state.itemB.length<2?'0'+this.state.itemB:this.state.itemB) + (this.state.itemAA)+(this.state.itemBB)) 
-                    this.props.navigation.navigate('Work Management');
+                    this.savedData(this.state.bangCode,this.state.itemC,this.state.monthh,this.state.datee,this.state.dayy, this.state.yearr,(this.state.itemA.length<2?'0'+this.state.itemA:this.state.itemA)+(this.state.itemB.length<2?'0'+this.state.itemB:this.state.itemB) + (this.state.itemAA.length<2?'0'+this.state.itemAA:this.state.itemAA)+(this.state.itemBB.length<2?'0'+this.state.itemBB:this.state.itemBB)) 
                 }}>
                 <Text style={styles.buttonTitle}>변경 완료</Text>
              </TouchableOpacity>     

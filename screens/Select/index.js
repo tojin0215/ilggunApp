@@ -58,7 +58,6 @@ const SelectScreen = ({ onSignIn, navigation }) => {
   return ( 
     <View>
     <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-      
       <View style={styles.textArea}>
       <Text style={styles.text1}>"{id}"</Text>
         <Text  style={styles.text2}>님 안녕하세요.</Text>
@@ -70,18 +69,10 @@ const SelectScreen = ({ onSignIn, navigation }) => {
             >
             <Image style={styles.buttonTitle1} source={ownerImgSelected}></Image>
         </TouchableHighlight>
-        {/*<TouchableOpacity 
-          style={styles.button}
-          //navigation.navigate('Business List')
-          onPress={() => {ownerchangeImg();}}>
-          <Image style={styles.buttonTitle1} source={ownerImgSelected}/>
-      </TouchableOpacity>
-        */}
       <TouchableOpacity 
         style={styles.button}
-        //navigation.navigate('Worker Business List')
         onPress={() => {empchangeImg();navigation.navigate('Worker Business List');}}>
-        <Image style={styles.buttonTitle1} source={empImgSelected}></Image>
+          <Image style={styles.buttonTitle1} source={empImgSelected}></Image>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonlogoArea}>
@@ -92,7 +83,6 @@ const SelectScreen = ({ onSignIn, navigation }) => {
   );
 };
  
-
 const styles = StyleSheet.create({
   image:{
     justifyContent: "flex-start",
@@ -114,11 +104,11 @@ const styles = StyleSheet.create({
     marginTop:hp('10%')
   }, 
   text1:{
-    fontSize:wp('7%'), 
+    fontSize:wp('6%'), 
     fontFamily:"NanumSquareB", 
   },
   text2:{
-    fontSize:wp('7%'), 
+    fontSize:wp('6%'), 
     fontFamily:"NanumSquare",
   },
   buttonArea: {
@@ -142,7 +132,7 @@ const styles = StyleSheet.create({
   buttonlogoArea: {
     position:"absolute",
     alignItems:"center",
-    bottom: hp('2%'),
+    bottom: 0,
     width: "100%",
     height: hp('5%'),
 },
@@ -153,5 +143,6 @@ logobottom:{
   fontFamily:"NanumSquare",
 },
 })
+
 
 export default SelectScreen;

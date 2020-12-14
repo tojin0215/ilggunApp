@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ImageBackground, View, Button,Alert, Animated} from 'react-native';
+import { StyleSheet, Text, ImageBackground, View, Button,Alert, Animated, Image} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper,  Col, Cols, Cell } from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -9,7 +9,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import axios from 'axios';
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -28,7 +28,7 @@ class WorkerStatementScreen extends Component{
     constructor(props) {
       super(props);
       this.state = {
-          itemA: null , isVisibleA: false, itemB: null, isVisibleB: false,
+          itemA: null , isVisibleA: false, itemB: null, isVisibleB: false,itemC: null, isVisibleC: false,
           PaymentSum:'-', DeductionSum:'-', Difference:'-', Name:'-', WorkingType:'-',
           tableTitle:['기본급','추가근로수당','식대','국민연금','건강보험료','장기요양보험료','고용보험료','소득세','주민세'],
           tableData: [
@@ -40,7 +40,6 @@ class WorkerStatementScreen extends Component{
       AsyncStorage.getItem("bangCode")
       .then((bangCode) => {
         this.fetchData(bangCode)
-        
       })
 
     }
@@ -121,8 +120,16 @@ class WorkerStatementScreen extends Component{
     }
     fetchData = async(bangCode) => { 
       try {
-        console.log(bangCode);
-          let res = await fetch('http://192.168.43.253:3000/selectWorkerEach', {
+          console.log(bangCode);
+          axios.post('https://www.kwonsoryeong.tk:3000/selectWorkerEach', {
+            business : bangCode
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+          })
+          /*
+          let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorkerEach', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -131,24 +138,32 @@ class WorkerStatementScreen extends Component{
             body: JSON.stringify({
               business : bangCode
             }),
-          }).then(res => res.json())
+          }).then(res => res.json())*/
           .then(res => {
-            console.log(res);
             let rowall = [];
             let t1=[];
             let t2=[];
-            for (let i = 0; i < res.length; i++) {
-              if(res[i].type==1){
-                rowall.push([res[i].workername, "알바", String(res[i].pay), '80' , '10000', '0']);
-                t1.push({label: res[i].workername, value: res[i].workername})
-                this.setState({itemA:res[i].workername});
-                this.setState({nname: rowall, type1:t1})
+            let t3=[];
+            for (let i = 0; i < res.data.length; i++) {
+              if(res.data[i].state==2){
+                if(res.data[i].type==1){
+                  rowall.push([res.data[i].workername, "알바", String(res.data[i].pay), '80' , '10000', '0']);
+                  t1.push({label: res.data[i].workername, value: res.data[i].workername})
+                  this.setState({itemA:res.data[i].workername});
+                  this.setState({nname: rowall, type1:t1})
+                }
+                else{
+                  rowall.push([res.data[i].workername, "정규직", String(res.data[i].pay), '0', '0']);
+                  t2.push({label: res.data[i].workername, value: res.data[i].workername})
+                  this.setState({itemB:res.data[i].workername});
+                  this.setState({nname: rowall,type2:t2})
+                }
               }
               else{
-                rowall.push([res[i].workername, "정규직", String(res[i].pay), '0', '0']);
-                t2.push({label: res[i].workername, value: res[i].workername})
-                this.setState({itemB:res[i].workername});
-                this.setState({nname: rowall,type2:t2})
+                rowall.push (['계약서가 작성되지 않았습니다',"계약서가 작성되지 않았습니다",'X','X','X'])
+                t3.push({label: 'X', value: 'X'})
+                this.setState({itemC:"계약서가 작성되지 않았습니다"});
+                this.setState({nname: rowall,type3:t3})
               }
             }
             this.show();
@@ -182,19 +197,27 @@ class WorkerStatementScreen extends Component{
         let WorkingType = '정규직'
         console.log("여기여기요~~");
         console.log(this.state.nname);
+        console.log(WorkingType+" 왜 안들어오늬???")
         for(let i=0; i<this.state.nname.length; i++){
-            if(this.state.itemA == this.state.nname[i][0] || this.state.itemB == this.state.nname[i][0]){
-                
+          console.log(this.state.itemC + " "+ this.state.nname[i][0]+" 왜 안들어오늬")
+            if(this.state.itemA == this.state.nname[i][0] || this.state.itemB == this.state.nname[i][0] || this.state.itemC == this.state.nname[i][0]){
+                console.log(WorkingType+" aaaaaaaaaaaaaaa")
                 WorkingType = this.state.nname[i][1]
+                console.log(WorkingType+" aaaaaaaaaaaaaaa")
                 if(this.state.nname[i][1] == '정규직'){
                     MonthlySalary = this.state.nname[i][2]
                     MealCharge = this.state.nname[i][3]
                     ExtraWorkAllowance = this.state.nname[i][4]
-                } else{
+                } else if(this.state.nname[i][1] == '알바'){
                     WorkingHour = this.state.nname[i][3]
                     HourlyWage = this.state.nname[i][2]
                     MealChargePartTime = this.state.nname[i][4]
                     ExtraWorkAllowancePartTime = this.state.nname[i][5]
+                }else{
+                  MonthlySalary = 'X'
+                  MealCharge = 'X'
+                  ExtraWorkAllowance = 'X'
+
                 }
                 break;
             }
@@ -214,7 +237,72 @@ class WorkerStatementScreen extends Component{
 
         // WithholdingTax:원천과세(IncomeTax+InhabitantsTax)
         // IncomeTax : 갑근세(소득세) : 보수총액*3.0%
-        let IncomeTax = (parseInt(MonthlySalary)*0.03).toFixed(0)
+        //let IncomeTax = (parseInt(MonthlySalary)*0.03).toFixed(0)
+        var IncomeTax =0; 
+       
+        if(parseInt(MonthlySalary)<1060000){
+          IncomeTax = 0
+        }
+        else if(parseInt(MonthlySalary)>=1060000 & parseInt(MonthlySalary) <=1100000){
+          IncomeTax = 1600
+        }
+        else if(parseInt(MonthlySalary)>1100000 & parseInt(MonthlySalary) <=1200000){
+          IncomeTax = 2990
+        }
+        else if(parseInt(MonthlySalary)>1200000 & parseInt(MonthlySalary) <=1300000){
+          IncomeTax = 4740
+        }
+        else if(parseInt(MonthlySalary)>1300000 & parseInt(MonthlySalary) <=1400000){
+          IncomeTax = 6800
+        }
+        else if(parseInt(MonthlySalary)>1400000 & parseInt(MonthlySalary) <=1500000){
+          IncomeTax = 8920
+        }
+        else if(parseInt(MonthlySalary)>1500000 & parseInt(MonthlySalary) <=1600000){
+          IncomeTax = 10980
+        }
+        else if(parseInt(MonthlySalary)>1600000 & parseInt(MonthlySalary) <=1700000){
+          IncomeTax = 13050
+        }
+        else if(parseInt(MonthlySalary)>1700000 & parseInt(MonthlySalary) <=1800000){
+          IncomeTax = 15110
+        }
+        else if(parseInt(MonthlySalary)>1800000 & parseInt(MonthlySalary) <=1900000){
+          IncomeTax = 17180
+        }
+        else if(parseInt(MonthlySalary)>1900000 & parseInt(MonthlySalary) <=2000000){
+          IncomeTax = 19520
+        }
+        else if(parseInt(MonthlySalary)>2000000 & parseInt(MonthlySalary) <=2100000){
+          IncomeTax = 22740
+        }
+        else if(parseInt(MonthlySalary)>2100000 & parseInt(MonthlySalary) <=2200000){
+          IncomeTax = 25950
+        }
+        else if(parseInt(MonthlySalary)>2200000 & parseInt(MonthlySalary) <=2300000){
+          IncomeTax = 29160
+        }
+        else if(parseInt(MonthlySalary)>2300000 & parseInt(MonthlySalary) <=2400000){
+          IncomeTax = 33570
+        }
+        else if(parseInt(MonthlySalary)>2400000 & parseInt(MonthlySalary) <=2500000){
+          IncomeTax = 41630
+        }
+        else if(parseInt(MonthlySalary)>2500000 & parseInt(MonthlySalary) <=2600000){
+          IncomeTax = 50190
+        }
+        else if(parseInt(MonthlySalary)>2600000 & parseInt(MonthlySalary) <=2700000){
+          IncomeTax = 58750
+        }
+        else if(parseInt(MonthlySalary)>2700000 & parseInt(MonthlySalary) <=2800000){
+          IncomeTax = 67300
+        }
+        else if(parseInt(MonthlySalary)>2800000 & parseInt(MonthlySalary) <=2900000){
+          IncomeTax = 75860
+        }
+        else if(parseInt(MonthlySalary)>2900000 & parseInt(MonthlySalary) <=3000000){
+          IncomeTax = 84850
+        }
         // InhabitantsTax : 주민세 (갑근세의 10%)
         let InhabitantsTax = (parseInt(IncomeTax)*0.1).toFixed(0)
 
@@ -244,8 +332,8 @@ class WorkerStatementScreen extends Component{
         // 실지급액(지급총액-공제총액)
         let ActualSalaryPartTime = parseInt(TotalPaymentPartTime) - parseInt(WithholdingTax)
 
-
-      if(WorkingType=='정규직'){ // -------정규------
+          
+              if(WorkingType=='정규직'){ // -------정규------
                   this.setState({
                       Name:this.state.itemB, WorkingType:'정규직',
                       tableData:[[MonthlySalary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),ExtraWorkAllowance,MealCharge.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
@@ -254,9 +342,9 @@ class WorkerStatementScreen extends Component{
                       IncomeTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),InhabitantsTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")]],
                       DeductionSum : TotalDeduction.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
                       PaymentSum:TotalPayment.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-                      Difference:ActualSalary,
+                      Difference:ActualSalary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
                   })
-              } else{ // ------알바-------
+              } else if(WorkingType=='알바'){ // ------알바-------
                   this.setState({
                       Name:this.state.itemA, WorkingType:'알바',
                       tableData:[[MonthlySalaryPartTime.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),ExtraWorkAllowancePartTime.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
@@ -266,12 +354,25 @@ class WorkerStatementScreen extends Component{
                       Difference:ActualSalaryPartTime.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
                   })
               }
+              else{
+                  this.setState({
+                    Name:this.state.itemC, WorkingType:'X',
+                      tableData:[['X','X','X',
+                      'X','X',
+                      'X','X',
+                      'X','X']],
+                      DeductionSum : 'X',
+                      PaymentSum:'X',
+                      Difference:'X',
+                })
+              }
       }
 
     changeVisibility(state) {
         this.setState({
             isVisibleA: false,
             isVisibleB: false,
+            isVisibleC: false,
             ...state
         });
     }
@@ -282,15 +383,16 @@ class WorkerStatementScreen extends Component{
         //PaymentSum:지급합계, DeductionSum:공제합계, Difference:차이
         return (
           <View>
-          <ImageBackground style={styles.image} source={require('../../img/page2_2.png')}>
-        <ScrollView>
+          <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+          
             <View style={styles.textArea}>
                 <Text style={styles.textStyle}>이름 : {Name}</Text>
-                <Text style={styles.textStyle}>근무형태 : {WorkingType}</Text>
+                <Text style={styles.textStyle}>, 근무형태 : {WorkingType}</Text>
             </View>
-            <View style={styles.textArea}>
-                <Table style={styles.wrapper} borderStyle={{borderWidth: 1}}>
-                     {/* Left Wrapper */}
+            <ScrollView>
+            <View style={styles.tableArea}>
+            <Table style={styles.wrapper} borderStyle={{borderWidth: 1, borderColor:'white'}}>
+                    {/* Left Wrapper */}
                     <TableWrapper style={{width:wp('40%')}} >
                         <Cell data="내역" style={styles.singleHead} textStyle={styles.tableTitleText}/>
                         <TableWrapper style={styles.wrapper}>
@@ -299,30 +401,28 @@ class WorkerStatementScreen extends Component{
                         </TableWrapper>
                         <Cell data="지급액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
                         <Cell data="공제액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
-                        <Cell data="차인지급액계" style={styles.singleHead1_1} textStyle={styles.tableTitleText}/>
+                        <Cell data="차인지급액계" style={styles.singleHead1_1_1} textStyle={styles.tableTitleText}/>
                     </TableWrapper>
 
                     <TableWrapper style={{flex:1}}>
                         <Cell data="금액" style={styles.singleHead1} textStyle={styles.tableTitleText}/>
                         <Cols data={state.tableData} heightArr={[hp('5.5%'), hp('5.5%'), hp('5.5%'),hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%'), hp('5.5%')]} textStyle={styles.tableText}/>
                         
-                        <Cell data={PaymentSum} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
-                        <Cell data={DeductionSum} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
-                        <Cell data={Difference} style={styles.singleHead1_2} textStyle={styles.tableTitleText}/>
+                        <Cell data={PaymentSum} style={styles.singleHead1_2} textStyle={styles.tableTitleWhiteText}/>
+                        <Cell data={DeductionSum} style={styles.singleHead1_2} textStyle={styles.tableTitleWhiteText}/>
+                        <Cell data={Difference} style={styles.singleHead1_2_1} textStyle={styles.tableTitleWhiteText}/>
                     </TableWrapper>
                 </Table>
             </View>
             <View style={styles.buttonArea}>
-            <TouchableOpacity
+           <TouchableOpacity
               style={styles.button}
               onPress={()=> this.clickHandler()}>
+              <Image style={styles.excelBtn} source={require('../../img/excel_purple.png')}></Image>
+           </TouchableOpacity>
+         </View>
 
-              <Text style={styles.buttonTitle}>엑셀 공유</Text> 
-            </TouchableOpacity>
-
-            </View>
-
-          <View style={styles.tableArea}><Text></Text></View>
+          <View style={{marginTop:hp('5%')}}><Text></Text></View>
         </ScrollView>
         
         <Button title="엑셀 공유" onPress={()=> this.clickHandler()}/>
@@ -339,28 +439,29 @@ const styles = StyleSheet.create({
       width: "100%", height: "103%", 
   },
   textArea:{
+    flexDirection:"row",
     padding:wp('5%'),
     marginTop:hp('2%'),
     marginLeft:wp('1.5%')
   },
   tableArea:{
+    paddingLeft:wp('5%'),
     marginTop:hp('1%'),
-    marginBottom:hp('5%'),
-    width:wp('90%'),
+    marginBottom:hp('2%'),
+    width:wp('92%'),
   },
-  buttonArea:{
-    padding:wp('5%'), 
+  buttonArea: {
+    alignItems:"center", justifyContent:"center",
+    width: '100%', height: hp('16%'),
+    paddingBottom:hp('0.1%'), paddingTop:hp('3%')
   },
   button: {
-    backgroundColor: "#7085DF",
-    width:wp('90%'), height:hp('6%'),
+    width:wp('90%'), height: hp('8%'),
     justifyContent: 'center', alignItems:"center",
-    borderRadius:wp('1.7%'),
+    marginTop:hp('2%'),
   },
-  buttonTitle: {
-    color: '#040525',
-    fontFamily:"NanumSquareB",
-    fontSize:wp('4.8%'),
+  excelBtn:{
+    width:wp('85%'), height:hp('5.6%')
   },
   textStyle:{
     fontSize:wp('4.2%'),
@@ -371,12 +472,45 @@ const styles = StyleSheet.create({
     marginRight:wp('2%'),
   },  
   wrapper: { flexDirection: 'row' },
-  singleHead: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#7085DF'},
-  singleHead1: {height: hp('5.5%'), backgroundColor: '#7085DF' },
-  singleHead1_1: { width: wp('40%'), height: hp('5.5%'), backgroundColor: '#7085DF'},
-  singleHead1_2: {height: hp('5.5%'), backgroundColor: '#7085DF' },
-  title: { flex: 3, backgroundColor: 'white' },
-  title1: { flex: 1, backgroundColor: 'white' },
+  singleHead: {
+    width: wp('40%'), 
+    height: hp('5.5%'), 
+    backgroundColor: '#D3DDFF',
+    borderTopLeftRadius:wp('4%')},
+  singleHead1: {
+    height: hp('5.5%'), 
+    backgroundColor: '#D3DDFF',
+    borderTopRightRadius:wp('4%')
+  },
+  singleHead1_1: {
+    width: wp('40%'), 
+    height: hp('5.5%'), 
+    backgroundColor: '#D3DDFF',
+  },
+  singleHead1_1_1: {
+    width: wp('40%'), 
+    height: hp('5.5%'), 
+    backgroundColor: '#D3DDFF',
+    borderBottomLeftRadius:wp('4%') 
+  },
+  singleHead1_2: {
+    height: hp('5.5%'), 
+    backgroundColor: '#7085DF'
+  },
+  singleHead1_2_1:{
+    height: hp('5.5%'), 
+    backgroundColor: '#7085DF',
+    borderBottomRightRadius:wp('4%') 
+  },
+  
+  title: {
+    flex: 3,
+    backgroundColor: '#E6EDFF' 
+  },
+  title1: {
+    flex: 1, 
+    backgroundColor: '#D3DDFF' 
+  },
   tableText: { 
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
@@ -386,5 +520,14 @@ const styles = StyleSheet.create({
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
       color: '#040525',
-      fontSize: wp('3.8%') },
+      fontSize: wp('3.8%') 
+  }, 
+    tableTitleWhiteText:{
+      textAlign: 'center', 
+      fontFamily:"NanumSquare", 
+      color: 'white',
+      fontSize: wp('3.8%') 
+
+    }
+      
 });

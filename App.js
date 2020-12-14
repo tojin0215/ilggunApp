@@ -49,6 +49,7 @@ import ContractformBScreen from './screens/ContractformB';
 import BusinessListScreen from './screens/BusinessList';
 import WorkerBusinessListScreen from './screens/WorkerBusinessList';
 import AddBusinessScreen from './screens/AddBusiness';
+import MapScreen from './screens/Map'
 import CalendarScreen from './screens/Calendar';
 import VacationRequestScreen from './screens/VacationRequest';
 import WorkerStatementScreen from './screens/WorkerStatement';
@@ -88,8 +89,8 @@ const getToken = async() => {
 }
 const styles = StyleSheet.create({
   tinyLogo: {
-    width: wp('13%'),
-    height:  wp('13%'),
+    width: wp('11%'),
+    height:  wp('11%'),
     marginLeft:wp('4%')
   },
   logo: {
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     flexDirection:'row', marginRight:wp('2%')
   },
   userImage:{
-    marginTop:hp('0.4%'), marginRight:wp('1%'),
+    marginTop:hp('0.6%'),
     width:wp('5.2%'), height:hp('3.3')
   },
   logoutBtnArea:{
@@ -127,11 +128,11 @@ const styles = StyleSheet.create({
     marginTop:hp('1%')
   },
   logoutImage:{
-    marginTop:hp('0.7%'), marginLeft:wp('1%'),
+    marginTop:hp('0.7%'), marginLeft:wp('4%'),
     width:wp('5.5%'), height:hp('3.1')
   },
   msgImage:{
-    marginTop:hp('0.9%'), marginRight:wp('2%'),
+    marginTop:hp('0.9%'), marginLeft:wp('3%'),
     width:wp('8%'), height:hp('3.0%')
   },
   wokrListLeft:{
@@ -145,14 +146,23 @@ const WorkerTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-      activeTintColor: '#040525',
-      inactiveTintColor :'#040525',
-      activeBackgroundColor: '#67C8BA',
-      labelStyle: {
-        fontSize: wp('4.8%'),
-        fontFamily:"NanumSquare"
-      },
-      tabStyle:{justifyContent:"center"}
+        activeTintColor: '#67C8BA',
+        inactiveTintColor :'#D3D6E2',
+        labelStyle: {
+          fontSize: wp('4.8%'),
+          fontFamily:"NanumSquare"
+        },
+        tabStyle:{
+          marginTop:hp('1%'),
+          marginBottom:hp('1%'),
+          height:hp('5%'),
+          justifyContent:"center", 
+          borderLeftWidth:wp('0.7%'),
+          borderLeftColor:'#E2F2EF',
+        },
+        style:{
+          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        }
     }}
     >
       <Tab.Screen name="WorkerManage" component={WorkerManageScreen}
@@ -171,14 +181,23 @@ const ExpenseTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-      activeTintColor: '#040525',
-      inactiveTintColor :'#040525',
-      activeBackgroundColor: '#67C8BA',
-      labelStyle: {
-        fontSize: wp('4.8%'),
-        fontFamily:"NanumSquare"
-      },
-      tabStyle:{justifyContent:"center"}
+        activeTintColor: '#67C8BA',
+        inactiveTintColor :'#D3D6E2',
+        labelStyle: {
+          fontSize: wp('4.8%'),
+          fontFamily:"NanumSquare"
+        },
+        tabStyle:{
+          marginTop:hp('1%'),
+          marginBottom:hp('1%'),
+          height:hp('5%'),
+          justifyContent:"center", 
+          borderLeftWidth:wp('0.7%'),
+          borderLeftColor:'#E2F2EF',
+        },
+        style:{
+          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        }
     }}>
       <Tab.Screen name="Expense1" component={ExpenseScreen1} 
       options={{
@@ -197,16 +216,24 @@ const UnemploymentTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: '#040525',
-        inactiveTintColor :'#040525',
-        activeBackgroundColor: '#67C8BA',
-        labelStyle: {
-          fontSize: wp('4.8%'),
-          fontFamily:"NanumSquare"
-        },
-        tabStyle:{justifyContent:"center"}
-      }}
-    >
+        activeTintColor: '#67C8BA',
+        inactiveTintColor :'#D3D6E2',
+      labelStyle: {
+        fontSize: wp('4.8%'),
+        fontFamily:"NanumSquare"
+      },
+      tabStyle:{
+        marginTop:hp('1%'),
+        marginBottom:hp('1%'),
+        height:hp('5%'),
+        justifyContent:"center", 
+        borderLeftWidth:wp('0.7%'),
+        borderLeftColor:'#E2F2EF',
+      },
+      style:{
+        shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+      }
+    }}>
       <Tab.Screen name="Unemployment1" component={UnemploymentScreen1} 
       options={{
           tabBarLabel: '실업급여일반',
@@ -224,14 +251,23 @@ const WExpenseTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: '#040525',
-        inactiveTintColor :'#040525',
-        activeBackgroundColor: '#7085DF',
+        activeTintColor: '#7085DF',
+        inactiveTintColor :'#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
           fontFamily:"NanumSquare"
         },
-        tabStyle:{justifyContent:"center"}
+        tabStyle:{
+          marginTop:hp('1%'),
+          marginBottom:hp('1%'),
+          height:hp('5%'),
+          justifyContent:"center", 
+          borderLeftWidth:wp('0.7%'),
+          borderLeftColor:'#E3E6EE',
+        },
+        style:{
+          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        }
       }}
       >
       <Tab.Screen name="WExpense1" component={WExpenseScreen1} 
@@ -251,16 +287,24 @@ const WUnemploymentTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: '#040525',
-        inactiveTintColor :'#040525',
-        activeBackgroundColor: '#7085DF',
-        labelStyle: {
-          fontSize: wp('4.8%'),
-          fontFamily:"NanumSquare"
-        },
-        tabStyle:{justifyContent:"center"}
-      }}
-    >
+        activeTintColor: '#7085DF',
+        inactiveTintColor :'#D3D6E2',
+      labelStyle: {
+        fontSize: wp('4.8%'),
+        fontFamily:"NanumSquare"
+      },
+      tabStyle:{
+        marginTop:hp('1%'),
+        marginBottom:hp('1%'),
+        height:hp('5%'),
+        justifyContent:"center", 
+        borderLeftWidth:wp('0.7%'),
+        borderLeftColor:'#E3E6EE',
+      },
+      style:{
+        shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+      }
+      }}>
       <Tab.Screen name="WUnemployment1" component={WUnemploymentScreen1} 
       options={{
           tabBarLabel: '실업급여일반',
@@ -278,16 +322,24 @@ const StatementTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: '#040525',
-        inactiveTintColor :'#040525',
-        activeBackgroundColor: '#67C8BA',
-        labelStyle: {
-          fontSize: wp('4.8%'),
-          fontFamily:"NanumSquare"
-        },
-        tabStyle:{justifyContent:"center"}
-      }}
-    >
+        activeTintColor: '#67C8BA',
+      inactiveTintColor :'#D3D6E2',
+      labelStyle: {
+        fontSize: wp('4.8%'),
+        fontFamily:"NanumSquare"
+      },
+      tabStyle:{
+        marginTop:hp('1%'),
+        marginBottom:hp('1%'),
+        height:hp('5%'),
+        justifyContent:"center", 
+        borderLeftWidth:wp('0.7%'),
+        borderLeftColor:'#E2F2EF',
+      },
+      style:{
+        shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+      }
+    }}>
       <Tab.Screen name="Statement1" component={StatementScreen1} 
       options={{
           tabBarLabel: '월별',
@@ -305,14 +357,23 @@ const DocumentTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: '#040525',
-        inactiveTintColor :'#040525',
-        activeBackgroundColor: '#7085DF',
+        activeTintColor: '#7085DF',
+      inactiveTintColor :'#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
           fontFamily:"NanumSquare"
         },
-        tabStyle:{justifyContent:"center"}
+        tabStyle:{
+          marginTop:hp('1%'),
+          marginBottom:hp('1%'),
+          height:hp('5%'),
+          justifyContent:"center", 
+          borderLeftWidth:wp('0.7%'),
+          borderLeftColor:'#E3E6EE',
+        },
+        style:{
+          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        }
     }}>
       <Tab.Screen name="WorkerStatement" component={WorkerStatementScreen} 
       options={{
@@ -331,15 +392,24 @@ const MessageTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: '#040525',
-        inactiveTintColor :'#040525',
-        activeBackgroundColor: '#7085DF',
+        activeTintColor: '#92B9E4',
+      inactiveTintColor :'#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
           fontFamily:"NanumSquare"
         },
-        tabStyle:{justifyContent:"center"}
-    }}>
+        tabStyle:{
+          marginTop:hp('1%'),
+          marginBottom:hp('1%'),
+          height:hp('5%'),
+          justifyContent:"center", 
+          borderLeftWidth:wp('0.7%'),
+          borderLeftColor:'#DAE9F7',
+        },
+        style:{
+          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        }
+      }}>
       <Tab.Screen name="Received Message" component={ReceivedMessageScreen} 
         options={{
           tabBarLabel: '받은 메세지',
@@ -478,17 +548,16 @@ const App = () => {
             headerTitle: getFocusedRouteNameFromRoute(route),
             headerRight: () => (
               <View style={styles.rowArea}>
-                <View style={styles.userArea}>
-                  <Text style={styles.logoutText}>{id} </Text>
-                  <Image style={styles.userImage} source={require('./img/user.png')}></Image>
-                </View>
-                <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
-                  <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleSignOut} style={styles.logoutBtnArea}>
-                  <Text style={styles.logoutText}>로그아웃</Text>
-                  <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
-                </TouchableOpacity>
+              <View style={styles.userArea}>
+                <Text style={styles.logoutText}>{id} </Text>
+                <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
+              </View>
+              <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
+                <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleSignOut} style={styles.logoutBtnArea}>
+                <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
+              </TouchableOpacity>
               </View>
             ),
           })}
@@ -502,16 +571,15 @@ const App = () => {
               <View style={styles.rowArea}>
               <View style={styles.userArea}>
                 <Text style={styles.logoutText}>{id} </Text>
-                <Image style={styles.userImage} source={require('./img/user.png')}></Image>
+                <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
               </View>
               <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
                 <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSignOut} style={styles.logoutBtnArea}>
-                <Text style={styles.logoutText}>로그아웃</Text>
                 <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
               </TouchableOpacity>
-            </View>
+              </View>
             ),
           })}
           />
@@ -525,13 +593,12 @@ const App = () => {
               <View style={styles.rowArea}>
                 <View style={styles.userArea}>
                   <Text style={styles.logoutText}>{id} </Text>
-                  <Image style={styles.userImage} source={require('./img/user.png')}></Image>
+                  <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
                   <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSignOut} style={styles.workerlogoutBtnArea}>
-                  <Text style={styles.logoutText}>로그아웃</Text>
                   <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
                 </TouchableOpacity>
               </View>
@@ -539,7 +606,13 @@ const App = () => {
           })}
           />
           <RootStack.Screen 
-          name="Add Business" component={AddBusinessScreen} 
+          name="Add Business" component={AddBusinessScreen}
+            options={({ route, navigation }) => ({
+              headerTitle : "사업장 생성하기",
+            })}
+          />
+          <RootStack.Screen
+          name="Map" component={MapScreen}
           />
           <RootStack.Screen 
             name="Home" 
@@ -565,13 +638,12 @@ const App = () => {
                 <View style={styles.rowArea}>
                 <View style={styles.userArea}>
                   <Text style={styles.logoutText}>{id} </Text>
-                  <Image style={styles.userImage} source={require('./img/user.png')}></Image>
+                  <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
                   <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSignOut} style={styles.logoutBtnArea}>
-                  <Text style={styles.logoutText}>로그아웃</Text>
                   <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
                 </TouchableOpacity>
               </View>
@@ -589,7 +661,7 @@ const App = () => {
                 <Image
                   style={styles.tinyLogo}
                   source={
-                    require('./logo.png')
+                    require('./img/logo_purple.png')
                   }
                 />
                 /*<Button
@@ -603,13 +675,12 @@ const App = () => {
                 <View style={styles.rowArea}>
                 <View style={styles.userArea}>
                   <Text style={styles.logoutText}>{id} </Text>
-                  <Image style={styles.userImage} source={require('./img/user.png')}></Image>
+                  <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.worker}>
                   <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSignOut} style={styles.workerlogoutBtnArea}>
-                  <Text style={styles.logoutText}>로그아웃</Text>
                   <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
                 </TouchableOpacity>
               </View>
@@ -619,19 +690,12 @@ const App = () => {
           <RootStack.Screen 
           options={{
             title:"달력",
-            headerTintColor: '#67C8BA', // 폰트색
-            headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-            headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
-          }}
+            }}
             name="Calendar" component={CalendarScreen}
           />
           <RootStack.Screen 
           options={{
-            title:"근무 관리",
-            headerTintColor: '#67C8BA', // 폰트색
-            headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-            headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
-          }}
+            title:"근무 관리",          }}
           name="Work Management" component={WorkManageScreen} 
           />
           <RootStack.Screen 
@@ -655,53 +719,38 @@ const App = () => {
           <RootStack.Screen 
           options={{
             title:"근로자 관리",
-            headerTintColor: '#67C8BA', // 폰트색
-            headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-            headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
           }}
           name="Worker Management" component={WorkerTabs}//WorkerManageScreen} 
           />
           <RootStack.Screen 
             options={{
               title:"계산하기",
-              headerTintColor: '#67C8BA', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="Calculating" component={CalculatingScreen}
           />
           <RootStack.Screen 
             options={{
               title:"인건비 계산",
-              headerTintColor: '#67C8BA', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="Calculating1" component={ExpenseTabs}
           />
           <RootStack.Screen 
             options={{
               title:"퇴직금 계산",
-              headerTintColor: '#67C8BA', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="Calculating2" component={CalculatingScreen2}
           />
           <RootStack.Screen 
             options={{
               title:"실업급여 계산",
-              headerTintColor: '#67C8BA', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="Calculating3" component={UnemploymentTabs}
           />
           <RootStack.Screen 
             options={{
               title:"계산하기",
-              headerTintColor: '#7085DF', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTintColor: 'white', // 폰트색
+              headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
               headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="WCalculating" component={WCalculatingScreen}
@@ -709,8 +758,8 @@ const App = () => {
           <RootStack.Screen 
             options={{
               title:"인건비 계산",
-              headerTintColor: '#7085DF', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTintColor: 'white', // 폰트색
+              headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
               headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="WCalculating1" component={WExpenseTabs}
@@ -718,8 +767,8 @@ const App = () => {
           <RootStack.Screen 
             options={{
               title:"퇴직금 계산",
-              headerTintColor: '#7085DF', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTintColor: 'white', // 폰트색
+              headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
               headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="WCalculating2" component={WCalculatingScreen2}
@@ -727,8 +776,8 @@ const App = () => {
           <RootStack.Screen 
             options={{
               title:"실업급여 계산",
-              headerTintColor: '#7085DF', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTintColor: 'white', // 폰트색
+              headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
               headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="WCalculating3" component={WUnemploymentTabs}
@@ -745,18 +794,12 @@ const App = () => {
           <RootStack.Screen 
             options={{
               title:"명세서 조회",
-              headerTintColor: '#67C8BA', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name="Statement" component={StatementTabs}
           />
           <RootStack.Screen 
             options={{
               title:"근로자 시간 변경",
-              headerTintColor: '#67C8BA', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name='alter worker' component={AlterWorkerScreen}
           />
@@ -764,8 +807,8 @@ const App = () => {
           <RootStack.Screen 
             options={{
               title:"문서함",
-              headerTintColor: '#7085DF', // 폰트색
-              headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTintColor: 'white', // 폰트색
+              headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
               headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name='Worker Document' component={DocumentTabs}
@@ -779,12 +822,18 @@ const App = () => {
           <RootStack.Screen 
             options={{
               title:"메세지 목록",
+              headerTintColor: '#92B9E4', // 폰트색
+              headerStyle: { backgroundColor: '#DAE9F7', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name='Message List' component={MessageTabs}
           />
           <RootStack.Screen 
             options={{
               title:"메세지 보내기",
+              headerTintColor: '#92B9E4', // 폰트색
+              headerStyle: { backgroundColor: '#DAE9F7', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name='Send Message' component={SendMessageScreen}
           />
@@ -798,6 +847,9 @@ const App = () => {
           <RootStack.Screen 
             options={{
               title:"할 일",
+              headerTintColor: 'white', // 폰트색
+              headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name='WorkTodo' component={WorkTodoScreen}
           />
@@ -816,7 +868,7 @@ const App = () => {
 
         <RootStack.Screen name="Sign Up"
           options={{
-            title:"가입하기",
+            title:"회원가입",
 
           }}
         >

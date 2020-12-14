@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, ImageBackground,BackHandler} from 'react-native';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import moment from "moment";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
-//========================바뀐부분A===============================
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-//========================바뀐부분A===============================
 
 class UnemploymentScreen2 extends Component{
-
+    
     state={
         Age:0, Period:0, yesORno:null,
     }
@@ -277,6 +275,7 @@ class UnemploymentScreen2 extends Component{
 
     constructor(props) {
         super(props);
+        //BackHandler.addEventListener('hardwareBackPress', (e)=>{this.props.navigation.navigate('Calculating');return true;});
         this.state = {
             tableHead: ['계산기간', '산정기간', '월 급여액'],
             tableTitle: ['기간1', '기간2', '기간3', '기간4','1일 평균 임금','월 납부 보험료'],
@@ -298,8 +297,10 @@ class UnemploymentScreen2 extends Component{
         const state = this.state;
         const{DateOfBirth,Period, Age, OneDayUnemploymentBenefitAmount,UnemploymentBenefitAmount, PaymentDays} = this.state
         return (
-//========================바뀐부분 여기 아래애ㅐ===============================
-            <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+            
+//====================================바뀐부분A=====================================
+            <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+ {/* //====================================바뀐부분A===================================== */}
             <View  style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
@@ -406,9 +407,10 @@ class UnemploymentScreen2 extends Component{
                     <Text style={styles.textStyle}>고용보험 총 가입기간 : {Period}개월</Text>
                 </View>
 
+ {/* //====================================바뀐부분B===================================== */}
                 <View  style={styles.tableArea}>
                     <Text style={styles.textLineStyle}>* 계산기간 : 퇴직일 이전 4개월 중 최종 1개월을 제외한 3개월</Text>
-                    <Table borderStyle={{borderWidth: 1}}>
+                    <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
                         <Row data={state.tableHead} flexArr={[1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
                         <TableWrapper style={styles.wrapper}>
                         <Col data={state.tableTitle} style={styles.title} heightArr={[hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%')]} textStyle={styles.tableText}/>
@@ -416,6 +418,8 @@ class UnemploymentScreen2 extends Component{
                         </TableWrapper>
                     </Table>
                 </View>
+ {/* //====================================바뀐부분B===================================== */}
+ 
                 <View style={styles.buttonArea}>
                     <TouchableOpacity
                         style={styles.button}
@@ -460,12 +464,26 @@ class UnemploymentScreen2 extends Component{
 
 export default UnemploymentScreen2;
 
+//====================================바뀐부분 여기 아래=====================================
 const styles = StyleSheet.create({
-    container: { padding:wp('3%'), width: "100%", height: "100%",},
+    container: { 
+        padding:wp('3%'),
+        width: "100%", 
+        height: "100%",
+    },
     row: {  height: hp('5.5%') },
     wrapper: { flexDirection: 'row' },
-    head: {  height: hp('5.5%'),  backgroundColor: 'white'  },
-    title: { flex: 1, backgroundColor: 'white' },
+    head: {
+        height: hp('5.5%'),
+        backgroundColor: '#E2F2EF', 
+        borderTopRightRadius:wp('4%'), 
+        borderTopLeftRadius:wp('4%')
+    },
+    title: {
+        flex: 1,
+        backgroundColor: '#E2F2EF',  
+        borderBottomLeftRadius:wp('4%')
+    },
     image:{ 
         alignItems: 'center', justifyContent:"center",
         width: "100%", height: "103%", 
@@ -571,21 +589,21 @@ const styles = StyleSheet.create({
     },
     button: {
           backgroundColor: "#67C8BA",
-          width:wp('80%'), height: hp('6%'),
+          width:wp('90%'), height: hp('5.5%'),
           justifyContent: 'center', alignItems:"center",
-          borderRadius:wp('4%'),
+          borderRadius:wp('6%'),
           marginTop:hp('2%'),
     },
     buttonReset: {
         backgroundColor: "#040525",
-        width:wp('80%'), height: hp('6%'),
+        width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
-        borderRadius:wp('4%'),
-        marginTop:hp('2%'),
+        borderRadius:wp('6%'),
+        marginTop:hp('1%'),
     },
     buttonTitle: {
-          color: '#040525',
-          fontFamily:"NanumSquareB",
+          color: 'white',
+          fontFamily:"NanumSquare",
           fontSize:wp('4.8%'),
     },
     buttonResetTitle: {

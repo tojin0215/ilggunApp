@@ -1,13 +1,70 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, ScrollView, Button, TextInput, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, TextInput, FlatList, ImageBackground, Image, Alert } from 'react-native';
 import { AsyncStorage } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import axios from 'axios';
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    height :1000,
+  image: {
+    width:'100%', height:'101%', paddingTop:hp('5%'), backgroundColor:'white',
+    alignItems:"center"
   },
   dropdown : {
     flexDirection: 'row',
+  },
+  searchArea:{
+    width:wp('75%'), height:hp('8%'),
+    paddingTop:hp('2%'), 
+    borderBottomWidth:hp('0.3%'), borderBottomColor:'#D3D6E2',
+    paddingLeft:wp('1%'),
+    flexDirection:"row"
+  },
+  searchbutton:{ 
+    width:wp('10%'),
+    height:wp('10%'),  
+    marginTop:hp('0.5%'),
+  },
+  searchImage:{ 
+    width:wp('8%'),
+    height:wp('8%'),   
+  },
+  textInputStyle:{
+    width:wp('60%'), height:hp('6%'),
+    fontSize: wp('4.7%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    paddingLeft:wp('5%'),
+  },
+  listArea:{ 
+    width:wp('70%'), height:hp('70%'),
+    marginTop:hp('1%'),
+  },
+  listStyle:{
+    flexDirection:"row",
+    width:wp('70%'), height:hp('7%'),
+    borderBottomWidth:hp('0.1%'), borderBottomColor:'#D3D6E2',
+    marginTop:hp('2%'),
+  },
+  textStyle:{
+    paddingTop:hp('2%'),
+    paddingLeft:wp('5%'),
+    marginLeft:wp('5%'),
+    width:wp('38%'), height:hp('6%'),
+    fontSize: wp('4.6%'),
+    fontFamily:"NanumSquareB",
+    color:'#040525',
+  },
+  button:{
+    width:wp('25%'), height:hp('7%'),
+    marginTop:hp('1%')
+  },
+  inviteImage:{ 
+    width:wp('20%'),
+    height:hp('5%'),  
+    borderRadius:wp('3%') 
   },
 });
 
@@ -30,7 +87,13 @@ class InviteScreen extends Component{
   }
   fetchData = async(name) => { 
     try {
-        let res = await fetch('http://192.168.43.253:3000/selectId', {
+      if(name!=''){
+      axios.post('https://www.kwonsoryeong.tk:3000/selectId', {id : name},
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectId', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -39,22 +102,36 @@ class InviteScreen extends Component{
           body: JSON.stringify({
             id : name
           }),
-        }).then(res => res.json())
+        }).then(res => res.json())*/
         .then(res => {
+          console.log(res)
           let arr=[]
-          for(let i=0; i<res.length ;i++){
-            arr.push(res[i].id)
+          for(let i=0; i<res.data.length ;i++){
+            arr.push(res.data[i].id)
           }
           this.setState({workerList : arr});
            
         });
+      }else{
+        Alert.alert("1글자 이상 입력해주세요.")
+      }
     } catch (e) {
         console.error(e);
       }
     }
     sendInviteMessage = async(name) => { 
       try {
-        let res = await fetch('http://192.168.43.253:3000/sendMessage', {
+        axios.post('https://www.kwonsoryeong.tk:3000/sendMessage', {
+          type: 1,
+            f: 'system',
+            t : name,
+            message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?"
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+        'Accept': 'application/json'}
+        })
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/sendMessage', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -66,11 +143,22 @@ class InviteScreen extends Component{
             t : name,
             message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?",
           }),
-        }).then(res => res.json())
+        }).then(res => res.json())*/
         .then(res => {
         });
         console.log(this.state.bangCode, name, this.props.route.params.type)
-        res = await fetch('http://192.168.43.253:3000/addWorker', {
+        axios.post('https://www.kwonsoryeong.tk:3000/addWorker', {
+          business: this.state.bangCode,
+          workername : name,
+          type : this.props.route.params.type,
+          state: 0
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*
+        res = await fetch('https://www.kwonsoryeong.tk:3000/addWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -82,7 +170,7 @@ class InviteScreen extends Component{
             type : this.props.route.params.type,
             state: 0
           }),
-        }).then(res => res.json())
+        }).then(res => res.json())*/
         .then(res => {
           this.props.navigation.navigate('Worker Management')
         });
@@ -93,7 +181,10 @@ class InviteScreen extends Component{
     render() {
         
         return (
-        <View style={styles.container}>
+          <View>
+          <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+        
+          <View style={styles.searchArea}>
             <TextInput 
                 onChangeText={item => {
                     this.setState({
@@ -102,15 +193,22 @@ class InviteScreen extends Component{
                 }
                 }
                 defaultValue={this.state.item}
-                placeholder={"아이디"}/>  
+                style={styles.textInputStyle}
+                placeholder={"아이디를 검색하세요."}/>  
       
-            <Button 
-                title="검색"
-                onPress={() => {
-                    this.fetchData(this.state.item);
-                    this.setState({item:''})
-                }}
-            />
+            <TouchableOpacity
+              style={styles.searchbutton}
+              onPress={() => {
+                this.fetchData(this.state.item);
+                this.setState({item:''})
+            }}>
+
+              <Image style={styles.searchImage} source={require('../../img/searchBtn.png')}/>
+            </TouchableOpacity>
+            
+          </View>
+          <View style={styles.listArea}> 
+          <ScrollView>
             {
                 //this.state.todo!=undefined?Object.entries(this.state.todo).map(([key, value]) => {
                 //    return <Text key={key}>{key}:{value==0?'미완료':'완료'}<Button title="X" onPress={()=>{this.deleteData(key)}}/></Text> 
@@ -119,10 +217,20 @@ class InviteScreen extends Component{
             }
             <FlatList data={this.state.workerList} 
                 renderItem={({ item }) => 
-                    <Text>{item}<Button title="초대" onPress={()=>{console.log(item+'<<<<<<<<<<<<<,'); this.sendInviteMessage(item); }}/></Text>
-                }/>
-            
-        </View>
+                <View style={styles.listStyle}>
+                <Text style={styles.textStyle}>{item}</Text>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={()=>{console.log(item+'<<<<<<<<<<<<<,'); this.sendInviteMessage(item); }}
+                >
+                  <Image style={styles.inviteImage} source={require('../../img/inviteBtn.png')}/>
+                </TouchableOpacity>
+              </View>
+            }/>
+        </ScrollView>
+      </View>      
+    </ImageBackground>
+    </View>
             
         )
     }

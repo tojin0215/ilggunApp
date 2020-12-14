@@ -5,12 +5,10 @@ import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component
 import moment from "moment";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
-//=============================바뀐부분A======================================
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-//=============================바뀐부분A======================================
 
 class WUnemploymentScreen2 extends Component{
 
@@ -298,7 +296,9 @@ class WUnemploymentScreen2 extends Component{
         const state = this.state;
         const{DateOfBirth,Period, Age, OneDayUnemploymentBenefitAmount,UnemploymentBenefitAmount, PaymentDays} = this.state
         return (
-            <ImageBackground style={styles.image} source={require('../../img/page2_2.png')}>
+//==========================================바뀐부분A==========================================
+            <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+{/* //==========================================바뀐부분A========================================== */}
             <View  style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
@@ -405,9 +405,11 @@ class WUnemploymentScreen2 extends Component{
                     <Text style={styles.textStyle}>고용보험 총 가입기간 : {Period}개월</Text>
                 </View>
 
+{/* //==========================================바뀐부분B========================================== */}
                 <View  style={styles.tableArea}>
                     <Text style={styles.textLineStyle}>* 계산기간 : 퇴직일 이전 4개월 중 최종 1개월을 제외한 3개월</Text>
-                    <Table borderStyle={{borderWidth: 1}}>
+                    <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
+{/* //==========================================바뀐부분B========================================== */}
                         <Row data={state.tableHead} flexArr={[1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
                         <TableWrapper style={styles.wrapper}>
                         <Col data={state.tableTitle} style={styles.title} heightArr={[hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%')]} textStyle={styles.tableText}/>
@@ -459,14 +461,29 @@ class WUnemploymentScreen2 extends Component{
 
 export default WUnemploymentScreen2;
 
+//==========================================바뀐부분 스타일들===============================
 const styles = StyleSheet.create({
-    container: { padding:wp('3%'), width: "100%", height: "100%",},
+    container: { 
+        padding:wp('3%'), 
+        width: "100%", 
+        height: "100%",
+    },
     row: {  height: hp('5.5%') },
     wrapper: { flexDirection: 'row' },
-    head: {  height: hp('5.5%'),  backgroundColor: 'white'  },
-    title: { flex: 1, backgroundColor: 'white' },
+    head: {  
+        height: hp('5.5%'),
+        backgroundColor: '#D3DDFF',
+        borderTopRightRadius:wp('4%'), 
+        borderTopLeftRadius:wp('4%')
+    },
+    title: { 
+        flex: 1, 
+        backgroundColor: '#D3DDFF',  
+        borderBottomLeftRadius:wp('4%')
+    },
     image:{ 
-        alignItems: 'center', justifyContent:"center",
+        alignItems: 'center', 
+        justifyContent:"center",
         width: "100%", height: "103%", 
     },
     
@@ -570,21 +587,21 @@ const styles = StyleSheet.create({
     },
     button: {
           backgroundColor: "#7085DF",
-          width:wp('80%'), height: hp('6%'),
+          width:wp('90%'), height: hp('5.5%'),
           justifyContent: 'center', alignItems:"center",
-          borderRadius:wp('4%'),
+          borderRadius:wp('6%'),
           marginTop:hp('2%'),
     },
     buttonReset: {
         backgroundColor: "#040525",
-        width:wp('80%'), height: hp('6%'),
+        width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
-        borderRadius:wp('4%'),
-        marginTop:hp('2%'),
+        borderRadius:wp('6%'),
+        marginTop:hp('1%'),
     },
     buttonTitle: {
-          color: '#040525',
-          fontFamily:"NanumSquareB",
+          color: 'white',
+          fontFamily:"NanumSquare",
           fontSize:wp('4.8%'),
     },
     buttonResetTitle: {

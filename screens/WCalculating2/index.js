@@ -172,8 +172,9 @@ class WCalculatingScreen2 extends Component{
     const{JoinYear, JoinMonth, JoinDay, LeaveYear, LeaveMonth, LeaveDay, AnnualBonus, AnnualAllowance, SeverancePay, AverageDailyWage} = this.state
     
     return(
-//======================여기 아래로 다 변경 ㅠㅠㅠ ===========================================
-      <ImageBackground style={styles.image} source={require('../../img/page2_2.png')}>
+  //=================================================바뀐부분A========================================
+      <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+  {/* //=================================================바뀐부분A==================================== */}
       <View style={styles.container}>
      
         <ScrollView>
@@ -260,8 +261,9 @@ class WCalculatingScreen2 extends Component{
             <Text style={styles.textStyle1}>재직일수 : {this.state.NumberOfWorkingDays}일</Text>
           </View>
 
+  {/* //=================================================바뀐부분B==================================== */}
           <View style={styles.tableArea}>
-          <Table borderStyle={{borderWidth: 1}}>
+          <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
             <Row data={state.tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
             <TableWrapper style={styles.wrapper}>
               <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%'),hp('6%'),hp('6%')]} textStyle={styles.tableText}/>
@@ -269,6 +271,7 @@ class WCalculatingScreen2 extends Component{
             </TableWrapper>
           </Table>
           </View>
+  {/* //=================================================바뀐부분B==================================== */}
 
           <View style={styles.textArea}>
             <Text style={styles.textStyle1}>*연간상여금과 연차수당 없으면 0으로 입력해주세요. </Text>
@@ -338,13 +341,23 @@ class WCalculatingScreen2 extends Component{
   
   export default WCalculatingScreen2;
   
+  //=====================================바뀐부분 스타일========================================
   const styles = StyleSheet.create({
     container: {padding:wp('5%'), width: "100%", height: "100%",},
     rowView: { flexDirection: 'row' },
     marginTop : {marginTop: hp('1.3%')},
     wrapper: { flexDirection: 'row' },
-    head: {  height: hp('5%'),  backgroundColor: 'white'},
-    title: { flex: 1, backgroundColor: 'white'},
+    head: {
+      height: hp('6%'),
+      backgroundColor: '#D3DDFF',
+      borderTopRightRadius:wp('4%'), 
+      borderTopLeftRadius:wp('4%')
+    },
+    title: {
+      flex: 1,
+      backgroundColor: '#D3DDFF',  
+      borderBottomLeftRadius:wp('4%')
+    },
     row: {  height:hp('6%') },
     titleArea:{
       alignItems:"center"
@@ -419,21 +432,21 @@ class WCalculatingScreen2 extends Component{
     },
     button: {
         backgroundColor: "#7085DF",
-        width:wp('80%'), height: hp('6%'),
+        width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
-        borderRadius:wp('4%'),
+        borderRadius:wp('6%'),
         marginTop:hp('2%'),
     },
     buttonReset: {
       backgroundColor: "#040525",
-      width:wp('80%'), height: hp('6%'),
+      width:wp('90%'), height: hp('5.5%'),
       justifyContent: 'center', alignItems:"center",
-      borderRadius:wp('4%'),
-      marginTop:hp('2%'),
+      borderRadius:wp('6%'),
+      marginTop:hp('1%'),
     },
     buttonTitle: {
-        color: '#040525',
-        fontFamily:"NanumSquareB",
+        color: 'white',
+        fontFamily:"NanumSquare",
         fontSize:wp('4.8%'),
     },
     buttonResetTitle: {

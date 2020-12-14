@@ -1,25 +1,106 @@
 import React, {useState} from 'react';
-import { View, Modal, Text, Button, StyleSheet } from 'react-native';
+import { View, Modal, Text, Button, StyleSheet, ImageBackground, Image } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { Row } from 'react-native-table-component';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  
+  image:{
+    width:'100%', height:'104%', paddingTop:hp('5%'), backgroundColor:'white',
+    alignItems:"center"
   },
-  mainContainer: {
-    marginTop: 22,
+  listArea:{
+    width:wp('100%'), height:hp('65%'),
+    alignItems:"center",
+  },
+  sendBtnArea:{
+    justifyContent:"flex-end", alignItems:"center",
+    width:'100%',
+    height:hp('9%'),
+    paddingBottom:hp('1%')
+  },
+  btnImgStyle:{
+    width:wp('50%'),
+    height:hp('6%')
+  },
+  messageArea:{
+    paddingLeft:wp('2%'), 
+    height:hp('12%'), width:wp('80%'), 
+    backgroundColor:'white',borderRadius:wp('3%'),
+    marginBottom:hp('2%'),marginTop:hp('1%'),
+    paddingTop:hp('1%'), paddingBottom:hp('1%'),
+    borderWidth:wp('0.5%'),
+    borderColor:'#DAE9F7',
+  },
+  titleArea:{
+    flexDirection:"row", height:hp('4%'), width:wp('30%'),
+    justifyContent:"flex-start",
+  },
+  userImage:{
+    marginLeft:wp('2%'),
+    width:wp('3%'), height:wp('3.2%'),
+  },
+  touchArea:{
+    width:wp('70%'), height:hp('11%'), paddingRight:wp('2%'),
+    marginLeft:wp('1%'), paddingTop:hp('0.7%')
+  },
+  textNameStyle:{
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquareB",
+    color:'#040525',
+    marginTop:hp('0.5%'),
+    paddingLeft:wp('0.5%'),
+  },
+  textStyle: {
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    marginTop:hp('0.9%'),
+    paddingLeft:wp('5%')
   },
   modalContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-    backgroundColor: '#fff', padding: 20
+    backgroundColor: 'white',
+    paddingLeft: wp('10%'),
+    paddingRight: wp('10%'),
   },
+  modaltextStyle:{
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    paddingLeft:wp('3%'),
+    lineHeight:wp('6.5%'),
+  },
+  modalBtn:{
+    width:wp('80%'), height:hp('5.5%'),
+    textAlign:"center",
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    backgroundColor:'#DAE9F7',
+    borderRadius:wp('5%'),
+    marginTop:hp('4%'),
+    paddingTop:hp('1.2')
+  },
+  modalBtn2:{
+    width:wp('39%'), height:hp('5.5%'),
+    textAlign:"center",
+    fontSize: wp('4.5%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    backgroundColor:'#DAE9F7',
+    borderRadius:wp('5%'),
+    marginTop:hp('4%'),
+    marginRight:wp('1%'),
+    paddingTop:hp('1.2')
+  }
 });
  
 const sentMessageScreen = ({ navigation }) => {
@@ -29,7 +110,7 @@ const sentMessageScreen = ({ navigation }) => {
           fetchData()
       })
   return unsubscribe;
-  }, [navigation, this.fetchData]);
+  }, []);
 //===================================================
   const [business, setBusiness] = useState([]);
   const [visibility, setVisibility] = useState([]);
@@ -38,7 +119,13 @@ const sentMessageScreen = ({ navigation }) => {
   
   async function fetchData() { 
       try {
-          let res = await fetch('http://192.168.43.253:3000/selectSentMessage', {
+        axios.post('https://www.kwonsoryeong.tk:3000/selectSentMessage', {
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*  let res = await fetch('https://www.kwonsoryeong.tk:3000/selectSentMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -46,11 +133,11 @@ const sentMessageScreen = ({ navigation }) => {
             },
             body: JSON.stringify({
             }),
-          }).then(res => res.json())
+          }).then(res => res.json())*/
           .then(res => 
             {
-              console.log(res);
-              setBusiness(res);
+              console.log(res.data);
+              setBusiness(res.data);
               console.log("dddd" +business);
             });
       } catch (e) {
@@ -63,7 +150,21 @@ const sentMessageScreen = ({ navigation }) => {
         let busi = message.split('(')[1].split(')')[0];
         let d = message.split(' ')[1].split('에')[0];
         let dd = d.split('-');
-        let res = await fetch('http://192.168.43.253:3000/addWork', {
+        axios.post('https://www.kwonsoryeong.tk:3000/addWork', {
+            business : busi,
+            workername : work,
+            month : dd[1]*1,
+            date : dd[2]*1,
+            day : 0,
+            year : dd[0]*1,
+            time : 0,
+            subt : 0
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -79,7 +180,7 @@ const sentMessageScreen = ({ navigation }) => {
             time : 0,
             subt : 0
           }),
-        });
+        });*/
     } catch (e) {
         console.error(e);
       }
@@ -95,11 +196,31 @@ const sentMessageScreen = ({ navigation }) => {
     }
   }
     return (
-      <View style={styles.container}>
+      <View>
+      <ImageBackground style={styles.image} source={require('../../img/pageMsg.png')}>
+      
+        <View style={styles.listArea}>
+        <ScrollView>
         {
           business.map((b, id) => (
-
-              <Button onPress={() => setModalVisibility(true, b.message, b.time)} key={id} title={String(b.message)}></Button>
+            <View style={styles.messageArea}>
+              <TouchableOpacity 
+                style={styles.touchArea}
+                onPress={() => setModalVisibility(true, b.message, b.time)} 
+              >
+                  <View style={styles.titleArea}>
+                    <Image style={styles.userImage} source={require('../../img/mm.png')}/>
+                    <Text key={id} style={styles.textNameStyle}>{String(b.t)}</Text>
+                  </View>
+                <Text 
+                  key={id} 
+                  style={styles.textStyle}
+                  numberOfLines={1}
+                  ellipsizeMode='tail'
+                >{String (" : "+ b.message)}</Text>
+              </TouchableOpacity>
+            </View>
+              //<Button onPress={() => setModalVisibility(true, b.message, b.time)} key={id} title={String(b.message)}></Button>
           ))
         }
 
@@ -110,12 +231,8 @@ const sentMessageScreen = ({ navigation }) => {
         >
           <View style={styles.modalContainer}>
             <View>
-              <Text>{message}</Text>
-              <Button
-                color="#000"
-                onPress={() => setModalVisibility(!visibility,'')}
-                title="Hide Modal"
-              />
+              <Text style={styles.modaltextStyle}>{message}</Text>
+              <Text onPress={() => setModalVisibility(!visibility,'')} style={styles.modalBtn}>닫기</Text>
             </View>
           </View>
         </Modal>
@@ -126,9 +243,22 @@ const sentMessageScreen = ({ navigation }) => {
           visible={visibility2}
         >
           <View style={styles.modalContainer}>
-            <View>
-              <Text>{message}</Text>
-              <Button
+          <View>
+              <Text style={styles.modaltextStyle}>{message}</Text>
+              <View style={{flexDirection:"row"}}>
+                <Text
+                  style={styles.modalBtn2}
+                  onPress={() => {
+                    setModalVisibility(!visibility2,'',1)
+                    savedData();
+                  }}
+                >네</Text>
+                <Text
+                  style={styles.modalBtn2}
+                  onPress={() => setModalVisibility(!visibility2,'',1)}
+                >아니오</Text>
+              </View>
+             {/*} <Button
                 color="#000"
                 onPress={() => {
                   setModalVisibility(!visibility2,'',1)
@@ -140,15 +270,23 @@ const sentMessageScreen = ({ navigation }) => {
                 color="#000"
                 onPress={() => setModalVisibility(!visibility2,'',1)}
                 title="아니오"
-              />
+              />*/}
             </View>
           </View>
         </Modal>
 
-        <Button
-        title="메세지 보내기"
-        onPress={() => navigation.navigate('Send Message')}
-      />
+        </ScrollView> 
+        </View>
+
+        <View style={styles.sendBtnArea}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Send Message')}
+          >
+          <Image style={styles.btnImgStyle} source={require('../../img/message.png')}></Image>  
+          </TouchableOpacity>
+        </View>  
+          
+        </ImageBackground>
       </View>
     );
   };

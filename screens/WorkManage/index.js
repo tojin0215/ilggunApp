@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, Image} from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground, Image, ScrollView, BackHandler} from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { Row } from 'react-native-table-component';
+import axios from 'axios';
+
 const styles = StyleSheet.create(
   {
     container: {
@@ -25,9 +27,9 @@ const styles = StyleSheet.create(
     },
     button: {
         backgroundColor: "#67C8BA",
-        width:wp('80%'), height: hp('6%'),
+        width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
-        borderRadius:wp('3%'),
+        borderRadius:wp('6%'),
         marginTop:hp('2%'),
     },
     buttonTitle: {
@@ -36,7 +38,7 @@ const styles = StyleSheet.create(
         fontSize:wp('4.8%'),
     },
     calenderArea:{
-      backgroundColor:'white',
+      backgroundColor:'#E2F2EF',
       flexDirection:'row',
       width:wp('80%'), height:hp('10%'),
       marginTop:wp('5%'),
@@ -59,7 +61,7 @@ const styles = StyleSheet.create(
       justifyContent:"center",alignItems:"center",
       marginTop:hp('0.5%'),
       fontFamily:"NanumSquareB",
-      fontSize:wp('5.5%'),
+      fontSize:wp('5%'),
     },
     rightImg:{
       //justifyContent: 'center', alignItems: 'flex-end',
@@ -69,20 +71,31 @@ const styles = StyleSheet.create(
     workerAera:{
       flexDirection:'row',padding:wp('4%'), height:hp('10%'), width:wp('80%'), 
       backgroundColor:'white',marginBottom:hp('1%'), borderRadius:wp('3%'),
+
+      ...Platform.select({ 
+        ios: { 
+          shadowColor: '#4d4d4d', 
+          shadowOffset: { width: 4, height: 4, }, 
+          shadowOpacity: 0.3, shadowRadius: 4, 
+        }, 
+        android: { 
+          elevation: 4, 
+        }, 
+      }),
     },
     userImage:{
-      position:"absolute",left:wp('3.9%'),top:hp('2.7%'),
-      width:wp('5.2%'), height:wp('6.3%')
+      position:"absolute",left:wp('3.9%'),top:hp('3%'),
+      width:wp('3.9%'), height:wp('6.1%')
     },
     werkerTextName:{
       fontFamily:"NanumSquare",
-      color:'#040525',
-      position:"absolute",left:wp('11%'),top:hp('3%'),
+      color:'#67C8BA',
+      position:"absolute",left:wp('11%'),top:hp('3.5%'),
       fontSize: wp('4.8%'), marginRight:wp('4%')
     },
     werkerTextName2:{
       fontFamily:"NanumSquare",
-      color:'#040525',
+      color:'white',
       fontSize: wp('4.2%'),
     },
     werkerTextTime:{
@@ -99,36 +112,66 @@ const styles = StyleSheet.create(
       flexDirection:"column", position:"absolute",left:wp('28%'),top:hp('2.3%'),
     },
     buttonStyle:{
-      backgroundColor:'#E2F2EF',
+      backgroundColor:'#67C8BA',
       fontFamily:"NanumSquare",
       color:'#040525', fontSize:wp('3.6%'),
       width:wp('18%'), height:hp('6%'), borderRadius:wp('4%'),
       justifyContent:"center", alignItems:"center"
+    },
+    listArea:{
+      height:hp('57%')
     }
 });
 
 const WorkManageScreen = ({navigation, route}) => {
+  /*React.useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {navigation.navigate('Home');return true;});
+    const unsubscribe = navigation.addListener('focus', () => {
+      AsyncStorage.getItem("bangCode")
+    .then((bangCode) => {
+        console.log("dddddddddddddddddddddddd")
+        fetchData(bangCode, route.params.selecteddate)
+    })
+    });
+    return unsubscribe;
+  }, []);*/
+  
   const [date, setDate] = useState([]);
-  React.useEffect(() => {
+ React.useEffect(() => {
+    //BackHandler.addEventListener('hardwareBackPress', () => {navigation.navigate('Home');return true;});
     console.log("나와줘..! "+route.params.selecteddate) 
-    const unsubscribe =
+  
        navigation.addListener('focus', () => {
-        console.log("얼마나 반복되는지 보자,,,")
         AsyncStorage.getItem("bangCode")
         .then((bangCode) => {
-          fetchData(bangCode, route.params.selecteddate)
+            console.log("dddddddddddddddddddddddd")
+            fetchData(bangCode, route.params.selecteddate)
         })
     });
-  return unsubscribe;
-}, [navigation, route.params.selecteddate, this.fetchData]);
-//===================================================
+  }, []);
+
   const [business, setBusiness] = useState([]);
   const [timelog, setTimelog] = useState({});
+ 
+//===================================================
+
   async function fetchData(bangCode, date) { 
       try {
           let d = String(date).split(' ');
-          console.log(d);
-          await fetch('http://192.168.43.253:3000/selectWorkerAsDay', {
+          //console.log(d);
+          await axios.post('https://www.kwonsoryeong.tk:3000/selectWorkerAsDay', {
+              business: bangCode,
+              year : d[3]*1,
+              month: d[1]*1,
+              date: d[2]*1,
+              day: d[0],
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+          })
+          /*await fetch('https://www.kwonsoryeong.tk:3000/selectWorkerAsDay', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -141,43 +184,68 @@ const WorkManageScreen = ({navigation, route}) => {
               date: d[2]*1,
               day: d[0],
             }),
-          }).then(res => res.json())
-          .then(res => 
+          }).then(res => res.json())*/
+          .then(async(res) => 
             {
-              console.log(res);
+              //console.log(res);
               console.log("///////////////////");
-              setBusiness(res);
-              fetch('http://192.168.43.253:3000/selectTimelog', {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
+              await setBusiness(res.data);
+              console.log(res.data)
+              console.log(business)
+              
+              try{
+                await axios.post('https://www.kwonsoryeong.tk:3000/selectTimelog', {
+                    bang: bangCode,
+                    year : d[3]*1,
+                    month: d[1]*1,
+                    date: d[2]*1,
+                    day: d[0],
                 },
-                body: JSON.stringify({
-                  bang: bangCode,
-                  year : d[3]*1,
-                  month: d[1]*1,
-                  date: d[2]*1,
-                  day: d[0],
-                }),
-              }).then(res => res.json())
-              .then(res => 
+                {  headers:{
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'}
+                })
+                /*fetch('https://www.kwonsoryeong.tk:3000/selectTimelog', {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    bang: bangCode,
+                    year : d[3]*1,
+                    month: d[1]*1,
+                    date: d[2]*1,
+                    day: d[0],
+                  }),
+                }).then(res => res.json())*/
+              .then(async(res) => 
                 {
                   let dic={}
-                  for(let i=0 ; i<res.length ; i++){
-                    dic[res[i].workername] = (res[i].goto==null?'':res[i].goto)+(res[i].leavee==null?'':res[i].leavee);
+                  for(let i=0 ; i<res.data.length ; i++){
+                    dic[res.data[i].workername] = (res.data[i].goto==null?'':res.data[i].goto)+(res.data[i].leavee==null?'':res.data[i].leavee);
                   }
                   setTimelog(dic);   
+                
+                
                 });
+              }catch{(err) => console.log(err);}
             });          
         }catch (e) {
           console.error(e);
         }
   }
-  navigation.addListener('focus', () => {
-    console.log("얼마나 반복되는지 보자,,,")
-  });
-
+  const day = (data) =>{
+    switch(data){
+      case 'Mon' : return '월';
+      case 'Tue' : return '화';
+      case 'Wed' : return '수';
+      case 'Thu' : return '목';
+      case 'Fri' : return '금';
+      case 'Sat' : return '토';
+      case 'Sun' : return '일';
+    }
+  }
   //==============================================
 
   /*React.useEffect(() => {
@@ -188,18 +256,22 @@ const WorkManageScreen = ({navigation, route}) => {
   }, [navigation]);*/
   return (
     <View style={styles.container}>
-    <ImageBackground style={styles.image} source={require('../../img/workMpage.png')}>
+    <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
       <View style={styles.calenderArea}>
         <TouchableOpacity
           title="Calendar"
           style={styles.touchArea}
           onPress={() => navigation.navigate('Calendar')}>
           <Image style={styles.calenderImg} source={require('../../img/calender.png')}/>
-          <Text style={styles.calenderTitle}>{route.params.selecteddate.split(' ')[3]} {route.params.selecteddate.split(' ')[1]} {route.params.selecteddate.split(' ')[2]}({route.params.selecteddate.split(' ')[0]})</Text>
+          
+          <Text style={styles.calenderTitle}>{route.params.selecteddate.split(' ')[3]}년 {route.params.selecteddate.split(' ')[1]}월 {route.params.selecteddate.split(' ')[2]}일({day(route.params.selecteddate.split(' ')[0])})</Text>
+          
           <Image style={styles.rightImg} source={require('../../img/right.png')}/>
         </TouchableOpacity>
       </View>
 
+<View style={styles.listArea}>
+        <ScrollView>
       {
           String(route.params.selecteddate).split(' ')[0]==="Mon"?
             business.map((b, id) => (
@@ -268,10 +340,11 @@ const WorkManageScreen = ({navigation, route}) => {
               </View>
             )):(String(route.params.selecteddate).split(' ')[0]==="Thu")?
             business.map((b, id) => (
+              
               <View style={styles.workerAera}>
                 <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
                     <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
-                    
+                    {console.log(timelog)}
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
                     <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.thu!=undefined || b.thu!=null)?b.thu.slice(0,2)+" : "+b.thu.slice(2,4)+" ~ "+b.thu.slice(4,6)+" : "+b.thu.slice(6,8):'- -')}</Text>
@@ -354,6 +427,8 @@ const WorkManageScreen = ({navigation, route}) => {
               <Text key={id}>{b.workername}</Text>
             ))
         }
+      </ScrollView>
+      </View>
 
         <View style={styles.buttonArea}>
           <TouchableOpacity

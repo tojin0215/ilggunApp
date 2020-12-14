@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { AsyncStorage } from 'react-native';
+import axios from 'axios';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -41,7 +43,15 @@ class StatementScreen extends Component{
   fetchData = async(bangCode) => { 
     try {
       console.log(bangCode);
-        let res = await fetch('http://192.168.43.253:3000/selectWorker', {
+        axios.post('https://www.kwonsoryeong.tk:3000/selectWorker', {
+            business : bangCode,
+            type : 1
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -51,11 +61,11 @@ class StatementScreen extends Component{
             business : bangCode,
             type : 1
           }),
-        }).then(res => res.json())
+        }).then(res => res.json())*/
         .then(res => {
           let rowall = []
-          for (let i = 0; i < res.length; i++) {
-            rowall.push({label: res[i].workername, value: res[i].workername});
+          for (let i = 0; i < res.data.length; i++) {
+            rowall.push({label: res.data[i].workername, value: res.data[i].workername});
           }
           this.setState({workernames: rowall})
         });
