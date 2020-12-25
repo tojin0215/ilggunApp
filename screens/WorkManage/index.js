@@ -136,22 +136,25 @@ const WorkManageScreen = ({navigation, route}) => {
     return unsubscribe;
   }, []);*/
   
-  const [date, setDate] = useState([]);
- React.useEffect(() => {
-    //BackHandler.addEventListener('hardwareBackPress', () => {navigation.navigate('Home');return true;});
-    console.log("나와줘..! "+route.params.selecteddate) 
-  
-       navigation.addListener('focus', () => {
-        AsyncStorage.getItem("bangCode")
-        .then((bangCode) => {
-            console.log("dddddddddddddddddddddddd")
-            fetchData(bangCode, route.params.selecteddate)
-        })
-    });
-  }, []);
-
+  const [bangcode, setBangcode] = useState([]);
   const [business, setBusiness] = useState([]);
   const [timelog, setTimelog] = useState({});
+  React.useEffect(() => {
+    //BackHandler.addEventListener('hardwareBackPress', () => {navigation.navigate('Home');return true;});
+    
+    let a = navigation.addListener('focus', () => {
+          
+          AsyncStorage.getItem("bangCode")
+          .then((bangCode) => {
+              console.log("dddddddddddddddddddddddd")
+              //setBangcode(bangCode)
+              fetchData(bangCode, route.params.selecteddate)
+          })
+    });
+    return a;
+  }, []);
+
+
  
 //===================================================
 
@@ -159,7 +162,7 @@ const WorkManageScreen = ({navigation, route}) => {
       try {
           let d = String(date).split(' ');
           //console.log(d);
-          await axios.post('https://www.kwonsoryeong.tk:3000/selectWorkerAsDay', {
+          await axios.post('https://www.toojin.tk:3000/selectWorkerAsDay', {
               business: bangCode,
               year : d[3]*1,
               month: d[1]*1,
@@ -171,7 +174,7 @@ const WorkManageScreen = ({navigation, route}) => {
             'Accept': 'application/json'
           }
           })
-          /*await fetch('https://www.kwonsoryeong.tk:3000/selectWorkerAsDay', {
+          /*await fetch('https://www.toojin.tk:3000/selectWorkerAsDay', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -188,13 +191,14 @@ const WorkManageScreen = ({navigation, route}) => {
           .then(async(res) => 
             {
               //console.log(res);
+              console.log("받아오는 날짜:"+date)
               console.log("///////////////////");
-              await setBusiness(res.data);
+              setBusiness(res.data);
               console.log(res.data)
               console.log(business)
-              
-              try{
-                await axios.post('https://www.kwonsoryeong.tk:3000/selectTimelog', {
+            });
+          
+          await axios.post('https://www.toojin.tk:3000/selectTimelog', {
                     bang: bangCode,
                     year : d[3]*1,
                     month: d[1]*1,
@@ -205,7 +209,7 @@ const WorkManageScreen = ({navigation, route}) => {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json'}
                 })
-                /*fetch('https://www.kwonsoryeong.tk:3000/selectTimelog', {
+                /*fetch('https://www.toojin.tk:3000/selectTimelog', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json',
@@ -221,16 +225,16 @@ const WorkManageScreen = ({navigation, route}) => {
                 }).then(res => res.json())*/
               .then(async(res) => 
                 {
+                  console.log("받아오는 날짜2:"+date)
                   let dic={}
                   for(let i=0 ; i<res.data.length ; i++){
                     dic[res.data[i].workername] = (res.data[i].goto==null?'':res.data[i].goto)+(res.data[i].leavee==null?'':res.data[i].leavee);
                   }
+                  console.log(dic);
                   setTimelog(dic);   
-                
+                  console.log(timelog);
                 
                 });
-              }catch{(err) => console.log(err);}
-            });          
         }catch (e) {
           console.error(e);
         }
@@ -261,7 +265,7 @@ const WorkManageScreen = ({navigation, route}) => {
         <TouchableOpacity
           title="Calendar"
           style={styles.touchArea}
-          onPress={() => navigation.navigate('Calendar')}>
+          onPress={() => navigation.replace('Calendar')}>
           <Image style={styles.calenderImg} source={require('../../img/calender.png')}/>
           
           <Text style={styles.calenderTitle}>{route.params.selecteddate.split(' ')[3]}년 {route.params.selecteddate.split(' ')[1]}월 {route.params.selecteddate.split(' ')[2]}일({day(route.params.selecteddate.split(' ')[0])})</Text>

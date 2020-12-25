@@ -24,8 +24,11 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
         if(name=='' || email=='' || password=='' ||repassword==''|| path==''){
             Alert.alert('빈 칸을 채워주세요.');
         }
+        else if(password != repassword){
+            Alert.alert('비밀번호와 재확인 비밀번호가 다릅니다.\n 다시 확인해주세요.')  
+        }
         else{
-        await axios.post('https://www.kwonsoryeong.tk:3000/signup', { 
+        await axios.post('https://www.toojin.tk:3000/signup', { 
             id:email,
             name:name,
             password: password,
@@ -35,7 +38,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
         }).then((res)=>{
-      /*let res = await fetch('https://www.kwonsoryeong.tk:3000/signup', {
+      /*let res = await fetch('https://www.toojin.tk:3000/signup', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -49,7 +52,6 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
         }),
       });*/
       //res = await res;
-
       if(res.data.err!=null){
         Alert.alert('이미 존재하는 email입니다. \n변경해주세요.')  
       }else{
@@ -121,7 +123,8 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                     <TextInput 
                         onChangeText={password => setPassword(password)}
                         defaultValue={password}
-                        style={styles.textStyle} 
+                        style={styles.textStyle}
+                        secureTextEntry={true}
                         placeholder={"비밀번호를 입력하세요."}/>
                 </View>    
 
@@ -131,6 +134,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                         onChangeText={repassword => setrePassword(repassword)}
                         defaultValue={repassword}
                         style={styles.textStyle} 
+                        secureTextEntry={true}
                         placeholder={"비밀번호를 한번 더 입력하세요."}/>
                 </View>    
                 <View style={styles.textArea}>

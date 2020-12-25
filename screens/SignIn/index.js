@@ -5,7 +5,7 @@ import {
   ImageBackground,
   View,
   Text, Button, Image,
-  TextInput,
+  TextInput, 
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
@@ -16,6 +16,7 @@ import Expo from "expo"
 import * as Font from 'expo-font'
 import * as Network from 'expo-network';
 import axios from 'axios';
+import { Alert } from 'react-native';
 
 //axios.create({baseURL:'',timeout:1000})
 
@@ -39,7 +40,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
     try {
       let userData = await AsyncStorage.getItem("userData");
       let data = JSON.parse(userData);
-      console.log("나와라라ㅏㅏㅏㅏ"+data);
+      console.log(data);
     } catch (error) {
       console.log("Something went wrong", error);
     }
@@ -58,7 +59,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           setName(result.user.name);
           setPhotoUrl(result.user.photoUrl)
           setId(result.user.email); setPassword(result.user.id)
-          fetch('https://www.kwonsoryeong.tk:3000/signup', {
+          fetch('https://www.toojin.tk:3000/signup', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -71,7 +72,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
             sign:''
           }),
         }).then(async(res)=> {
-          fetch('https://www.kwonsoryeong.tk:3000/signin', {
+          fetch('https://www.toojin.tk:3000/signin', {
             credentials: 'include',
             method: 'POST',
             headers: {
@@ -122,9 +123,8 @@ const SignInScreen = ({ onSignIn, navigation }) => {
        console.log("???"+error)
      }*/
     try {
-      console.log(id, password, "빨리 끝내자!");
       let err ;
-      await axios.post('https://www.kwonsoryeong.tk:3000/signin', { id: id,
+      await axios.post('https://www.toojin.tk:3000/signin', { id: id,
         password: password, headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
@@ -134,7 +134,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           console.log(res.data);
         })
         console.log("???")
-      let res = await fetch('https://www.kwonsoryeong.tk:3000/signin', {
+      let res = await fetch('https://www.toojin.tk:3000/signin', {
         credentials: 'include',
         method: 'POST',
         
@@ -152,24 +152,29 @@ const SignInScreen = ({ onSignIn, navigation }) => {
       .then((responseData) => {
         err=responseData.data.status;
         //console.log(responseData.data[0]);
-        storeToken(responseData.data[0].id);
-        
-        getToken();
+        if(responseData.data[0] == undefined){
+          Alert.alert("아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요.")
+        }else{
+          console.log("여기!!")
+          console.log(responseData.data[0]);
+          storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
+          getToken();
 
-        // save token
-        //AsyncStorage.setItem("TOKEN", token);
+          // save token
+          //AsyncStorage.setItem("TOKEN", token);
 
-        // get token
-        //AsyncStorage.getItem("TOKEN").then(token => {
-            // token value could be used
-        //});
-     
-        if(responseData.data[0].id){
-          onSignIn();
-          navigation.navigate('Select Page');
-        }
-        else{
+          // get token
+          //AsyncStorage.getItem("TOKEN").then(token => {
+              // token value could be used
+          //});
+      
+          if(responseData.data[0].id){
+            onSignIn();
+            navigation.navigate('Select Page');
+          }
+          else{
 
+          }
         }
       })
       .catch(function(error) {
@@ -201,7 +206,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
 
     
   }
-  const fetchFonts = () => {
+  /*const fetchFonts = () => {
     return Font.loadAsync({
     'NanumSquare': require("../../assets/fonts/NanumSquare_acR.ttf"),
     'NanumSquareB': require("../../assets/fonts/NanumSquare_acB.ttf")
@@ -215,7 +220,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           onFinish={()=>setDataLoaded(true)}
         />
       )
-    }
+    }*/
 
     setTimeout(() => {setIsReady(true)},3000);
     console.ignoredYellowBox = [

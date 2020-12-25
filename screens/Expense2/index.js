@@ -13,32 +13,36 @@ let arrItem = [];
 const week = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 const time = [0,0,0,0,0,0,0];
 
-for(let i = 0; i < week.length; i++){
-    arrItem.push({       
-        key : i,       
-        week: week[i],
-        goToWorkHour : "0",
-        goToWorkMin : "0",
-        offWorkHour : "0",
-        offWorkMin: "0",
-        time:time[i],
-    });
-}
+
 
 class ExpenseScreen2 extends Component {
+    constructor(props) {
+        super(props);
 
-    state={
-        totalSelectedTime:arrItem,
-        HourlyWage:0,
-        selectedHoursGoToWork:0,
-        selectedMinutesGoToWork:0,
-        selectedHoursOffWork:0,
-        selectedMinutesOffWork:0,
-        time:null,
-        WithholdingTax:0, // 월급*원천세 3.3% 
-        HourlyWage:0, //시급
-        Salary:0, //월급 :시간*시급
-        RealSalary:0 //실질급여 : 월급-원천세
+        for(let i = 0; i < week.length; i++){
+            arrItem.push({       
+                key : i,       
+                week: week[i],
+                goToWorkHour : "0",
+                goToWorkMin : "0",
+                offWorkHour : "0",
+                offWorkMin: "0",
+                time:time[i],
+            });
+        }
+        this.state = {
+            totalSelectedTime:arrItem,
+            HourlyWage:'0',
+            selectedHoursGoToWork:'0',
+            selectedMinutesGoToWork:'0',
+            selectedHoursOffWork:'0',
+            selectedMinutesOffWork:'0',
+            time:null,
+            WithholdingTax:'0', // 월급*원천세 3.3% 
+            HourlyWage:'0', //시급
+            Salary:'0', //월급 :시간*시급
+            RealSalary:'0' //실질급여 : 월급-원천세
+        }
     }
 
     renderSeparator = () => {  
@@ -99,7 +103,17 @@ class ExpenseScreen2 extends Component {
 
     resetData(){
         this.setState({
-            HourlyWage:0,
+            totalSelectedTime:arrItem,
+            HourlyWage:'0',
+            selectedHoursGoToWork:'0',
+            selectedMinutesGoToWork:'0',
+            selectedHoursOffWork:'0',
+            selectedMinutesOffWork:'0',
+            time:null,
+            WithholdingTax:'0', // 월급*원천세 3.3% 
+            HourlyWage:'0', //시급
+            Salary:'0', //월급 :시간*시급
+            RealSalary:'0' //실질급여 : 월급-원천세
         })
     }
  

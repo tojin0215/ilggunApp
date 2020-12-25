@@ -67,7 +67,6 @@ import SvgComponent from './screens/Svg'
 import { color } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-
 const storeToken = async(user) => {
   try {
      await AsyncStorage.setItem("userData", JSON.stringify(user));
@@ -77,12 +76,10 @@ const storeToken = async(user) => {
 }
 const getToken = async() => {
   try {
-    let userData = await AsyncStorage.getItem("userData").then((userData) =>{
-      return userData;
-    });
-    //let data = JSON.parse(userData);
-    //console.log("여기용"+data);
-    //return await AsyncStorage.getItem("userData");;
+    let userData = await AsyncStorage.getItem("userData");
+    let data = JSON.parse(userData);
+    console.log(data);
+    return data;
   } catch (error) {
     console.log("Something went wrong", error);
   }
@@ -506,11 +503,18 @@ const App = () => {
   const [bang, setBang] = useState('');
   //setId('dddd');
   //console.log(id);
+  React.useEffect(() => {
+    let a = AsyncStorage.getItem("userData").then((userData) =>{
+      setId(id => JSON.parse(userData).name);
+    });
+    return a;
+  }, []);
+
   const handleSignIn = () => {
-    // TODO implement real sign in mechanism
     setIsAuthenticated(true);
+    // TODO implement real sign in mechanism
     AsyncStorage.getItem("userData").then((userData) =>{
-      setId(id => JSON.parse(userData));
+      setId(id => JSON.parse(userData).name);
     });
   };
 
@@ -518,6 +522,7 @@ const App = () => {
     // TODO implement real sign out mechanism
     setIsAuthenticated(false);
     storeToken('');
+    setId(id => '');
     AsyncStorage.setItem("bangCode",'');
     //setId('');
     
@@ -530,7 +535,21 @@ const App = () => {
     //setId(getToken());
     console.log(JSON.parse(getToken()));
   };
-
+  const fetchFonts = () => {
+    return Font.loadAsync({
+    'NanumSquare': require("./assets/fonts/NanumSquare_acR.ttf"),
+    'NanumSquareB': require("./assets/fonts/NanumSquare_acB.ttf")
+    });
+  }
+  const [dataLoaded, setDataLoaded] = useState(false);
+  if(!dataLoaded){
+      return(
+        <AppLoading
+          startAsync={fetchFonts}
+          onFinish={()=>setDataLoaded(true)}
+        />
+      )
+    }
   return (
     <NavigationContainer>
       <RootStack.Navigator
@@ -539,11 +558,12 @@ const App = () => {
         headerStyle: { backgroundColor: '#67C8BA', shadowOpacity: 0, elevation: 0,}, //배경
         headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}}}
       >
-      {isAuthenticated ? (
+      {id ? (
         <>
         <RootStack.Screen 
           name="Select Page" component={SelectScreen} 
           options={({ route, navigation }) => ({
+            
             title:"",
             headerTitle: getFocusedRouteNameFromRoute(route),
             headerRight: () => (
@@ -566,7 +586,7 @@ const App = () => {
           name="Business List" component={BusinessListScreen} 
           options={({ route, navigation }) => ({
             title:"",
-            headerTitle: getFocusedRouteNameFromRoute(route),
+            //headerTitle: getFocusedRouteNameFromRoute(route),
             headerRight: () => (
               <View style={styles.rowArea}>
               <View style={styles.userArea}>

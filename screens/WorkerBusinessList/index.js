@@ -79,11 +79,24 @@ const styles = StyleSheet.create({
 const WorkerBusinessListScreen = ({navigation}) => {
   const [business, setBusiness] = useState([]);
   const [clicked, setClicked] = useState(-1);
-  React.useEffect(() => {
+  const [id, setId] = useState('');
+  /*React.useEffect(() => {
     console.log("안녕");
           fetchData();
-  },[]);
+  },[]);*/
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      AsyncStorage.getItem("userData").then((userData) =>{
+        fetchData(JSON.parse(userData).id);
+      });
+     
+      // The screen is focused
+      // Call any action
+    });
 
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, []);
       //return unsubscribe;
     //});
 
@@ -107,14 +120,14 @@ const WorkerBusinessListScreen = ({navigation}) => {
     }
   }*/
     ///setId('dd');
-    async function fetchData() { 
+    async function fetchData(idid) { 
         try {
-          axios.post('https://www.kwonsoryeong.tk:3000/selectBusinessByWorker', {},
+          axios.post('https://www.toojin.tk:3000/selectBusinessByWorker', {id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-            /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectBusinessByWorker', {
+            /*let res = await fetch('https://www.toojin.tk:3000/selectBusinessByWorker', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -129,6 +142,7 @@ const WorkerBusinessListScreen = ({navigation}) => {
               if(res.data[0]){
                 console.log(JSON.parse(res.data[0].bang));
                 setBusiness(JSON.parse(res.data[0].bang));
+                setId(idid);
               }
             });
             
@@ -182,7 +196,7 @@ const WorkerBusinessListScreen = ({navigation}) => {
                     AsyncStorage.setItem("bangCode", key)
                     .then(() =>{
                       setClicked(-1)
-                      navigation.navigate('Worker Home',{bname : key})
+                      navigation.navigate('Worker Home',{bname : key, id: id, state:0})
                     })
                   }}>
                   <Text style={styles.buttonTitle}>{key}</Text>

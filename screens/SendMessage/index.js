@@ -8,7 +8,7 @@ import {
   StyleSheet
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
+import { AsyncStorage } from 'react-native';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { readDirectoryAsync } from 'expo-file-system';
@@ -16,17 +16,27 @@ import { readDirectoryAsync } from 'expo-file-system';
 const SendMessageScreen = ({ onSignUp, navigation }) => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+
+  const [idid, setIdid] = useState('');
+  React.useEffect(() => {
+        AsyncStorage.getItem("userData").then((userData) =>{
+          setIdid(id => JSON.parse(userData).id);
+      })
+  }, []);
+
   const SignPost = async() => {
     try {
-      axios.post('https://www.kwonsoryeong.tk:3000/sendMessage', {
+      axios.post('https://www.toojin.tk:3000/sendMessage', {
+          f: idid,
           message : password,
           t: id,
+          read:0,
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
       }).then((res) => {
-      /*let res = await fetch('https://www.kwonsoryeong.tk:3000/sendMessage', {
+      /*let res = await fetch('https://www.toojin.tk:3000/sendMessage', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

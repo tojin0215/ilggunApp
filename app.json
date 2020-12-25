@@ -31,10 +31,10 @@
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSExceptionDomains": {
-            "https://www.kwonsoryeong.tk:3000": {
+            "https://www.toojin.tk:3000": {
               "NSTemporaryExceptionAllowsInsecureHTTPLoads": true
             },
-            "https://www.kwonsoryeong.tk": {
+            "https://www.toojin.tk": {
               "NSTemporaryExceptionAllowsInsecureHTTPLoads": true
             }
           }

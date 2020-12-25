@@ -30,7 +30,7 @@ class StatementScreen2 extends Component{
     constructor(props) {
       super(props);
       this.state = {
-          itemA: null , isVisibleA: false, itemB: null, isVisibleB: false,itemAA:'2020년' , isVisibleAA: false, itemBB: '10월', isVisibleBB: false,
+          itemA: null , isVisibleA: false, itemB: null, isVisibleB: false,itemAA: String(new Date().getFullYear())+'년' , isVisibleAA: false, itemBB: String(new Date().getMonth()+1)+'월', isVisibleBB: false,
           PaymentSum:'-', DeductionSum:'-', Difference:'-', Name:'-', WorkingType:'-',
           tableTitle:['기본급','추가근로수당','식대','국민연금','건강보험료','장기요양보험료','고용보험료','소득세','주민세'],
           tableData: [
@@ -51,7 +51,7 @@ class StatementScreen2 extends Component{
     fetchData = async(flag) => { 
       try {
         console.log(this.state.itemAA.split('년')[0] + " \\\\\\\\\\\\ "+ this.state.itemBB.split('월')[0]);
-        axios.post('https://www.kwonsoryeong.tk:3000/selectOvertimework', {
+        axios.post('https://www.toojin.tk:3000/selectOvertimework', {
           year : this.state.itemAA.split('년')[0]*1,
           month : this.state.itemBB.split('월')[0]*1,
         },
@@ -59,7 +59,7 @@ class StatementScreen2 extends Component{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*await fetch('https://www.kwonsoryeong.tk:3000/selectOvertimework', {
+        /*await fetch('https://www.toojin.tk:3000/selectOvertimework', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -71,6 +71,8 @@ class StatementScreen2 extends Component{
             }),
           }).then(res => res.json())*/
           .then(res => {
+            console.log(this.state.itemAA.split('년')[0]*1);
+            console.log(this.state.itemBB.split('월')[0]*1);
             console.log("???");
               console.log(res.data);
             let dic ={};
@@ -88,14 +90,14 @@ class StatementScreen2 extends Component{
             
 
           });
-          axios.post('https://www.kwonsoryeong.tk:3000/selectWorker', {
+          axios.post('https://www.toojin.tk:3000/selectWorker', {
             business : this.state.bangCode
           },
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-      /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorker', {
+      /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -106,9 +108,15 @@ class StatementScreen2 extends Component{
         }),
       }).then(res => res.json())*/
       .then(res => {
+
+        console.log(res.data);
+        console.log(":::::::::::::::::::::::")
         let week=[4,4,4,4,4,4,4];
         let t1=[];
         let t2=[];
+        let rowall = []
+        if(this.state.itemBB.split('월')[0] != new Date().getMonth()+1){
+          console.log(":::::::::::::::::::::::")
         // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
           let nalsu = new Date(this.state.itemAA.split('년')[0], this.state.itemBB.split('월')[0], 0).getDate();
           let namugi = nalsu%7;
@@ -117,8 +125,6 @@ class StatementScreen2 extends Component{
           for(let i=0 ; i<namugi ; i++){
             week[(it-i)%7]++;
           }
-
-        let rowall = []
         for (let i = 0; i < res.data.length; i++) {
           if(res.data[i].type==1){
             let sum = 0;
@@ -131,21 +137,57 @@ class StatementScreen2 extends Component{
             console.log(res.data);
             console.log(">>>");
             console.log(this.state.addtime[res.data[i].workername]);
-            rowall.push([res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8560/*추가근로*/)]);
+            rowall.push([res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/)]);
                 t1.push({label: res.data[i].workername, value: res.data[i].workername})
               }
               else{
-                rowall.push([res.data[i].workername, "정규직", String(res.data[i].pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8560/*시급*/)]);
+                rowall.push([res.data[i].workername, "정규직", String(res.data[i].pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                 t2.push({label: res.data[i].workername, value: res.data[i].workername})
+              }
+            }
+            
+          }
+        else{
+          let n = Math.floor(new Date().getDate()/7);
+              let week=[n,n,n,n,n,n,n];
+              console.log(week)
+              console.log(new Date().getFullYear(), new Date().getMonth(), 1);
+              let d = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay();
+              console.log("오늘 날짜까지 끊자!"+d);
+              for(let i=0; i<(new Date().getDate()%7) ; i++){
+                week[d]++;
+                d++; d=d%7;
+              }
+
+              for (let i = 0; i < res.data.length; i++) {
+                console.log(res.data);
+                if(res.data[i].type==1){
+                  let sum = 0;
+                  let eachtime = res.data[i].eachtime.split('/');
+                  for(let i=0 ; i<7 ; i++){
+                    console.log((eachtime[i]*1) , week[i]);
+                    sum += (eachtime[i]*1) * week[i];
+                  }
+                  console.log(">>>");
+                  console.log(res.data);
+                  console.log(">>>");
+                  rowall.push([res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/)]);
+                  t1.push({label: res.data[i].workername, value: res.data[i].workername})
+                }
+                else{
+                  rowall.push([res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                  t2.push({label: res.data[i].workername, value: res.data[i].workername});
+                }
               }
             }
             this.setState({nname: rowall, type1:t1, type2:t2})
             console.log(this.state.nname, this.state.type1, this.state.type2);
-          });
-        
             if(flag==1){
-            this.show();
+              this.show();
             }
+          });
+      
+          
       } catch (e) {
           console.error(e);
         }
@@ -266,16 +308,15 @@ class StatementScreen2 extends Component{
 
         //----------------------계산식---------------------------------------------
         // NationalPension:국민연금 (보수총액*4.5%)
-        let NationalPension = (parseInt(MonthlySalary)*4.5/100).toFixed(0);
+        let NationalPension = Math.floor(((parseInt(MonthlySalary)*4.5/100).toFixed(0))/10)*10;
         // HealthInsurance:건강보험 (보수총액*3.3335%)
-        let HealthInsurance = (parseInt(MonthlySalary)*3.335/100).toFixed(0);
+        let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*3.335/100).toFixed(0))/10)*10;
         // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-        let RegularCare = (HealthInsurance*10.25/100).toFixed(0);
+        let RegularCare = Math.floor(((HealthInsurance*10.25/100).toFixed(0))/10)*10;
         // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-        let EmploymentInsurance = (parseInt(MonthlySalary)*0.8/100).toFixed(0);//근로자_고용보험
+        let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*0.8/100).toFixed(0))/10)*10;//근로자_고용보험
         // SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
         let SocialInsurance = (parseInt(NationalPension)+parseInt(HealthInsurance)+parseInt(RegularCare)+parseInt(EmploymentInsurance)).toFixed(0);
-
         // WithholdingTax:원천과세(IncomeTax+InhabitantsTax)
         // IncomeTax : 갑근세(소득세) : 보수총액*3.0%
         //let IncomeTax = (parseInt(MonthlySalary)*0.03).toFixed(0)
@@ -347,7 +388,7 @@ class StatementScreen2 extends Component{
         console.log('--------------------------------'+MonthlySalary)
         console.log('--------------------------------'+IncomeTax)
         // InhabitantsTax : 주민세 (갑근세의 10%)
-        let InhabitantsTax = (parseInt(IncomeTax)*0.1).toFixed(0)
+        let InhabitantsTax = Math.floor(((parseInt(IncomeTax)*0.1).toFixed(0))/10)*10;
 
         // TotalDeduction:공제총액(사대보험+갑근세+주민세) : 보수총액*0.3%
         let TotalDeduction = parseInt(SocialInsurance) + parseInt(IncomeTax) + parseInt(InhabitantsTax)
@@ -365,10 +406,11 @@ class StatementScreen2 extends Component{
         let TotalPaymentPartTime = parseInt(MonthlySalaryPartTime)+parseInt(ExtraWorkAllowancePartTime)+parseInt(MealChargePartTime)
 
         // IncomeTax : 갑근세(소득세) : 보수총액*3.0%
-        let IncomeTaxPartTime = (parseInt(MonthlySalaryPartTime)*0.03).toFixed(0)
+        let IncomeTaxPartTime = Math.floor(((parseInt(MonthlySalaryPartTime)*0.03).toFixed(0))/10)*10;
+
         // InhabitantsTax : 주민세 (갑근세의 10%)  : 보수총액*0.3%
-        let InhabitantsTaxPartTime = (parseInt(IncomeTaxPartTime)*0.1).toFixed(0)
-        
+        let InhabitantsTaxPartTime = Math.floor(((parseInt(IncomeTaxPartTime)*0.1).toFixed(0))/10)*10
+
         // WithholdingTax:원천과세(IncomeTax+InhabitantsTax) : 3.3 세금공제
         let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTime)
 
@@ -558,7 +600,7 @@ class StatementScreen2 extends Component{
                 <TouchableOpacity
                   style={styles.button}
                   onPress={()=>{
-                    this.show()}
+                    this.fetchData(1)}
                   }>
                   <Text style={styles.buttonTitle}>조회하기</Text>
                 </TouchableOpacity>

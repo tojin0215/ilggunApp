@@ -75,7 +75,7 @@ class InviteScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        bangCode : null,
+        bangCode : null, id:'',
         workerList: [], item:''
     }
 
@@ -84,16 +84,19 @@ class InviteScreen extends Component{
         this.setState({bangCode: bangCode});
         this.fetchData();
       })
+      AsyncStorage.getItem("userData").then((userData) =>{
+        this.setState({id:JSON.parse(userData).id});
+      });
   }
   fetchData = async(name) => { 
     try {
       if(name!=''){
-      axios.post('https://www.kwonsoryeong.tk:3000/selectId', {id : name},
+      axios.post('https://www.toojin.tk:3000/selectId', {id : name},
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectId', {
+        /*let res = await fetch('https://www.toojin.tk:3000/selectId', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -121,17 +124,20 @@ class InviteScreen extends Component{
     }
     sendInviteMessage = async(name) => { 
       try {
-        axios.post('https://www.kwonsoryeong.tk:3000/sendMessage', {
+
+        axios.post('https://www.toojin.tk:3000/sendMessage', {
           type: 1,
-            f: 'system',
+          system:1,
+            f: this.state.id,
             t : name,
-            message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?"
+            message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?",
+            read:0
         },
         {  headers:{
           'Content-Type': 'application/json',
         'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/sendMessage', {
+        /*let res = await fetch('https://www.toojin.tk:3000/sendMessage', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -147,7 +153,7 @@ class InviteScreen extends Component{
         .then(res => {
         });
         console.log(this.state.bangCode, name, this.props.route.params.type)
-        axios.post('https://www.kwonsoryeong.tk:3000/addWorker', {
+        axios.post('https://www.toojin.tk:3000/addWorker', {
           business: this.state.bangCode,
           workername : name,
           type : this.props.route.params.type,
@@ -158,7 +164,7 @@ class InviteScreen extends Component{
           'Accept': 'application/json'}
         })
         /*
-        res = await fetch('https://www.kwonsoryeong.tk:3000/addWorker', {
+        res = await fetch('https://www.toojin.tk:3000/addWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

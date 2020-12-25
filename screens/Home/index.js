@@ -56,7 +56,9 @@ const HomeScreen = ({ navigation, props }) => {
   
 //-----------------------------------바뀐부분B-----------------------
 const [clicked, setClicked] = useState(-1);
-
+const [clicked2, setClicked2] = useState(-1);
+const [clicked3, setClicked3] = useState(-1);
+const [clicked4, setClicked4] = useState(-1);
   // //근무관리
   // const workManageImg = require('../../img/workManagement.png')
   // const workManageImgChecked = require('../../img/workManagement_clicked.png')
@@ -126,7 +128,7 @@ const [clicked, setClicked] = useState(-1);
           var year = new Date().getFullYear(); //To get the Current Year
           let dt = week[day]+" "+ month+" " +date+" "+ year;
           navigation.navigate('Work Management',{selecteddate:dt}); //today
-          setClicked(-1);
+          setTimeout(() => {setClicked(-1)},500);
         }}>
 
 {/*  --------------------------------바뀐부분C----------------------- */}
@@ -138,10 +140,10 @@ const [clicked, setClicked] = useState(-1);
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          setClicked(0);
+          setClicked2(0);
           navigation.navigate('Worker Management');
-          setClicked(-1); }}>
-        <Image style={styles.buttonImg} source={clicked==0? require('../../img/workerManagement_clicked.png'): require('../../img/workerManagement.png')}/>
+          setTimeout(() => {setClicked2(-1)},500); }}>
+        <Image style={styles.buttonImg} source={clicked2==0? require('../../img/workerManagement_clicked.png'): require('../../img/workerManagement.png')}/>
       </TouchableOpacity>
     </View>
 
@@ -149,18 +151,18 @@ const [clicked, setClicked] = useState(-1);
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          setClicked(0);
+          setClicked3(0);
           navigation.navigate('Calculating'); 
-          setClicked(-1);}}>
-        <Image style={styles.buttonImg} source={clicked==0? require('../../img/calculating_clicked.png'): require('../../img/calculating.png')}/>
+          setTimeout(() => {setClicked3(-1)},500);}}>
+        <Image style={styles.buttonImg} source={clicked3==0? require('../../img/calculating_clicked.png'): require('../../img/calculating.png')}/>
       </TouchableOpacity>
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          setClicked(0);
+          setClicked4(0);
           navigation.navigate('Statement');
-          setClicked(-1);}}>
-        <Image style={styles.buttonImg} source={clicked==0? require('../../img/statement_clicked.png'): require('../../img/statement.png')}/>
+          setTimeout(() => {setClicked4(-1)},500);}}>
+        <Image style={styles.buttonImg} source={clicked4==0? require('../../img/statement_clicked.png'): require('../../img/statement.png')}/>
       </TouchableOpacity>
 {/*  --------------------------------바뀐부분D----------------------- */}
     </View>

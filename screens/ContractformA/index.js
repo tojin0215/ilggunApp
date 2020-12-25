@@ -1,12 +1,13 @@
 const axios = require('axios');
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert, ImageBackground, TouchableOpacity, Image} from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import CheckboxGroup from 'react-native-checkbox-group'
 import { AsyncStorage } from 'react-native';
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 import { WebView } from 'react-native-webview'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 class ContractformAScreen extends React.Component{
   state={
@@ -20,7 +21,8 @@ class ContractformAScreen extends React.Component{
       types2: [{label: '없음   ', value: 0}, {label: '있음', value: 1}], 
       types3: [{label: '근로자에게 직접지급   ', value: 0}, {label: '근로자 명의 예금통장에 입금', value: 1}], 
       value1: 0, value1Index:0, value2: 0, value2Index:0, value3: 0, value3Index:0,value4: 0,
-      Employee: this.props.route.params.workername, id:this.props.route.params.workername, bang:'', types4:[0,0,0,0,0]
+      Employee: this.props.route.params.workername, id:this.props.route.params.workername, bang:'', types4:[0,0,0,0,0],
+
     };
     
     AsyncStorage.getItem("bangCode")
@@ -33,7 +35,6 @@ class ContractformAScreen extends React.Component{
   handleSubmit(){
     if(this.state.Employer == null||this.state.Employee ==null
         ||this.state.StartYear==null||this.state.StartMonth==null||this.state.StartDay==null
-        ||this.state.EndYear==null||this.state.EndMonth==null||this.state.EndDay==null
         ||this.state.WorkPlace==null||this.state.WorkReference==null||this.state.StartTimeHour==null
         ||this.state.StartTimeHMin==null||this.state.EndTimeHour==null||this.state.EndTimeHMin==null
         ||this.state.WorkingDays==null||this.state.Holiday==null||this.state.Salary==null
@@ -42,6 +43,7 @@ class ContractformAScreen extends React.Component{
         ||this.state.BusinessOwner1==null||this.state.BusinessPhone==null){
         Alert.alert('빈칸을 채워주세요.') 
     } else{
+        this.state.type=2;
         console.log(this.state);
         this.fetchHtml();
         Alert.alert('저장되었습니다.')    
@@ -49,7 +51,7 @@ class ContractformAScreen extends React.Component{
   }
   initfetchHtml = async(bangCode) => {
     
-    axios.post('https://www.kwonsoryeong.tk:3000/selectContractform', {
+    axios.post('https://www.toojin.tk:3000/selectContractform', {
         bang:bangCode,
         id: this.props.route.params.workername
     },
@@ -57,7 +59,7 @@ class ContractformAScreen extends React.Component{
         'Content-Type': 'application/json',
       'Accept': 'application/json'}
     })
-    /*await fetch('https://www.kwonsoryeong.tk:3000/selectContractform', {
+    /*await fetch('https://www.toojin.tk:3000/selectContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -116,12 +118,12 @@ class ContractformAScreen extends React.Component{
       })     
     }
   fetchHtml = async(a) => {
-    axios.post('https://www.kwonsoryeong.tk:3000/writeContractform', this.state,
+    axios.post('https://www.toojin.tk:3000/writeContractform', this.state,
     {  headers:{
         'Content-Type': 'application/json',
       'Accept': 'application/json'}
     })
-    /*await fetch('https://www.kwonsoryeong.tk:3000/writeContractform', {
+    /*await fetch('https://www.toojin.tk:3000/writeContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -220,14 +222,18 @@ class ContractformAScreen extends React.Component{
 
     StatementScreen = async() => {
         let sign="";
-      axios.post('https://www.kwonsoryeong.tk:3000/selectSign', {
-          id:this.props.route.params.workername
+        let bsign="";
+        console.log("33333333 ");
+        console.log(this.props.route.params.bid);
+      axios.post('https://www.toojin.tk:3000/selectSign', {
+          id:this.props.route.params.workername,
+          id2: this.props.route.params.bid
       },
       {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
       })
-      /*fetch('https://www.kwonsoryeong.tk:3000/selectSign', {
+      /*fetch('https://www.toojin.tk:3000/selectSign', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -239,6 +245,7 @@ class ContractformAScreen extends React.Component{
       }).then(res => res.json())*/
       .then(async(res) => {
           sign = res.data[0].sign;
+          bsign = res.data[1].sign;
           console.log(sign)
           const htmlContent = `
                 <!DOCTYPE html>
@@ -257,14 +264,19 @@ class ContractformAScreen extends React.Component{
               .contract_day{position:relative; left:50%; margin-left: -100px;}
           </style>
           <body>
-              <svg viewBox = "0 0 400 400" style="left: 230px; top:1570px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-              <polyline points="${String(sign)}"
-              style="fill:none;stroke:black;stroke-width:3" />
-              </svg>
+              
             <span>표준근로계약서</span>
             <form>
+            
                 <hr><br>
-    
+                <svg viewBox = "0 0 500 500" style="left:190px; top:1180px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="${String(sign)}"
+                style="fill:none;stroke:black;stroke-width:3" />
+                </svg>
+                <svg viewBox = "0 0 500 500" style="left:190px; top:1000px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                      <polyline points="${String(bsign)}"
+                      style="fill:none;stroke:black;stroke-width:3" />
+                      </svg>
                 <label class="text_underline">${this.state.Employer}</label>
                 <label>(이하 "사업주"라 함) 과(와)</label>
                 <label class="text_underline">${this.state.Employee}</label>
@@ -323,31 +335,25 @@ class ContractformAScreen extends React.Component{
                 <Text>원</Text><br>
     
                 <label class="margin_left">- 상여금 : </label>
-                <input type="radio" id="bonusYes" name="bonus" value="bonusYes">
                 <label for="bonusYes">${this.state.types1}</label>
                 <label class="text_underline">${this.state.Bonus}</label>
-                <label>원</label>
-                <input type="radio" id="bonusNo" name="bonus" value="bonusNo"  class="margin_left">
-                <label for="bonusNo">없음</label><br>
+                <label>원</label><br>
     
                 <label class="margin_left">- 기타급여(제수당 등) : </label>
-                <label for="bonus2Yes">${this.state.types2}</label>
+                <label for="bonus2Yes">${this.state.types2}</label><br>
                 <label class="text_underline_margin_left">${this.state.Bonus1}</label>
                 <label>원, </label>
                 <label class="text_underline_margin_left">${this.state.Bonus2}</label>
-                <label>원 </label><br>
+                <label>원, </label>
                 <label class="text_underline_margin_left">${this.state.Bonus3}</label>
                 <label>원, </label>
                 <label class="text_underline_margin_left">${this.state.Bonus4}</label>
                 <label>원 </label><br>
-                <label class="margin_left">- 임금지급일 : 매월(매주 또는 매일)</label>
-                <label class="text_underline">10</label>
+                <label class="margin_left">- 임금지급일 : 매월</label>
+                <label class="text_underline">${this.state.SalaryDay}</label>
                 <label>일 (휴일의 경우에는 전일 지급)</label><br>
                 <label class="margin_left">- 지급방법 : </label>
-                <input type="radio" id="wayOfPayment1" name="wayOfPayment" value="wayOfPayment1">
-                <label for="wayOfPayment1">근로자에게 직접지급</label>
-                <input type="radio" id="wayOfPayment2" name="wayOfPayment" value="wayOfPayment2" class="margin_left">
-                <label for="wayOfPayment2">근로자 명의 예금통장에 입금</label><br><br>
+                <label for="wayOfPayment1">${this.state.types3}</label><br>
     
                 <label>7. 연차유급휴가</label><br>
                 <label class="margin_left"> - 연차유급휴가는 근로기준법에서 정하는 바에 따라 부여함.</label><br>
@@ -417,8 +423,11 @@ class ContractformAScreen extends React.Component{
   render() {
     return (
         
-            <View style={styles.container}>
-        <Text style={styles.head}> 근로계약서_정규/계약</Text>
+        <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+        <View style={styles.container}>
+        <View style={{marginTop:hp('5%')}}>
+            <Text style={styles.textTitle}> 근로계약서(정규/계약)</Text>
+        </View>
         {
             console.log(">>>>>>>>>>>>>>>>"+this.state.type)
         }
@@ -426,219 +435,243 @@ class ContractformAScreen extends React.Component{
             
             this.state.type==2?
             <ScrollView>
-                <Text>근로자가 확인하고 있습니다.</Text>
-            <View style={styles.marginBottom1}>
-                <View style={styles.rowView}>
-                <Text style={styles.textinput}>{this.state.Employer}</Text>
-                <Text>(이하 "사업주"라 함) 과(와)</Text>
+                <Text style={styles.textTitleStyle11}>근로자가 확인하고 있습니다.</Text>
+            <View style={styles.textArea}>
+                <View style={styles.textAreaRow}>
+                <Text style={styles.textinputName}>{this.state.Employer}</Text>
+                <Text style={styles.textTitleStyle}>(이하 "사업주"라 함) 과(와)</Text>
                 </View>
-                <View style={styles.rowView}>
-                <Text style={styles.textinput}>{this.state.Employee}</Text>
-                <Text>(이하 "근로자"라 함) 은 다음과 같이 근로계약을 체결한다.</Text>
+                <View style={styles.textAreaRow}>
+                    <Text style={styles.textinputName}>{this.state.Employee}</Text>
+                    <Text style={styles.textTitleStyle}>(이하 "근로자"라 함) 은</Text>
                 </View>
+                <Text style={styles.textTitleStyle_1}>다음과 같이 근로계약을 체결한다.</Text>
             </View>
     
-            <View style={styles.marginBottom2}>
-                <Text style={styles.marginText}>1. 근로계약기간 :</Text> 
-                <View style={styles.rowView}>
-                <Text style={styles.textinput1}>{this.state.StartYear}</Text>
-                <Text>년</Text>
-                <Text style={styles.textinput2}>{this.state.StartMonth}</Text>
-                <Text>월</Text>
-                <Text style={styles.textinput2}>{this.state.StartDay}</Text>
-                <Text>일부터</Text>
     
-                <Text style={styles.textinput1}>{this.state.EndYear}</Text>
-                <Text>년</Text>
-                <Text style={styles.textinput2}>{this.state.EndMonth}</Text>
-                <Text>월</Text>
-                <Text style={styles.textinput2}>{this.state.EndDay}</Text>
-                <Text>일까지</Text>
+            <View style={styles.textArea}>
+                <Text style={styles.textTitleStyle}>1. 근로계약기간 :</Text> 
+                <View style={styles.rowPeriod}>
+                    <Text style={styles.textinputYearStyle1}>{this.state.StartYear}</Text>
+                    <Text style={styles.textStyle}>년</Text>
+                    <Text style={styles.textinputDayStyle1}>{this.state.StartMonth}</Text>
+                    <Text style={styles.textStyle}>월</Text>
+                    <Text style={styles.textinputDayStyle1}>{this.state.StartDay}</Text>
+                    <Text style={styles.textStyle}>일부터</Text>
                 </View>
-            </View>
-            
-            <View style={styles.marginBottom2}>
-                <View style={styles.rowView}>
-                <Text style={styles.marginText}>2. 근무장소 : </Text>
-                <Text style={styles.textinput}>{this.state.WorkPlace}</Text>
+                <View style={styles.rowPeriod2}>
+                    <Text style={styles.textinputYearStyle1}>{this.state.EndYear}</Text>
+                    <Text style={styles.textStyle}>년</Text>
+                    <Text style={styles.textinputDayStyle1}>{this.state.EndMonth}</Text>
+                    <Text style={styles.textStyle}>월</Text>
+                    <Text style={styles.textinputDayStyle1}>{this.state.EndDay}</Text>
+                    <Text style={styles.textStyle}>일까지</Text>
                 </View>
             </View>
             
-            
-            <View style={styles.marginBottom2}>
-            <View style={styles.rowView}>
-              <Text style={styles.marginText}>3. 업무의 내용 : </Text>
-              <Text style={styles.textinput}>{this.state.WorkReference}</Text>
-            </View>
-            </View>
-    
-    
-            <View style={styles.marginBottom2}>
-            <View style={styles.rowView}>
-            <Text style={styles.marginText}>4. 소정근로시간 :</Text> 
-                <Text style={styles.textinput2}>{this.state.StartTimeHour}</Text> 
-                <Text>시</Text>
-                <Text style={styles.textinput2}>{this.state.StartTimeHMin}</Text>
-                <Text>분 ~ </Text>
-                <Text style={styles.textinput2}>{this.state.EndTimeHour}</Text>
-                <Text>시</Text>
-                <Text style={styles.textinput2}>{this.state.EndTimeHMin}</Text>
-                <Text>분 </Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text>휴게시간</Text>
-                <Text style={styles.textinput2}>{this.state.BreakTimeStartHour}</Text>
-                <Text>시</Text>
-                <Text style={styles.textinput2}>{this.state.BreakTimeStartMin}</Text>
-                <Text>분 ~ </Text>
-                <Text style={styles.textinput2}>{this.state.BreakTimeEndHour}</Text>
-                <Text>시</Text>
-                <Text style={styles.textinput2}>{this.state.BreakTimeEndMin}</Text>
-                <Text>분 </Text>
-            </View>
-            </View>
-    
-    
-            <View style={styles.marginBottom2}>
-            <View style={styles.rowView}>
-                <Text style={styles.marginText}>5. 근무일/휴일 : </Text> 
-                <Text>매주 </Text>
-                <Text style={styles.textinput2}>{this.state.WorkingDays}</Text>
-                <Text>일(또는 매일단위)근무, 주휴일 매주</Text>
-                <Text style={styles.textinput2}>{this.state.Holiday}</Text>
-                <Text>일 </Text>
-            </View>
-            </View>
-    
-    
-            <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>6. 임금</Text> 
-            <View style={styles.rowView3}>
-                <Text>-월(일, 시간)급 : </Text>
-                <Text style={styles.textinput}>{this.state.Salary}</Text>
-                <Text>원</Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text>-상여금 : </Text>
-                <Text style={styles.textinput}>{this.state.types1}</Text>
-                <Text>, </Text>
-                <Text style={styles.textinput}>{this.state.Bonus}</Text>
-                <Text>원</Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text>-기타급여(제수당 등) : </Text>
-                <Text style={styles.textinput}>{this.state.types2}</Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text style={styles.textinput}>{this.state.Bonus1}</Text>
-                <Text>원, </Text>
-                <Text style={styles.marginLeft1}></Text>
-                <Text style={styles.textinput}>{this.state.Bonus2}</Text>
-                <Text>원</Text>
-            </View>
-                    <View style={styles.rowView3}>
-                    <Text style={styles.textinput}>{this.state.Bonus3}</Text>
-                <Text>원, </Text>
-                <Text style={styles.marginLeft1}></Text>
-                <Text style={styles.textinput}>{this.state.Bonus4}</Text>
-                <Text>원</Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text>-임금지급일 : 매월(매주 또는 매일)</Text>
-                <Text style={styles.textinput2}>{this.state.SalaryDay}</Text>
-                <Text>일 (휴일의 경우에는 전일 지급)</Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text>-지급방법 : </Text>
-                <Text style={styles.textinput3}>{this.state.types3}</Text>
-            </View>
-            </View>
-    
-            
-            <View style={styles.marginBottom2}>
-                <Text style={styles.marginText}>7. 연차유급휴가</Text> 
-                <Text style={styles.marginText}> - 연차유급휴가는 근로기준법에서 정하는 바에 따라 부여함</Text>
-            </View>
-    
-            <View style={styles.marginBottom2}>
-                <Text style={styles.marginText}>8. 사대보험 적용여부(해당란에 체크)</Text> 
-        <Text style={styles.marginText}>고용보험:</Text><Text style={styles.textinput1}>{this.state.types4[1]==1?'O':'X'}</Text>
-                <Text style={styles.marginText}>, 산재보험:</Text><Text style={styles.textinput1}>{this.state.types4[2]==1?'O':'X'}</Text>
-                <Text style={styles.marginText}>, 국민연금:</Text><Text style={styles.textinput1}>{this.state.types4[3]==1?'O':'X'}</Text>
-                <Text style={styles.marginText}>, 건강보험:</Text><Text style={styles.textinput1}>{this.state.types4[4]==1?'O':'X'}</Text>
-    </View>
-            <View style={styles.marginBottom2}>
-                <Text style={styles.marginText}>9. 근로계약서 교부</Text> 
-                <Text style={styles.marginText}> - 사업주는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부요구와 관계없이 근로자에게 교부함(근로기준법 제17조 이행)</Text>
-            </View>
-    
-            <View style={styles.marginBottom2}>
-                <Text style={styles.marginText}>10. 기타</Text> 
-                <Text style={styles.marginText}> - 이 계약에 정함이 없는 사항은 근로기준법령에 의함</Text>
+            <View style={styles.textArea}>
+                <View style={styles.textAreaRow}>
+                <Text style={styles.textTitleStyle}>2. 근무장소 : </Text>
+                <Text style={styles.textStyle}>{this.state.WorkPlace}</Text>
+                </View>
             </View>
             
+            
+            <View style={styles.textArea}>
+            <View style={styles.textAreaRow}>
+              <Text style={styles.textTitleStyle}>3. 업무의 내용 : </Text>
+              <Text style={styles.textStyle}>{this.state.WorkReference}</Text>
+            </View>
+            </View>
     
-            <View style={styles.rowView2}> 
-              <Text style={styles.textinput1}>{this.state.ContractYear}</Text>
-              <Text>년</Text>
-              <Text style={styles.textinput2}>{this.state.ContractMonth}</Text>
-              <Text>월</Text>
-              <Text style={styles.textinput2}>{this.state.ContractDay}</Text>         
-              <Text>일</Text>       
+    
+            <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>4. 소정근로시간 :</Text>
+            <View style={styles.rowPeriod}> 
+                <Text style={styles.textinputDayStyle1}>{this.state.StartTimeHour}</Text> 
+                <Text style={styles.textStyle}>시</Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.StartTimeHMin}</Text>
+                <Text style={styles.textStyle}>분 ~ </Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.EndTimeHour}</Text>
+                <Text style={styles.textStyle}>시</Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.EndTimeHMin}</Text>
+                <Text style={styles.textStyle}>분 </Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>휴게시간</Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.BreakTimeStartHour}</Text>
+                <Text style={styles.textStyle}>시</Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.BreakTimeStartMin}</Text>
+                <Text style={styles.textStyle}>분 ~ </Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.BreakTimeEndHour}</Text>
+                <Text style={styles.textStyle}>시</Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.BreakTimeEndMin}</Text>
+                <Text style={styles.textStyle}>분 </Text>
+            </View>
+            </View>
+    
+    
+            <View style={styles.textArea}>
+                <Text style={styles.textTitleStyle}>5. 근무일/휴일 : </Text> 
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>매주 </Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.WorkingDays}</Text>
+                <Text style={styles.textStyle}>일 근무,</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>주휴일 매주</Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.Holiday}</Text>
+                <Text style={styles.textStyle}>일 </Text>
+            </View>
+            </View>
+    
+    
+            <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>6. 임금</Text> 
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-월급 : </Text>
+                <Text style={styles.textinputName1}>{this.state.Salary}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-상여금 : </Text>
+                <Text style={styles.textinputName1}>{this.state.types1}</Text>
+                <Text style={styles.textStyle}>, </Text>
+                <Text style={styles.textinputName1}>{this.state.Bonus}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-기타급여(제수당 등) : </Text>
+                <Text style={styles.textinputName1}>{this.state.types2}</Text>
+            </View>
+            <View style={styles.rowPeriod2}>
+                <Text style={styles.textinputName1}>{this.state.Bonus1}</Text>
+                <Text style={styles.textStyle}>원, </Text>
+                <Text style={{marginLeft:wp('5%')}}></Text>
+                <Text style={styles.textinputName1}>{this.state.Bonus2}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            <View style={styles.rowPeriod2}>
+                <Text style={styles.textinputName1}>{this.state.Bonus3}</Text>
+                <Text style={styles.textStyle}>원, </Text>
+                <Text style={{marginLeft:wp('5%')}}></Text>
+                <Text style={styles.textinputName1}>{this.state.Bonus4}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+             <View>   
+                <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-임금지급일 : 매월</Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.SalaryDay}</Text>
+                <Text style={styles.textStyle}>일</Text>
+                </View>
+                <View style={{marginLeft:wp('20%')}}>
+                    <Text style={styles.textStyle}>(휴일의 경우에는 전일 지급)</Text>
+                </View>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-지급방법 : </Text>
+                <Text style={styles.textStyle}>{this.state.types3}</Text>
+            </View>
+            </View>
+    
+            
+            <View style={styles.textArea}>
+                <Text style={styles.textTitleStyle}>7. 연차유급휴가</Text> 
+                <Text style={styles.textLineStyle}> - 연차유급휴가는 근로기준법에서 정하는 바에 따라 부여함</Text>
+            </View>
+    
+            <View style={styles.textArea}>
+                <Text style={styles.textTitleStyle}>8. 사대보험 적용여부(해당란에 체크)</Text> 
+                <View style={styles.rowPeriod}>
+                    <Text style={styles.textStyle}>고용보험:</Text><Text style={styles.textinputDayStyle1}>{this.state.types4[1]==1?'O':'X'}</Text>
+                    <Text style={styles.textStyle}>, </Text>
+                    <Text style={styles.textStyle}>산재보험:</Text><Text style={styles.textinputDayStyle1}>{this.state.types4[2]==1?'O':'X'}</Text>
+                    <Text style={styles.textStyle}>, </Text>
+                </View>
+                <View style={styles.rowPeriod}>
+                    <Text style={styles.textStyle}>국민연금:</Text><Text style={styles.textinputDayStyle1}>{this.state.types4[3]==1?'O':'X'}</Text>
+                    <Text style={styles.textStyle}>, </Text>
+                    <Text style={styles.textStyle}>건강보험:</Text><Text style={styles.textinputDayStyle1}>{this.state.types4[4]==1?'O':'X'}</Text>
+                </View>
+            </View>
+
+            <View style={styles.textArea}>
+                <Text style={styles.textTitleStyle}>9. 근로계약서 교부</Text> 
+                <Text style={styles.textLineStyle}> - 사업주는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부요구와 관계없이 근로자에게 교부함(근로기준법 제17조 이행)</Text>
+            </View>
+    
+            <View style={styles.textArea}>
+                <Text style={styles.textTitleStyle}>10. 기타</Text> 
+                <Text style={styles.textLineStyle}> - 이 계약에 정함이 없는 사항은 근로기준법령에 의함</Text>
+            </View>
+            
+            <View style={styles.rowPeriod3}> 
+              <Text style={styles.textinputYearStyle1}>{this.state.ContractYear}</Text>
+              <Text style={styles.textTitleStyle}>년</Text>
+              <Text style={styles.textinputDayStyle1}>{this.state.ContractMonth}</Text>
+              <Text style={styles.textTitleStyle}>월</Text>
+              <Text style={styles.textinputDayStyle1}>{this.state.ContractDay}</Text>         
+              <Text style={styles.textTitleStyle}>일</Text>       
             </View>
           
-          <View>
-            <Text style={styles.head2}>사업주</Text>
-            <View style={styles.rowView4}>
-                <Text>사업체명 : </Text>
-                <Text style={styles.textinput3}>{this.state.BusinessName}</Text>
-            </View>
-            <View style={styles.rowView4}>
-                <Text>주소 : </Text>
-                <Text style={styles.textinput3}>{this.state.BusinessAddress}</Text>
-            </View>        
-            <View style={styles.rowView4}>
-                <Text>전화번호 : </Text>
-                <Text style={styles.textinput3}>{this.state.BusinessPhone}</Text>
-            </View>
-            <View style={styles.rowView4}>
-                <Text>대표자 : </Text>
-                <Text style={styles.textinput3}>{this.state.BusinessOwner1}</Text>
-            </View>
+            <View style={styles.textArea}>
+                <Text style={styles.textTitleStyle}>사업주</Text>
+                <View style={styles.rowPeriod}>
+                    <Text style={styles.textStyle}>사업체명 : </Text>
+                    <Text style={styles.textinputStyle2}>{this.state.BusinessName}</Text>
+                </View>
+                <View style={styles.rowPeriod}>
+                    <Text style={styles.textStyle}>주소 : </Text>
+                    <Text style={styles.textinputStyle2}>{this.state.BusinessAddress}</Text>
+                </View>        
+                <View style={styles.rowPeriod}>
+                    <Text style={styles.textStyle}>전화번호 : </Text>
+                    <Text style={styles.textinputStyle2}>{this.state.BusinessPhone}</Text>
+                </View>
+                <View style={styles.rowPeriod}>
+                    <Text style={styles.textStyle}>대표자 : </Text>
+                    <Text style={styles.textinputStyle2}>{this.state.BusinessOwner1}</Text>
+                </View>
           </View>
     
-          <View>
-        <Text style={styles.head2}>근로자</Text>
-            <View style={styles.rowView4}>
-                <Text>주소 : 근로자가 입력하는 칸입니다.</Text>
+          <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>근로자</Text>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>주소 : 근로자가 입력하는 칸입니다.</Text>
             </View>
-            <View style={styles.rowView4}>
-                <Text>연락처 : 근로자가 입력하는 칸입니다.</Text>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>연락처 : 근로자가 입력하는 칸입니다.</Text>
             </View>
-            <View style={styles.rowView4}>
-                <Text>성명 : 근로자가 입력하는 칸입니다.</Text>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>성명 : 근로자가 입력하는 칸입니다.</Text>
             </View>
+            <View style={{marginBottom:hp('5%')}}><Text></Text></View>
         </View>
     
           </ScrollView>
           :
           this.state.type==3?
           <>
+          
+          <View style={{ width:'100%', height:hp('70%'), }}>
             <WebView
                 originWhitelist={['*']}
                 source={{ html: this.state.htmlContent }}
-                style={{ marginTop: 20 }}
             />
-            <Button
-              title="공유하기"
-              color="#FF3232"
-              onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}/>
+            </View>
+            <View style={styles.buttonArea1}>
+                <TouchableOpacity
+                    style={styles.button1}
+                    onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}>
+                    <Image style={styles.excelBtn} source={require('../../img/excel.png')}></Image>
+                </TouchableOpacity>
+            </View>
             </>
 
           :
         <ScrollView>
-        <View style={styles.marginBottom1}>
-            <View style={styles.rowView}>
+        <View style={styles.textArea}>
+            <View style={styles.textAreaRow}>
             <TextInput
                 value={this.state.Employer} 
                 onChangeText={(Employer) => this.setState({Employer})}
@@ -646,10 +679,10 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput1.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'사업주이름'}
-                style={styles.textinput}/>
-            <Text>(이하 "사업주"라 함) 과(와)</Text>
-            </View>
-            <View style={styles.rowView}>
+                style={styles.textinputName}/>
+                <Text style={styles.textTitleStyle}>(이하 "사업주"라 함) 과(와)</Text>
+                </View>
+                <View style={styles.textAreaRow}>
             <TextInput
                 value={this.state.Employee} 
                 onChangeText={(Employee) => this.setState({Employee})}
@@ -657,14 +690,17 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput2.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'근로자이름'}
-                style={styles.textinput}/>
-            <Text>(이하 "근로자"라 함) 은 다음과 같이 근로계약을 체결한다.</Text>
+                style={styles.textinputName}/>
+            <Text style={styles.textTitleStyle}>(이하 "근로자"라 함) 은</Text>
+            </View>
+            <View style={{marginLeft:wp('3%'),}}>
+                <Text style={styles.textTitleStyle_1}>다음과 같이 근로계약을 체결한다.</Text>
             </View>
         </View>
 
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>1. 근로계약기간 :</Text> 
-            <View style={styles.rowView}>
+        <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>1. 근로계약기간 :</Text> 
+            <View style={styles.rowPeriod}>
             <TextInput
                 value={this.state.StartYear} 
                 onChangeText={(StartYear) => this.setState({StartYear})}
@@ -672,8 +708,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput3.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2020'}
-                style={styles.textinput1}/>
-            <Text>년</Text>
+                style={styles.textinputYearStyle}/>
+            <Text style={styles.textStyle}>년</Text>
             <TextInput
                 value={this.state.StartMonth} 
                 onChangeText={(StartMonth) => this.setState({StartMonth})}
@@ -681,8 +717,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput4.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'10'}
-                style={styles.textinput2}/>
-            <Text>월</Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>월</Text>
             <TextInput
                 value={this.state.StartDay} 
                 onChangeText={(StartDay) => this.setState({StartDay})}
@@ -690,9 +726,11 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput5.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'20'}
-                style={styles.textinput2}/>
-            <Text>일부터</Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>일부터</Text>
+            </View>
 
+            <View style={styles.rowPeriod2}>
             <TextInput
                 value={this.state.EndYear} 
                 onChangeText={(EndYear) => this.setState({EndYear})}
@@ -700,8 +738,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput6.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2022'}
-                style={styles.textinput1}/>
-            <Text>년</Text>
+                style={styles.textinputYearStyle}/>
+            <Text style={styles.textStyle}>년</Text>
             <TextInput
                 value={this.state.EndMonth} 
                 onChangeText={(EndMonth) => this.setState({EndMonth})}
@@ -709,8 +747,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput7.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'12'}
-                style={styles.textinput2}/>
-            <Text>월</Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>월</Text>
             <TextInput
                 value={this.state.EndDay} 
                 onChangeText={(EndDay) => this.setState({EndDay})}
@@ -718,15 +756,15 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput8.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'31'}
-                style={styles.textinput2}/>
-            <Text>일까지</Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>일까지</Text>
             </View>
         </View>
 
 
-        <View style={styles.marginBottom2}>
-            <View style={styles.rowView}>
-            <Text style={styles.marginText}>2. 근무장소 : </Text>
+        <View style={styles.textArea}>
+            <View style={styles.textAreaRow}>
+            <Text style={styles.textTitleStyle}>2. 근무장소 : </Text>
             <TextInput
                 value={this.state.WorkPlace} 
                 onChangeText={(WorkPlace) => this.setState({WorkPlace})}
@@ -734,14 +772,14 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput9.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'예) 사무실'}
-                style={styles.textinput}/>
+                style={styles.textinputStyle}/>
             </View>
         </View>
         
         
-        <View style={styles.marginBottom2}>
-        <View style={styles.rowView}>
-          <Text style={styles.marginText}>3. 업무의 내용 : </Text>
+        <View style={styles.textArea}>
+        <View style={styles.textAreaRow}>
+          <Text style={styles.textTitleStyle}>3. 업무의 내용 : </Text>
           <TextInput
             value={this.state.WorkReference} 
             onChangeText={(WorkReference) => this.setState({WorkReference})}
@@ -749,14 +787,14 @@ class ContractformAScreen extends React.Component{
             onSubmitEditing={() => { this.TextInput10.focus(); }}
             blurOnSubmit={false}
             placeholder={'예) 어플개발'}
-            style={styles.textinput}/>
+            style={styles.textinputStyle}/>
         </View>
         </View>
 
 
-        <View style={styles.marginBottom2}>
-        <View style={styles.rowView}>
-        <Text style={styles.marginText}>4. 소정근로시간 :</Text> 
+        <View style={styles.textArea}>
+        <Text style={styles.textTitleStyle}>4. 소정근로시간 :</Text> 
+        <View style={styles.rowPeriod}> 
             <TextInput
                 value={this.state.StartTimeHour} 
                 onChangeText={(StartTimeHour) => this.setState({StartTimeHour})}
@@ -764,8 +802,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput11.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'9'}
-                style={styles.textinput2}/>
-            <Text>시</Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>시</Text>
             <TextInput
                 value={this.state.StartTimeHMin} 
                 onChangeText={(StartTimeHMin) => this.setState({StartTimeHMin})}
@@ -773,8 +811,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput12.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'00'}
-                style={styles.textinput2}/>
-            <Text>분 ~ </Text>
+                style={styles.textinputDayStyle}/>
+                <Text style={styles.textStyle}>분 ~ </Text>
             <TextInput
                 value={this.state.EndTimeHour} 
                 onChangeText={(EndTimeHour) => this.setState({EndTimeHour})}
@@ -782,8 +820,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput13.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'18'}
-                style={styles.textinput2}/>
-            <Text>시</Text>
+                style={styles.textinputDayStyle}/>
+                <Text style={styles.textStyle}>시</Text>
             <TextInput
                 value={this.state.EndTimeHMin} 
                 onChangeText={(EndTimeHMin) => this.setState({EndTimeHMin})}
@@ -791,11 +829,11 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput14.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'00'}
-                style={styles.textinput2}/>
-            <Text>분 </Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>분 </Text>
         </View>
-        <View style={styles.rowView3}>
-            <Text>휴게시간</Text>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>휴게시간 : </Text>
             <TextInput
                 value={this.state.BreakTimeStartHour} 
                 onChangeText={(BreakTimeStartHour) => this.setState({BreakTimeStartHour})}
@@ -803,8 +841,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput15.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'12'}
-                style={styles.textinput2}/>
-            <Text>시</Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>시</Text>
             <TextInput
                 value={this.state.BreakTimeStartMin} 
                 onChangeText={(BreakTimeStartMin) => this.setState({BreakTimeStartMin})}
@@ -812,8 +850,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput16.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'00'}
-                style={styles.textinput2}/>
-            <Text>분 ~ </Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>분 ~ </Text>
             <TextInput
                 value={this.state.BreakTimeEndHour} 
                 onChangeText={(BreakTimeEndHour) => this.setState({BreakTimeEndHour})}
@@ -821,8 +859,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput17.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'13'}
-                style={styles.textinput2}/>
-            <Text>시</Text>
+                style={styles.textinputDayStyle}/>
+                <Text style={styles.textStyle}>시</Text>
             <TextInput
                 value={this.state.BreakTimeEndMin} 
                 onChangeText={(BreakTimeEndMin) => this.setState({BreakTimeEndMin})}
@@ -830,16 +868,16 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput18.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'00'}
-                style={styles.textinput2}/>
-            <Text>분 </Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>분 </Text>
         </View>
         </View>
 
 
-        <View style={styles.marginBottom2}>
-        <View style={styles.rowView}>
-            <Text style={styles.marginText}>5. 근무일/휴일 : </Text> 
-            <Text>매주 </Text>
+        <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>5. 근무일/휴일 : </Text> 
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>매주</Text>
             <TextInput
                 value={this.state.WorkingDays} 
                 onChangeText={(WorkingDays) => this.setState({WorkingDays})}
@@ -847,8 +885,11 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput19.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'5'}
-                style={styles.textinput2}/>
-            <Text>일(또는 매일단위)근무, 주휴일 매주</Text>
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>일 근무</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>주휴일 매주</Text>
             <TextInput
                 value={this.state.Holiday} 
                 onChangeText={(Holiday) => this.setState({Holiday})}
@@ -856,16 +897,16 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput20.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2'}
-                style={styles.textinput2}/>
-            <Text>일 </Text>
-        </View>
+                style={styles.textinputDayStyle}/>
+                <Text style={styles.textStyle}>일 </Text>
+            </View>
         </View>
 
 
-        <View style={styles.marginBottom2}>
-        <Text style={styles.marginText}>6. 임금</Text> 
-        <View style={styles.rowView3}>
-            <Text>-월(일, 시간)급 : </Text>
+        <View style={styles.textArea}>
+        <Text style={styles.textTitleStyle}>6. 임금</Text> 
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>-월급 : </Text>
             <TextInput
                 value={this.state.Salary} 
                 onChangeText={(Salary) => this.setState({Salary})}
@@ -873,18 +914,21 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput21.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2000000'}
-                style={styles.textinput}/>
-            <Text>원</Text>
+                style={styles.textinputName1}/>
+            <Text style={styles.textStyle}>원</Text>
         </View>
-        <View style={styles.rowView3}>
-            <Text>-상여금 : </Text>
+        <View style={{marginTop:hp('0.5%')}}>
+            <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>-상여금 : </Text>
             <RadioForm
                 ref="radioForm"
                 radio_props={this.state.types1=="있음"||this.state.types1=="없음"?[{"label":"없음   ","value":0},{"label":"있음","value":0}]:this.state.types1}
                 initial={0}
                 formHorizontal={true}
                 labelHorizontal={true}
-                buttonColor={'#2196f3'}
+                buttonColor={'#67C8BA'}
+                selectedButtonColor={'#67C8BA'}
+                labelStyle={{fontSize: wp('4.2%'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
                 animation={true}
                 onPress={(value, index) => {
                     this.setState({
@@ -893,6 +937,8 @@ class ContractformAScreen extends React.Component{
                     })
                 }}
             />
+        </View>
+        <View style={{marginLeft:wp('30%'), flexDirection:'row'}}>
             <TextInput
                 value={this.state.Bonus} 
                 onChangeText={(Bonus) => this.setState({Bonus})}
@@ -900,18 +946,21 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput22.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinput}/>
-            <Text>원</Text>
+                style={styles.textinputName1}/>
+            <Text style={styles.textStyle}>원</Text>
         </View>
-        <View style={styles.rowView3}>
-            <Text>-기타급여(제수당 등) : </Text>
+        </View>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>-기타급여(제수당 등) : </Text>
             <RadioForm
                 ref="radioForm"
                 radio_props={this.state.types2=="있음"||this.state.types2=="없음"?[{"label":"없음   ","value":0},{"label":"있음","value":0}]:this.state.types2}
                 initial={0}
                 formHorizontal={true}
                 labelHorizontal={true}
-                buttonColor={'#2196f3'}
+                buttonColor={'#67C8BA'}
+                selectedButtonColor={'#67C8BA'}
+                labelStyle={{fontSize: wp('4.2%'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
                 animation={true}
                 onPress={(value, index) => {
                     this.setState({
@@ -921,7 +970,7 @@ class ContractformAScreen extends React.Component{
                 }}
             />
         </View>
-        <View style={styles.rowView3}>
+        <View style={styles.rowPeriod2}>
             <TextInput
                 value={this.state.Bonus1} 
                 onChangeText={(Bonus1) => this.setState({Bonus1})}
@@ -929,9 +978,9 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput23.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinput}/>
-            <Text>원, </Text>
-            <Text style={styles.marginLeft1}></Text>
+                style={styles.textinputName1}/>
+            <Text style={styles.textStyle}>원, </Text>
+            <Text style={{marginLeft:wp('5%')}}></Text>
             <TextInput
                 value={this.state.Bonus2} 
                 onChangeText={(Bonus2) => this.setState({Bonus2})}
@@ -939,10 +988,10 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput24.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinput}/>
-            <Text>원</Text>
+                style={styles.textinputName1}/>
+            <Text style={styles.textStyle}>원</Text>
         </View>
-                <View style={styles.rowView3}>
+        <View style={styles.rowPeriod2}>
             <TextInput
                 value={this.state.Bonus3} 
                 onChangeText={(Bonus3) => this.setState({Bonus3})}
@@ -950,9 +999,9 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput25.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinput}/>
-            <Text>원, </Text>
-            <Text style={styles.marginLeft1}></Text>
+                style={styles.textinputName1}/>
+            <Text style={styles.textStyle}>원, </Text>
+            <Text style={{marginLeft:wp('5%')}}></Text>
             <TextInput
                 value={this.state.Bonus4} 
                 onChangeText={(Bonus4) => this.setState({Bonus4})}
@@ -960,28 +1009,38 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput26.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinput}/>
-            <Text>원</Text>
+                style={styles.textinputName1}/>
+            <Text style={styles.textStyle}>원</Text>
         </View>
-        <View style={styles.rowView3}>
-            <Text>-임금지급일 : 매월(매주 또는 매일)</Text>
-            <TextInput
-                value={this.state.SalaryDay} 
-                onChangeText={(SalaryDay) => this.setState({SalaryDay})}
-                ref={(input) => { this.TextInput26 = input; }}
-                placeholder={'10'}
-                style={styles.textinput2}/>
-            <Text>일 (휴일의 경우에는 전일 지급)</Text>
+
+        <View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-임금지급일 : 매월</Text>
+                <TextInput
+                    value={this.state.SalaryDay} 
+                    onChangeText={(SalaryDay) => this.setState({SalaryDay})}
+                    ref={(input) => { this.TextInput26 = input; }}
+                    placeholder={'10'}
+                    style={styles.textinputDayStyle}/>
+                <Text style={styles.textStyle}>일</Text>
+            </View>
+            <View style={{marginLeft:wp('30%')}}>
+                <Text style={styles.textStyle}>(휴일의 경우에는 전일 지급)</Text>
+            </View>
         </View>
-        <View style={styles.rowView3}>
-            <Text>-지급방법 : </Text>
+
+        <View style={{marginTop:hp('0.5%')}}>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>-지급방법 : </Text>
             <RadioForm
                 ref="radioForm"
                 radio_props={this.state.types3=="근로자에게 직접지급   "||this.state.types3=="근로자 명의 예금통장에 입금"?[{"label":"근로자에게 직접지급   ","value":0},{"label":"근로자 명의 예금통장에 입금","value":1}]:this.state.types3}
                 initial={0}
                 formHorizontal={false}
                 labelHorizontal={true}
-                buttonColor={'#2196f3'}
+                buttonColor={'#67C8BA'}
+                selectedButtonColor={'#67C8BA'}
+                labelStyle={{fontSize: wp('4.2%'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
                 animation={true}
                 onPress={(value, index) => {
                     this.setState({
@@ -992,22 +1051,22 @@ class ContractformAScreen extends React.Component{
             />
         </View>
         </View>
+        </View>
 
-        
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>7. 연차유급휴가</Text> 
-            <Text style={styles.marginText}> - 연차유급휴가는 근로기준법에서 정하는 바에 따라 부여함</Text>
+         <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>7. 연차유급휴가</Text> 
+            <Text style={styles.textLineStyle}> - 연차유급휴가는 근로기준법에서 정하는 바에 따라 부여함</Text>
         </View>
         
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>8. 사대보험 적용여부(해당란에 체크)</Text> 
+        <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>8. 사대보험 적용여부(해당란에 체크)</Text> 
             <CheckboxGroup
                 callback={(selected) => { 
                   this.setState({
                     value4:selected
                 }) }}
-              iconColor={"#00a2dd"}
-              iconSize={30}
+                iconColor={"#67C8BA"}
+                iconSize={wp('8.5%')}
               checkedIcon="ios-checkbox-outline"
               uncheckedIcon="ios-square-outline"
               checkboxes={[
@@ -1029,7 +1088,12 @@ class ContractformAScreen extends React.Component{
                 },
               ]}
               labelStyle={{
-                color: '#333'
+                color: '#333',
+                fontFamily:"NanumSquare",
+                fontSize:wp('3.6%'),
+                marginRight:wp('2%'),
+                marginLeft:wp('0.5%'),
+                marginTop:hp('1.5%')
               }}
               rowStyle={{
                 flexDirection: 'row'
@@ -1038,26 +1102,26 @@ class ContractformAScreen extends React.Component{
             />
         </View>
 
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>9. 근로계약서 교부</Text> 
-            <Text style={styles.marginText}> - 사업주는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부요구와 관계없이 근로자에게 교부함(근로기준법 제17조 이행)</Text>
+        <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>9. 근로계약서 교부</Text> 
+            <Text style={styles.textLineStyle}> - 사업주는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부요구와 관계없이 근로자에게 교부함(근로기준법 제17조 이행)</Text>
         </View>
 
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>10. 기타</Text> 
-            <Text style={styles.marginText}> - 이 계약에 정함이 없는 사항은 근로기준법령에 의함</Text>
+        <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>10. 기타</Text> 
+            <Text style={styles.textLineStyle}> - 이 계약에 정함이 없는 사항은 근로기준법령에 의함</Text>
         </View>
         
 
-        <View style={styles.rowView2}> 
+        <View style={styles.rowPeriod3}> 
           <TextInput
             value={this.state.ContractYear} 
             onChangeText={(ContractYear) => this.setState({ContractYear})}
             onSubmitEditing={() => { this.TextInput30.focus(); }}
             blurOnSubmit={false}
             placeholder={'2020'}
-            style={styles.textinput1}/>
-          <Text>년</Text>
+            style={styles.textinputYearStyle}/>
+          <Text style={styles.textTitleStyle}>년</Text>
           <TextInput
             value={this.state.ContractMonth} 
             onChangeText={(ContractMonth) => this.setState({ContractMonth})}
@@ -1065,8 +1129,8 @@ class ContractformAScreen extends React.Component{
             onSubmitEditing={() => { this.TextInput31.focus(); }}
             blurOnSubmit={false}
             placeholder={'11'}
-            style={styles.textinput2}/>
-          <Text>월</Text>      
+            style={styles.textinputDayStyle}/>
+          <Text style={styles.textTitleStyle}>월</Text>
           <TextInput
             value={this.state.ContractDay} 
             onChangeText={(ContractDay) => this.setState({ContractDay})}
@@ -1074,14 +1138,14 @@ class ContractformAScreen extends React.Component{
             onSubmitEditing={() => { this.TextInput32.focus(); }}
             blurOnSubmit={false}
             placeholder={'20'}
-            style={styles.textinput2}/>
-          <Text>일</Text>       
+            style={styles.textinputDayStyle}/>
+          <Text style={styles.textTitleStyle}>일</Text>  
         </View>
       
-      <View>
-        <Text style={styles.head2}>사업주</Text>
-        <View style={styles.rowView4}>
-            <Text>사업체명 : </Text>
+        <View style={styles.textArea}> 
+        <Text style={styles.textTitleStyle}>사업주</Text>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>사업체명 : </Text>
             <TextInput
                 value={this.state.BusinessName} 
                 onChangeText={(BusinessName) => this.setState({BusinessName})}
@@ -1089,10 +1153,10 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput33.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'사업체 이름'}
-                style={styles.textinput3}/>
+                style={styles.textinputStyle}/>
         </View>
-        <View style={styles.rowView4}>
-            <Text>주소 : </Text>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>주소 : </Text>
             <TextInput
                 value={this.state.BusinessAddress} 
                 onChangeText={(BusinessAddress) => this.setState({BusinessAddress})}
@@ -1100,10 +1164,10 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput34.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'사업체 주소'}
-                style={styles.textinput3}/>
+                style={styles.textinputStyle}/>
         </View>        
-        <View style={styles.rowView4}>
-            <Text>전화번호 : </Text>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>전화번호 : </Text>
             <TextInput
                 value={this.state.BusinessPhone} 
                 onChangeText={(BusinessPhone) => this.setState({BusinessPhone})}
@@ -1111,45 +1175,51 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput35.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'사업체 전화번호'}
-                style={styles.textinput3}/>
+                style={styles.textinputStyle}/>
         </View>
-        <View style={styles.rowView4}>
-            <Text>대표자 : </Text>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>대표자 : </Text>
             <TextInput
                 value={this.state.BusinessOwner1} 
                 onChangeText={(BusinessOwner1) => this.setState({BusinessOwner1})}
                 ref={(input) => { this.TextInput35 = input; }}
-                onSubmitEditing={() => { this.TextInput36.focus(); }}
+                onSubmitEditing={() => { }}
                 blurOnSubmit={false}
                 placeholder={'사업체 대표'}
-                style={styles.textinput3}/>
+                style={styles.textinputStyle}/>
         </View>
       </View>
 
-      <View>
-        <Text style={styles.head2}>근로자</Text>
-        <View style={styles.rowView4}>
-            <Text>주소 : 근로자가 입력하는 칸입니다.</Text>
+     
+      <View style={styles.textArea}>
+        <Text style={styles.textTitleStyle}>근로자</Text>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>주소 : 사용자가 입력하는 칸입니다.</Text>
         </View>
-        <View style={styles.rowView4}>
-            <Text>연락처 : 근로자가 입력하는 칸입니다.</Text>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>연락처 : 사용자가 입력하는 칸입니다.</Text>
         </View>
-        <View style={styles.rowView4}>
-            <Text>성명 : 근로자가 입력하는 칸입니다.</Text>
+        <View style={styles.rowPeriod}>
+            <Text style={styles.textStyle}>성명 : 사용자가 입력하는 칸입니다.</Text>
         </View>
       </View>
 
-      <View style={styles.buttonBottom}>
-          <Button 
-            title="저장하기"
+     
+      <View style={styles.buttonArea}>
+          <TouchableOpacity
+            style={styles.button}
             onPress={()=>{
-                this.state.type=2;
+                
                 this.handleSubmit()    
-            }}/>
+            }}>
+        <Text style={styles.buttonTitle}>저장하기</Text>
+          </TouchableOpacity>
         </View>
+        <View style={{marginBottom:hp('5%')}}><Text></Text></View>
       </ScrollView>
     }
       </View>
+      </ImageBackground>
     )
   }
 }
@@ -1157,20 +1227,171 @@ class ContractformAScreen extends React.Component{
 export default ContractformAScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  head: {  height: 40,  backgroundColor: '#f1f8ff',marginBottom:10, textAlign:'center' , fontSize:20, paddingTop:7},
-  head2: {marginLeft:5, marginTop:15, fontSize:13, fontWeight: 'bold'},
-  rowView : { flexDirection: 'row'},
-  rowView2 : { flexDirection: 'row', justifyContent:"center", marginTop:20, marginBottom:20},
-  rowView3 : { flexDirection: 'row', marginLeft:20},
-  rowView4 : { flexDirection: 'row', marginLeft:10},
-  
-  marginBottom1:{marginBottom:20},
-  marginBottom2:{marginBottom:10},
-  marginLeft1 : {marginLeft:30},
-  marginText : {marginBottom:5, marginLeft:5},
-  textinput:{ width: 50, height: 20, marginRight:3, marginLeft:10},
-  textinput1:{ width: 30, height: 20, marginRight:3, marginLeft:10},
-  textinput2:{ width: 15, height: 20, marginRight:3, marginLeft:10},
-  textinput3:{ width: 250, height: 20, marginRight:3, marginLeft:10},
+    container: { padding:wp('3%'), width: "100%",},
+    image:{ 
+        alignItems: 'center', justifyContent:"center",
+        width: "100%", height: "100%", 
+    },
+    textTitle:{
+        fontSize:wp('5.55%'),
+        fontFamily:"NanumSquareB",
+        marginTop:hp('2%'),
+        marginBottom:hp('2%'),
+        textAlign:"center"
+    },
+    textArea:{
+        marginTop:hp('2%'),
+        marginBottom:hp('1.5%'),
+        marginLeft:wp('1.5%'),
+    },
+    textAreaRow:{ 
+        flexDirection:'row'
+    },
+    textStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginTop:wp('1.7%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+    },  
+    textTitleStyle11:{
+        fontSize:wp('4.8%'),
+        fontFamily:"NanumSquareB",
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        borderColor:"#67C8BA",
+        borderWidth:wp('0.5%'),
+        padding:wp('2%'),
+        color:"#67C8BA",
+        textAlign:'center'
+    },
+    textTitleStyle:{
+        fontSize:wp('4.8%'),
+        fontFamily:"NanumSquareB",
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+    },
+    textTitleStyle_1:{
+        fontSize:wp('4.8%'),
+        fontFamily:"NanumSquareB",
+        marginTop:hp('1%'),
+        marginBottom:hp('1%'),
+        textAlign:'center'
+    },
+    textLineStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginTop:wp('1.7%'),
+        marginBottom:wp('1.5%'),
+        lineHeight:wp('6.5%'),
+        marginLeft:wp('5%')
+    },
+    textinputYearStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        width:wp('11%')
+    },
+    textinputDayStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('2%'),
+        width:wp('7%'),
+    },
+    textinputYearStyle1:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        marginTop:wp('1.7%'),
+        width:wp('11%')
+      },
+      textinputDayStyle1:{
+          fontSize:wp('4.2%'),
+          marginTop:wp('1.7%'),
+          fontFamily:"NanumSquare",
+          marginLeft:wp('2%'),
+          width:wp('7%'),
+      },
+    textinputName:{
+        width:wp('25%'),
+        fontSize:wp('4.8%'),
+        fontFamily:"NanumSquareB",
+        marginTop:wp('1%'),
+        marginBottom:wp('1.5%'),
+        marginRight:wp('2%'),
+    },
+    textinputStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        width:wp('40%'),
+    },
+    textinputStyle1:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        width:wp('25%'),
+    },
+    textinputStyle2:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        marginTop:hp('0.9%'),
+        width:wp('60%'),
+    },
+    textinputName1:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        marginTop:wp('1.7%'),
+        width:wp('18%'),
+        textAlign:"center"
+    },
+    rowPeriod:{
+        flexDirection:'row',
+        marginLeft:wp('5%')
+    },
+    rowPeriod2:{
+        flexDirection:'row',
+        marginLeft:wp('15%')
+    },
+    rowPeriod3:{
+        flexDirection:'row',
+        justifyContent:"center", alignItems:"center",
+        marginTop:hp('3%'), marginBottom:hp('3%')
+    },
+    buttonArea1: {
+        position:"absolute",
+        bottom:hp('1%'), left:0, right:0,
+        width: wp('100%'), height: hp('10%'),
+        justifyContent:'center', alignItems:'center',
+        marginTop:hp('2%'), 
+    },
+    button1: {
+        width:wp('90%'), height: hp('8%'),
+        marginTop:hp('4%'), 
+        justifyContent:'center', alignItems:'center'
+    },
+    excelBtn:{
+      width:wp('85%'), height:hp('5.6%')
+    },
+    buttonArea: {
+        alignItems:"center",
+        width: '100%', height: hp('6%'),
+        marginBottom:hp('2%'),
+    },
+    button: {
+        backgroundColor: "#67C8BA",
+        width:wp('90%'), height: hp('5.5%'),
+        justifyContent: 'center', alignItems:"center",
+        borderRadius:wp('6%'),
+        marginTop:hp('2%'),
+        marginBottom:hp('2%'),
+    },
+    buttonTitle: {
+            color: 'white',
+            fontFamily:"NanumSquare",
+            fontSize:wp('4.8%'),
+    },
 });

@@ -104,28 +104,42 @@ const styles = StyleSheet.create({
 });
  
 const sentMessageScreen = ({ navigation }) => {
+  const [idid, setIdid] = useState('');
+  //setId('dddd');
+  //console.log(id);
   React.useEffect(() => {
+    const unsubscribe =
+      navigation.addListener('focus', () => {
+        AsyncStorage.getItem("userData").then((userData) =>{
+          setIdid(id => JSON.parse(userData).id);
+          fetchData(JSON.parse(userData).id);
+        });
+      })
+  return unsubscribe;
+  }, []);
+  /*React.useEffect(() => {
     const unsubscribe =
       navigation.addListener('focus', () => {
           fetchData()
       })
   return unsubscribe;
-  }, []);
+  }, []);*/
 //===================================================
   const [business, setBusiness] = useState([]);
   const [visibility, setVisibility] = useState([]);
   const [visibility2, setVisibility2] = useState([]);
   const [message, setMessage] = useState('');
   
-  async function fetchData() { 
+  async function fetchData(ididid) { 
       try {
-        axios.post('https://www.kwonsoryeong.tk:3000/selectSentMessage', {
+        axios.post('https://www.toojin.tk:3000/selectSentMessage', {
+          id:ididid
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*  let res = await fetch('https://www.kwonsoryeong.tk:3000/selectSentMessage', {
+        /*  let res = await fetch('https://www.toojin.tk:3000/selectSentMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -150,7 +164,7 @@ const sentMessageScreen = ({ navigation }) => {
         let busi = message.split('(')[1].split(')')[0];
         let d = message.split(' ')[1].split('에')[0];
         let dd = d.split('-');
-        axios.post('https://www.kwonsoryeong.tk:3000/addWork', {
+        axios.post('https://www.toojin.tk:3000/addWork', {
             business : busi,
             workername : work,
             month : dd[1]*1,
@@ -164,7 +178,7 @@ const sentMessageScreen = ({ navigation }) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/addWork', {
+        /*let res = await fetch('https://www.toojin.tk:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -186,14 +200,8 @@ const sentMessageScreen = ({ navigation }) => {
       }
 }
   function setModalVisibility(visible, msg ,t) {
-    if(!t){
       setMessage(msg)
       setVisibility(visible)
-    }
-    else{
-      setMessage(msg)
-      setVisibility2(visible)
-    }
   }
     return (
       <View>
@@ -237,27 +245,6 @@ const sentMessageScreen = ({ navigation }) => {
           </View>
         </Modal>
 
-        <Modal
-          animationType={'slide'}
-          transparent={false}
-          visible={visibility2}
-        >
-          <View style={styles.modalContainer}>
-          <View>
-              <Text style={styles.modaltextStyle}>{message}</Text>
-              <View style={{flexDirection:"row"}}>
-                <Text
-                  style={styles.modalBtn2}
-                  onPress={() => {
-                    setModalVisibility(!visibility2,'',1)
-                    savedData();
-                  }}
-                >네</Text>
-                <Text
-                  style={styles.modalBtn2}
-                  onPress={() => setModalVisibility(!visibility2,'',1)}
-                >아니오</Text>
-              </View>
              {/*} <Button
                 color="#000"
                 onPress={() => {
@@ -271,10 +258,7 @@ const sentMessageScreen = ({ navigation }) => {
                 onPress={() => setModalVisibility(!visibility2,'',1)}
                 title="아니오"
               />*/}
-            </View>
-          </View>
-        </Modal>
-
+            
         </ScrollView> 
         </View>
 

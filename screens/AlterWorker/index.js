@@ -106,7 +106,7 @@ class AlterWorkerScreen extends Component{
   fetchData = async(bangCode) => { 
     try {
          console.log(bangCode);
-          axios.post('https://www.kwonsoryeong.tk:3000/selectWorker', {
+          axios.post('https://www.toojin.tk:3000/selectWorker', {
             business : bangCode,
             type : 1
           },
@@ -114,7 +114,7 @@ class AlterWorkerScreen extends Component{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorker', {
+        /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -140,7 +140,9 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
     try {
       if(this.state.itemC){
         console.log(bangCode, this.state.originalTime, time);
-        let s = this.props.route.params["date"].split(' ')[0].split('');
+        
+        let s = this.state.originalTime;
+        console.log("SSS : "+s);
         let st = (s[0]+s[1])*1;
         let sm = (s[2]+s[3])*1;
         let et = (s[4]+s[5])*1;
@@ -153,7 +155,8 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
         let em2 = (s2[6]+s2[7])*1;
         let subTime2 = (((et2-st2)*60) + (em2-sm2));
         let subt = (subTime2-subTime)/60;
-        axios.post('https://www.kwonsoryeong.tk:3000/addWork', {
+        console.log("subttttt "+subt);
+        axios.post('https://www.toojin.tk:3000/addWork', {
             business : bangCode,
             workername : worker,
             month : month,
@@ -168,7 +171,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
           'Accept': 'application/json'}
         }).then(res => {this.props.navigation.navigate('Work Management');})
         
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/addWork', {
+        /*let res = await fetch('https://www.toojin.tk:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -244,11 +247,12 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                     isVisibleC: false
                 })}
                 onChangeItem={item => {
-                    
-
+                    console.log("==================================")
+                    console.log(item.value)
+                    console.log(item.value[this.props.route.params["date"].split(' ')[0].toLowerCase()]);
                     this.setState({
                         itemC: item.value.workername,
-                        originalTime: item.value["tue"]
+                        originalTime: item.value[this.props.route.params["date"].split(' ')[0].toLowerCase()]
                     })
                 }}
             />

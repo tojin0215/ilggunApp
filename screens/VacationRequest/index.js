@@ -114,14 +114,14 @@ class VacationRequestScreen extends Component{
     try {
 if(this.state.comment){
 
-      await axios.post('https://www.kwonsoryeong.tk:3000/selectBusinessByName', {
+      await axios.post('https://www.toojin.tk:3000/selectBusinessByName', {
         bname : this.state.bangCode
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
-      })
-      /*await fetch('https://www.kwonsoryeong.tk:3000/selectBusinessByName', {
+        })
+      /*await fetch('https://www.toojin.tk:3000/selectBusinessByName', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -132,24 +132,22 @@ if(this.state.comment){
           }),
         }).then(res => res.json())*/
         .then(res => {
-          console.log("뭘까요?1")
-          console.log(res);
           this.setState({owner : res.data[0].id});
-          
         });
-
-        await axios.post('https://www.kwonsoryeong.tk:3000/sendMessage', {
+        await axios.post('https://www.toojin.tk:3000/sendMessage', {
             type: 2,
-            f: 'system',
+            system:1,
+            f: this.props.route.params.id,
             t : this.state.owner,
             message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
-            time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA
+            time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA,
+            read:0
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/sendMessage', {
+        /*let res = await fetch('https://www.toojin.tk:3000/sendMessage', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -171,6 +169,7 @@ if(this.state.comment){
             rowall.push({label: res.data[i].workername, value: res.data[i]});
           }
           this.setState({workernames: rowall})
+          Alert.alert("휴가 신청이 완료되었습니다.")
           this.props.navigation.navigate('Worker Home');
         });
       }

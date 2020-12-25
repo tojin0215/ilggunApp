@@ -35,7 +35,7 @@ class StatementScreen1 extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-          itemA: '2020년', isVisibleA: false, itemB: '10월', isVisibleB: false,
+          itemA: String(new Date().getFullYear())+'년', isVisibleA: false, itemB: String(new Date().getMonth()+1)+'월', isVisibleB: false,
           tableHead: ['이름', '분류', '보수총액\n(신고금액)','추가금','공제','실지금액'],
           tableTitle: [],
           tableData: [],
@@ -57,7 +57,7 @@ class StatementScreen1 extends React.Component {
       try {
         
         console.log(bangCode);
-        await axios.post('https://www.kwonsoryeong.tk:3000/selectOvertimework', {
+        await axios.post('https://www.toojin.tk:3000/selectOvertimework', {
           year : this.state.itemA.split('년')[0]*1,
           month : this.state.itemB.split('월')[0]*1,
         },
@@ -65,7 +65,7 @@ class StatementScreen1 extends React.Component {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*  await fetch('https://www.kwonsoryeong.tk:3000/selectOvertimework', {
+        /*  await fetch('https://www.toojin.tk:3000/selectOvertimework', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -95,14 +95,14 @@ class StatementScreen1 extends React.Component {
 
               });
 
-              await axios.post('https://www.kwonsoryeong.tk:3000/selectWorker', {
+              await axios.post('https://www.toojin.tk:3000/selectWorker', {
                 business : bangCode
               },
               {  headers:{
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'}
               })
-          /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorker', {
+          /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -113,37 +113,74 @@ class StatementScreen1 extends React.Component {
             }),
           }).then(res => res.json())*/
           .then(res => {
-            let week=[4,4,4,4,4,4,4];
-      
-            // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
-              let nalsu = new Date(this.state.itemA.split('년')[0], this.state.itemB.split('월')[0], 0).getDate();
-              let namugi = nalsu%7;
-              let it = new Date(this.state.itemA.split('년')[0], this.state.itemB.split('월')[0], 0).getDay();
-              console.log(nalsu, namugi, it, this.state.itemA.split('년')[0], this.state.itemB.split('월')[0]);
-              for(let i=0 ; i<namugi ; i++){
-                week[(it-i)%7]++;
+            let rowall = []
+            if(this.state.itemB.split('월')[0] != new Date().getMonth()+1){
+              let week=[4,4,4,4,4,4,4];
+        
+              // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
+                let nalsu = new Date(this.state.itemA.split('년')[0], this.state.itemB.split('월')[0], 0).getDate();
+                let namugi = nalsu%7;
+                let it = new Date(this.state.itemA.split('년')[0], this.state.itemB.split('월')[0], 0).getDay();
+                console.log(nalsu, namugi, it, this.state.itemA.split('년')[0], this.state.itemB.split('월')[0]);
+                for(let i=0 ; i<namugi ; i++){
+                  week[(it-i)%7]++;
+                }
+
+              
+              for (let i = 0; i < res.data.length; i++) {
+                if(res.data[i].type==1){
+                  let sum = 0;
+                  let eachtime = res.data[i].eachtime.split('/');
+                  for(let i=0 ; i<7 ; i++){
+                    console.log((eachtime[i]*1) , week[i]);
+                    sum += (eachtime[i]*1) * week[i];
+                  }
+                  console.log(">>>");
+                  console.log(res.data);
+                  console.log(">>>");
+                  rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                }
+                else{
+                  console.log();
+                  rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(res.data[i].pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                }
+              }
+              
+
+              console.log(this.state.arrName);
+            }else{
+              let n = Math.floor(new Date().getDate()/7);
+              let week=[n,n,n,n,n,n,n];
+              console.log(week)
+              console.log(new Date().getFullYear(), new Date().getMonth(), 1);
+              let d = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay();
+              console.log("오늘 날짜까지 끊자!"+d);
+              for(let i=0; i<(new Date().getDate()%7) ; i++){
+                week[d]++;
+                d++; d=d%7;
               }
 
-            let rowall = []
-            for (let i = 0; i < res.data.length; i++) {
-              if(res.data[i].type==1){
-                let sum = 0;
-                let eachtime = res.data[i].eachtime.split('/');
-                for(let i=0 ; i<7 ; i++){
-                  console.log((eachtime[i]*1) , week[i]);
-                  sum += (eachtime[i]*1) * week[i];
-                }
-                console.log(">>>");
+              for (let i = 0; i < res.data.length; i++) {
                 console.log(res.data);
-                console.log(">>>");
-                rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8560/*시급*/)]);
-              }
-              else{
-                rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(res.data[i].pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)]);
+                if(res.data[i].type==1){
+                  let sum = 0;
+                  let eachtime = res.data[i].eachtime.split('/');
+                  for(let i=0 ; i<7 ; i++){
+                    console.log((eachtime[i]*1) , week[i]);
+                    sum += (eachtime[i]*1) * week[i];
+                  }
+                  console.log(">>>");
+                  console.log(String(res.data[i].pay/*시급*/),">>>>>", String(sum/* 시간 */) ,">>>>>", String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/));
+                  console.log(">>>");
+                  rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                }
+                else{
+                  console.log(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate())
+                  rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                }
               }
             }
             this.setState({arrName: rowall})
-            console.log(this.state.arrName);
             this.show();
           });
       } catch (e) {
@@ -226,16 +263,16 @@ class StatementScreen1 extends React.Component {
                   AddSalary = this.state.arrName[i][4]
       
                   // NationalPension:국민연금 (보수총액*4.5%)
-                  let NationalPension = (parseInt(MonthlySalary)*4.5/100).toFixed(0);
+                  let NationalPension = Math.floor(((parseInt(MonthlySalary)*4.5/100).toFixed(0))/10)*10;
                   // HealthInsurance:건강보험 (보수총액*3.3335%)
-                  let HealthInsurance = (parseInt(MonthlySalary)*3.335/100).toFixed(0);
+                  let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*3.335/100).toFixed(0))/10)*10;
                   // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-                  let RegularCare = (HealthInsurance*10.25/100).toFixed(0);
+                  let RegularCare = Math.floor(((HealthInsurance*10.25/100).toFixed(0))/10)*10;
                   // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-                  let EmploymentInsurance = (parseInt(MonthlySalary)*0.8/100).toFixed(0);//근로자_고용보험
+                  let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*0.8/100).toFixed(0))/10)*10;//근로자_고용보험
                   // SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
                   let SocialInsurance = (parseInt(NationalPension)+parseInt(HealthInsurance)+parseInt(RegularCare)+parseInt(EmploymentInsurance)).toFixed(0);
-      
+                  
                   // WithholdingTax:원천과세(IncomeTax+InhabitantsTax)
                   var IncomeTax =0; 
                   
@@ -302,11 +339,11 @@ class StatementScreen1 extends React.Component {
                     else if(parseInt(MonthlySalary)>2900000 & parseInt(MonthlySalary) <=3000000){
                       IncomeTax = 84850
                     }
-                    console.log('--------------------------------'+MonthlySalary)
-                    console.log('--------------------------------'+IncomeTax)
                     // InhabitantsTax : 주민세 (갑근세의 10%)
-                    let InhabitantsTax = (parseInt(IncomeTax)*0.1).toFixed(0)
-                  // TotalDeduction:공제총액(사대보험+갑근세+주민세)
+                    let InhabitantsTax = Math.floor(((parseInt(IncomeTax)*0.1).toFixed(0))/10)*10
+                    
+                    console.log('--------------------------------'+parseInt(SocialInsurance) , parseInt(IncomeTax) , parseInt(InhabitantsTax))
+                    // TotalDeduction:공제총액(사대보험+갑근세+주민세)
                   let TotalDeduction = parseInt(SocialInsurance) + parseInt(IncomeTax) + parseInt(InhabitantsTax)
       
       
@@ -318,6 +355,7 @@ class StatementScreen1 extends React.Component {
                   , TotalDeduction.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   , ActualSalary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")]
                   tableDataArr.push(data)
+                  
               } 
          //}
       }
@@ -335,10 +373,14 @@ class StatementScreen1 extends React.Component {
                   // MonthlySalaryPartTime : 한달보수총액
                   let MonthlySalaryPartTime = parseInt(WorkingHour) * parseInt(HourlyWage);
 
-                  // WithholdingTax:3.3세금공제(갑근세+주민세)
-                  let WithholdingTax = (parseInt(MonthlySalaryPartTime)*3.3/100).toFixed(0); 
+// IncomeTax : 갑근세(소득세) : 보수총액*3.0%
+let IncomeTaxPartTime = Math.floor(((parseInt(MonthlySalaryPartTime)*0.03).toFixed(0))/10)*10;
 
-                  // 실지급액(보수총액+추가급여-공제총액)
+// InhabitantsTax : 주민세 (갑근세의 10%)  : 보수총액*0.3%
+let InhabitantsTaxPartTime = Math.floor(((parseInt(IncomeTaxPartTime)*0.1).toFixed(0))/10)*10
+
+// WithholdingTax:원천과세(IncomeTax+InhabitantsTax) : 3.3 세금공제
+let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTime)
                   let ActualSalaryPartTime = parseInt(MonthlySalaryPartTime) + parseInt(AddSalaryPartTime) - parseInt(WithholdingTax) 
 
                   data = [WorkingType,MonthlySalaryPartTime.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")

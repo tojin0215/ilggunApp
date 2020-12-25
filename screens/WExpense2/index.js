@@ -28,19 +28,22 @@ for(let i = 0; i < week.length; i++){
 }
 
 class WExpenseScreen2 extends Component {
-
-    state={
-        totalSelectedTime:arrItem,
-        HourlyWage:0,
-        selectedHoursGoToWork:0,
-        selectedMinutesGoToWork:0,
-        selectedHoursOffWork:0,
-        selectedMinutesOffWork:0,
-        time:null,
-        WithholdingTax:0, // 월급*원천세 3.3% 
-        HourlyWage:0, //시급
-        Salary:0, //월급 :시간*시급
-        RealSalary:0 //실질급여 : 월급-원천세
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            totalSelectedTime:arrItem,
+            HourlyWage:'0',
+            selectedHoursGoToWork:'0',
+            selectedMinutesGoToWork:'0',
+            selectedHoursOffWork:'0',
+            selectedMinutesOffWork:'0',
+            time:null,
+            WithholdingTax:'0', // 월급*원천세 3.3% 
+            HourlyWage:'0', //시급
+            Salary:'0', //월급 :시간*시급
+            RealSalary:'0' //실질급여 : 월급-원천세
+        }
     }
 
     renderSeparator = () => {  
@@ -100,7 +103,17 @@ class WExpenseScreen2 extends Component {
 
     resetData(){
         this.setState({
-            HourlyWage:0,
+            totalSelectedTime:arrItem,
+            HourlyWage:'0',
+            selectedHoursGoToWork:'0',
+            selectedMinutesGoToWork:'0',
+            selectedHoursOffWork:'0',
+            selectedMinutesOffWork:'0',
+            time:null,
+            WithholdingTax:'0', // 월급*원천세 3.3% 
+            HourlyWage:'0', //시급
+            Salary:'0', //월급 :시간*시급
+            RealSalary:'0' //실질급여 : 월급-원천세
         })
     }
  

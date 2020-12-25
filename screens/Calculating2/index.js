@@ -8,20 +8,6 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class CalculatingScreen2 extends Component{
-  state={
-    JoinYear:0, JoinMonth:0, JoinDay:0, //입사 년,월,일
-    LeaveYear:0, LeaveMonth:0, LeaveDay:0, //퇴사 년,월,일
-    NumberOfWorkingDays:0, //재직일수
-    EnteringDate:0, //입사일자
-    DateOfResignation:0, //퇴사일자
-    term1BasePay:null, term2BasePay:null, term3BasePay:null, term4BasePay:null,
-    term1OtherAllowance:null, term2OtherAllowance:null, term3OtherAllowance:null, term4OtherAllowance:null,
-    diff3Month:0,
-    AnnualBonus:null, // 연간상여금
-    AnnualAllowance:null, //연차수당
-    SeverancePay:null //퇴직금
-  }
-  
   updateState(){
     const Join = new Date(this.state.JoinYear, this.state.JoinMonth-1, this.state.JoinDay)
     const Leave = new Date(this.state.LeaveYear, this.state.LeaveMonth-1, this.state.LeaveDay)
@@ -65,7 +51,7 @@ class CalculatingScreen2 extends Component{
             parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay), 
             parseInt(this.state.term3OtherAllowance)+parseInt(this.state.term2OtherAllowance)+parseInt(this.state.term1OtherAllowance)]
         ],
-        term4BasePay:0, term4OtherAllowance:0, diff4:0,        
+        term4BasePay:'0', term4OtherAllowance:'0', diff4:'0',        
         diff3Month:diff1+diff2+diff3+diff4
       })
 
@@ -154,6 +140,17 @@ class CalculatingScreen2 extends Component{
   constructor(props) {
     super(props);
     this.state = {
+      JoinYear:'2020', JoinMonth:'1', JoinDay:'1', //입사 년,월,일
+      LeaveYear:'2020', LeaveMonth:'12', LeaveDay:'31', //퇴사 년,월,일
+      NumberOfWorkingDays:'0', //재직일수
+      EnteringDate:'0', //입사일자
+      DateOfResignation:'0', //퇴사일자
+      term1BasePay:null, term2BasePay:null, term3BasePay:null, term4BasePay:null,
+      term1OtherAllowance:null, term2OtherAllowance:null, term3OtherAllowance:null, term4OtherAllowance:null,
+      diff3Month:'0',
+      AnnualBonus:'0', // 연간상여금
+      AnnualAllowance:'0', //연차수당
+      SeverancePay:'0', //퇴직금
       tableHead: ['기간', '기간별일수', '기본급', '기타수당'],
       tableTitle: ['기간1', '기간2', '기간3', '기간4','합계'],
       tableData: [
@@ -291,6 +288,7 @@ class CalculatingScreen2 extends Component{
             <View style={styles.rowView}>
               <Text style={styles.textStyle}>연차수당 : </Text>
               <TextInput
+                type="number"
                 value={this.state.AnnualAllowance}
                 onChangeText={(AnnualAllowance) => this.setState({AnnualAllowance})}
                 ref={(input) => { this.TextInput31 = input; }}

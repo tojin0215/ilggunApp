@@ -5,7 +5,6 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import axios from 'axios';
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -66,15 +65,17 @@ const BusinessListScreen = ({navigation}) => {
   const [business, setBusiness] = useState([]);
   const [clicked, setClicked] = useState(-1);
   const [id, setId] = useState('');
-  
-  AsyncStorage.getItem("userData").then((userData) =>{
-    setId(JSON.parse(userData));
-  });
-
+ 
   React.useEffect(() => {
-    console.log("안녕");
-          fetchData();
-  },[]);
+    let toggle = false;
+    navigation.addListener('focus', () => {
+      AsyncStorage.getItem("userData").then((userData) =>{
+        setId(JSON.parse(userData).id);
+        fetchData(JSON.parse(userData).id);
+      });
+     
+    });
+  }, []);
   /*const [password, setPassword] = useState('');
   const storeToken = async(user) => {
     try {
@@ -95,14 +96,14 @@ const BusinessListScreen = ({navigation}) => {
 
 
     ///setId('dd');
-    async function fetchData() { 
+    async function fetchData(idid) { 
         try {
-          await axios.post('https://www.kwonsoryeong.tk:3000/selectBusiness', {},
+          await axios.post('https://www.toojin.tk:3000/selectBusiness', {id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-            /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectBusiness', {
+            /*let res = await fetch('https://www.toojin.tk:3000/selectBusiness', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

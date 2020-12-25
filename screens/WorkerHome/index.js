@@ -55,24 +55,41 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [todo, setTodo] = useState([]);
   const [onlyOne, setOnlyOne] = useState(0);
   const [business, setBusiness] = useState([]);
+  const [id,setId] = useState('');
+  
   navigation.addListener('focus', () => {
     navigation.setOptions({
           headerTitle: route.params.bname,
     });
     setBusiness(route.params.bname);
-
+    setId(route.params.id);
     let isMounted = true;
+
     function f(){
       if(isMounted){
-        fetchData(route.params.bname);    
+          fetchData(route.params.bname, route.params.id);
       }
     }
     f();
-    return() =>{
+    return() => {
       isMounted = false;
     }
   },[]);
   
+  const [state, setState] =useState(0);
+  useEffect(() => {
+    axios.post('https://www.toojin.tk:3000/selectWorkerEach', {
+      business:route.params.bname,
+      workername:route.params.id,
+    },
+    {headers:{
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'}
+    })
+    .then(res => {
+      setState(res.data[0].state);
+    });
+  }, [navigation]);
     //fetchData();
     /*function useAsync(asyncFn, onSuccess) {
       useEffect(() => {
@@ -90,9 +107,9 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       }, []);
     }*/
       
-  async function fetchData(bangCode) { 
+  async function fetchData(bangCode,idid) { 
     try {
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectBusinessByWorker', {
+        /*let res = await fetch('https://www.toojin.tk:3000/selectBusinessByWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -102,7 +119,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             //id : idid
           }),
         })*/
-        await axios.post('https://www.kwonsoryeong.tk:3000/selectBusinessByWorker', {},
+        await axios.post('https://www.toojin.tk:3000/selectBusinessByWorker', {id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
@@ -125,17 +142,17 @@ const WorkerHomeScreen = ({ navigation, route }) => {
         console.error(e);
       }
     }
-    async function commuteData() { 
+    async function commuteData(idid) { 
       let err;  
       try {
-          console.log("되고있니?");
-          await axios.post('https://www.kwonsoryeong.tk:3000/updateCommute', {bang : route.params.bname},
+          console.log("되고있니?"+idid);
+          await axios.post('https://www.toojin.tk:3000/updateCommute', {bang : route.params.bname, id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           
           /*
-            let res = await fetch('https://www.kwonsoryeong.tk:3000/updateCommute', {
+            let res = await fetch('https://www.toojin.tk:3000/updateCommute', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -186,17 +203,27 @@ const WorkerHomeScreen = ({ navigation, route }) => {
 
     
   const [clicked, setClicked] = useState(-1);
-   
+  const [clicked2, setClicked2] = useState(-1);
+  const [clicked3, setClicked3] = useState(-1);
+  const [clicked4, setClicked4] = useState(-1);  
     
   return (
     <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
     <View style={styles.buttonArea1}>
       <TouchableOpacity 
         style={styles.button}
-        onPress={() => { //출근/퇴근기록
-            setCommute(commute=='출근'?'퇴근':'출근')
-            commuteData();
+        onPress={() => { 
+          
+          //출근/퇴근기록
+          console.log("state???"+route.params.state)
+          if(state==2 || route.params.state==2){
+            setCommute(commute=='출근'?'퇴근':'출근');
+            commuteData(route.params.id);
             commuteChangeImg(commute=='출근'?'퇴근':'출근');
+          }
+          else{
+            Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
+          }
         }}>
           <Image style={styles.buttonImg} source={commuteImgSelected}/>
         {/* <Text style={styles.buttonTitle}>{commute}</Text> */}
@@ -204,6 +231,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
+          console.log(route.params.state);
+          if(state==2 || route.params.state==2){
             setClicked(0);
             var week = ["Sun",'Mon','Tue',"Wed","Thu","Fri","Sat"]
             var day = new Date().getDay();
@@ -212,9 +241,12 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             var year = new Date().getFullYear(); //To get the Current Year
             let dt = week[day]+" "+ month+" " +date+" "+ year;
             console.log(dt);
-            navigation.navigate(('Vacation Request'),{date:dt})
+            navigation.navigate('Vacation Request',{date:dt,id:route.params.id}); 
             setTimeout(() => {setClicked(-1)},500);
-          }}>
+          }else{
+            Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
+          }
+        }}>
         <Image style={styles.buttonImg} source={clicked==0?require('../../img/vacation_clicked.png'):require('../../img/vacation.png')}></Image>
       </TouchableOpacity>
       </View>
@@ -222,27 +254,35 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       <TouchableOpacity 
        style={styles.button}
        onPress={() => {
-         setClicked(0); 
+         setClicked2(0); 
          navigation.navigate('WCalculating')
-         setTimeout(() => {setClicked(-1)},500);
+         setTimeout(() => {setClicked2(-1)},500);
       }}>
-      <Image style={styles.buttonImg} source={clicked==0?require('../../img/calculate_purple_clicked.png'):require('../../img/calculate_purple.png')}/>
+      <Image style={styles.buttonImg} source={clicked2==0?require('../../img/calculate_purple_clicked.png'):require('../../img/calculate_purple.png')}/>
       </TouchableOpacity>
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          setClicked(0);
-          navigation.navigate('Worker Document')
-          setTimeout(() => {setClicked(-1)},500);
+          setClicked3(0);
+          navigation.navigate('Worker Document',{id:route.params.id});
+          setTimeout(() => {setClicked3(-1)},500);
           }}>
-        <Image style={styles.buttonImg} source={clicked==0?require('../../img/document_clicked.png'):require('../../img/document.png')}></Image>
+        <Image style={styles.buttonImg} source={clicked3==0?require('../../img/document_clicked.png'):require('../../img/document.png')}></Image>
       </TouchableOpacity>
       </View>
       <View style={styles.buttonArea2}>
       <TouchableOpacity 
        style={styles.button2}
-       onPress={() => navigation.navigate('WorkTodo')}>
-       <Image style={styles.todobuttonImg} source={clicked==0?require('../../img/todo.png'):require('../../img/todo.png')}/>
+       onPress={() => {
+        if(state==2|| route.params.state==2){
+          setClicked4(0);
+          navigation.navigate('WorkTodo',{id:route.params.id})
+          setTimeout(() => {setClicked4(-1)},500);
+        }else{
+          Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
+        }
+       }}>
+       <Image style={styles.todobuttonImg} source={clicked4==0?require('../../img/todo.png'):require('../../img/todo.png')}/>
       </TouchableOpacity>
       </View>
     </ImageBackground>

@@ -89,29 +89,37 @@ const styles = StyleSheet.create({
   }
 });
  
-const ReceivedMessageScreen = ({ navigation }) => {
+const ReceivedMessageScreen = ({ navigation, route }) => {
+  const [id, setId] = useState('');
+  //setId('dddd');
+  //console.log(id);
   React.useEffect(() => {
     const unsubscribe =
       navigation.addListener('focus', () => {
-          fetchData()
+        AsyncStorage.getItem("userData").then((userData) =>{
+          setId(id => JSON.parse(userData).id);
+          fetchData(JSON.parse(userData).id);
+        });
       })
   return unsubscribe;
   }, []);
+
 //===================================================
   const [business, setBusiness] = useState([]);
   const [visibility, setVisibility] = useState([]);
   const [visibility2, setVisibility2] = useState([]);
   const [visibility3, setVisibility3] = useState([]);
   const [message, setMessage] = useState('');
-  async function fetchData() { 
+  async function fetchData(idid) { 
       try {
-        axios.post('https://www.kwonsoryeong.tk:3000/selectReceivedMessage', {
+        axios.post('https://www.toojin.tk:3000/selectReceivedMessage', {
+          t:idid
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-          /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectReceivedMessage', {
+          /*let res = await fetch('https://www.toojin.tk:3000/selectReceivedMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -156,7 +164,7 @@ function setModalVisibility(visible, msg ,t) {
         let dd = d.split('-');
 
         let ori = 0;
-        axios.post('https://www.kwonsoryeong.tk:3000/selectWorkerEach', {
+        axios.post('https://www.toojin.tk:3000/selectWorkerEach', {
           business: busi,
           workername: work
         },
@@ -164,7 +172,7 @@ function setModalVisibility(visible, msg ,t) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-      /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorkerEach', {
+      /*let res = await fetch('https://www.toojin.tk:3000/selectWorkerEach', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -177,11 +185,11 @@ function setModalVisibility(visible, msg ,t) {
       }).then(res => res.json())*/
       .then(res => {
         console.log(res)
-        //ori = res.data[0].eachtime.split('/');
+        ori = res.data[0].eachtime.split('/');
         //console.log("오리"+ori);
-      });
+      
       console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
-      axios.post('https://www.kwonsoryeong.tk:3000/addWork', {
+      axios.post('https://www.toojin.tk:3000/addWork', {
         business : busi,
         workername : work,
         month : dd[1]*1,
@@ -195,7 +203,7 @@ function setModalVisibility(visible, msg ,t) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*res = await fetch('https://www.kwonsoryeong.tk:3000/addWork', {
+        /*res = await fetch('https://www.toojin.tk:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -212,6 +220,7 @@ function setModalVisibility(visible, msg ,t) {
             subt : -ori[new Date(d).getDay()]
           }),
         });*/
+        });
     } catch (e) {
         console.error(e);
       }
@@ -221,14 +230,15 @@ function setModalVisibility(visible, msg ,t) {
           let busi = message.split('(')[1].split(')')[0];
          console.log("pppppppppppppp "+busi);
 
-        axios.post('https://www.kwonsoryeong.tk:3000/addBang', {
-          bang: busi
+        axios.post('https://www.toojin.tk:3000/addBang', {
+          bang: busi,
+          id: id
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/addBang', {
+        /*let res = await fetch('https://www.toojin.tk:3000/addBang', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -241,14 +251,14 @@ function setModalVisibility(visible, msg ,t) {
    /*중복?     .then(res => {
           console.log(res)
         });
-        axios.post('https://www.kwonsoryeong.tk:3000/addBang', {
+        axios.post('https://www.toojin.tk:3000/addBang', {
           bang: busi
         },
         {  headers:{
         'Content-Type': 'application/json',
         'Accept': 'application/json'}
         })*/
-        /*res = await fetch('https://www.kwonsoryeong.tk:3000/addBang', {
+        /*res = await fetch('https://www.toojin.tk:3000/addBang', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -261,16 +271,16 @@ function setModalVisibility(visible, msg ,t) {
         .then(res => {
           console.log(res)
         });
-        axios.post('https://www.kwonsoryeong.tk:3000/alterState', {
+        axios.post('https://www.toojin.tk:3000/alterState', {
             bang: busi,
             type : 1,
-            id : '/'
+            id : id
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*res = await fetch('https://www.kwonsoryeong.tk:3000/alterState', {
+        /*res = await fetch('https://www.toojin.tk:3000/alterState', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

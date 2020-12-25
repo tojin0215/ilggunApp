@@ -39,7 +39,11 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       setZipCode(route.params.zipCode);
     }
   });
-  
+  React.useEffect(() => {
+    AsyncStorage.getItem("userData").then((userData) =>{
+      setId(id => JSON.parse(userData).id);
+    });
+  }, []);
   
   //=============================================바뀐부분C========================================
   var radio_props = [
@@ -54,7 +58,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       if(workplace=='' || businessRegistrationNumber=='' || businessOwner=='' || businessPhoneNumber=='' || address1=='' || address2=='' ||zipCode==''){
         Alert.alert("빈 칸을 채워주세요.")
       }else{
-        /*let res = await fetch('https://www.kwonsoryeong.tk:3000/addBusiness', {
+        /*let res = await fetch('https://www.toojin.tk:3000/addBusiness', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -70,8 +74,8 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
           }),
         });
         res = await res;*/
-        await axios.post('https://www.kwonsoryeong.tk:3000/addBusiness',{
-          id : '',
+        await axios.post('https://www.toojin.tk:3000/addBusiness',{
+          id : id,
           name : businessOwner,
           bname: workplace,
           bnumber:businessRegistrationNumber,
@@ -81,11 +85,17 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
         {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
-        }).then((res)=> {console.log(res); console.log('안녕하세용')})
-        navigation.navigate('Business List')
+        }).then((res)=> {
+          if(res.data.err!=null){
+            Alert.alert('이미 존재하는 사업장 이름입니다. \n변경해주세요.')  
+          }else{
+            console.log(res); console.log('안녕하세용'); navigation.navigate('Business List');
+          }
+        })
+        
       }
     } catch (e) {
-      console.error(e);
+      Alert.alert("사업장 이름이 중복됩니다. 지점 이름을 포함해서 써주세요.")
     }
   }
   return (

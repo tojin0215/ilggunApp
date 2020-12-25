@@ -69,12 +69,12 @@ class WorkTodoScreen extends Component{
   fetchData = async() => { 
     
     try {
-       await axios.post('https://www.kwonsoryeong.tk:3000/selectWorkTodo', {
+       await axios.post('https://www.toojin.tk:3000/selectWorkTodo', {
             bang : this.state.bangCode,
             year : new Date().getFullYear(),
             month: new Date().getMonth() + 1,
             date: new Date().getDate(),
-            worker: '/'
+            worker: this.props.route.params.id
         },
         {  headers:{
           'Content-Type': 'application/json',
@@ -94,19 +94,20 @@ class WorkTodoScreen extends Component{
 savedData = async(td) => { 
   const err = 0;
     try {
-      await axios.post('https://www.kwonsoryeong.tk:3000/addWorkTodoCheck', {
+      await axios.post('https://www.toojin.tk:3000/addWorkTodoCheck', {
         bang : this.state.bangCode,
         year : new Date().getFullYear(),
         month: new Date().getMonth() + 1,
         date: new Date().getDate(),
         todo: td,
+        id:this.props.route.params.id
       },
       {  headers:{
         'Content-Type': 'application/json',//'Content-Type': 'application/json',
         'Accept': 'application/json'}
       }).then(res =>{
         err = res.status;
-       /* let res = await fetch('https://www.kwonsoryeong.tk:3000/addWorkTodoCheck', {
+       /* let res = await fetch('https://www.toojin.tk:3000/addWorkTodoCheck', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

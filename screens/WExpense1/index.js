@@ -12,16 +12,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 //=================바뀐부분A=========================================================
 
 class WExpenseScreen1 extends Component{
-  state={
-    MonthlySalary:null, // MonthlySalary:보수총액
-    TaxDeduction:null, // TaxDeduction:3.3세금공제
-    NationalPension:null, // NationalPension:국민연금 (보수총액*4.5%)
-    HealthInsurance:null, // HealthInsurance:건강보험 (보수총액*3.3335%)
-    RegularCare:null, // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-    EmploymentInsurance:null, // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-    SocialInsurance:null, // SocialInsurance:사대보험 (국민연금+건강보험+고용보험) -> 150인 이하,이상 근로자가 내는 보험료는 달라지지않음.
-  }
-
   updateState(){
     const NationalPension1 = (this.state.MonthlySalary*4.5/100).toFixed(0);
     const HealthInsurance1 = (this.state.MonthlySalary*3.335/100).toFixed(0);
@@ -67,7 +57,15 @@ class WExpenseScreen1 extends Component{
 
   constructor(props) {
     super(props);
+    
     this.state = {
+      MonthlySalary:'0', // MonthlySalary:보수총액
+      TaxDeduction:'0', // TaxDeduction:3.3세금공제
+      NationalPension:'0', // NationalPension:국민연금 (보수총액*4.5%)
+      HealthInsurance:'0', // HealthInsurance:건강보험 (보수총액*3.3335%)
+      RegularCare:'0', // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
+      EmploymentInsurance:'0', // EmploymentInsurance : 고용보험 (보수총액*0.8%)
+      SocialInsurance:'0', // SocialInsurance:사대보험 (국민연금+건강보험+고용보험) -> 150인 이하,이상 근로자가 내는 보험료는 달라지지않음.
       tableHead: ['구분', '보험료\n총액', '근로자\n부담', '사업주\n부담'],
       tableTitle: ['국민연금', '건강보험', '건강보험\n(장기요양)', '고용보험','합계'],
       tableData: [
@@ -98,6 +96,7 @@ class WExpenseScreen1 extends Component{
           <View style={styles.wrapper}>
             <TextInput
               value={this.state.MonthlySalary}
+              keyboardType={"number-pad"}
               onChangeText={(MonthlySalary) => this.setState({MonthlySalary})}
               autoFocus={true}
               placeholder={'1000000'}

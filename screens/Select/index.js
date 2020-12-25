@@ -23,7 +23,7 @@ const SelectScreen = ({ onSignIn, navigation }) => {
 
     React.useEffect(() => {
       AsyncStorage.getItem("userData").then((userData) =>{
-        setId(JSON.parse(userData));
+        setId(JSON.parse(userData).name);
       });
         if(!dataLoaded){
             fetchFonts();

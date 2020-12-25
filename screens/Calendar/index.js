@@ -100,7 +100,6 @@ const CalendarScreen = ({navigation, route}) => {
     let D= splitD[0]+' '+mon[splitD[1]]+' '+splitD[2]+' '+splitD[3];
     navigation.replace('Work Management',{selecteddate : String(D)});
   }
-  
   useEffect(() => {
 
     setSelectedStartDate(null);

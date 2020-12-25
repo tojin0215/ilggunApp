@@ -70,24 +70,37 @@ const styles = StyleSheet.create({
     fontFamily:"NanumSquare",
     justifyContent: 'center', alignItems:"center",
   },
+  deleteTitlex:{
+    color: '#040525',
+    fontSize:wp('4.8%'),
+    fontFamily:"NanumSquare",
+    justifyContent: 'center', alignItems:"center",
+    marginTop:hp('3.4%'),
+    marginRight:wp('5%')
+  }
+
 }); 
 
 const WorkerManageScreen = ({navigation, route}) => {
     const [business, setBusiness] = useState([]);
+    const [idid, setIdid] = useState('');
     React.useEffect(() => {
       const unsubscribe =
         navigation.addListener('focus', () => {
           AsyncStorage.getItem("bangCode")
-          .then((bangCode) => {
-            fetchData(bangCode)
-            console.log('?????');
-          })
+            .then((bangCode) => {
+              
+              AsyncStorage.getItem("userData").then((userData) => {
+                setIdid(JSON.parse(userData).id)
+                fetchData(bangCode)
+              });
+            })
         });
     return unsubscribe;
   }, []);
     async function fetchData(bangCode) { 
         try {
-          await axios.post('https://www.kwonsoryeong.tk:3000/selectWorkerByType', {
+          await axios.post('https://www.toojin.tk:3000/selectWorkerByType', {
             business : bangCode,
                 type : 2
           },
@@ -95,7 +108,7 @@ const WorkerManageScreen = ({navigation, route}) => {
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-            /*let res = await fetch('https://www.kwonsoryeong.tk:3000/selectWorkerByType', {
+            /*let res = await fetch('https://www.toojin.tk:3000/selectWorkerByType', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -141,9 +154,9 @@ const WorkerManageScreen = ({navigation, route}) => {
             <View style={styles.ContbuttonArea}>
               <TouchableOpacity
                 style={styles.Contbutton}
-                onPress={() => navigation.navigate(('Contract FormA'),{workername: b.workername })}>
+                onPress={() => navigation.navigate(('Contract FormA'),{workername: b.workername, bid:idid })}>
                   {b.state==0?
-                   <Text style={styles.deleteTitle}>X</Text>:
+                   <Text style={styles.deleteTitlex}>X</Text>:
                 <Image style={styles.contractImage} source={require('../../img/contractImg.png')}/>
                   }
               </TouchableOpacity>

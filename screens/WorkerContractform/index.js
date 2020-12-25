@@ -1,7 +1,7 @@
 const axios = require('axios');
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert, ImageBackground} from 'react-native';
-import { Table, TableWrapper,  Col, Cols, Cell } from 'react-native-table-component';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert, ImageBackground, Image} from 'react-native';
+import { Table, TableWrapper,Row, Rows,  Col, Cols, Cell } from 'react-native-table-component';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import CheckboxGroup from 'react-native-checkbox-group';
 //============================바뀐부분A=============================
@@ -105,28 +105,49 @@ class WorkerContractformScreen extends Component{
         EmployeePhone: 0,
         EmployeeName: 0,
         type:1,
-        htmlContent:''
+        htmlContent:'',
+        tableHead:['','시작시간','마치는시간','근무시간'],
+        tableTitle: ['월', '화', '수', '목', '금', '토', '일'],
     };
   }
   componentDidMount(){
     AsyncStorage.getItem("bangCode")
       .then((bangCode) => {
+        this.setState({bangCode:bangCode});
+        AsyncStorage.getItem("userData").then((userData) => {
+          this.setState({idid:JSON.parse(userData).id})
+          this.fetchHtml(bangCode,JSON.parse(userData).id);
+        });
+      })
+    /*AsyncStorage.getItem("bangCode")
+      .then((bangCode) => {
         this.setState({bangcode:bangCode});
         this.fetchHtml(bangCode);
-      })
-    
+      })*/
   }
 
   StatementScreen = async() => {
       let sign="";
-      axios.post('https://www.kwonsoryeong.tk:3000/selectSign', {
-        id:'/'
+      let bsign="";
+      let idid2="";
+      axios.post('https://www.toojin.tk:3000/selectBusinessByName', {
+        bname : this.state.bangCode
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        }).then(res => {
+          idid2 = res.data[0].id;
+       
+      axios.post('https://www.toojin.tk:3000/selectSign', {
+        id:this.state.idid,
+        id2:idid2
       },
       {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
       })
-      /*fetch('https://www.kwonsoryeong.tk:3000/selectSign', {
+      /*fetch('https://www.toojin.tk:3000/selectSign', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -138,6 +159,7 @@ class WorkerContractformScreen extends Component{
       }).then(res => res.json())*/
       .then(async(res) => {
           sign = res.data[0].sign;
+          bsign = res.data[1].sign;
           console.log(sign)
           const htmlContent = `
                 <!DOCTYPE html>
@@ -156,14 +178,17 @@ class WorkerContractformScreen extends Component{
               .contract_day{position:relative; left:50%; margin-left: -100px;}
           </style>
           <body>
-              <svg viewBox = "0 0 400 400" style="left: 230px; top:1570px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-              <polyline points="${String(sign)}"
-              style="fill:none;stroke:black;stroke-width:3" />
-              </svg>
               <span>표준근로계약서</span>
               <form>
                   <hr><br>
-      
+                  <svg viewBox = "0 0 500 500" style="left:190px; top:1180px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="${String(sign)}"
+                  style="fill:none;stroke:black;stroke-width:3" />
+                  </svg>
+                  <svg viewBox = "0 0 500 500" style="left:190px; top:1000px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="${String(bsign)}"
+                  style="fill:none;stroke:black;stroke-width:3" />
+                  </svg>
                   <label class="text_underline">${this.state.Employer}</label>
                   <label>(이하 "사업주"라 함) 과(와)</label>
                   <label class="text_underline">${this.state.Employee}</label>
@@ -217,36 +242,30 @@ class WorkerContractformScreen extends Component{
                   <label>일</label><br>
           
                   <label>6. 임 금</label><br>
-                  <label class="margin_left">- 월(일, 시간)급 : </label>
+                  <label class="margin_left">- 월급 : </label>
                   <label class="text_underline">${this.state.Salary}</label>
                   <Text>원</Text><br>
       
                   <label class="margin_left">- 상여금 : </label>
-                  <input type="radio" id="bonusYes" name="bonus" value="bonusYes">
                   <label for="bonusYes">${this.state.types1}</label>
                   <label class="text_underline">${this.state.Bonus}</label>
-                  <label>원</label>
-                  <input type="radio" id="bonusNo" name="bonus" value="bonusNo"  class="margin_left">
-                  <label for="bonusNo">없음</label><br>
+                  <label>원</label><br>
       
                   <label class="margin_left">- 기타급여(제수당 등) : </label>
-                  <label for="bonus2Yes">${this.state.types2}</label>
+                  <label for="bonus2Yes">${this.state.types2}</label><br>
                   <label class="text_underline_margin_left">${this.state.Bonus1}</label>
                   <label>원, </label>
                   <label class="text_underline_margin_left">${this.state.Bonus2}</label>
-                  <label>원 </label><br>
+                  <label>원, </label>
                   <label class="text_underline_margin_left">${this.state.Bonus3}</label>
                   <label>원, </label>
                   <label class="text_underline_margin_left">${this.state.Bonus4}</label>
                   <label>원 </label><br>
-                  <label class="margin_left">- 임금지급일 : 매월(매주 또는 매일)</label>
+                  <label class="margin_left">- 임금지급일 : 매월</label>
                   <label class="text_underline">10</label>
                   <label>일 (휴일의 경우에는 전일 지급)</label><br>
                   <label class="margin_left">- 지급방법 : </label>
-                  <input type="radio" id="wayOfPayment1" name="wayOfPayment" value="wayOfPayment1">
-                  <label for="wayOfPayment1">근로자에게 직접지급</label>
-                  <input type="radio" id="wayOfPayment2" name="wayOfPayment" value="wayOfPayment2" class="margin_left">
-                  <label for="wayOfPayment2">근로자 명의 예금통장에 입금</label><br><br>
+                  <label for="wayOfPayment1">${this.state.types3}</label><br>
       
                   <label>7. 연차유급휴가</label><br>
                   <label class="margin_left"> - 연차유급휴가는 근로기준법에서 정하는 바에 따라 부여함.</label><br>
@@ -302,32 +321,35 @@ class WorkerContractformScreen extends Component{
       
                 this.setState({htmlContent : htmlContent})
       
-              
+              });
               });
 
         }
   
   StatementScreen2 = async() => {
     let sign="";
-          axios.post('https://www.kwonsoryeong.tk:3000/selectSign', {
-            id:'/'
-          },
-          {  headers:{
+      let bsign="";
+      let idid2="";
+      axios.post('https://www.toojin.tk:3000/selectBusinessByName', {
+        bname : this.state.bangCode
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        }).then(res => {
+          idid2 = res.data[0].id;
+        
+      axios.post('https://www.toojin.tk:3000/selectSign', {
+        id:this.state.idid,
+        id2:idid2
+      },
+      {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
-          })
-      /*fetch('https://www.kwonsoryeong.tk:3000/selectSign', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          //id : idid
-        }),
-      }).then(res => res.json())*/
+      })
       .then(async(res) => {
           sign = res.data[0].sign;
+          bsign = res.data[1].sign;
           console.log(sign)
     const htmlContent = `
     <!DOCTYPE html>
@@ -349,14 +371,17 @@ class WorkerContractformScreen extends Component{
             .contract_day{position:relative; left:50%; margin-left: -100px;}
         </style>
         <body>
-            <svg viewBox = "0 0 600 600" style="left: 230px; top:0px; height:200px; width: 200px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-              <polyline points="${String(sign)}"
-              style="fill:none;stroke:black;stroke-width:3" />
-            </svg>
             <form>
                 <span>단기간근로자 표준근로계약서</span>
                 <hr><br>
-    
+                <svg viewBox = "0 0 500 500" style="left:190px; top:1180px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="${String(sign)}"
+                style="fill:none;stroke:black;stroke-width:3" />
+                </svg>
+                <svg viewBox = "0 0 500 500" style="left:190px; top:1000px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="${String(bsign)}"
+                style="fill:none;stroke:black;stroke-width:3" />
+                </svg>
                 <label class="text_underline">${this.state.Employer}</label>
                 <label>(이하 "사업주"라 함) 과(와)</label>
                 <label class="text_underline">${this.state.Employee}</label>
@@ -397,25 +422,25 @@ class WorkerContractformScreen extends Component{
                 </table><br>
         
                 <label>5. 임 금</label><br>
-                <label class="margin_left">- 월(일, 시간)급 : </label>
+                <label class="margin_left">- 시급 : </label>
                 <label class="text_underline">${this.state.Salary}</label>
                 <Text>원</Text><br>
     
                 <label class="margin_left">- 상여금 : </label>
-                <input type="radio" id="bonusYes" name="bonus" value="bonusYes">
                 <label for="bonusYes">${this.state.types1}</label>
-                <label class="text_underline">${this.state.Bonus}</label>
-                <label>원</label>
+                <label class="text_underline">, ${this.state.Bonus}</label>
+                <label>원</label><br>
     
                 <label class="margin_left">- 기타급여(제수당 등) : </label>
-                <label for="bonus2Yes">${this.state.types2}</label>
+                <label for="bonus2Yes">${this.state.types2}</label><br>
                 <label class="text_underline_margin_left">${this.state.Bonus1}</label>
                 <label>원, </label>
                 <label class="text_underline_margin_left">${this.state.Bonus2}</label>
-                <label>원 </label><br>
+                <label>원, </label>
                 <label class="text_underline_margin_left">${this.state.Bonus3}</label>
                 <label>원, </label>
                 <label class="text_underline_margin_left">${this.state.Bonus4}</label>
+                <label>원 </label><br>
     
                 <label class="margin_left">- 초과근로에 대한 가산임금률</label>
                 <label class="text_underline">${this.state.AdditionalWageRate}</label>
@@ -424,7 +449,7 @@ class WorkerContractformScreen extends Component{
                 <label class="text_underline">${this.state.SalaryDay}</label>
                 <label>일 (휴일의 경우에는 전일 지급)</label><br>
                 <label class="margin_left">- 지급방법 : </label>
-                <label for="wayOfPayment1">${this.state.types3}</label>
+                <label for="wayOfPayment1">${this.state.types3}</label><br>
     
                 <label>7. 연차유급휴가</label><br>
                 <label class="margin_left"> - 통상근로자의 근로시간에 비례하여 연차유급휴가 부여함.</label><br>
@@ -470,16 +495,15 @@ class WorkerContractformScreen extends Component{
                 <label class="margin_left2">성    명 : </label>
                 <label>${this.state.EmployeeName}</label>
                 <label class="margin_left2">(서명)</label>
-                <div>
-                  <img style="left: 270px; height:10px; width: 10px; bottom: 400px; font-size: 1.8em; font-weight: bold; position: absolute;" src="https://www.kwonsoryeong.tk:3000/11.jpg">
-                </div>
             </form>
         </body>
     </html>`
 
           this.setState({htmlContent : htmlContent})
-  })}
-  ;
+        });
+  });
+}
+  
       
     
 
@@ -492,15 +516,16 @@ class WorkerContractformScreen extends Component{
       }
     };
 
-    fetchHtml = async(bangCode) => {
-    axios.post('https://www.kwonsoryeong.tk:3000/selectContractform', {
-      bang:bangCode
+    fetchHtml = async(bangCode,idid) => {
+    axios.post('https://www.toojin.tk:3000/selectContractform', {
+      bang:bangCode,
+      id: idid,
     },
     {  headers:{
       'Content-Type': 'application/json',
     'Accept': 'application/json'}
     })
-    /*await fetch('https://www.kwonsoryeong.tk:3000/selectContractform', {
+    /*await fetch('https://www.toojin.tk:3000/selectContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -554,14 +579,14 @@ class WorkerContractformScreen extends Component{
           this.setState(res.data[0]);
         }else{
 
-          axios.post('https://www.kwonsoryeong.tk:3000/selectContractform2', {
-            bang:bangCode
+          axios.post('https://www.toojin.tk:3000/selectContractform2', {
+            bang:bangCode, id: idid,
           },
           {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-          /*fetch('https://www.kwonsoryeong.tk:3000/selectContractform2', {
+          /*fetch('https://www.toojin.tk:3000/selectContractform2', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -612,29 +637,34 @@ class WorkerContractformScreen extends Component{
 
             this.setState(res.data[0]);
                 this.setState({tableData: [
-                    ['시작시간',<TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='09:00' style={styles.text} />, 
-                        <TextInput value={this.state.Start2} onChangeText={(Start2) => this.setState({Start2})} placeholder='09:00' style={styles.text} />, 
-                        <TextInput value={this.state.Start3} onChangeText={(Start3) => this.setState({Start3})} placeholder='09:00' style={styles.text} />,
-                        <TextInput value={this.state.Start4} onChangeText={(Start4) => this.setState({Start4})} placeholder='09:00' style={styles.text} />,
-                        <TextInput value={this.state.Start5} onChangeText={(Start5) => this.setState({Start5})} placeholder='09:00' style={styles.text} />,
-                        <TextInput value={this.state.Start6} onChangeText={(Start6) => this.setState({Start6})} placeholder='09:00' style={styles.text} />,
-                        <TextInput value={this.state.Start7} onChangeText={(Start7) => this.setState({Start7})} placeholder='09:00' style={styles.text} />],
-                    ['마치는시간',<TextInput value={this.state.End1} onChangeText={(End1) => this.setState({End1})} placeholder='15:00' style={styles.text} />, 
-                        <TextInput value={this.state.End2} onChangeText={(End2) => this.setState({End2})} placeholder='15:00' style={styles.text} />,
-                        <TextInput value={this.state.End3} onChangeText={(End3) => this.setState({End3})} placeholder='15:00' style={styles.text} />,
-                        <TextInput value={this.state.End4} onChangeText={(End4) => this.setState({End4})} placeholder='15:00' style={styles.text} />,
-                        <TextInput value={this.state.End5} onChangeText={(End5) => this.setState({End5})} placeholder='15:00' style={styles.text} />,
-                        <TextInput value={this.state.End6} onChangeText={(End6) => this.setState({End6})} placeholder='15:00' style={styles.text} />,
-                        <TextInput value={this.state.End7} onChangeText={(End7) => this.setState({End7})} placeholder='15:00' style={styles.text} />],
-                    ['근무시간',<TextInput value={this.state.time1} onChangeText={(time1) => this.setState({time1})} placeholder='7' style={styles.text} />,
-                        <TextInput value={this.state.time1} onChangeText={(time2) => this.setState({time2})} placeholder='7' style={styles.text} />,
-                        <TextInput value={this.state.time2} onChangeText={(time3) => this.setState({time3})} placeholder='7' style={styles.text} />,
-                        <TextInput value={this.state.time3} onChangeText={(time4) => this.setState({time4})} placeholder='7' style={styles.text} />,
-                        <TextInput value={this.state.time4} onChangeText={(time5) => this.setState({time5})} placeholder='7' style={styles.text} />,
-                        <TextInput value={this.state.time5} onChangeText={(time6) => this.setState({time6})} placeholder='7' style={styles.text} />,
-                        <TextInput value={this.state.time6} onChangeText={(time7) => this.setState({time7})} placeholder='7' style={styles.text} />]
-            
-                ]})
+                  [<TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='09:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.End1} onChangeText={(End1) => this.setState({End1})} placeholder='15:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.time1} onChangeText={(time1) => this.setState({time1})} placeholder='7' style={styles.tableTextStyle} />],
+                  
+                  [<TextInput value={this.state.Start2} onChangeText={(Start2) => this.setState({Start2})} placeholder='09:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.End2} onChangeText={(End2) => this.setState({End2})} placeholder='15:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.time2} onChangeText={(time2) => this.setState({time2})} placeholder='7' style={styles.tableTextStyle} />],
+
+                  [<TextInput value={this.state.Start3} onChangeText={(Start3) => this.setState({Start3})} placeholder='09:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.End3} onChangeText={(End3) => this.setState({End3})} placeholder='15:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.time3} onChangeText={(time3) => this.setState({time3})} placeholder='7' style={styles.tableTextStyle} />],
+
+                  [<TextInput value={this.state.Start4} onChangeText={(Start4) => this.setState({Start4})} placeholder='09:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.End4} onChangeText={(End4) => this.setState({End4})} placeholder='15:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.time4} onChangeText={(time4) => this.setState({time4})} placeholder='7' style={styles.tableTextStyle} />],
+
+                  [<TextInput value={this.state.Start5} onChangeText={(Start5) => this.setState({Start5})} placeholder='09:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.End5} onChangeText={(End5) => this.setState({End5})} placeholder='15:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.time5} onChangeText={(time5) => this.setState({time5})} placeholder='7' style={styles.tableTextStyle} />],
+
+                  [<TextInput value={this.state.Start6} onChangeText={(Start6) => this.setState({Start6})} placeholder='09:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.End6} onChangeText={(End6) => this.setState({End6})} placeholder='15:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.time6} onChangeText={(time6) => this.setState({time6})} placeholder='7' style={styles.tableTextStyle} />],
+
+                  [<TextInput value={this.state.Start7} onChangeText={(Start7) => this.setState({Start7})} placeholder='09:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.End7} onChangeText={(End7) => this.setState({End7})} placeholder='15:00' style={styles.tableTextStyle} />, 
+                  <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='7' style={styles.tableTextStyle} />]
+              ]})
         }})
     }
   })}
@@ -653,12 +683,12 @@ class WorkerContractformScreen extends Component{
   }
 
   fetch = async() => {
-          axios.post('https://www.kwonsoryeong.tk:3000/updateContractform', this.state,
+          axios.post('https://www.toojin.tk:3000/updateContractform', this.state,
           {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-    /*await fetch('https://www.kwonsoryeong.tk:3000/updateContractform', {
+    /*await fetch('https://www.toojin.tk:3000/updateContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -680,10 +710,10 @@ class WorkerContractformScreen extends Component{
         let t2 = this.state.BreakTimeEndHour*60 - this.state.BreakTimeStartHour*60 +this.state.BreakTimeEndMin*1 - this.state.BreakTimeStartMin*1; 
         let tt = String((t1-t2)/60)
 
-        axios.post('https://www.kwonsoryeong.tk:3000/alterState', {
+        axios.post('https://www.toojin.tk:3000/alterState', {
           type:2,
-          bang: this.state.bangcode,
-          id:'/',
+          bang: this.state.bang,
+          id:this.state.id,
           pay: this.state.Salary,
           mon: time,
           tue:time,
@@ -699,7 +729,7 @@ class WorkerContractformScreen extends Component{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-        /*fetch('https://www.kwonsoryeong.tk:3000/alterState', {
+        /*fetch('https://www.toojin.tk:3000/alterState', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -722,7 +752,7 @@ class WorkerContractformScreen extends Component{
         }).then(res => res.json())*/
         .then(res => {
           console.log(res.data);
-          this.props.navigation.navigate('Worker Home');
+          this.props.navigation.navigate('Worker Home',{state:2});
         })     
       }
 
@@ -741,7 +771,7 @@ class WorkerContractformScreen extends Component{
 
     
   fetch2 = async() => {
-    axios.post('https://www.kwonsoryeong.tk:3000/updateContractform2', {
+    axios.post('https://www.toojin.tk:3000/updateContractform2', {
       type: 5,
           id: this.state.id,
           bang: this.state.bang,
@@ -809,7 +839,7 @@ class WorkerContractformScreen extends Component{
         'Content-Type': 'application/json',
         'Accept': 'application/json'}
       })
-    /*await fetch('https://www.kwonsoryeong.tk:3000/updateContractform2', {
+    /*await fetch('https://www.toojin.tk:3000/updateContractform2', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -829,10 +859,10 @@ class WorkerContractformScreen extends Component{
         let t6 = (this.state.Start6.split(':')[0].length<2?'0'+ this.state.Start6.split(':')[0]:this.state.Start6.split(':')[0]) + (this.state.Start6.split(':')[1].length<2?'0'+ this.state.Start6.split(':')[1]:this.state.Start6.split(':')[1]) + (this.state.End6.split(':')[0].length<2?'0'+ this.state.End6.split(':')[0]:this.state.End6.split(':')[0]) + (this.state.End6.split(':')[1].length<2?'0'+ this.state.End6.split(':')[1]:this.state.End6.split(':')[1]);
         let t7 = (this.state.Start7.split(':')[0].length<2?'0'+ this.state.Start7.split(':')[0]:this.state.Start7.split(':')[0]) + (this.state.Start7.split(':')[1].length<2?'0'+ this.state.Start7.split(':')[1]:this.state.Start7.split(':')[1]) + (this.state.End7.split(':')[0].length<2?'0'+ this.state.End7.split(':')[0]:this.state.End7.split(':')[0]) + (this.state.End7.split(':')[1].length<2?'0'+ this.state.End7.split(':')[1]:this.state.End7.split(':')[1]);
 
-        axios.post('https://www.kwonsoryeong.tk:3000/alterState', {
+        axios.post('https://www.toojin.tk:3000/alterState', {
           type:2,
-            bang: this.state.bangcode,
-            id:'/',
+            bang: this.state.bang,
+            id:this.state.id,
             pay: this.state.Salary,
             mon: (t1==null?null:t1),
             tue: (t2==null?null:t2),
@@ -841,14 +871,13 @@ class WorkerContractformScreen extends Component{
             fri : (t5==null?null:t5),
             sat: (t6==null?null:t6),
             sun : (t7==null?null:t7),
-            eachtime :`${this.state.time1}/${this.state.time2}/${this.state.time3}/${this.state.time4}/${this.state.time5}/${this.state.time6}/${this.state.time7}`,
-
+            eachtime :`${this.state.time7}/${this.state.time1}/${this.state.time2}/${this.state.time3}/${this.state.time4}/${this.state.time5}/${this.state.time6}`,
         },
           {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-        /*fetch('https://www.kwonsoryeong.tk:3000/alterState', {
+        /*fetch('https://www.toojin.tk:3000/alterState', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -871,7 +900,7 @@ class WorkerContractformScreen extends Component{
         }).then(res => res.json())*/
         .then(res => {
           console.log(res.data);
-          this.props.navigation.navigate('Worker Home');
+          this.props.navigation.navigate('Worker Home',{state:2});
         })     
       
 
@@ -879,11 +908,12 @@ class WorkerContractformScreen extends Component{
   
   render() {
     return (
-      <ImageBackground style={styles.image} source={require('../../img/page2_2.png')}>
+      <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
       <View  style={styles.container}>
         {
           this.state.type==3?
           <>
+{/*           
           <WebView
         originWhitelist={['*']}
         source={{ html: this.state.htmlContent }}
@@ -892,24 +922,39 @@ class WorkerContractformScreen extends Component{
       <Button
               title="공유하기"
               color="#FF3232"
-              onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}/>
+              onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}/> */}
+              <View style={{ width:'100%', height:hp('70%'), marginTop:hp('1%')}}>
+                <WebView
+                  originWhitelist={['*']}
+                  source={{ html: this.state.htmlContent }}
+                />
+              </View>
+              <View style={styles.buttonArea1}>
+                <TouchableOpacity
+                    style={styles.button1}
+                    onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}>
+                    <Image style={styles.excelBtn} source={require('../../img/excel_purple.png')}></Image>
+                </TouchableOpacity>
+            </View>
             </>
             :this.state.type==1?
-            <Text>사업주가 아직 계약서를 작성하지 않았습니다.</Text>
+            <View style={{marginTop:hp('3%')}}>
+              <Text style={styles.textTitleStyle_1}>사업주가 아직 계약서를 작성하지 않았습니다.</Text>
+            </View>
             :this.state.type==2?
             <>
         <Text style={styles.textTitle}> 근로계약서</Text>
         <ScrollView>
         <View style={styles.textArea}>
             <View style={styles.textAreaRow}>
-            <Text style={styles.textStyle}>{this.state.Employer}</Text>
-            <Text style={styles.textStyle}>(이하 "사업주"라 함) 과(와)</Text>
+            <Text style={styles.textinputName1}>{this.state.Employer}</Text>
+            <Text style={styles.textTitleStyle}>(이하 "사업주"라 함) 과(와)</Text>
             </View>
             <View style={styles.textAreaRow}>
-            <Text style={styles.textStyle}>{this.state.Employee}</Text>
-            <Text style={styles.textStyle}>(이하 "근로자"라 함) 은 </Text>
+            <Text style={styles.textinputName1}>{this.state.Employee}</Text>
+            <Text style={styles.textTitleStyle}>(이하 "근로자"라 함) 은 </Text>
             </View>
-            <Text style={styles.textStyle}>다음과 같이 근로계약을 체결한다.</Text>
+            <Text style={styles.textTitleStyle_1}>다음과 같이 근로계약을 체결한다.</Text>
         </View>
 
         <View style={styles.textArea}>
@@ -982,7 +1027,7 @@ class WorkerContractformScreen extends Component{
           <View style={styles.rowPeriod}>    
             <Text style={styles.textStyle}>매주 </Text>
             <Text style={styles.textinputDayStyle}>{this.state.WorkingDays}</Text>
-            <Text style={styles.textStyle}>일 (또는 매일단위) 근무, </Text>
+            <Text style={styles.textStyle}>일 근무, </Text>
             </View>
             <View style={styles.rowPeriod}>
             <Text style={styles.textStyle}>주휴일 매주</Text>
@@ -992,53 +1037,57 @@ class WorkerContractformScreen extends Component{
         </View>
 
 
-        <View style={styles.textArea}>
-        <Text style={styles.textTitleStyle}>6. 임금</Text> 
-        <View style={styles.rowPeriod}>
-            <Text style={styles.textStyle}>-월(일, 시간)급 : </Text>
-            <Text style={styles.textinputName}>{this.state.Salary}</Text>
-            <Text style={styles.textStyle}>원</Text>
-        </View>
-        <View  style={{marginTop:hp('0.5%')}}>
-        <View style={styles.rowPeriod}>
-            <Text style={styles.textStyle}>-상여금 : </Text>
-            <Text style={styles.textinputName}>{this.state.types1}</Text>
-            <Text style={styles.textStyle}>원, </Text>
-            <Text style={styles.textinputName}>{this.state.Bonus}</Text>
-            <Text style={styles.textStyle}>원</Text>
-        </View>
-        </View>
-        <View style={styles.rowPeriod}>
-            <Text style={styles.textStyle}>-기타급여(제수당 등) : </Text>
-            <Text style={styles.textinputName}>{this.state.types2}</Text>
-        </View>
-        <View style={styles.rowPeriod}>
-            <Text style={styles.textinputName}>{this.state.Bonus1}</Text>
-            <Text style={styles.textStyle}>원, </Text>
-            <Text style={styles.marginLeft1}></Text>
-            <Text style={styles.textinputName}>{this.state.Bonus2}</Text>
-            <Text style={styles.textStyle}>원</Text>
-        </View>
-        <View style={styles.rowPeriod}>
-            <Text style={styles.textinputName}>{this.state.Bonus3}</Text>
-            <Text style={styles.textStyle}>원, </Text>
-            <Text style={styles.marginLeft1}></Text>
-            <Text style={styles.textinputName}>{this.state.Bonus4}</Text>
-            <Text style={styles.textStyle}>원</Text>
-        </View>
-        <View style={styles.rowPeriod}>
-            <Text style={styles.textStyle}>-임금지급일 : 매월(매주 또는 매일)</Text>
-            <Text style={styles.textinputDayStyle}>{this.state.SalaryDay}</Text>
-            <Text style={styles.textStyle}>일 </Text>
-        </View>
-        <View style={styles.rowPeriod2}>
-              <Text style={styles.textStyle}>(휴일의 경우에는 전일 지급)</Text>
+            <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>5. 임금</Text> 
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-월급 : </Text>
+                <Text style={styles.textinputName}>{this.state.Salary}</Text>
+                <Text style={styles.textStyle}>원</Text>
             </View>
-        <View style={styles.rowPeriod}>
-            <Text style={styles.textStyle}>-지급방법 : </Text>
-            <Text style={styles.textinputName}>{this.state.types3}</Text>
-        </View>
-        </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-상여금 : </Text>
+                <Text style={styles.textinputName}>{this.state.types1}</Text>
+                <Text style={styles.textStyle}>, </Text>
+                <Text style={styles.textinputName}>{this.state.Bonus}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-기타급여(제수당 등) : </Text>
+                <Text style={styles.textinputName}>{this.state.types2}</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textinputName}>{this.state.Bonus1}</Text>
+                <Text style={styles.textStyle}>원, </Text>
+                <Text style={{marginLeft:wp('5%')}}></Text>
+                <Text style={styles.textinputName}>{this.state.Bonus2}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textinputName}>{this.state.Bonus3}</Text>
+                <Text style={styles.textStyle}>원, </Text>
+                <Text style={{marginLeft:wp('5%')}}></Text>
+                <Text style={styles.textinputName}>{this.state.Bonus4}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-초과근로에 대한 가산임금률 : </Text>
+                <Text style={styles.textinputDayStyle}>{this.state.AdditionalWageRate}</Text>
+                <Text style={styles.textStyle}>%</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-임금지급일 : 매월(매주 또는 매일)</Text>
+                <Text style={styles.textinputDayStyle}>{this.state.SalaryDay}</Text>
+                <Text style={styles.textStyle}>일</Text>
+            </View>
+            <View style={{marginLeft:wp('30%')}}>
+                <Text style={styles.textStyle}>(휴일의 경우에는 전일 지급)</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-지급방법 : </Text>
+                <Text style={styles.textStyle}>{this.state.types3}</Text>
+            </View>
+            </View>
 
         
         <View style={styles.textArea}>
@@ -1083,19 +1132,19 @@ class WorkerContractformScreen extends Component{
         <Text style={styles.textTitleStyle}>사업주</Text>
         <View style={styles.rowPeriod}>
             <Text style={styles.textStyle}>사업체명 : </Text>
-            <Text style={styles.textinputStyle}>{this.state.BusinessName}</Text>
+            <Text style={styles.textinputStyle1}>{this.state.BusinessName}</Text>
         </View>
         <View style={styles.rowPeriod}>
             <Text style={styles.textStyle}>주소 : </Text>
-            <Text style={styles.textinputStyle}>{this.state.BusinessAddress}</Text>
+            <Text style={styles.textinputStyle1}>{this.state.BusinessAddress}</Text>
         </View>        
         <View style={styles.rowPeriod}>
             <Text style={styles.textStyle}>전화번호 : </Text>
-            <Text style={styles.textinputStyle}>{this.state.BusinessPhone}</Text>
+            <Text style={styles.textinputStyle1}>{this.state.BusinessPhone}</Text>
         </View>
         <View style={styles.rowPeriod}>
             <Text style={styles.textStyle}>대표자 : </Text>
-            <Text style={styles.textinputStyle}>{this.state.BusinessOwner1}</Text>
+            <Text style={styles.textinputStyle1}>{this.state.BusinessOwner1}</Text>
         </View>
       </View>
 
@@ -1151,170 +1200,173 @@ class WorkerContractformScreen extends Component{
       :this.state.type==4?(
         <>
         <ScrollView>
-        <View style={styles.marginBottom1}>
-                <View style={styles.rowView}>
-                <Text style={styles.textinput}>{this.state.Employer}</Text>
-                <Text>(이하 "사업주"라 함) 과(와)</Text>
-                </View>
-                <View style={styles.rowView}>
-                <Text style={styles.textinput}>{this.state.Employee}</Text>
-                <Text>(이하 "근로자"라 함) 은 다음과 같이 근로계약을 체결한다.</Text>
-                </View>
+        <View style={styles.textArea}>
+            <View style={styles.textAreaRow}>
+            <Text style={styles.textinputName1}>{this.state.Employer}</Text>
+            <Text style={styles.textTitleStyle}>(이하 "사업주"라 함) 과(와)</Text>
+            </View>
+            <View style={styles.textAreaRow}>
+            <Text style={styles.textinputName1}>{this.state.Employee}</Text>
+            <Text style={styles.textTitleStyle}>(이하 "근로자"라 함) 은 </Text>
+            </View>
+            <Text style={styles.textTitleStyle_1}>다음과 같이 근로계약을 체결한다.</Text>
         </View>
         
-        <View style={styles.marginBottom2}>
-                <Text style={styles.marginText}>1. 근로계약기간 :</Text> 
-                <View style={styles.rowView}>
-                <Text style={styles.textinput1}>{this.state.StartYear}</Text>
-                <Text>년</Text>
-                <Text style={styles.textinput2}>{this.state.StartMonth}</Text>
-                <Text>월</Text>
-                <Text style={styles.textinput2}>{this.state.StartDay}</Text>
-                <Text>일부터</Text>
-    
-                <Text style={styles.textinput1}>{this.state.EndYear}</Text>
-                <Text>년</Text>
-                <Text style={styles.textinput2}>{this.state.EndMonth}</Text>
-                <Text>월</Text>
-                <Text style={styles.textinput2}>{this.state.EndDay}</Text>
-                <Text>일까지</Text>
+        <View style={styles.textArea}>
+                <Text style={styles.textTitleStyle}>1. 근로계약기간 :</Text> 
+                <View style={styles.rowPeriod}>
+                  <Text style={styles.textinputYearStyle}>{this.state.StartYear}</Text>
+                  <Text style={styles.textStyle}>년</Text>
+                  <Text style={styles.textinputDayStyle}>{this.state.StartMonth}</Text>
+                  <Text style={styles.textStyle}>월</Text>
+                  <Text style={styles.textinputDayStyle}>{this.state.StartDay}</Text>
+                  <Text style={styles.textStyle}>일부터</Text>
                 </View>
-            </View>
-            
-            <View style={styles.marginBottom2}>
-                <View style={styles.rowView}>
-                <Text style={styles.marginText}>2. 근무장소 : </Text>
-                <Text style={styles.textinput}>{this.state.WorkPlace}</Text>
+                <View style={styles.rowPeriod2}>
+                  <Text style={styles.textinputYearStyle}>{this.state.EndYear}</Text>
+                  <Text style={styles.textStyle}>년</Text>
+                  <Text style={styles.textinputDayStyle}>{this.state.EndMonth}</Text>
+                  <Text style={styles.textStyle}>월</Text>
+                  <Text style={styles.textinputDayStyle}>{this.state.EndDay}</Text>
+                  <Text style={styles.textStyle}>일까지</Text>
                 </View>
             </View>
             
-            
-            <View style={styles.marginBottom2}>
-            <View style={styles.rowView}>
-              <Text style={styles.marginText}>3. 업무의 내용 : </Text>
-              <Text style={styles.textinput}>{this.state.WorkReference}</Text>
-            </View>
-            </View>
-
-        <View style={styles.marginBottom2}>
-        <Text style={styles.marginText}>4. 근로일 및 근로일별 근로시간 :</Text> 
-        <Table style={styles.wrapper} borderStyle={{borderWidth: 1}}>
-                         {/* Left Wrapper */}
-                        <TableWrapper style={{width:50}} >
-                            <Cell data="" style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data="월" style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data="화" style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data="수" style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data="목" style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data="금" style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data="토" style={styles.singleHead1_2} textStyle={styles.text}/>
-                            <Cell data="일" style={styles.singleHead1_2} textStyle={styles.text}/>
-                        </TableWrapper>
-
-                        <TableWrapper style={{flex:1}}>
-                            <Cols data={this.state.tableData} heightArr={[30,30,30,30,30,30,30,30]} textStyle={styles.text}/>
-                        </TableWrapper>
-                    </Table>
-        </View>
-            <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>5. 임금</Text> 
-            <View style={styles.rowView3}>
-                <Text>-월(일, 시간)급 : </Text>
-                <Text style={styles.textinput}>{this.state.Salary}</Text>
-                <Text>원</Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text>-상여금 : </Text>
-                <Text style={styles.textinput}>{this.state.types1}</Text>
-                <Text>, </Text>
-                <Text style={styles.textinput}>{this.state.Bonus}</Text>
-                <Text>원</Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text>-기타급여(제수당 등) : </Text>
-                <Text style={styles.textinput}>{this.state.types2}</Text>
-            </View>
-            <View style={styles.rowView3}>
-                <Text style={styles.textinput}>{this.state.Bonus1}</Text>
-                <Text>원, </Text>
-                <Text style={styles.marginLeft1}></Text>
-                <Text style={styles.textinput}>{this.state.Bonus2}</Text>
-                <Text>원</Text>
-            </View>
-                    <View style={styles.rowView3}>
-                    <Text style={styles.textinput}>{this.state.Bonus3}</Text>
-                <Text>원, </Text>
-                <Text style={styles.marginLeft1}></Text>
-                <Text style={styles.textinput}>{this.state.Bonus4}</Text>
-                <Text>원</Text>
+            <View style={styles.textArea}>
+                <View style={styles.textAreaRow}>
+                <Text style={styles.textTitleStyle}>2. 근무장소 : </Text>
+                <Text style={styles.textinputStyle1}>{this.state.WorkPlace}</Text>
+                </View>
             </View>
             
-            <View style={styles.rowView3}>
-                <Text>-초과근로에 대한 가산임금률 : </Text>
-                <Text style={styles.textinput}>{this.state.AdditionalWageRate}</Text>
-                <Text>%</Text>
+            
+            <View style={styles.textArea}>
+            <View style={styles.textAreaRow}>
+              <Text style={styles.textTitleStyle}>3. 업무의 내용 : </Text>
+              <Text style={styles.textinputStyle1}>{this.state.WorkReference}</Text>
             </View>
-            <View style={styles.rowView3}>
-                <Text>-임금지급일 : 매월(매주 또는 매일)</Text>
-                <Text style={styles.textinput2}>{this.state.SalaryDay}</Text>
-                <Text>일 (휴일의 경우에는 전일 지급)</Text>
             </View>
-            <View style={styles.rowView3}>
-                <Text>-지급방법 : </Text>
-                <Text style={styles.textinput3}>{this.state.types3}</Text>
+
+            <View style={styles.textArea}>
+        <Text style={styles.textTitleStyle}>4. 근로일 및 근로일별 근로시간 :</Text> 
+        <View style={styles.tableArea}>
+        <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
+            <Row data={this.state.tableHead} flexArr={[0.5, 1, 1, 1]} style={styles.head} textStyle={styles.tableTextStyle}/>
+            <TableWrapper style={styles.wrapper}>
+                <Col data={this.state.tableTitle} style={styles.title} heightArr={[hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%'),hp('5.5%')  ]} textStyle={styles.tableTextStyle}/>
+                <Rows data={this.state.tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.tableTextStyle}/>
+            </TableWrapper>
+        </Table>
+        </View>
+        </View>
+
+        <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>5. 임금</Text> 
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-시급 : </Text>
+                <Text style={styles.textinputName}>{this.state.Salary}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-상여금 : </Text>
+                <Text style={styles.textinputName}>{this.state.types1}</Text>
+                <Text style={styles.textStyle}>, </Text>
+                <Text style={styles.textinputName}>{this.state.Bonus}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-기타급여(제수당 등) : </Text>
+                <Text style={styles.textinputName}>{this.state.types2}</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textinputName}>{this.state.Bonus1}</Text>
+                <Text style={styles.textStyle}>원, </Text>
+                <Text style={{marginLeft:wp('5%')}}></Text>
+                <Text style={styles.textinputName}>{this.state.Bonus2}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textinputName}>{this.state.Bonus3}</Text>
+                <Text style={styles.textStyle}>원, </Text>
+                <Text style={{marginLeft:wp('5%')}}></Text>
+                <Text style={styles.textinputName}>{this.state.Bonus4}</Text>
+                <Text style={styles.textStyle}>원</Text>
+            </View>
+            
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-초과근로에 대한 가산임금률 : </Text>
+                <Text style={styles.textinputDayStyle}>{this.state.AdditionalWageRate}</Text>
+                <Text style={styles.textStyle}>%</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-임금지급일 : 매월(매주 또는 매일)</Text>
+                <Text style={styles.textinputDayStyle}>{this.state.SalaryDay}</Text>
+                <Text style={styles.textStyle}>일</Text>
+            </View>
+            <View style={{marginLeft:wp('30%')}}>
+                <Text style={styles.textStyle}>(휴일의 경우에는 전일 지급)</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-지급방법 : </Text>
+                <Text style={styles.textStyle}>{this.state.types3}</Text>
             </View>
             </View>
         
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>6. 연차유급휴가</Text> 
-            <Text style={styles.marginText}> - 통상근로자의 근로시간에 비례하여 연차유급휴가 부여함.</Text>
+            <View style={styles.textArea}>
+              <Text style={styles.textTitleStyle}>6. 연차유급휴가</Text> 
+              <Text style={styles.textLineStyle}> - 통상근로자의 근로시간에 비례하여 연차유급휴가 부여함.</Text>
+          </View>
+        
+          <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>7. 사대보험 적용여부(해당란에 체크)</Text> 
+            <View style={styles.rowPeriod2}>
+              <Text style={styles.textStyle}>고용보험:</Text><Text style={styles.textinputDayStyle}>{this.state.types4[1]==1?'O':'X'}</Text>
+              <Text style={styles.textStyle}>, 산재보험:</Text><Text style={styles.textinputDayStyle}>{this.state.types4[2]==1?'O':'X'}</Text>
+            </View>
+            <View style={styles.rowPeriod2}>
+              <Text style={styles.textStyle}>, 국민연금:</Text><Text style={styles.textinputDayStyle}>{this.state.types4[3]==1?'O':'X'}</Text>
+              <Text style={styles.textStyle}>, 건강보험:</Text><Text style={styles.textinputDayStyle}>{this.state.types4[4]==1?'O':'X'}</Text>
+            </View>
+        </View>
+
+        <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>8. 근로계약서 교부</Text> 
+            <Text style={styles.textLineStyle}> - '사업주'는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부요구와 관계없이 '근로자'에게 교부함(근로기준법 제17조 이행)</Text>
+        </View>
+
+        <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>9. 기타</Text> 
+            <Text style={styles.textLineStyle}> - 이 계약에 정함이 없는 사항은 근로기준법령에 의함</Text>
         </View>
         
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>7. 사대보험 적용여부(해당란에 체크)</Text> 
-            <Text style={styles.marginText}>고용보험:</Text><Text style={styles.textinput1}>{this.state.types4[1]==1?'O':'X'}</Text>
-                <Text style={styles.marginText}>, 산재보험:</Text><Text style={styles.textinput1}>{this.state.types4[2]==1?'O':'X'}</Text>
-                <Text style={styles.marginText}>, 국민연금:</Text><Text style={styles.textinput1}>{this.state.types4[3]==1?'O':'X'}</Text>
-                <Text style={styles.marginText}>, 건강보험:</Text><Text style={styles.textinput1}>{this.state.types4[4]==1?'O':'X'}</Text>
-        </View>
 
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>8. 근로계약서 교부</Text> 
-            <Text style={styles.marginText}> - '사업주'는 근로계약을 체결함과 동시에 본 계약서를 사본하여 근로자의 교부요구와 관계없이 '근로자'에게 교부함(근로기준법 제17조 이행)</Text>
-        </View>
-
-        <View style={styles.marginBottom2}>
-            <Text style={styles.marginText}>9. 기타</Text> 
-            <Text style={styles.marginText}> - 이 계약에 정함이 없는 사항은 근로기준법령에 의함</Text>
-        </View>
-        
-
-        <View style={styles.rowView2}> 
-              <Text style={styles.textinput1}>{this.state.ContractYear}</Text>
-              <Text>년</Text>
-              <Text style={styles.textinput2}>{this.state.ContractMonth}</Text>
-              <Text>월</Text>
-              <Text style={styles.textinput2}>{this.state.ContractDay}</Text>         
-              <Text>일</Text>       
+        <View style={styles.rowPeriod3}> 
+              <Text style={styles.textinputYearStyle}>{this.state.ContractYear}</Text>
+              <Text style={styles.textTitleStyle}>년</Text>
+              <Text style={styles.textinputDayStyle}>{this.state.ContractMonth}</Text>
+              <Text style={styles.textTitleStyle}>월</Text>
+              <Text style={styles.textinputDayStyle}>{this.state.ContractDay}</Text>         
+              <Text style={styles.textTitleStyle}>일</Text>       
             </View>
           
-          <View>
-            <Text style={styles.head2}>사업주</Text>
-            <View style={styles.rowView4}>
-                <Text>사업체명 : </Text>
-                <Text style={styles.textinput3}>{this.state.BusinessName}</Text>
+          
+            <View style={styles.textArea}>
+            <Text style={styles.textTitleStyle}>사업주</Text>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>사업체명 : </Text>
+                <Text style={styles.textinputStyle1}>{this.state.BusinessName}</Text>
             </View>
-            <View style={styles.rowView4}>
-                <Text>주소 : </Text>
-                <Text style={styles.textinput3}>{this.state.BusinessAddress}</Text>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>주소 : </Text>
+                <Text style={styles.textinputStyle1}>{this.state.BusinessAddress}</Text>
             </View>        
-            <View style={styles.rowView4}>
-                <Text>전화번호 : </Text>
-                <Text style={styles.textinput3}>{this.state.BusinessPhone}</Text>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>전화번호 : </Text>
+                <Text style={styles.textinputStyle1}>{this.state.BusinessPhone}</Text>
             </View>
-            <View style={styles.rowView4}>
-                <Text>대표자 : </Text>
-                <Text style={styles.textinput3}>{this.state.BusinessOwner1}</Text>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>대표자 : </Text>
+                <Text style={styles.textinputStyle1}>{this.state.BusinessOwner1}</Text>
             </View>
           </View>
 
@@ -1352,18 +1404,21 @@ class WorkerContractformScreen extends Component{
                 style={styles.textinputStyle}/>
         </View>
       </View>
-      <View style={styles.buttonBottom}>
-          <Button 
-            title="저장하기"
+      <View style={styles.buttonArea}>
+          <TouchableOpacity
+            style={styles.button}
             onPress={()=>{
-                this.setState({tableData:[]})
-                this.handleSubmit2()
-            }}/>
+              this.setState({tableData:[]})
+              this.handleSubmit2()
+          }}>
+              <Text style={styles.buttonTitle}>저장하기</Text>
+          </TouchableOpacity>
         </View>
+        <View style={{marginBottom:hp('5%')}}><Text></Text></View>
       </ScrollView></>)
       :this.state.type==5?
       <>
-        <WebView
+        {/* <WebView
             originWhitelist={['*']}
             source={{ html: this.state.htmlContent }}
             style={{ marginTop: 20 }}
@@ -1371,7 +1426,20 @@ class WorkerContractformScreen extends Component{
         <Button
           title="공유하기"
           color="#FF3232"
-          onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}/>
+          onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}/> */}
+          <View style={{ width:'100%', height:hp('70%')}}>
+                <WebView
+                  originWhitelist={['*']}
+                  source={{ html: this.state.htmlContent }}
+                />
+              </View>
+              <View style={styles.buttonArea1}>
+                <TouchableOpacity
+                    style={styles.button1}
+                    onPress={()=>{this.createAndSavePDF(this.state.htmlContent)}}>
+                    <Image style={styles.excelBtn} source={require('../../img/excel_purple.png')}></Image>
+                </TouchableOpacity>
+            </View>
       </>
       :<></>
     
@@ -1395,6 +1463,13 @@ const styles = StyleSheet.create({
       marginTop:hp('2%'),
       marginBottom:hp('2%'),
       textAlign:"center"
+  },
+  textTitleStyle_1:{
+      fontSize:wp('4.8%'),
+      fontFamily:"NanumSquareB",
+      marginTop:hp('1%'),
+      marginBottom:hp('1%'),
+      textAlign:'center'
   },
   textArea:{
       marginTop:hp('2%'),
@@ -1432,7 +1507,18 @@ const styles = StyleSheet.create({
       marginLeft:wp('1.5%'),
       width:wp('25%'),
   },
-  
+  textinputStyle1:{
+      fontSize:wp('4.2%'),
+      fontFamily:"NanumSquare",
+      marginLeft:wp('1.5%'),
+      marginTop:hp('1%'),
+      width:wp('60%'),
+  },
+  buttonArea: {
+      alignItems:"center",
+      width: '100%', height: hp('6%'),
+      marginBottom:hp('2%'),
+  },
   textinputYearStyle:{
     fontSize:wp('4.2%'),
     fontFamily:"NanumSquare",
@@ -1454,7 +1540,15 @@ const styles = StyleSheet.create({
     marginTop:wp('1.7%'),
     width:wp('18%'),
     textAlign:"center"
-},
+  },
+  textinputName1:{
+      width:wp('25%'),
+      fontSize:wp('4.8%'),
+      fontFamily:"NanumSquareB",
+      marginTop:hp('1%'),
+      marginBottom:wp('1.5%'),
+      marginRight:wp('2%'),
+  },
   rowPeriod:{
       flexDirection:'row',
       marginLeft:wp('5%')
@@ -1482,8 +1576,51 @@ const styles = StyleSheet.create({
       marginBottom:hp('2%'),
   },
   buttonTitle: {
-        color: '#040525',
+        color: 'white',
         fontFamily:"NanumSquare",
         fontSize:wp('4.8%'),
+  },
+  
+  tableArea:{
+    width:wp('90%'), 
+  },
+  wrapper: {
+      flexDirection: 'row'
+  },
+  title: { 
+      flex: 0.5, 
+      backgroundColor: "#7085DF" ,
+      borderBottomLeftRadius:wp('4%')
+  },
+  row: {  height:  hp('5.5%') },
+  head: {  
+      height: hp('6%'),  
+      backgroundColor: "#7085DF" , 
+      borderTopRightRadius: wp('4%'),
+      borderTopLeftRadius: wp('4%')
+  },
+  colTextStyle:{
+      fontSize:wp('4.2%'),
+      fontFamily:"NanumSquare",
+  },
+  tableTextStyle:{
+      fontSize:wp('4.2%'),
+      fontFamily:"NanumSquare",
+      textAlign:"center",
+  },
+  buttonArea1: {
+      position:"absolute", 
+      bottom:hp('1%'), left:0, right:0,
+      width: wp('100%'), height: hp('10%'),
+      justifyContent:'center', alignItems:'center',
+      paddingBottom:hp('6%')
+  },
+  button1: {
+      width:wp('90%'), height: hp('8%'),
+      marginTop:hp('4%'), 
+      justifyContent:'center', alignItems:'center'
+  },
+  excelBtn:{
+    width:wp('85%'), height:hp('5.6%')
   },
 });
