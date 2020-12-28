@@ -124,8 +124,8 @@ class WExpenseScreen2 extends Component {
 
         return (
 //======================================바뀐부분A=========================================
-            <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
-{/* //======================================바뀐부분A========================================= */}
+    <View style={styles.image}>
+    {/* //======================================바뀐부분A========================================= */}
             <View style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
@@ -258,7 +258,7 @@ class WExpenseScreen2 extends Component {
                 
             </ScrollView>
             </View>
-            </ImageBackground>
+            </View>
         );
     }
     
@@ -269,12 +269,19 @@ export default WExpenseScreen2;
 //========================================바뀐부분 스타일===================================
 
 const styles = StyleSheet.create({
-    container: {padding:wp('4.5%'), width: "100%", height: "100%", },
+    container: { 
+        padding:wp('4.5%'), 
+        width: "100%",
+        height: "100%",
+        backgroundColor: 'white',
+        borderTopRightRadius:wp('13%'),
+        borderTopLeftRadius:wp('13%'),
+    },
     rowView : {flexDirection:"row"},
-
     image:{ 
+        width: "100%", height: "100%", 
+        backgroundColor:'#7085DF',
         alignItems: 'center', justifyContent:"center",
-        width: "100%", height: "103%", 
     },
     buttonArea: {
         alignItems:"center",

@@ -181,7 +181,7 @@ class WorkerContractformScreen extends Component{
               <span>표준근로계약서</span>
               <form>
                   <hr><br>
-                  <svg viewBox = "0 0 500 500" style="left:190px; top:1180px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox = "0 0 500 500" style="left:190px; top:1150px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
                   <polyline points="${String(sign)}"
                   style="fill:none;stroke:black;stroke-width:3" />
                   </svg>
@@ -374,13 +374,13 @@ class WorkerContractformScreen extends Component{
             <form>
                 <span>단기간근로자 표준근로계약서</span>
                 <hr><br>
-                <svg viewBox = "0 0 500 500" style="left:190px; top:1180px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="${String(sign)}"
-                style="fill:none;stroke:black;stroke-width:3" />
+                <svg viewBox = "0 0 500 500" style="left:210px; top:1480px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="${String(sign)}"
+                      style="fill:none;stroke:black;stroke-width:3" />
                 </svg>
-                <svg viewBox = "0 0 500 500" style="left:190px; top:1000px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="${String(bsign)}"
-                style="fill:none;stroke:black;stroke-width:3" />
+                <svg viewBox = "0 0 500 500" style="left:210px; top:1330px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="${String(bsign)}"
+                      style="fill:none;stroke:black;stroke-width:3" />
                 </svg>
                 <label class="text_underline">${this.state.Employer}</label>
                 <label>(이하 "사업주"라 함) 과(와)</label>
@@ -637,33 +637,33 @@ class WorkerContractformScreen extends Component{
 
             this.setState(res.data[0]);
                 this.setState({tableData: [
-                  [<TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.End1} onChangeText={(End1) => this.setState({End1})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.time1} onChangeText={(time1) => this.setState({time1})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start1==null||this.state.Start1=='0'?this.state.Start1='X':this.state.Start1}</Text>, 
+                  <Text style={styles.tableTextStyle}>{this.state.End1==null||this.state.End1=='0'?this.state.End1='X':this.state.End1}</Text>, 
+                  <Text style={styles.tableTextStyle}>{this.state.time1==null||this.state.time1=='0'?this.state.time1='X':this.state.time1}</Text>],
                   
-                  [<TextInput value={this.state.Start2} onChangeText={(Start2) => this.setState({Start2})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.End2} onChangeText={(End2) => this.setState({End2})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.time2} onChangeText={(time2) => this.setState({time2})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start2==null||this.state.Start2=='0'?this.state.Start2='X':this.state.Start2}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End2==null||this.state.End2=='0'?this.state.End2='X':this.state.End2}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time2==null||this.state.time2=='0'?this.state.time2='X':this.state.time2}</Text>],
 
-                  [<TextInput value={this.state.Start3} onChangeText={(Start3) => this.setState({Start3})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.End3} onChangeText={(End3) => this.setState({End3})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.time3} onChangeText={(time3) => this.setState({time3})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start3==null||this.state.Start3=='0'?this.state.Start3='X':this.state.Start3}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End3==null||this.state.End3=='0'?this.state.End3='X':this.state.End3}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time3==null||this.state.time3=='0'?this.state.time3='X':this.state.time3}</Text>],
 
-                  [<TextInput value={this.state.Start4} onChangeText={(Start4) => this.setState({Start4})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.End4} onChangeText={(End4) => this.setState({End4})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.time4} onChangeText={(time4) => this.setState({time4})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start4==null||this.state.Start4=='0'?this.state.Start4='X':this.state.Start4}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End4==null||this.state.End4=='0'?this.state.End4='X':this.state.End4}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time4==null||this.state.time4=='0'?this.state.time4='X':this.state.time4}</Text>],
 
-                  [<TextInput value={this.state.Start5} onChangeText={(Start5) => this.setState({Start5})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.End5} onChangeText={(End5) => this.setState({End5})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.time5} onChangeText={(time5) => this.setState({time5})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start5==null||this.state.Start5=='0'?this.state.Start5='X':this.state.Start5}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End5==null||this.state.End5=='0'?this.state.End5='X':this.state.End5}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time5==null||this.state.time5=='0'?this.state.time5='X':this.state.time5}</Text>],
 
-                  [<TextInput value={this.state.Start6} onChangeText={(Start6) => this.setState({Start6})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.End6} onChangeText={(End6) => this.setState({End6})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.time6} onChangeText={(time6) => this.setState({time6})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start6==null||this.state.Start6=='0'?this.state.Start6='X':this.state.Start6}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End6==null||this.state.End6=='0'?this.state.End6='X':this.state.End6}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time6==null||this.state.time6=='0'?this.state.time6='X':this.state.time6}</Text>],
 
-                  [<TextInput value={this.state.Start7} onChangeText={(Start7) => this.setState({Start7})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.End7} onChangeText={(End7) => this.setState({End7})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                  <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='7' style={styles.tableTextStyle} />]
+                  [<Text style={styles.tableTextStyle}>{this.state.Start7==null||this.state.Start7=='0'?this.state.Start7='X':this.state.Start7}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End7==null||this.state.End7=='0'?this.state.End7='X':this.state.End7}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time7==null||this.state.time7=='0'?this.state.time7='X':this.state.time7}</Text>]
               ]})
         }})
     }
@@ -851,13 +851,13 @@ class WorkerContractformScreen extends Component{
       }).then(res => res.json())*/
       .then(res => {})     
       
-        let t1 = (this.state.Start1.split(':')[0].length<2?'0'+ this.state.Start1.split(':')[0]:this.state.Start1.split(':')[0]) + (this.state.Start1.split(':')[1].length<2?'0'+ this.state.Start1.split(':')[1]:this.state.Start1.split(':')[1]) + (this.state.End1.split(':')[0].length<2?'0'+ this.state.End1.split(':')[0]:this.state.End1.split(':')[0]) + (this.state.End1.split(':')[1].length<2?'0'+ this.state.End1.split(':')[1]:this.state.End1.split(':')[1]);
-        let t2 = (this.state.Start2.split(':')[0].length<2?'0'+ this.state.Start2.split(':')[0]:this.state.Start2.split(':')[0]) + (this.state.Start2.split(':')[1].length<2?'0'+ this.state.Start2.split(':')[1]:this.state.Start2.split(':')[1]) + (this.state.End2.split(':')[0].length<2?'0'+ this.state.End2.split(':')[0]:this.state.End2.split(':')[0]) + (this.state.End2.split(':')[1].length<2?'0'+ this.state.End2.split(':')[1]:this.state.End2.split(':')[1]);
-        let t3 = (this.state.Start3.split(':')[0].length<2?'0'+ this.state.Start3.split(':')[0]:this.state.Start3.split(':')[0]) + (this.state.Start3.split(':')[1].length<2?'0'+ this.state.Start3.split(':')[1]:this.state.Start3.split(':')[1]) + (this.state.End3.split(':')[0].length<2?'0'+ this.state.End3.split(':')[0]:this.state.End3.split(':')[0]) + (this.state.End3.split(':')[1].length<2?'0'+ this.state.End3.split(':')[1]:this.state.End3.split(':')[1]);
-        let t4 = (this.state.Start4.split(':')[0].length<2?'0'+ this.state.Start4.split(':')[0]:this.state.Start4.split(':')[0]) + (this.state.Start4.split(':')[1].length<2?'0'+ this.state.Start4.split(':')[1]:this.state.Start4.split(':')[1]) + (this.state.End4.split(':')[0].length<2?'0'+ this.state.End4.split(':')[0]:this.state.End4.split(':')[0]) + (this.state.End4.split(':')[1].length<2?'0'+ this.state.End4.split(':')[1]:this.state.End4.split(':')[1]);
-        let t5 = (this.state.Start5.split(':')[0].length<2?'0'+ this.state.Start5.split(':')[0]:this.state.Start5.split(':')[0]) + (this.state.Start5.split(':')[1].length<2?'0'+ this.state.Start5.split(':')[1]:this.state.Start5.split(':')[1]) + (this.state.End5.split(':')[0].length<2?'0'+ this.state.End5.split(':')[0]:this.state.End5.split(':')[0]) + (this.state.End5.split(':')[1].length<2?'0'+ this.state.End5.split(':')[1]:this.state.End5.split(':')[1]);
-        let t6 = (this.state.Start6.split(':')[0].length<2?'0'+ this.state.Start6.split(':')[0]:this.state.Start6.split(':')[0]) + (this.state.Start6.split(':')[1].length<2?'0'+ this.state.Start6.split(':')[1]:this.state.Start6.split(':')[1]) + (this.state.End6.split(':')[0].length<2?'0'+ this.state.End6.split(':')[0]:this.state.End6.split(':')[0]) + (this.state.End6.split(':')[1].length<2?'0'+ this.state.End6.split(':')[1]:this.state.End6.split(':')[1]);
-        let t7 = (this.state.Start7.split(':')[0].length<2?'0'+ this.state.Start7.split(':')[0]:this.state.Start7.split(':')[0]) + (this.state.Start7.split(':')[1].length<2?'0'+ this.state.Start7.split(':')[1]:this.state.Start7.split(':')[1]) + (this.state.End7.split(':')[0].length<2?'0'+ this.state.End7.split(':')[0]:this.state.End7.split(':')[0]) + (this.state.End7.split(':')[1].length<2?'0'+ this.state.End7.split(':')[1]:this.state.End7.split(':')[1]);
+        let t1 = this.state.Start1=='X'?null:(this.state.Start1.split(':')[0].length<2?'0'+ this.state.Start1.split(':')[0]:this.state.Start1.split(':')[0]) + (this.state.Start1.split(':')[1].length<2?'0'+ this.state.Start1.split(':')[1]:this.state.Start1.split(':')[1]) + (this.state.End1.split(':')[0].length<2?'0'+ this.state.End1.split(':')[0]:this.state.End1.split(':')[0]) + (this.state.End1.split(':')[1].length<2?'0'+ this.state.End1.split(':')[1]:this.state.End1.split(':')[1]);
+        let t2 = this.state.Start2=='X'?null:(this.state.Start2.split(':')[0].length<2?'0'+ this.state.Start2.split(':')[0]:this.state.Start2.split(':')[0]) + (this.state.Start2.split(':')[1].length<2?'0'+ this.state.Start2.split(':')[1]:this.state.Start2.split(':')[1]) + (this.state.End2.split(':')[0].length<2?'0'+ this.state.End2.split(':')[0]:this.state.End2.split(':')[0]) + (this.state.End2.split(':')[1].length<2?'0'+ this.state.End2.split(':')[1]:this.state.End2.split(':')[1]);
+        let t3 = this.state.Start3=='X'?null:(this.state.Start3.split(':')[0].length<2?'0'+ this.state.Start3.split(':')[0]:this.state.Start3.split(':')[0]) + (this.state.Start3.split(':')[1].length<2?'0'+ this.state.Start3.split(':')[1]:this.state.Start3.split(':')[1]) + (this.state.End3.split(':')[0].length<2?'0'+ this.state.End3.split(':')[0]:this.state.End3.split(':')[0]) + (this.state.End3.split(':')[1].length<2?'0'+ this.state.End3.split(':')[1]:this.state.End3.split(':')[1]);
+        let t4 = this.state.Start4=='X'?null:(this.state.Start4.split(':')[0].length<2?'0'+ this.state.Start4.split(':')[0]:this.state.Start4.split(':')[0]) + (this.state.Start4.split(':')[1].length<2?'0'+ this.state.Start4.split(':')[1]:this.state.Start4.split(':')[1]) + (this.state.End4.split(':')[0].length<2?'0'+ this.state.End4.split(':')[0]:this.state.End4.split(':')[0]) + (this.state.End4.split(':')[1].length<2?'0'+ this.state.End4.split(':')[1]:this.state.End4.split(':')[1]);
+        let t5 = this.state.Start5=='X'?null:(this.state.Start5.split(':')[0].length<2?'0'+ this.state.Start5.split(':')[0]:this.state.Start5.split(':')[0]) + (this.state.Start5.split(':')[1].length<2?'0'+ this.state.Start5.split(':')[1]:this.state.Start5.split(':')[1]) + (this.state.End5.split(':')[0].length<2?'0'+ this.state.End5.split(':')[0]:this.state.End5.split(':')[0]) + (this.state.End5.split(':')[1].length<2?'0'+ this.state.End5.split(':')[1]:this.state.End5.split(':')[1]);
+        let t6 = this.state.Start6=='X'?null:(this.state.Start6.split(':')[0].length<2?'0'+ this.state.Start6.split(':')[0]:this.state.Start6.split(':')[0]) + (this.state.Start6.split(':')[1].length<2?'0'+ this.state.Start6.split(':')[1]:this.state.Start6.split(':')[1]) + (this.state.End6.split(':')[0].length<2?'0'+ this.state.End6.split(':')[0]:this.state.End6.split(':')[0]) + (this.state.End6.split(':')[1].length<2?'0'+ this.state.End6.split(':')[1]:this.state.End6.split(':')[1]);
+        let t7 = this.state.Start7=='X'?null:(this.state.Start7.split(':')[0].length<2?'0'+ this.state.Start7.split(':')[0]:this.state.Start7.split(':')[0]) + (this.state.Start7.split(':')[1].length<2?'0'+ this.state.Start7.split(':')[1]:this.state.Start7.split(':')[1]) + (this.state.End7.split(':')[0].length<2?'0'+ this.state.End7.split(':')[0]:this.state.End7.split(':')[0]) + (this.state.End7.split(':')[1].length<2?'0'+ this.state.End7.split(':')[1]:this.state.End7.split(':')[1]);
 
         axios.post('https://www.toojin.tk:3000/alterState', {
           type:2,
@@ -871,33 +871,12 @@ class WorkerContractformScreen extends Component{
             fri : (t5==null?null:t5),
             sat: (t6==null?null:t6),
             sun : (t7==null?null:t7),
-            eachtime :`${this.state.time7}/${this.state.time1}/${this.state.time2}/${this.state.time3}/${this.state.time4}/${this.state.time5}/${this.state.time6}`,
+            eachtime :`${this.state.time7=='X'?0:this.state.time7}/${this.state.time1=='X'?0:this.state.time1}/${this.state.time2=='X'?0:this.state.time2}/${this.state.time3=='X'?0:this.state.time3}/${this.state.time4=='X'?0:this.state.time4}/${this.state.time5=='X'?0:this.state.time5}/${this.state.time6=='X'?0:this.state.time6}`,
         },
           {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-        /*fetch('https://www.toojin.tk:3000/alterState', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type:2,
-            bang: this.state.bangcode,
-            id:'/',
-            pay: this.state.Salary,
-            mon: t1,
-            tue: t2,
-            wed: t3,
-            thu: t4,
-            fri : t5,
-            sat: t6,
-            sun : t7,
-            eachtime :`${this.state.time1}/${this.state.time2}/${this.state.time3}/${this.state.time4}/${this.state.time5}/${this.state.time6}/${this.state.time7}`,
-          }),
-        }).then(res => res.json())*/
         .then(res => {
           console.log(res.data);
           this.props.navigation.navigate('Worker Home',{state:2});
@@ -908,8 +887,8 @@ class WorkerContractformScreen extends Component{
   
   render() {
     return (
-      <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
-      <View  style={styles.container}>
+      <View style={styles.image}>
+        <View  style={styles.container}>
         {
           this.state.type==3?
           <>
@@ -1445,17 +1424,24 @@ class WorkerContractformScreen extends Component{
     
       }
       </View>
-      </ImageBackground>
+      </View>
     )
   }
 }
 
 export default WorkerContractformScreen;
 const styles = StyleSheet.create({
-  container: { padding:wp('3%'), width: "100%", height: "100%",},
+  container: { 
+    padding:wp('3%'), 
+    width: "100%", height: "100%",    
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
+  },
   image:{ 
       alignItems: 'center', justifyContent:"center",
-      width: "100%", height: "103%", 
+      width: "100%", height: "100%", 
+      backgroundColor:'#7085DF'
   },
   textTitle:{
       fontSize:wp('5.55%'),

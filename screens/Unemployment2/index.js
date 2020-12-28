@@ -299,8 +299,8 @@ class UnemploymentScreen2 extends Component{
         return (
             
 //====================================바뀐부분A=====================================
-            <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
- {/* //====================================바뀐부분A===================================== */}
+    <View style={styles.image}>
+    {/* //====================================바뀐부분A===================================== */}
             <View  style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
@@ -457,7 +457,7 @@ class UnemploymentScreen2 extends Component{
 
             </ScrollView>
             </View>
-            </ImageBackground>
+            </View>
         )
     }
 }
@@ -467,9 +467,12 @@ export default UnemploymentScreen2;
 //====================================바뀐부분 여기 아래=====================================
 const styles = StyleSheet.create({
     container: { 
-        padding:wp('3%'),
+        padding:wp('3%'), 
         width: "100%", 
-        height: "100%",
+        height: "100%",    
+        backgroundColor: 'white',
+        borderTopRightRadius:wp('13%'),
+        borderTopLeftRadius:wp('13%'),
     },
     row: {  height: hp('5.5%') },
     wrapper: { flexDirection: 'row' },
@@ -487,6 +490,7 @@ const styles = StyleSheet.create({
     image:{ 
         alignItems: 'center', justifyContent:"center",
         width: "100%", height: "103%", 
+        backgroundColor:'#67C8BA'
     },
     
     titleArea:{
@@ -528,7 +532,7 @@ const styles = StyleSheet.create({
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
         color: '#040525',
-        marginTop:wp('1%'),
+        marginTop:hp('1%'),
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
     },  

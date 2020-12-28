@@ -11,8 +11,16 @@ import axios from 'axios';
 const styles = StyleSheet.create({
   
   image:{
-    width:'100%', height:'104%', paddingTop:hp('5%'), backgroundColor:'white',
-    alignItems:"center"
+    width:'100%', height:'100%', 
+    backgroundColor:'#DAE9F7',
+  },
+  container:{
+    width:'100%', height:'100%', 
+    paddingTop:hp('5%'), 
+    backgroundColor:'white',
+    alignItems:"center",    
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
   },
   listArea:{
     width:wp('100%'), height:hp('65%'),
@@ -38,7 +46,7 @@ const styles = StyleSheet.create({
     borderColor:'#DAE9F7',
   },
   titleArea:{
-    flexDirection:"row", height:hp('4%'), width:wp('30%'),
+    flexDirection:"row", height:hp('4%'), width:wp('65%'),
     justifyContent:"flex-start",
   },
   userImage:{
@@ -204,9 +212,8 @@ const sentMessageScreen = ({ navigation }) => {
       setVisibility(visible)
   }
     return (
-      <View>
-      <ImageBackground style={styles.image} source={require('../../img/pageMsg.png')}>
-      
+      <View style={styles.image}>
+      <View style={styles.container}>
         <View style={styles.listArea}>
         <ScrollView>
         {
@@ -270,7 +277,7 @@ const sentMessageScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>  
           
-        </ImageBackground>
+        </View>
       </View>
     );
   };

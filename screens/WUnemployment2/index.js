@@ -297,7 +297,7 @@ class WUnemploymentScreen2 extends Component{
         const{DateOfBirth,Period, Age, OneDayUnemploymentBenefitAmount,UnemploymentBenefitAmount, PaymentDays} = this.state
         return (
 //==========================================바뀐부분A==========================================
-            <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+<View style={styles.image}>
 {/* //==========================================바뀐부분A========================================== */}
             <View  style={styles.container}>
             <ScrollView>
@@ -454,7 +454,7 @@ class WUnemploymentScreen2 extends Component{
 
             </ScrollView>
             </View>
-            </ImageBackground>
+            </View>
         )
     }
 }
@@ -467,6 +467,10 @@ const styles = StyleSheet.create({
         padding:wp('3%'), 
         width: "100%", 
         height: "100%",
+        backgroundColor: 'white',
+        borderTopRightRadius:wp('13%'),
+        borderTopLeftRadius:wp('13%'),
+
     },
     row: {  height: hp('5.5%') },
     wrapper: { flexDirection: 'row' },
@@ -484,7 +488,8 @@ const styles = StyleSheet.create({
     image:{ 
         alignItems: 'center', 
         justifyContent:"center",
-        width: "100%", height: "103%", 
+        width: "100%", height: "100%", 
+        backgroundColor:'#7085DF'
     },
     
     titleArea:{
@@ -526,7 +531,7 @@ const styles = StyleSheet.create({
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
         color: '#040525',
-        marginTop:wp('1%'),
+        marginTop:hp('1%'),
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
     },  

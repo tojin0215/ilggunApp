@@ -7,7 +7,10 @@ const styles = StyleSheet.create({
   container: {
     width:'100%', height:'100%',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start',    
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
   },
   worker: {
     flexDirection: 'row', height:hp('10%'), width:wp('90%'),
@@ -19,8 +22,9 @@ const styles = StyleSheet.create({
   },
   image:{
     justifyContent: "center",
-    width: "100%", height: "103%",
-  },  
+    width: "100%", height: "100%",
+    backgroundColor:'#67C8BA'
+  },
   userImage:{
     marginRight:wp('3%'),
     width:wp('5.5%'), height:wp('7.0%')
@@ -96,7 +100,38 @@ const WorkerManageScreen2 = ({navigation}) => {
         });
     return unsubscribe;
   }, []);
-    
+  async function deleteWorker(name){
+    try {
+      Alert.alert(
+        "근로자 삭제하기",
+        "근로자에 대한 모든 정보가 삭제됩니다. 진행하시겠습니까?",
+        [
+          {
+            text: "아니오",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "네", onPress: () => {
+            axios.post('https://www.toojin.tk:3000/deleteWorker', {
+              business:bangCode,  
+              workername : name,
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+            .then(res => {
+                fetchData(bangCode);
+            });
+          }}
+        ],
+        { cancelable: false }
+      );
+      
+    } catch (e) {
+        console.error(e);
+      }
+  }
     async function fetchData(bangCode) { 
         try {
           await axios.post('https://www.toojin.tk:3000/selectWorkerByType', {
@@ -126,8 +161,8 @@ const WorkerManageScreen2 = ({navigation}) => {
     }
     
     return (
-      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-      <View style={styles.container}>
+      <View style={styles.image}>
+        <View style={styles.container}>
       <View style={styles.buttonArea}>
         <TouchableOpacity 
           style={styles.button}
@@ -157,7 +192,7 @@ const WorkerManageScreen2 = ({navigation}) => {
               <View style={styles.deleteArea}>
                 <TouchableOpacity
                   style={styles.Contbutton}
-                  // onPress={() => } //근로자삭제
+                  onPress={() => deleteWorker(b.workername)} //근로자삭제
                   >
                   <Text style={styles.deleteTitle}>삭제</Text>
                 </TouchableOpacity>
@@ -168,7 +203,7 @@ const WorkerManageScreen2 = ({navigation}) => {
       </ScrollView>
       </View>
       </View>
-      </ImageBackground>
+      </View>
     );
 };
 export default WorkerManageScreen2;

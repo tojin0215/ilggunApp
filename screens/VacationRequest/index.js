@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     fontSize:wp('4.5%'),
     fontFamily:"NanumSquare",
     color: 'white',
-
   }
 });
 
@@ -121,16 +120,6 @@ if(this.state.comment){
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-      /*await fetch('https://www.toojin.tk:3000/selectBusinessByName', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            bname : this.state.bangCode
-          }),
-        }).then(res => res.json())*/
         .then(res => {
           this.setState({owner : res.data[0].id});
         });
@@ -139,28 +128,14 @@ if(this.state.comment){
             system:1,
             f: this.props.route.params.id,
             t : this.state.owner,
-            message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
+            message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+(this.state.itemB.length==1?'0'+this.state.itemB.length:this.state.itemB.length)+"-"+(this.state.itemAA.length==1?'0'+this.state.itemAA.length:this.state.itemAA.length)+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
             time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA,
-            read:0
+            r:0
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.tk:3000/sendMessage', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type: 2,
-            f: 'system',
-            t : this.state.owner,
-            message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
-            time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA
-          }),
-        }).then(res => res.json())*/
         .then(res => {
           console.log("뭘까요?2")
           console.log(res.data);

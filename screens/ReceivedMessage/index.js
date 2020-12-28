@@ -8,8 +8,16 @@ import { AppLoading } from 'expo';
 import axios from 'axios';
 const styles = StyleSheet.create({
   image:{
-    width:'100%', height:'104%', paddingTop:hp('5%'), backgroundColor:'white',
-    alignItems:"center"
+    width:'100%', height:'100%', 
+    backgroundColor:'#DAE9F7',
+  },
+  container:{
+    width:'100%', height:'100%', 
+    paddingTop:hp('5%'), 
+    backgroundColor:'white',
+    alignItems:"center",    
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
   },
   listArea:{
     alignItems:"center",
@@ -34,6 +42,16 @@ const styles = StyleSheet.create({
     paddingTop:hp('1%'), paddingBottom:hp('1%'),
     borderWidth:wp('0.5%'),
     borderColor:'#DAE9F7'
+  },
+  readMessageArea:{
+    flexDirection:'row',
+    paddingLeft:wp('2%'), 
+    height:hp('9%'), width:wp('80%'), 
+    backgroundColor:'white',borderRadius:wp('3%'),
+    marginBottom:hp('2%'),marginTop:hp('1%'),
+    paddingTop:hp('1%'), paddingBottom:hp('1%'),
+    borderWidth:wp('0.5%'),
+    borderColor:'#d3d5e2'
   },
   userImage:{
     marginLeft:wp('2%'),
@@ -94,14 +112,14 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   //setId('dddd');
   //console.log(id);
   React.useEffect(() => {
-    const unsubscribe =
-      navigation.addListener('focus', () => {
+    //const unsubscribe =
+      //navigation.addListener('focus', () => {
         AsyncStorage.getItem("userData").then((userData) =>{
           setId(id => JSON.parse(userData).id);
           fetchData(JSON.parse(userData).id);
         });
-      })
-  return unsubscribe;
+      
+  //return unsubscribe;
   }, []);
 
 //===================================================
@@ -110,6 +128,7 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   const [visibility2, setVisibility2] = useState([]);
   const [visibility3, setVisibility3] = useState([]);
   const [message, setMessage] = useState('');
+  const [index, setIndex] = useState(-1);
   async function fetchData(idid) { 
       try {
         axios.post('https://www.toojin.tk:3000/selectReceivedMessage', {
@@ -138,8 +157,9 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
           console.error(e);
         }
   }
-function setModalVisibility(visible, msg ,t) {
-    if(!t){
+function setModalVisibility(visible, msg ,t, index, r) {
+    setIndex(index);
+    if(!t||r==1){
       setMessage(msg)
       setVisibility(visible)
     }
@@ -203,28 +223,33 @@ function setModalVisibility(visible, msg ,t) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*res = await fetch('https://www.toojin.tk:3000/addWork', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            business : busi,
-            workername : work,
-            month : dd[1]*1,
-            date : dd[2]*1,
-            day : dayOfWeek,
-            year : dd[0]*1,
-            time : 0,
-            subt : -ori[new Date(d).getDay()]
-          }),
-        });*/
         });
     } catch (e) {
         console.error(e);
       }
     }
+
+    async function alterRead() {
+      console.log("////////////////////////////////id : "+id);
+      try {
+        axios.post('https://www.toojin.tk:3000/alterReadMessage', {
+          ind:index,
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+        })
+        .then(res => 
+          {
+              console.log("////////////////////////////////id : "+id);
+              fetchData(id);
+              //console.log(res.data);
+          });
+      } catch (e) {
+          console.error(e);
+      }
+    }
+
     addBang= async() => { 
       try {
           let busi = message.split('(')[1].split(')')[0];
@@ -238,36 +263,6 @@ function setModalVisibility(visible, msg ,t) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.tk:3000/addBang', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            bang: busi
-          }),
-        }).then(res => res.json())*/
-   /*중복?     .then(res => {
-          console.log(res)
-        });
-        axios.post('https://www.toojin.tk:3000/addBang', {
-          bang: busi
-        },
-        {  headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'}
-        })*/
-        /*res = await fetch('https://www.toojin.tk:3000/addBang', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            bang: busi
-          }),
-        }).then(res => res.json())*/
         .then(res => {
           console.log(res)
         });
@@ -280,18 +275,6 @@ function setModalVisibility(visible, msg ,t) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*res = await fetch('https://www.toojin.tk:3000/alterState', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            bang: busi,
-            type : 1,
-            id : '/'
-          }),
-        }).then(res => res.json())*/
         .then(res => {
           console.log(res.data)
         });
@@ -300,19 +283,19 @@ function setModalVisibility(visible, msg ,t) {
         }
     }
     return (
-      <View>
-        <ImageBackground style={styles.image} source={require('../../img/pageMsg.png')}>
+      <View style={styles.image}>
+        <View style={styles.container}>
         <View style={styles.listArea}>
         <ScrollView>
         
         {
           business.map((b, id) => (
-          <View style={styles.messageArea}>
+          <View style={b.r?styles.readMessageArea:styles.messageArea}>
               
               <Image style={styles.userImage} source={require('../../img/user_blue.png')}/>
               <TouchableOpacity 
                 style={styles.touchArea}
-                onPress={() => setModalVisibility(true, b.message, b.type)} 
+                onPress={() => setModalVisibility(true, b.message, b.type, b.ind, b.r)} 
               >
                 <Text 
                   key={id} 
@@ -351,11 +334,16 @@ function setModalVisibility(visible, msg ,t) {
                   onPress={() => {
                     setModalVisibility(!visibility2,'',2)
                     savedData();
+                    alterRead();
+
                   }}
                 >네</Text>
                 <Text
                   style={styles.modalBtn2}
-                  onPress={() => setModalVisibility(!visibility2,'',2)}
+                  onPress={() => {
+                    setModalVisibility(!visibility2,'',2)
+                    alterRead();
+                  }}
                 >아니오</Text>
               </View>
               </View>
@@ -377,11 +365,15 @@ function setModalVisibility(visible, msg ,t) {
                   onPress={() => {
                     setModalVisibility(!visibility3,'',1)
                     addBang();
+                    alterRead();
                   }}
                 >네</Text>
                 <Text
                   style={styles.modalBtn2}
-                  onPress={() => setModalVisibility(!visibility3,'',1)}
+                  onPress={() => {
+                    setModalVisibility(!visibility3,'',1);
+                    alterRead();
+                  }}
                 >아니오</Text>
               </View>
               </View>
@@ -398,7 +390,7 @@ function setModalVisibility(visible, msg ,t) {
         </TouchableOpacity>
       </View>  
         
-      </ImageBackground>
+      </View>
       </View>
     );
   };

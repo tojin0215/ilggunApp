@@ -276,69 +276,129 @@ class StatementScreen1 extends React.Component {
                   // WithholdingTax:원천과세(IncomeTax+InhabitantsTax)
                   var IncomeTax =0; 
                   
-                    if(parseInt(MonthlySalary)<1060000){
-                      IncomeTax = 0
-                    }
-                    else if(parseInt(MonthlySalary)>=1060000 & parseInt(MonthlySalary) <=1100000){
-                      IncomeTax = 1600
-                    }
-                    else if(parseInt(MonthlySalary)>1100000 & parseInt(MonthlySalary) <=1200000){
-                      IncomeTax = 2990
-                    }
-                    else if(parseInt(MonthlySalary)>1200000 & parseInt(MonthlySalary) <=1300000){
-                      IncomeTax = 4740
-                    }
-                    else if(parseInt(MonthlySalary)>1300000 & parseInt(MonthlySalary) <=1400000){
-                      IncomeTax = 6800
-                    }
-                    else if(parseInt(MonthlySalary)>1400000 & parseInt(MonthlySalary) <=1500000){
-                      IncomeTax = 8920
-                    }
-                    else if(parseInt(MonthlySalary)>1500000 & parseInt(MonthlySalary) <=1600000){
-                      IncomeTax = 10980
-                    }
-                    else if(parseInt(MonthlySalary)>1600000 & parseInt(MonthlySalary) <=1700000){
-                      IncomeTax = 13050
-                    }
-                    else if(parseInt(MonthlySalary)>1700000 & parseInt(MonthlySalary) <=1800000){
-                      IncomeTax = 15110
-                    }
-                    else if(parseInt(MonthlySalary)>1800000 & parseInt(MonthlySalary) <=1900000){
-                      IncomeTax = 17180
-                    }
-                    else if(parseInt(MonthlySalary)>1900000 & parseInt(MonthlySalary) <=2000000){
-                      IncomeTax = 19520
-                    }
-                    else if(parseInt(MonthlySalary)>2000000 & parseInt(MonthlySalary) <=2100000){
-                      IncomeTax = 22740
-                    }
-                    else if(parseInt(MonthlySalary)>2100000 & parseInt(MonthlySalary) <=2200000){
-                      IncomeTax = 25950
-                    }
-                    else if(parseInt(MonthlySalary)>2200000 & parseInt(MonthlySalary) <=2300000){
-                      IncomeTax = 29160
-                    }
-                    else if(parseInt(MonthlySalary)>2300000 & parseInt(MonthlySalary) <=2400000){
-                      IncomeTax = 33570
-                    }
-                    else if(parseInt(MonthlySalary)>2400000 & parseInt(MonthlySalary) <=2500000){
-                      IncomeTax = 41630
-                    }
-                    else if(parseInt(MonthlySalary)>2500000 & parseInt(MonthlySalary) <=2600000){
-                      IncomeTax = 50190
-                    }
-                    else if(parseInt(MonthlySalary)>2600000 & parseInt(MonthlySalary) <=2700000){
-                      IncomeTax = 58750
-                    }
-                    else if(parseInt(MonthlySalary)>2700000 & parseInt(MonthlySalary) <=2800000){
-                      IncomeTax = 67300
-                    }
-                    else if(parseInt(MonthlySalary)>2800000 & parseInt(MonthlySalary) <=2900000){
-                      IncomeTax = 75860
-                    }
-                    else if(parseInt(MonthlySalary)>2900000 & parseInt(MonthlySalary) <=3000000){
-                      IncomeTax = 84850
-                    }
+                  if(parseInt(MonthlySalary)<1060000){
+                    IncomeTax = 0
+                  }
+                  else if(parseInt(MonthlySalary)>=1060000 & parseInt(MonthlySalary) <=1100000){
+                    IncomeTax = 1600
+                  }
+                  else if(parseInt(MonthlySalary)>1100000 & parseInt(MonthlySalary) <=1200000){
+                    IncomeTax = 2990
+                  }
+                  else if(parseInt(MonthlySalary)>1200000 & parseInt(MonthlySalary) <=1300000){
+                    IncomeTax = 4740
+                  }
+                  else if(parseInt(MonthlySalary)>1300000 & parseInt(MonthlySalary) <=1400000){
+                    IncomeTax = 6800
+                  }
+                  else if(parseInt(MonthlySalary)>1400000 & parseInt(MonthlySalary) <=1500000){
+                    IncomeTax = 8920
+                  }
+                  else if(parseInt(MonthlySalary)>1500000 & parseInt(MonthlySalary) <=1600000){
+                    IncomeTax = 10980
+                  }
+                  else if(parseInt(MonthlySalary)>1600000 & parseInt(MonthlySalary) <=1700000){
+                    IncomeTax = 13050
+                  }
+                  else if(parseInt(MonthlySalary)>1700000 & parseInt(MonthlySalary) <=1800000){
+                    IncomeTax = 15110
+                  }
+                  else if(parseInt(MonthlySalary)>1800000 & parseInt(MonthlySalary) <=1900000){
+                    IncomeTax = 17180
+                  }
+                  else if(parseInt(MonthlySalary)>1900000 & parseInt(MonthlySalary) <=2000000){
+                    IncomeTax = 19520
+                  }
+                  else if(parseInt(MonthlySalary)>2000000 & parseInt(MonthlySalary) <=2100000){
+                    IncomeTax = 22740
+                  }
+                  else if(parseInt(MonthlySalary)>2100000 & parseInt(MonthlySalary) <=2200000){
+                    IncomeTax = 25950
+                  }
+                  else if(parseInt(MonthlySalary)>2200000 & parseInt(MonthlySalary) <=2300000){
+                    IncomeTax = 29160
+                  }
+                  else if(parseInt(MonthlySalary)>2300000 & parseInt(MonthlySalary) <=2400000){
+                    IncomeTax = 33570
+                  }
+                  else if(parseInt(MonthlySalary)>2400000 & parseInt(MonthlySalary) <=2500000){
+                    IncomeTax = 41630
+                  }
+                  else if(parseInt(MonthlySalary)>2500000 & parseInt(MonthlySalary) <=2600000){
+                    IncomeTax = 50190
+                  }
+                  else if(parseInt(MonthlySalary)>2600000 & parseInt(MonthlySalary) <=2700000){
+                    IncomeTax = 58750
+                  }
+                  else if(parseInt(MonthlySalary)>2700000 & parseInt(MonthlySalary) <=2800000){
+                    IncomeTax = 67300
+                  }
+                  else if(parseInt(MonthlySalary)>2800000 & parseInt(MonthlySalary) <=2900000){
+                    IncomeTax = 75860
+                  }
+                  else if(parseInt(MonthlySalary)>2900000 & parseInt(MonthlySalary) <=3000000){
+                    IncomeTax = 84850
+                  }
+                  else if(parseInt(MonthlySalary)>3000000 & parseInt(MonthlySalary) <=3100000){
+                    IncomeTax = 93400
+                  }
+                  else if(parseInt(MonthlySalary)>3100000 & parseInt(MonthlySalary) <=3200000){
+                    IncomeTax = 105540
+                  }
+                  else if(parseInt(MonthlySalary)>3200000 & parseInt(MonthlySalary) <=3300000){
+                    IncomeTax = 117770
+                  }
+                  else if(parseInt(MonthlySalary)>3300000 & parseInt(MonthlySalary) <=3400000){
+                    IncomeTax = 129990
+                  }
+                  else if(parseInt(MonthlySalary)>3400000 & parseInt(MonthlySalary) <=3500000){
+                    IncomeTax = 142220
+                  }
+                  else if(parseInt(MonthlySalary)>3500000 & parseInt(MonthlySalary) <=3600000){
+                    IncomeTax = 154440
+                  }
+                  else if(parseInt(MonthlySalary)>3600000 & parseInt(MonthlySalary) <=3700000){
+                    IncomeTax = 166670
+                  }
+                  else if(parseInt(MonthlySalary)>3700000 & parseInt(MonthlySalary) <=3800000){
+                    IncomeTax = 184260
+                  }
+                  else if(parseInt(MonthlySalary)>3800000 & parseInt(MonthlySalary) <=3900000){
+                    IncomeTax = 197610
+                  }
+                  else if(parseInt(MonthlySalary)>3900000 & parseInt(MonthlySalary) <=4000000){
+                    IncomeTax = 210960
+                  }
+                  else if(parseInt(MonthlySalary)>4000000 & parseInt(MonthlySalary) <=4100000){
+                    IncomeTax = 224310
+                  }
+                  else if(parseInt(MonthlySalary)>4100000 & parseInt(MonthlySalary) <=4200000){
+                    IncomeTax = 237660
+                  }
+                  else if(parseInt(MonthlySalary)>4200000 & parseInt(MonthlySalary) <=4300000){
+                    IncomeTax = 251010
+                  }
+                  else if(parseInt(MonthlySalary)>4300000 & parseInt(MonthlySalary) <=4400000){
+                    IncomeTax = 264360
+                  }
+                  else if(parseInt(MonthlySalary)>4400000 & parseInt(MonthlySalary) <=4500000){
+                    IncomeTax = 277840
+                  }
+                  else if(parseInt(MonthlySalary)>4500000 & parseInt(MonthlySalary) <=4600000){
+                    IncomeTax = 294370
+                  }
+                  else if(parseInt(MonthlySalary)>4600000 & parseInt(MonthlySalary) <=4700000){
+                    IncomeTax = 308390
+                  }
+                  else if(parseInt(MonthlySalary)>4700000 & parseInt(MonthlySalary) <=4800000){
+                    IncomeTax = 322420
+                  }
+                  else if(parseInt(MonthlySalary)>4800000 & parseInt(MonthlySalary) <=4900000){
+                    IncomeTax = 336440
+                  }
+                  else if(parseInt(MonthlySalary)>4900000 & parseInt(MonthlySalary) <=5000000){
+                    IncomeTax = 350470
+                  }
                     // InhabitantsTax : 주민세 (갑근세의 10%)
                     let InhabitantsTax = Math.floor(((parseInt(IncomeTax)*0.1).toFixed(0))/10)*10
                     
@@ -414,8 +474,9 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
         const state = this.state;
 
         return (
-          <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-            <View style={styles.titleArea}>
+          <View style={styles.image}>
+            <View style={styles.container}>
+              <View style={styles.titleArea}>
             <Text style={styles.textTitle}>월별 급여대장</Text>
             </View>
               <View style={styles.dropDownArea}>
@@ -537,7 +598,8 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
                         <Image style={styles.excelBtn} source={require('../../img/excel.png')}></Image>
                     </TouchableOpacity>
                 </View>*/}
-          </ImageBackground>
+          </View>
+          </View>
         )
     }
 }
@@ -546,7 +608,16 @@ export default StatementScreen1;
 const styles = StyleSheet.create({
   image:{
     alignItems: 'center', justifyContent:"center",
-    width: "100%", height: "103%", 
+    width: "100%", height: "100%", 
+    backgroundColor:'#67C8BA'
+  },
+  container: {
+    width:'100%', height:'100%',
+    alignItems: 'center',
+    justifyContent: 'center',    
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
   },
   titleArea:{
     alignItems:"center"

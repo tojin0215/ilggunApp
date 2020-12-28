@@ -9,7 +9,15 @@ import axios from 'axios';
 
 const styles = StyleSheet.create({
   image: {
-    width:'100%', height:'101%', paddingTop:hp('5%'), backgroundColor:'white',
+    width:'100%', height:'100%',    
+    backgroundColor:'#67C8BA',
+  },
+  container: {
+    width: "100%", height: "100%",
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
+    paddingTop:hp('5%'), 
     alignItems:"center"
   },
   dropdown : {
@@ -110,7 +118,7 @@ class InviteScreen extends Component{
           console.log(res)
           let arr=[]
           for(let i=0; i<res.data.length ;i++){
-            arr.push(res.data[i].id)
+            arr.push({id: res.data[i].id, name: res.data[i].name});
           }
           this.setState({workerList : arr});
            
@@ -124,62 +132,51 @@ class InviteScreen extends Component{
     }
     sendInviteMessage = async(name) => { 
       try {
-
-        axios.post('https://www.toojin.tk:3000/sendMessage', {
-          type: 1,
-          system:1,
-            f: this.state.id,
-            t : name,
-            message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?",
-            read:0
+        axios.post('https://www.toojin.tk:3000/selectWorkerEach', {
+          business: this.state.bangCode,
+          workername:name,
         },
         {  headers:{
           'Content-Type': 'application/json',
         'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.tk:3000/sendMessage', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type: 1,
-            f: 'system',
-            t : name,
-            message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?",
-          }),
-        }).then(res => res.json())*/
         .then(res => {
+          console.log("LLLLLLLLLLLLLLLLLL")
+          if(res.data[0]==undefined){
+            axios.post('https://www.toojin.tk:3000/sendMessage', {
+              type: 1,
+              system:1,
+                f: this.state.id,
+                t : name,
+                message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?",
+                r:0
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+            })
+            .then(res => {
+            });
+            console.log(this.state.bangCode, name, this.props.route.params.type)
+            axios.post('https://www.toojin.tk:3000/addWorker', {
+              business: this.state.bangCode,
+              workername : name,
+              type : this.props.route.params.type,
+              state: 0
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+            .then(res => {
+              this.props.navigation.navigate('Worker Management')
+            });
+          }else{
+            Alert.alert("이미 근무하고 있는 근로자입니다.")
+          }
+
         });
-        console.log(this.state.bangCode, name, this.props.route.params.type)
-        axios.post('https://www.toojin.tk:3000/addWorker', {
-          business: this.state.bangCode,
-          workername : name,
-          type : this.props.route.params.type,
-          state: 0
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-        })
-        /*
-        res = await fetch('https://www.toojin.tk:3000/addWorker', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            business: this.state.bangCode,
-            workername : name,
-            type : this.props.route.params.type,
-            state: 0
-          }),
-        }).then(res => res.json())*/
-        .then(res => {
-          this.props.navigation.navigate('Worker Management')
-        });
+        /**/
       } catch (e) {
         console.error(e);
       }
@@ -187,9 +184,9 @@ class InviteScreen extends Component{
     render() {
         
         return (
-          <View>
-          <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-        
+          <View style={styles.image}>
+          <View style={styles.container}>
+
           <View style={styles.searchArea}>
             <TextInput 
                 onChangeText={item => {
@@ -224,10 +221,10 @@ class InviteScreen extends Component{
             <FlatList data={this.state.workerList} 
                 renderItem={({ item }) => 
                 <View style={styles.listStyle}>
-                <Text style={styles.textStyle}>{item}</Text>
+                <Text style={styles.textStyle}>{item.name}({item.id})</Text>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={()=>{console.log(item+'<<<<<<<<<<<<<,'); this.sendInviteMessage(item); }}
+                  onPress={()=>{console.log(item.id+'<<<<<<<<<<<<<,'); this.sendInviteMessage(item.id); }}
                 >
                   <Image style={styles.inviteImage} source={require('../../img/inviteBtn.png')}/>
                 </TouchableOpacity>
@@ -235,7 +232,7 @@ class InviteScreen extends Component{
             }/>
         </ScrollView>
       </View>      
-    </ImageBackground>
+    </View>
     </View>
             
         )

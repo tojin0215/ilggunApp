@@ -7,14 +7,17 @@ import { AppLoading } from 'expo';
 import axios from 'axios';
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%", height: "100%",
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent:"flex-start",
   },
   image:{
-    justifyContent:"flex-start",
     alignItems: 'center',
-    width: "100%", height: "100%",
+    width: "100%", height: "100%",    
+    backgroundColor:'#7085DF'
   },
   buttonArea1: {
     flexDirection:"row",
@@ -77,7 +80,37 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   },[]);
   
   const [state, setState] =useState(0);
+  const [worktodo, setWorktodo] = useState(0);
   useEffect(() => {
+    navigation.addListener('focus', () => {
+      axios.post('https://www.toojin.tk:3000/selectWorkTodo', {
+           bang : route.params.bname,
+           year : new Date().getFullYear(),
+           month: new Date().getMonth() + 1,
+           date: new Date().getDate(),
+           worker: route.params.id
+       },
+       {  headers:{
+         'Content-Type': 'application/json',
+         'Accept': 'application/json'}
+       })
+       .then(res => {
+         
+         if(res.data[0]==undefined){
+           setWorktodo(0);
+         }
+         else{
+           let dict = JSON.parse(res.data[0].todo);
+           let td = 0;
+           for(var key in dict){
+             if(dict[key]==0){
+               td=1;
+               break;
+             }
+           }
+           setWorktodo(td);
+         }
+    });
     axios.post('https://www.toojin.tk:3000/selectWorkerEach', {
       business:route.params.bname,
       workername:route.params.id,
@@ -89,6 +122,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     .then(res => {
       setState(res.data[0].state);
     });
+  },[]);
   }, [navigation]);
     //fetchData();
     /*function useAsync(asyncFn, onSuccess) {
@@ -145,36 +179,21 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     async function commuteData(idid) { 
       let err;  
       try {
-          console.log("되고있니?"+idid);
           await axios.post('https://www.toojin.tk:3000/updateCommute', {bang : route.params.bname, id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           
-          /*
-            let res = await fetch('https://www.toojin.tk:3000/updateCommute', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                bang : business
-              }),*/
-            }).then(res => err = res.status)
-            //.then(res => {
-                
-            //});
-            //.then((response) => response.json())
-            .then((res) => {
-                //setBusiness(res);
             })
-        } catch (e) {
+            .then(res => err = res.status)
+            .then((res) => {
+            })
+      } catch (e) {
             console.log(err);
             console.error(e);
-          }
-          
-        }
+      }
+            
+    }
 
         
     //출근퇴근
@@ -208,18 +227,40 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [clicked4, setClicked4] = useState(-1);  
     
   return (
-    <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
-    <View style={styles.buttonArea1}>
+    <View style={styles.image}>
+      <View style={styles.container}>
+        <View style={styles.buttonArea1}>
       <TouchableOpacity 
         style={styles.button}
         onPress={() => { 
           
           //출근/퇴근기록
           console.log("state???"+route.params.state)
-          if(state==2 || route.params.state==2){
-            setCommute(commute=='출근'?'퇴근':'출근');
-            commuteData(route.params.id);
-            commuteChangeImg(commute=='출근'?'퇴근':'출근');
+          if(state==2){
+            if(commute=='출근' && worktodo==1){
+              Alert.alert(
+                "퇴근하기",
+                "할 일이 남아있습니다. 미완료로 퇴근하시겠습니까?",
+                [
+                  {
+                    text: "아니오",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                  { text: "네", onPress: () => {
+                    setCommute(commute=='출근'?'퇴근':'출근');
+                    commuteData(route.params.id);
+                    commuteChangeImg(commute=='출근'?'퇴근':'출근');
+                  }}
+                ],
+                { cancelable: false }
+              );
+            }
+            else{
+              setCommute(commute=='출근'?'퇴근':'출근');
+              commuteData(route.params.id);
+              commuteChangeImg(commute=='출근'?'퇴근':'출근');
+            }
           }
           else{
             Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
@@ -274,6 +315,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       <TouchableOpacity 
        style={styles.button2}
        onPress={() => {
+         console.log(worktodo);
         if(state==2|| route.params.state==2){
           setClicked4(0);
           navigation.navigate('WorkTodo',{id:route.params.id})
@@ -282,10 +324,10 @@ const WorkerHomeScreen = ({ navigation, route }) => {
           Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
         }
        }}>
-       <Image style={styles.todobuttonImg} source={clicked4==0?require('../../img/todo.png'):require('../../img/todo.png')}/>
+       <Image style={styles.todobuttonImg} source={clicked4==0?require('../../img/todo.png'):(worktodo==1?require('../../img/todo2.png'):require('../../img/todo.png'))}/>
       </TouchableOpacity>
       </View>
-    </ImageBackground>
+      </View></View>
   );
 };
  

@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, {useState, useRef, useEffect, Component} from 'react';
 import { AsyncStorage } from 'react-native';
 import { View, Button, Alert, Image, StyleSheet, Text } from 'react-native';
 import { NavigationContainer, DrawerActions,
@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
+import axios from 'axios';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
@@ -423,92 +423,65 @@ const MessageTabs = () => {
 const RootStack = createStackNavigator();
  
 const App = () => {
-/*----------------------------------------------------
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case 'RESTORE_TOKEN':
-          return {
-            ...prevState,
-            userToken: action.token,
-            isLoading: false,
-          };
-        case 'SIGN_IN':
-          return {
-            ...prevState,
-            isSignout: false,
-            userToken: action.token,
-          };
-        case 'SIGN_OUT':
-          return {
-            ...prevState,
-            isSignout: true,
-            userToken: null,
-          };
-      }
-    },
-    {
-      isLoading: true,
-      isSignout: false,
-      userToken: null,
-    }
-  );
-  React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
-    const bootstrapAsync = async () => {
-      let userToken;
-
-      try {
-        userToken = await AsyncStorage.getItem('userToken');
-      } catch (e) {
-        // Restoring token failed
-      }
-
-      // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
-    };
-
-    bootstrapAsync();
-  }, []);
-
-  const authContext = React.useMemo(
-    () => ({
-      signIn: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-      },
-      signOut: () => dispatch({ type: 'SIGN_OUT' }),
-      signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `AsyncStorage`
-        // In the example, we'll use a dummy token
-
-        dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
-      },
-    }),
-    []
-  );
-
-  //===========================================*/
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [id, setId] = useState('');
   const [bang, setBang] = useState('');
-  //setId('dddd');
-  //console.log(id);
-  React.useEffect(() => {
+
+  
+  //===========================================================================
+  const [count, setCount] = useState(0);
+  const savedCallback = useRef();
+
+  function callback() {
+    try {
+      axios.post('https://www.toojin.tk:3000/selectReceivedNewMessage', {
+        t:id,
+      },
+      {  headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'}
+      })
+      .then(res => 
+          {
+            console.log(res.data[0]==undefined);
+            if(res.data[0]==undefined){
+              setCount(0);
+            }else{
+              setCount(1);
+            }
+          });
+    } catch (e) {
+        console.error(e);
+    }
+  }
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  });
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    tick();
+    AsyncStorage.getItem("userData").then((userData) =>{
+      if(JSON.parse(userData) !=""){
+        setIsAuthenticated(true);
+        setId(id => JSON.parse(userData).name);
+      }
+      
+    });
+    let i = setInterval(tick, 2000);
+    return () => clearInterval(i);
+  }, []);
+
+//============================================================================
+  /*React.useEffect(() => {
     let a = AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).name);
     });
     return a;
-  }, []);
+  }, []);*/
 
   const handleSignIn = () => {
     setIsAuthenticated(true);
@@ -558,7 +531,7 @@ const App = () => {
         headerStyle: { backgroundColor: '#67C8BA', shadowOpacity: 0, elevation: 0,}, //배경
         headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}}}
       >
-      {id ? (
+      {isAuthenticated ? (
         <>
         <RootStack.Screen 
           name="Select Page" component={SelectScreen} 
@@ -573,7 +546,7 @@ const App = () => {
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
               </View>
               <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
-                <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
+                <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSignOut} style={styles.logoutBtnArea}>
                 <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
@@ -594,7 +567,7 @@ const App = () => {
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
               </View>
               <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
-                <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
+                <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
               </TouchableOpacity>
               <TouchableOpacity onPress={handleSignOut} style={styles.logoutBtnArea}>
                 <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
@@ -616,7 +589,7 @@ const App = () => {
                   <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
-                  <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
+                  <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSignOut} style={styles.workerlogoutBtnArea}>
                   <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
@@ -661,7 +634,7 @@ const App = () => {
                   <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
-                  <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
+                  <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSignOut} style={styles.logoutBtnArea}>
                   <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>
@@ -698,7 +671,7 @@ const App = () => {
                   <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.worker}>
-                  <Image style={styles.msgImage} source={require('./img/msg.png')}></Image>
+                  <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={handleSignOut} style={styles.workerlogoutBtnArea}>
                   <Image style={styles.logoutImage} source={require('./img/logout.png')}></Image>

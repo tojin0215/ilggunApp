@@ -85,8 +85,8 @@ class WExpenseScreen1 extends Component{
     return (
       
 //=========================바뀐부분A.=========================================================
-      <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
-{/* //=========================바뀐부분A.========================================================= */}
+  <View style={styles.image}>
+  {/* //=========================바뀐부분A.========================================================= */}
       <View style={styles.container}>
         <View style={styles.titleArea}>
         <Text style={styles.textTitle}>인건비 계산하기(정규직)</Text>
@@ -136,7 +136,7 @@ class WExpenseScreen1 extends Component{
         <Text>건강보험(정기요양) : {RegularCare}</Text>
         <Text>고용보험 : {EmploymentInsurance}</Text> */}
       </View>
-      </ImageBackground>
+      </View>
     )
   }
 }
@@ -145,7 +145,14 @@ export default WExpenseScreen1;
 
 //============================================바뀐부분 스타일=============================
 const styles = StyleSheet.create({
-  container: { padding:wp('4.5%'), width: "100%", height: "100%",},
+  container: { 
+    padding:wp('4.5%'), 
+    width: "100%",
+    height: "100%",
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
+  },
   wrapper: { flexDirection: 'row' },
   head: {  
     height: hp('6%'),  
@@ -163,8 +170,9 @@ const styles = StyleSheet.create({
   },
   row: {  height:hp('6%') },
   image:{ 
+    width: "100%", height: "100%", 
+    backgroundColor:'#7085DF',
     alignItems: 'center', justifyContent:"center",
-    width: "100%", height: "103%", 
   },
   textTitle:{
     fontSize:wp('5.55%'),

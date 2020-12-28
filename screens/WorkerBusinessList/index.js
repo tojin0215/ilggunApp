@@ -8,12 +8,15 @@ import { AppLoading } from 'expo';
 import axios from 'axios';
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%", height: "100%",
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
     alignItems: 'center',
+    justifyContent: "flex-start",
   },
   image:{
-    
-    justifyContent: "flex-start",
+    backgroundColor:'#7085DF',
     alignItems:"center",
     width: "100%", height: "100%",
   },
@@ -173,9 +176,8 @@ const WorkerBusinessListScreen = ({navigation}) => {
     //});
     
     return (
-        <View>
-        <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
-
+      <View style={styles.image}> 
+      <View style={styles.container}>
         {
           <View style={styles.buttonArea}>{
             business?
@@ -206,7 +208,7 @@ const WorkerBusinessListScreen = ({navigation}) => {
           :<Text style={styles.textStyle}>초대받은 사업장이 없습니다.</Text>}
             </View>
         }
-        </ImageBackground>
+        </View>
         </View>
     );
 };

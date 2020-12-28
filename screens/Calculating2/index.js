@@ -169,7 +169,7 @@ class CalculatingScreen2 extends Component{
     
     return(
 //===================================================바뀐부분A========================================
-      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+      <View style={styles.image}>
 {/* //===================================================바뀐부분A======================================== */}
       <View style={styles.container}>
      
@@ -331,7 +331,7 @@ class CalculatingScreen2 extends Component{
           </View>
         </ScrollView>    
       </View>
-      </ImageBackground>
+      </View>
     )
   }
   
@@ -341,7 +341,15 @@ class CalculatingScreen2 extends Component{
 
 //===========================================바뀐부분 스타일 전체===========================================
   const styles = StyleSheet.create({
-    container: {padding:wp('5%'), width: "100%", height: "100%",},
+    container: {
+      padding:wp('5%'), 
+      width: "100%", 
+      height: "100%",    
+      backgroundColor: 'white',
+      borderTopRightRadius:wp('13%'),
+      borderTopLeftRadius:wp('13%'),
+  
+    },
     rowView: { flexDirection: 'row' },
     marginTop : {marginTop: hp('1.3%')},
     wrapper: { flexDirection: 'row' },
@@ -359,7 +367,8 @@ class CalculatingScreen2 extends Component{
     },
     image:{ 
       alignItems: 'center', justifyContent:"center",
-      width: "100%", height: "100%", 
+      width: "100%", height: "100%",     
+      backgroundColor:'#67C8BA'
     },
     textTitle:{
       fontSize: wp('5.55%'),
@@ -373,7 +382,7 @@ class CalculatingScreen2 extends Component{
       fontFamily:"NanumSquare",
       color: '#040525',
       marginLeft:wp('1.5%'),
-      marginTop:wp('1%'),
+      marginTop:hp('1%'),
       marginBottom:wp('1%'),
       marginRight:wp('2%'),
     },

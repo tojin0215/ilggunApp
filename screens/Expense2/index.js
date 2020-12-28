@@ -124,8 +124,8 @@ class ExpenseScreen2 extends Component {
 
         return (
 //============================================바뀐부분A==============================================
-            <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-{/* //============================================바뀐부분A============================================== */}
+        <View style={styles.image}>
+    {/* //============================================바뀐부분A============================================== */}
             <View style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
@@ -248,7 +248,7 @@ class ExpenseScreen2 extends Component {
                 
             </ScrollView>
             </View>
-            </ImageBackground>
+            </View>
         );
     }
     
@@ -258,12 +258,19 @@ export default ExpenseScreen2;
 
 //===================================바뀐부분 스타일 전체=====================================
 const styles = StyleSheet.create({
-    container: {padding:wp('4.5%'), width: "100%", height: "100%", },
+    container: {
+        padding:wp('4.5%'), 
+        width: "100%",
+         height: "100%", 
+         backgroundColor: 'white',
+         borderTopRightRadius:wp('13%'),
+         borderTopLeftRadius:wp('13%'),
+    },
     rowView : {flexDirection:"row"},
-
     image:{ 
         alignItems: 'center', justifyContent:"center",
-        width: "100%", height: "103%", 
+        width: "100%", height: "100%",
+        backgroundColor:'#67C8BA'
     },
     buttonArea: {
         alignItems:"center",

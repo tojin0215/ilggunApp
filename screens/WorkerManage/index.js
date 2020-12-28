@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity,ImageBackground,Image } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity,ImageBackground,Image,Alert } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -9,7 +9,11 @@ const styles = StyleSheet.create({
   container: {
     width:'100%', height:'100%',
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start',    
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
+
   },
   worker: {
     flexDirection: 'row', height:hp('10%'), width:wp('90%'),
@@ -33,7 +37,8 @@ const styles = StyleSheet.create({
   },
   image:{
     justifyContent: "center",
-    width: "100%", height: "103%",
+    width: "100%", height: "100%",
+    backgroundColor:'#67C8BA'
   },
   listArea:{
     height:hp('64%'),
@@ -84,12 +89,13 @@ const styles = StyleSheet.create({
 const WorkerManageScreen = ({navigation, route}) => {
     const [business, setBusiness] = useState([]);
     const [idid, setIdid] = useState('');
+    const [bangCode, setBangCode] = useState('');
     React.useEffect(() => {
       const unsubscribe =
         navigation.addListener('focus', () => {
           AsyncStorage.getItem("bangCode")
             .then((bangCode) => {
-              
+              setBangCode(bangCode);
               AsyncStorage.getItem("userData").then((userData) => {
                 setIdid(JSON.parse(userData).id)
                 fetchData(bangCode)
@@ -98,7 +104,40 @@ const WorkerManageScreen = ({navigation, route}) => {
         });
     return unsubscribe;
   }, []);
-    async function fetchData(bangCode) { 
+
+  async function deleteWorker(name){
+    try {
+      Alert.alert(
+        "근로자 삭제하기",
+        "근로자에 대한 모든 정보가 삭제됩니다. 진행하시겠습니까?",
+        [
+          {
+            text: "아니오",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "네", onPress: () => {
+            axios.post('https://www.toojin.tk:3000/deleteWorker', {
+              business:bangCode,  
+              workername : name,
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+            .then(res => {
+                fetchData(bangCode);
+            });
+          }}
+        ],
+        { cancelable: false }
+      );
+      
+    } catch (e) {
+        console.error(e);
+      }
+  }
+  async function fetchData(bangCode) { 
         try {
           await axios.post('https://www.toojin.tk:3000/selectWorkerByType', {
             business : bangCode,
@@ -131,8 +170,8 @@ const WorkerManageScreen = ({navigation, route}) => {
     }
     
     return (
-      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-      <View style={styles.container}>
+      <View style={styles.image}>
+        <View style={styles.container}>
 
       <View style={styles.buttonArea}>
         <TouchableOpacity 
@@ -164,7 +203,7 @@ const WorkerManageScreen = ({navigation, route}) => {
             <View style={styles.deleteArea}>
               <TouchableOpacity
                 style={styles.Contbutton}
-                // onPress={() => } //근로자삭제
+                 onPress={() => deleteWorker(b.workername)} //근로자삭제
                 >
                 <Text style={styles.deleteTitle}>삭제</Text>
               </TouchableOpacity>
@@ -177,7 +216,7 @@ const WorkerManageScreen = ({navigation, route}) => {
       </View>
       
     </View>
-    </ImageBackground>
+    </View>
     );
 };
 export default WorkerManageScreen;

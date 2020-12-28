@@ -4,8 +4,7 @@ import * as Google from 'expo-google-app-auth';
 import {
   ImageBackground,
   View,
-  Text, Button, Image,
-  TextInput, 
+  Text, Button, Image, TextInput, 
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
@@ -47,7 +46,8 @@ const SignInScreen = ({ onSignIn, navigation }) => {
   }
 
   const googleLogin = async() => {
-    try {
+    Alert.alert("준비 중입니다. 조금만 기다려주세요.")
+    /*try {
       await Google.logInAsync({
         androidClientId: "215538713502-hrpk6s7lontr7l1vvlb39rgdqe0f41k1.apps.googleusercontent.com",
         iosClientId: "215538713502-tdra6mancl9oukjevu4mhmc0441in4vu.apps.googleusercontent.com",
@@ -113,7 +113,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
     })
     } catch (e) {
       console.log("error", e)
-    }
+    }*/
   }
   const SignPost = async(str) => {
     /*try {

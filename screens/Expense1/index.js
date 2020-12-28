@@ -80,8 +80,8 @@ class ExpenseScreen1 extends Component{
     
     return (
 //============================바뀐부분A================================================================
-      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-{/* //============================바뀐부분A================================================================ */}
+  <View style={styles.image}>     
+     {/* //============================바뀐부분A================================================================ */}
       <View style={styles.container}>
         <View style={styles.titleArea}>
         <Text style={styles.textTitle}>인건비 계산하기(정규직)</Text>
@@ -121,7 +121,7 @@ class ExpenseScreen1 extends Component{
         </Table>
 {/* //============================바뀐부분B================================================================         */}
       </View>
-      </ImageBackground>
+      </View>
     )
   }
 }
@@ -130,7 +130,14 @@ export default ExpenseScreen1;
 
 //============================바뀐부분 스타일전체================================================================   
 const styles = StyleSheet.create({
-  container: { padding:wp('4.5%'), width: "100%", height: "100%",},
+  container: { 
+    padding:wp('4.5%'), 
+    width: "100%", 
+    height: "100%",    
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
+  },
   wrapper: { flexDirection: 'row' },
   head: {  
     height: hp('6%'),  
@@ -149,7 +156,8 @@ const styles = StyleSheet.create({
   row: {  height:hp('6%') },
   image:{ 
     alignItems: 'center', justifyContent:"center",
-    width: "100%", height: "103%", 
+    width: "100%", height: "100%",
+    backgroundColor:'#67C8BA'
   },
   textTitle:{
     fontSize:wp('5.55%'),

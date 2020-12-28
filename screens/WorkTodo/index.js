@@ -9,7 +9,15 @@ import axios from 'axios';
 const styles = StyleSheet.create({
   
   image:{
-    width:'100%', height:'101%', paddingTop:hp('5%'),
+    width:'100%', height:'100%',     
+    backgroundColor:'#7085DF'
+  },
+  container: {
+    width: "100%", height: "100%",
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
+    paddingTop:hp('5%'),
   },
   dropdown : {
     flexDirection: 'row',
@@ -131,9 +139,9 @@ savedData = async(td) => {
     render() {
         
         return (
-          <View>
-          <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
-              <View style={{marginLeft:wp('2%')}}>
+          <View style={styles.image}>
+        <View style={styles.container}>
+                  <View style={{marginLeft:wp('2%')}}>
                 <Text style={styles.titleStyle}>오늘 해야할 일</Text>
               </View>
             <View style={styles.listArea}>
@@ -166,7 +174,7 @@ savedData = async(td) => {
                     </View>
                   }/>
             </View>
-          </ImageBackground>    
+            </View>  
           </View>
             
         )

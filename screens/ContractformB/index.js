@@ -24,7 +24,7 @@ class ContractformBScreen extends Component{
       types3: [{label: '근로자에게 직접지급   ', value: 0}, {label: '근로자 명의 예금통장에 입금', value: 1}], 
       value1: 0, value1Index:0, value2: 0, value2Index:0, value3: 0, value3Index:0,
       tableHead:['','시작시간','마치는시간','근무시간'],
-      tableTitle: ['월', '화', '수', '목', '금', '토', '일'],
+      tableTitle: ['월', '화', '수', '목', '금', '토', '일'], 
       tableData: [
         [<TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='09:00' style={styles.tableTextStyle} />, 
         <TextInput value={this.state.End1} onChangeText={(End1) => this.setState({End1})} placeholder='15:00' style={styles.tableTextStyle} />, 
@@ -55,6 +55,7 @@ class ContractformBScreen extends Component{
         <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='7' style={styles.tableTextStyle} />]
     ], id:this.props.route.params.workername, bang:''//, types4:[0,0,0,0,0]
     };
+    
     AsyncStorage.getItem("bangCode")
       .then((bangCode) => {
         this.setState({bang: bangCode});
@@ -310,11 +311,11 @@ fetchHtml = async(a) => {
                   <form>
                       <span>단기간근로자 표준근로계약서</span>
                       <hr><br>
-                      <svg viewBox = "0 0 500 500" style="left:190px; top:1180px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                      <svg viewBox = "0 0 500 500" style="left:210px; top:1480px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
                       <polyline points="${String(sign)}"
                       style="fill:none;stroke:black;stroke-width:3" />
                       </svg>
-                      <svg viewBox = "0 0 500 500" style="left:190px; top:1000px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                      <svg viewBox = "0 0 500 500" style="left:210px; top:1330px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
                       <polyline points="${String(bsign)}"
                       style="fill:none;stroke:black;stroke-width:3" />
                       </svg>
@@ -453,11 +454,9 @@ fetchHtml = async(a) => {
     const state = this.state;
 
     return (
-        <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-        <View style={styles.container}>
-        <View style={{marginTop:hp('2%')}}>
+        <View style={styles.image}>
+        <View  style={styles.container}>
             <Text style={styles.textTitle}> 근로계약서(단기/일용)</Text>
-        </View>
         {this.state.type==4?
         (
         <>
@@ -804,7 +803,8 @@ fetchHtml = async(a) => {
         </View>
 
         <View style={styles.textArea}>
-        <Text style={styles.textTitleStyle}>4. 근로일 및 근로일별 근로시간 :</Text> 
+        <Text style={styles.textTitleStyle}>4. 근로일 및 근로일별 근로시간 : </Text>
+        <Text style={styles.textTitleStyle}>   (근무가 없는 날은 칸을 비워주세요)</Text> 
         <View style={styles.tableArea}>
         <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
             <Row data={state.tableHead} flexArr={[0.5, 1, 1, 1]} style={styles.head} textStyle={styles.tableTextStyle}/>
@@ -1144,17 +1144,24 @@ fetchHtml = async(a) => {
       </ScrollView>
         }
       </View>
-      </ImageBackground>
+      </View>
     )
   }
 }
 
 export default ContractformBScreen;
 const styles = StyleSheet.create({
-    container: { padding:wp('3%'), width: "100%", height: "100%",},
+    container: { 
+        padding:wp('3%'), 
+        width: "100%", height: "100%",    
+        backgroundColor: 'white',
+        borderTopRightRadius:wp('13%'),
+        borderTopLeftRadius:wp('13%'),
+    },
     image:{ 
         alignItems: 'center', justifyContent:"center",
         width: "100%", height: "100%", 
+        backgroundColor:'#67C8BA'
     },
     textTitle:{
         fontSize:wp('5.55%'),

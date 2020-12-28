@@ -142,6 +142,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
         console.log(bangCode, this.state.originalTime, time);
         
         let s = this.state.originalTime;
+        if(s==null) s="00000000";
         console.log("SSS : "+s);
         let st = (s[0]+s[1])*1;
         let sm = (s[2]+s[3])*1;

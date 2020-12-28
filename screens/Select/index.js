@@ -56,9 +56,9 @@ const SelectScreen = ({ onSignIn, navigation }) => {
   }
 
   return ( 
-    <View>
-    <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-      <View style={styles.textArea}>
+    <View style={styles.image}>
+    <View style={styles.container}>
+            <View style={styles.textArea}>
       <Text style={styles.text1}>"{id}"</Text>
         <Text  style={styles.text2}>님 안녕하세요.</Text>
       </View>
@@ -78,7 +78,7 @@ const SelectScreen = ({ onSignIn, navigation }) => {
       <View style={styles.buttonlogoArea}>
          <Image style={styles.logobottom} source={require('../../img/logo_bottom.png') }/> 
       </View>
-    </ImageBackground>
+      </View>
   </View>
   );
 };
@@ -86,17 +86,16 @@ const SelectScreen = ({ onSignIn, navigation }) => {
 const styles = StyleSheet.create({
   image:{
     justifyContent: "flex-start",
-    alignItems:"center",
     width: "100%", height: "100%",
+    backgroundColor:'#67C8BA'
   },
   container: {
     width: "100%", height: "100%",
+    alignItems:"center",
     backgroundColor: 'white',
-    paddingLeft: wp('10%'),
-    paddingRight: wp('10%'),
-    paddingBottom: wp('10%'),
-    justifyContent: 'center',
-},
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
+  },
   textArea:{
     justifyContent:"center", 
     width:"100%",

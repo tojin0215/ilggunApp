@@ -8,14 +8,16 @@ import { AppLoading } from 'expo';
 //========================바뀐부분 스타일====================================
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%", height: "100%",
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent:"flex-start",   
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
   },
   image:{
-    justifyContent:"flex-start",
-    alignItems: 'center',
     width: "100%", height: "100%",
+    backgroundColor:'#67C8BA'
   },
   buttonArea1: {
     flexDirection:"row",
@@ -115,7 +117,8 @@ const [clicked4, setClicked4] = useState(-1);
 
 
   return (
-    <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+    <View style={styles.image}>
+    <View style={styles.container}>
       <View style={styles.buttonArea1}>
       <TouchableOpacity 
         style={styles.button}
@@ -166,7 +169,8 @@ const [clicked4, setClicked4] = useState(-1);
       </TouchableOpacity>
 {/*  --------------------------------바뀐부분D----------------------- */}
     </View>
-    </ImageBackground>
+    </View>
+    </View>
   );
 };
  

@@ -10,14 +10,19 @@ import axios from 'axios';
 
 const styles = StyleSheet.create(
   {
-    container: {
-      flex: 1,
+    container: {    
+      width: "100%", height: "100%",
+      backgroundColor: 'white',
+      borderTopRightRadius:wp('13%'),
+      borderTopLeftRadius:wp('13%'),
       alignItems: 'center',
       justifyContent: 'center',
     },
     image:{
       alignItems: 'center',
-      width: "100%", height: "100%", 
+      width: "100%", height: "100%",
+      backgroundColor:'#67C8BA'
+  
     },
     buttonArea: {
       position:"absolute",
@@ -41,16 +46,16 @@ const styles = StyleSheet.create(
       backgroundColor:'#E2F2EF',
       flexDirection:'row',
       width:wp('80%'), height:hp('10%'),
-      marginTop:wp('5%'),
+      marginTop:wp('1%'),
       borderRadius:wp('5%'),
       paddingLeft:wp('2%'),
-      paddingTop:wp('1%'), marginBottom:hp('4%')
+      paddingTop:wp('1%'), marginBottom:hp('4%'),
     },
     touchArea:{
       flexDirection:'row',
       width:wp('75%'),height:hp('8%'),
       paddingLeft:wp('2%'),
-      paddingTop:wp('1%'), 
+      paddingTop:wp('1%'),
       alignItems:"center",justifyContent:"center"
     },
     calenderImg:{
@@ -69,18 +74,18 @@ const styles = StyleSheet.create(
       width:wp('5%'),height:wp('5%'),
     },
     workerAera:{
-      flexDirection:'row',padding:wp('4%'), height:hp('10%'), width:wp('80%'), 
+      flexDirection:'row',padding:wp('4%'), height:hp('10%'), width:wp('80%'),
       backgroundColor:'white',marginBottom:hp('1%'), borderRadius:wp('3%'),
 
-      ...Platform.select({ 
-        ios: { 
-          shadowColor: '#4d4d4d', 
-          shadowOffset: { width: 4, height: 4, }, 
-          shadowOpacity: 0.3, shadowRadius: 4, 
-        }, 
-        android: { 
-          elevation: 4, 
-        }, 
+      ...Platform.select({
+        ios: {
+          shadowColor: '#4d4d4d',
+          shadowOffset: { width: 4, height: 4, },
+          shadowOpacity: 0.3, shadowRadius: 4,
+        },
+        android: {
+          elevation: 4,
+        },
       }),
     },
     userImage:{
@@ -119,8 +124,10 @@ const styles = StyleSheet.create(
       justifyContent:"center", alignItems:"center"
     },
     listArea:{
-      height:hp('57%')
+      height:hp('57%'),
+      marginBottom:hp('4%')
     }
+  
 });
 
 const WorkManageScreen = ({navigation, route}) => {
@@ -259,8 +266,8 @@ const WorkManageScreen = ({navigation, route}) => {
     return unsubscribe;
   }, [navigation]);*/
   return (
+    <View style={styles.image}>
     <View style={styles.container}>
-    <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
       <View style={styles.calenderArea}>
         <TouchableOpacity
           title="Calendar"
@@ -441,7 +448,7 @@ const WorkManageScreen = ({navigation, route}) => {
             <Text style={styles.buttonTitle}>근로자 시간 변경</Text>
           </TouchableOpacity>
         </View>
-      </ImageBackground>
+        </View>
     </View>
 
   );

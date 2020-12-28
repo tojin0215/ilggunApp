@@ -269,7 +269,7 @@ class ContractformAScreen extends React.Component{
             <form>
             
                 <hr><br>
-                <svg viewBox = "0 0 500 500" style="left:190px; top:1180px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox = "0 0 500 500" style="left:190px; top:1150px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
                 <polyline points="${String(sign)}"
                 style="fill:none;stroke:black;stroke-width:3" />
                 </svg>
@@ -422,10 +422,9 @@ class ContractformAScreen extends React.Component{
       };
   render() {
     return (
-        
-        <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+        <View style={styles.image}>
         <View style={styles.container}>
-        <View style={{marginTop:hp('5%')}}>
+        <View style={{marginTop:hp('3%')}}>
             <Text style={styles.textTitle}> 근로계약서(정규/계약)</Text>
         </View>
         {
@@ -1219,7 +1218,7 @@ class ContractformAScreen extends React.Component{
       </ScrollView>
     }
       </View>
-      </ImageBackground>
+      </View>
     )
   }
 }
@@ -1227,10 +1226,17 @@ class ContractformAScreen extends React.Component{
 export default ContractformAScreen;
 
 const styles = StyleSheet.create({
-    container: { padding:wp('3%'), width: "100%",},
+    container: { 
+        padding:wp('3%'), 
+        width: "100%", height: "100%",
+        backgroundColor: 'white',
+        borderTopRightRadius:wp('13%'),
+        borderTopLeftRadius:wp('13%'),
+    },
     image:{ 
-        alignItems: 'center', justifyContent:"center",
-        width: "100%", height: "100%", 
+        alignItems: 'center',
+        width: "100%", height: "100%",     
+        backgroundColor:'#67C8BA'
     },
     textTitle:{
         fontSize:wp('5.55%'),

@@ -4,10 +4,13 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 
 //====================================바뀐부분A======================================
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  container: {    
+    width: "100%", height: "100%",
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent:'flex-start',
   },
   buttonArea: {
     marginTop:hp('5%'),
@@ -30,8 +33,8 @@ const styles = StyleSheet.create({
   },
   image:{
     alignItems: 'center',
-    justifyContent:'flex-start',
-    width: "100%", height: "100%", 
+    width: "100%", height: "100%",
+    backgroundColor:'#7085DF' 
   },
   buttonImg:{
     width: wp('75%'),
@@ -47,8 +50,9 @@ const styles = StyleSheet.create({
 const WCalculatingScreen = ({navigation}) => {
   return (
 //====================================바뀐부분B======================================
-          <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
-{/* //====================================바뀐부분B====================================== */}
+  <View style={styles.image}>
+  <View style={styles.container}>
+  {/* //====================================바뀐부분B====================================== */}
             <View style={styles.buttonArea}>
               <TouchableOpacity 
                 style={styles.button}
@@ -71,8 +75,9 @@ const WCalculatingScreen = ({navigation}) => {
                 <Image style={styles.buttonImg} source={require('../../img/calculating3_purple.png')}/>
 {/* //====================================바뀐부분E====================================== */}
               </TouchableOpacity>
+              </View>
             </View>
-          </ImageBackground>
+            </View>
   );
 };
 export default WCalculatingScreen;

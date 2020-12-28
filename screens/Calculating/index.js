@@ -5,10 +5,11 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 //==========================스타일도 바꿔주세용==============================================
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width:'100%', height:'100%',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor:'white'
+    backgroundColor:'white',    
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
   },
   buttonArea: {
     marginTop:hp('5%'),
@@ -32,7 +33,8 @@ const styles = StyleSheet.create({
   image:{
     alignItems: 'center',
     justifyContent:'flex-start',
-    width: "100%", height: "100%", 
+    width: "100%", height: "100%",    
+    backgroundColor:'#67C8BA'
   },
   buttonImg:{
     width: wp('75%'),
@@ -49,9 +51,8 @@ const styles = StyleSheet.create({
 const CalculatingScreen = ({navigation}) => {
   return (
 //================================바뀐부분A============================================
-    <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
-{/* //================================바뀐부분A============================================ */}
-          
+  <View style={styles.image}>
+  <View style={styles.container}>
     <View style={styles.buttonArea}>
       <TouchableOpacity 
         style={styles.button}
@@ -69,7 +70,8 @@ const CalculatingScreen = ({navigation}) => {
         <Image style={styles.buttonImg} source={require('../../img/calculate3.png')}/>
       </TouchableOpacity>
     </View>
-    </ImageBackground>
+    </View>
+    </View>
   );
 };
 export default CalculatingScreen;

@@ -9,9 +9,6 @@ import {
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { AsyncStorage } from 'react-native';
-import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
-import { readDirectoryAsync } from 'expo-file-system';
 
 const SendMessageScreen = ({ onSignUp, navigation }) => {
   const [id, setId] = useState('');
@@ -30,7 +27,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
           f: idid,
           message : password,
           t: id,
-          read:0,
+          r:0,
         },
         {  headers:{
           'Content-Type': 'application/json',
@@ -56,8 +53,8 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
     }
   }
   return (
-    <View>
-    <ImageBackground style={styles.image} source={require('../../img/pageMsg.png')}>
+    <View style={styles.image}>
+    <View style={styles.container}>
       <View style={styles.formArea}>
         <View style={styles.titleArea}> 
           <View style={styles.imgArea}>
@@ -90,7 +87,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
       <Image style={styles.btnImgStyle} source={require('../../img/message.png')}></Image>  
       </TouchableOpacity>
     </View>  
-    </ImageBackground>
+    </View>
     </View>
   );
 };
@@ -98,8 +95,17 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
 
 const styles = StyleSheet.create({
   image:{
-    width:'100%', height:'101%', paddingTop:hp('5%'), backgroundColor:'white',
-    alignItems:"center"
+    width:'100%', height:'100%', 
+    backgroundColor:'#DAE9F7',
+  },
+  container:{
+    width:'100%', height:'100%', 
+    paddingTop:hp('5%'), 
+    backgroundColor:'white',
+    alignItems:"center",    
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
+
   },
   formArea: {
     width: wp('90%'),height:hp('70%'),
@@ -119,7 +125,7 @@ const styles = StyleSheet.create({
     fontSize: wp('4.2%'),
     fontFamily:"NanumSquare",
     color:'#040525',
-    width:wp('30%')
+    width:wp('40%'),
   },
   textLineStyle:{
     fontSize: wp('4.2%'),

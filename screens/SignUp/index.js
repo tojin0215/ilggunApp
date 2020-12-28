@@ -53,7 +53,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
       });*/
       //res = await res;
       if(res.data.err!=null){
-        Alert.alert('이미 존재하는 email입니다. \n변경해주세요.')  
+        Alert.alert('이미 존재하는 ID입니다. \n변경해주세요.')  
       }else{
         navigation.navigate('Sign In')
         Alert.alert('회원가입이 완료되었습니다.')    
@@ -94,13 +94,12 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
   // }
 
   return (
-    <View>
-        <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
- 
+    <View style={styles.image}>
+        <View style={styles.container}>
                 <View style={styles.formArea}>
                 <ScrollView>
                 <View style={styles.textArea}>
-                    <Text style={styles.titleStyle}>이름 (or 닉네임)</Text>
+                    <Text style={styles.titleStyle}>이름</Text>
                     <TextInput 
                         onChangeText={name =>setName(name)}
                         defaultValue={name}
@@ -109,12 +108,12 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                 </View>   
 
                 <View style={styles.textArea}>
-                    <Text style={styles.titleStyle}>이메일</Text>
+                    <Text style={styles.titleStyle}>ID</Text>
                     <TextInput 
                         onChangeText={email =>setEmail(email)}
                         defaultValue={email}
                         style={styles.textStyle} 
-                        placeholder={"이메일을 입력하세요. ex) illkkun@gmail.com"}/>
+                        placeholder={"ID를 입력하세요."}/>
                 </View>
                 
                 
@@ -190,7 +189,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                 <View style={styles.buttonlogoArea}>
                     <Image style={styles.logobottom} source={require('../../img/logo_bottom.png') }/> 
                 </View> 
-        </ImageBackground>
+        </View>
     
     </View>
   );
@@ -199,9 +198,14 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
+        width: "100%", height: "100%",
+        backgroundColor: 'white',
+        borderTopRightRadius:wp('13%'),
+        borderTopLeftRadius:wp('13%'),    
     },
     image:{
-        width:'100%', height:'100%', 
+        width: "100%", height: "100%",
+        backgroundColor:'#67C8BA'    
     },
     formArea: {
         width: '100%', height:'95%',
