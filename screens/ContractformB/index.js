@@ -26,33 +26,89 @@ class ContractformBScreen extends Component{
       tableHead:['','시작시간','마치는시간','근무시간'],
       tableTitle: ['월', '화', '수', '목', '금', '토', '일'], 
       tableData: [
-        [<TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='09:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.End1} onChangeText={(End1) => this.setState({End1})} placeholder='15:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.time1} onChangeText={(time1) => this.setState({time1})} placeholder='7' style={styles.tableTextStyle} />],
+        [<View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='08' keyboardType={"number-pad"} onSubmitEditing={() => { this.Tabledata1.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.Start11} onChangeText={(Start11) => this.setState({Start11})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata1 = input; }} onSubmitEditing={() => { this.Tabledata2.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.End1} onChangeText={(End1) => this.setState({End1})} placeholder='14' keyboardType={"number-pad"} ref={(input) => { this.Tabledata2 = input; }} onSubmitEditing={() => { this.Tabledata3.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.End11} onChangeText={(End11) => this.setState({End11})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata3 = input; }} onSubmitEditing={() => { this.Tabledata4.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <TextInput value={this.state.time1} onChangeText={(time1) => this.setState({time1})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata4 = input; }} onSubmitEditing={() => { this.Tabledata5.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
         
-        [<TextInput value={this.state.Start2} onChangeText={(Start2) => this.setState({Start2})} placeholder='09:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.End2} onChangeText={(End2) => this.setState({End2})} placeholder='15:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.time2} onChangeText={(time2) => this.setState({time2})} placeholder='7' style={styles.tableTextStyle} />],
+        [<View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.Start2} onChangeText={(Start2) => this.setState({Start2})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata5 = input; }} onSubmitEditing={() => { this.Tabledata6.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.Start22} onChangeText={(Start22) => this.setState({Start22})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata6 = input; }} onSubmitEditing={() => { this.Tabledata7.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.End2} onChangeText={(End2) => this.setState({End2})} placeholder='14' keyboardType={"number-pad"} ref={(input) => { this.Tabledata7 = input; }} onSubmitEditing={() => { this.Tabledata8.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.End22} onChangeText={(End22) => this.setState({End22})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata8 = input; }} onSubmitEditing={() => { this.Tabledata9.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <TextInput value={this.state.time2} onChangeText={(time2) => this.setState({time2})} placeholder='7'  keyboardType={"number-pad"} ref={(input) => { this.Tabledata9 = input; }} onSubmitEditing={() => { this.Tabledata10.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
-        [<TextInput value={this.state.Start3} onChangeText={(Start3) => this.setState({Start3})} placeholder='09:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.End3} onChangeText={(End3) => this.setState({End3})} placeholder='15:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.time3} onChangeText={(time3) => this.setState({time3})} placeholder='7' style={styles.tableTextStyle} />],
+        [<View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.Start3} onChangeText={(Start3) => this.setState({Start3})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata10 = input; }} onSubmitEditing={() => { this.Tabledata11.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.Start33} onChangeText={(Start33) => this.setState({Start33})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata11 = input; }} onSubmitEditing={() => { this.Tabledata12.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.End3} onChangeText={(End3) => this.setState({End3})} placeholder='14' keyboardType={"number-pad"} ref={(input) => { this.Tabledata12 = input; }} onSubmitEditing={() => { this.Tabledata13.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.End33} onChangeText={(End33) => this.setState({End33})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata13 = input; }} onSubmitEditing={() => { this.Tabledata14.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <TextInput value={this.state.time3} onChangeText={(time3) => this.setState({time3})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata14 = input; }} onSubmitEditing={() => { this.Tabledata15.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
-        [<TextInput value={this.state.Start4} onChangeText={(Start4) => this.setState({Start4})} placeholder='09:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.End4} onChangeText={(End4) => this.setState({End4})} placeholder='15:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.time4} onChangeText={(time4) => this.setState({time4})} placeholder='7' style={styles.tableTextStyle} />],
+        [<View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.Start4} onChangeText={(Start4) => this.setState({Start4})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata15 = input; }} onSubmitEditing={() => { this.Tabledata16.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.Start44} onChangeText={(Start44) => this.setState({Start44})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata16 = input; }} onSubmitEditing={() => { this.Tabledata17.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.End4} onChangeText={(End4) => this.setState({End4})} placeholder='14' keyboardType={"number-pad"} ref={(input) => { this.Tabledata17 = input; }} onSubmitEditing={() => { this.Tabledata18.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.End44} onChangeText={(End44) => this.setState({End44})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata18 = input; }} onSubmitEditing={() => { this.Tabledata19.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <TextInput value={this.state.time4} onChangeText={(time4) => this.setState({time4})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata19 = input; }} onSubmitEditing={() => { this.Tabledata20.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
-        [<TextInput value={this.state.Start5} onChangeText={(Start5) => this.setState({Start5})} placeholder='09:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.End5} onChangeText={(End5) => this.setState({End5})} placeholder='15:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.time5} onChangeText={(time5) => this.setState({time5})} placeholder='7' style={styles.tableTextStyle} />],
+        [<View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.Start5} onChangeText={(Start5) => this.setState({Start5})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata20 = input; }} onSubmitEditing={() => { this.Tabledata21.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.Start55} onChangeText={(Start55) => this.setState({Start55})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata21 = input; }} onSubmitEditing={() => { this.Tabledata22.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.End5} onChangeText={(End5) => this.setState({End5})} placeholder='14' keyboardType={"number-pad"} ref={(input) => { this.Tabledata22 = input; }} onSubmitEditing={() => { this.Tabledata23.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.End55} onChangeText={(End55) => this.setState({End55})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata23 = input; }} onSubmitEditing={() => { this.Tabledata24.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <TextInput value={this.state.time5} onChangeText={(time5) => this.setState({time5})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata24 = input; }} onSubmitEditing={() => { this.Tabledata25.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
-        [<TextInput value={this.state.Start6} onChangeText={(Start6) => this.setState({Start6})} placeholder='09:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.End6} onChangeText={(End6) => this.setState({End6})} placeholder='15:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.time6} onChangeText={(time6) => this.setState({time6})} placeholder='7' style={styles.tableTextStyle} />],
+        [<View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.Start6} onChangeText={(Start6) => this.setState({Start6})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata25 = input; }} onSubmitEditing={() => { this.Tabledata26.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.Start66} onChangeText={(Start66) => this.setState({Start66})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata26 = input; }} onSubmitEditing={() => { this.Tabledata27.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.End6} onChangeText={(End6) => this.setState({End6})} placeholder='14' keyboardType={"number-pad"} ref={(input) => { this.Tabledata27 = input; }} onSubmitEditing={() => { this.Tabledata28.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.End66} onChangeText={(End66) => this.setState({End66})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata28 = input; }} onSubmitEditing={() => { this.Tabledata29.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <TextInput value={this.state.time6} onChangeText={(time6) => this.setState({time6})} placeholder='7'  keyboardType={"number-pad"} ref={(input) => { this.Tabledata29 = input; }} onSubmitEditing={() => { this.Tabledata30.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
-        [<TextInput value={this.state.Start7} onChangeText={(Start7) => this.setState({Start7})} placeholder='09:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.End7} onChangeText={(End7) => this.setState({End7})} placeholder='15:00' style={styles.tableTextStyle} />, 
-        <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='7' style={styles.tableTextStyle} />]
+        [<View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.Start7} onChangeText={(Start7) => this.setState({Start7})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata30 = input; }} onSubmitEditing={() => { this.Tabledata31.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.Start77} onChangeText={(Start77) => this.setState({Start77})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata31 = input; }} onSubmitEditing={() => { this.Tabledata32.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <View style={{flexDirection:"row", justifyContent:"center"}}>
+            <TextInput value={this.state.End7} onChangeText={(End7) => this.setState({End7})} placeholder='14' keyboardType={"number-pad"} ref={(input) => { this.Tabledata32 = input; }} onSubmitEditing={() => { this.Tabledata33.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <Text style={styles.tabledatatextStyle}>:</Text>
+            <TextInput value={this.state.End77} onChangeText={(End77) => this.setState({End77})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata33 = input; }} onSubmitEditing={() => { this.Tabledata34.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+        </View>, 
+        <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata34 = input; }} blurOnSubmit={false} style={styles.tableTextStyle1} />]
     ], id:this.props.route.params.workername, bang:''//, types4:[0,0,0,0,0]
     };
     
@@ -60,25 +116,225 @@ class ContractformBScreen extends Component{
       .then((bangCode) => {
         this.setState({bang: bangCode});
         this.initfetchHtml(bangCode);
-        
       })
   }
   
 
   handleSubmit(){
+    const chkNum = (str)=> {
+        var pattern_num = /[0-9]/;
+        return pattern_num.test(str) ? true : false;
+    };
+    const chkEng = (str)=> {
+        var pattern_eng = /[a-zA-Z]/;
+        return pattern_eng.test(str) ? true : false;
+    };
+    const chkKor = (str)=> {
+        var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        return pattern_kor.test(str) ? true : false;
+    };
+    const chkSpc = (str)=> {
+        var pattern_spc = /[-~!@#$%^&*()_+|<>?:{}.,/]/;
+        return pattern_spc.test(str) ? true : false;
+    };
+
+    
     if(this.state.Employer == null||this.state.Employee ==null
         ||this.state.StartYear==null||this.state.StartMonth==null||this.state.StartDay==null
-        ||this.state.EndYear==null||this.state.EndMonth==null||this.state.EndDay==null
         ||this.state.WorkPlace==null||this.state.WorkReference==null||this.state.Salary==null
         ||this.state.SalaryDay==null||this.state.ContractYear==null||this.state.ContractMonth==null
         ||this.state.ContractDay==null||this.state.BusinessName==null||this.state.BusinessAddress==null
         ||this.state.BusinessOwner1==null||this.state.BusinessPhone==null){
-        Alert.alert('빈칸을 채워주세요.')
-    } else{
-        this.fetchHtml();
-        Alert.alert('저장되었습니다.')  
+        Alert.alert('빈칸을 채워주세요.') 
+    }else if(!((chkNum(this.state.StartYear)===true) && (chkEng(this.state.StartYear)===false) && (chkKor(this.state.StartYear) ===false) && (chkSpc(this.state.StartYear)===false))||
+        !((chkNum(this.state.StartMonth)===true) && (chkEng(this.state.StartMonth)===false) && (chkKor(this.state.StartMonth) ===false) && (chkSpc(this.state.StartMonth)===false))||
+        !((chkNum(this.state.StartDay)===true) && (chkEng(this.state.StartDay)===false) && (chkKor(this.state.StartDay) ===false) && (chkSpc(this.state.StartDay)===false))||
+        !((chkNum(this.state.Salary)===true) && (chkEng(this.state.Salary)===false) && (chkKor(this.state.Salary) ===false) && (chkSpc(this.state.Salary)===false))||
+        !((chkNum(this.state.SalaryDay)===true) && (chkEng(this.state.SalaryDay)===false) && (chkKor(this.state.SalaryDay) ===false) && (chkSpc(this.state.SalaryDay)===false))||
+        !((chkNum(this.state.ContractYear)===true) && (chkEng(this.state.ContractYear)===false) && (chkKor(this.state.ContractYear) ===false) && (chkSpc(this.state.ContractYear)===false))||
+        !((chkNum(this.state.ContractMonth)===true) && (chkEng(this.state.ContractMonth)===false) && (chkKor(this.state.ContractMonth) ===false) && (chkSpc(this.state.ContractMonth)===false))||
+        !((chkNum(this.state.ContractDay)===true) && (chkEng(this.state.ContractDay)===false) && (chkKor(this.state.ContractDay) ===false) && (chkSpc(this.state.ContractDay)===false))
+        ){
+        Alert.alert('계약기간, 근로시간, 임금, 계약날짜의 숫자가 제대로 입력되었는지 확인해주세요.') 
+    } 
+    else{
+        var flag = true
+        if(!(this.state.EndYear==null)||!(this.state.EndMonth==null)||!(this.state.EndDay==null)){
+            console.log('근로기간 확인')
+            if(!((chkNum(this.state.EndYear)===true) && (chkEng(this.state.EndYear)===false) && (chkKor(this.state.EndYear) ===false) && (chkSpc(this.state.EndYear)===false))||
+            !((chkNum(this.state.EndMonth)===true) && (chkEng(this.state.EndMonth)===false) && (chkKor(this.state.EndMonth) ===false) && (chkSpc(this.state.EndMonth)===false))||
+            !((chkNum(this.state.EndDay)===true) && (chkEng(this.state.EndDay)===false) && (chkKor(this.state.EndDay) ===false) && (chkSpc(this.state.EndDay)===false))){
+                Alert.alert('계약기간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                console.log('근로기간_숫자 제대로 입력안됨')
+                flag=false
+            }else{
+                console.log('근로기간_숫자 제대로 확인됨')
+            }            
+        } 
+
+        if(!(this.state.Start1==null)||!(this.state.Start11==null)||!(this.state.End1==null)||!(this.state.End11==null)||!(this.state.time1==null)){
+            console.log('근로시간(월요일)숫자 확인')
+            if(!((chkNum(this.state.Start1)===true) && (chkEng(this.state.Start1)===false) && (chkKor(this.state.Start1) ===false) && (chkSpc(this.state.Start1)===false))||
+            !((chkNum(this.state.Start11)===true) && (chkEng(this.state.Start11)===false) && (chkKor(this.state.Start11) ===false) && (chkSpc(this.state.Start11)===false))||
+            !((chkNum(this.state.End1)===true) && (chkEng(this.state.End1)===false) && (chkKor(this.state.End1) ===false) && (chkSpc(this.state.End1)===false))||
+            !((chkNum(this.state.End11)===true) && (chkEng(this.state.End11)===false) && (chkKor(this.state.End11) ===false) && (chkSpc(this.state.End11)===false))||
+            !((chkNum(this.state.time1)===true) && (chkEng(this.state.time1)===false) && (chkKor(this.state.time1) ===false) && (chkSpc(this.state.time1)===false))){
+                Alert.alert('근로시간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                console.log('근로시간(월요일)_숫자입력 제대로 안됨')
+                flag=false
+            }else{
+                console.log('근로시간(월요일)_숫자 제대로 확인됨')
+            }
+        }
+        
+        if(!(this.state.Start2==null)||!(this.state.Start22==null)||!(this.state.End2==null)||!(this.state.End22==null)||!(this.state.time2==null)){
+            console.log('근로시간(화요일)')
+            if(!((chkNum(this.state.Start2)===true) && (chkEng(this.state.Start2)===false) && (chkKor(this.state.Start2) ===false) && (chkSpc(this.state.Start2)===false))||
+            !((chkNum(this.state.Start22)===true) && (chkEng(this.state.Start22)===false) && (chkKor(this.state.Start22) ===false) && (chkSpc(this.state.Start22)===false))||
+            !((chkNum(this.state.End2)===true) && (chkEng(this.state.End2)===false) && (chkKor(this.state.End2) ===false) && (chkSpc(this.state.End2)===false))||
+            !((chkNum(this.state.End22)===true) && (chkEng(this.state.End22)===false) && (chkKor(this.state.End22) ===false) && (chkSpc(this.state.End22)===false))||
+            !((chkNum(this.state.time2)===true) && (chkEng(this.state.time2)===false) && (chkKor(this.state.time2) ===false) && (chkSpc(this.state.time2)===false))){
+                Alert.alert('근로시간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('근로시간(화요일)_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Start3==null)||!(this.state.Start33==null)||!(this.state.End3==null)||!(this.state.End33==null)||!(this.state.time3==null)){
+             console.log('근로시간(수요일)')
+            if(!((chkNum(this.state.Start3)===true) && (chkEng(this.state.Start3)===false) && (chkKor(this.state.Start3) ===false) && (chkSpc(this.state.Start3)===false))||
+            !((chkNum(this.state.Start33)===true) && (chkEng(this.state.Start33)===false) && (chkKor(this.state.Start33) ===false) && (chkSpc(this.state.Start33)===false))||
+            !((chkNum(this.state.End3)===true) && (chkEng(this.state.End3)===false) && (chkKor(this.state.End3) ===false) && (chkSpc(this.state.End3)===false))||
+            !((chkNum(this.state.End33)===true) && (chkEng(this.state.End33)===false) && (chkKor(this.state.End33) ===false) && (chkSpc(this.state.End33)===false))||
+            !((chkNum(this.state.time3)===true) && (chkEng(this.state.time3)===false) && (chkKor(this.state.time3) ===false) && (chkSpc(this.state.time3)===false))){
+                Alert.alert('근로시간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('근로시간(수요일)_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Start4==null)||!(this.state.Start44==null)||!(this.state.End4==null)||!(this.state.End44==null)||!(this.state.time4==null)){
+            console.log('근로시간(목요일)')
+            if( !((chkNum(this.state.Start4)===true) && (chkEng(this.state.Start4)===false) && (chkKor(this.state.Start4) ===false) && (chkSpc(this.state.Start4)===false))||
+            !((chkNum(this.state.Start44)===true) && (chkEng(this.state.Start44)===false) && (chkKor(this.state.Start44) ===false) && (chkSpc(this.state.Start44)===false))||
+            !((chkNum(this.state.End4)===true) && (chkEng(this.state.End4)===false) && (chkKor(this.state.End4) ===false) && (chkSpc(this.state.End4)===false))||
+            !((chkNum(this.state.End44)===true) && (chkEng(this.state.End44)===false) && (chkKor(this.state.End44) ===false) && (chkSpc(this.state.End44)===false))||
+            !((chkNum(this.state.time4)===true) && (chkEng(this.state.time4)===false) && (chkKor(this.state.time4) ===false) && (chkSpc(this.state.time4)===false))){
+                Alert.alert('근로시간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('근로시간(목요일)_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Start5==null)||!(this.state.Start55==null)||!(this.state.End5==null)||!(this.state.End55==null)||!(this.state.time5==null)){
+            console.log('근로시간(금요일)')
+            if(!((chkNum(this.state.Start5)===true) && (chkEng(this.state.Start5)===false) && (chkKor(this.state.Start5) ===false) && (chkSpc(this.state.Start5)===false))||
+            !((chkNum(this.state.Start55)===true) && (chkEng(this.state.Start55)===false) && (chkKor(this.state.Start55) ===false) && (chkSpc(this.state.Start55)===false))||
+            !((chkNum(this.state.End5)===true) && (chkEng(this.state.End5)===false) && (chkKor(this.state.End5) ===false) && (chkSpc(this.state.End5)===false))||
+            !((chkNum(this.state.End55)===true) && (chkEng(this.state.End55)===false) && (chkKor(this.state.End55) ===false) && (chkSpc(this.state.End55)===false))||
+            !((chkNum(this.state.time5)===true) && (chkEng(this.state.time5)===false) && (chkKor(this.state.time5) ===false) && (chkSpc(this.state.time5)===false))){
+                Alert.alert('근로시간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('근로시간(금요일)_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Start6==null)||!(this.state.Start66==null)||!(this.state.End6==null)||!(this.state.End66==null)||!(this.state.time6==null)){
+            console.log('근로시간(토요일)')
+            if(!((chkNum(this.state.Start6)===true) && (chkEng(this.state.Start6)===false) && (chkKor(this.state.Start6) ===false) && (chkSpc(this.state.Start6)===false))||
+            !((chkNum(this.state.Start66)===true) && (chkEng(this.state.Start66)===false) && (chkKor(this.state.Start66) ===false) && (chkSpc(this.state.Start66)===false))||
+            !((chkNum(this.state.End6)===true) && (chkEng(this.state.End6)===false) && (chkKor(this.state.End6) ===false) && (chkSpc(this.state.End6)===false))||
+            !((chkNum(this.state.End66)===true) && (chkEng(this.state.End66)===false) && (chkKor(this.state.End66) ===false) && (chkSpc(this.state.End66)===false))||
+            !((chkNum(this.state.time6)===true) && (chkEng(this.state.time6)===false) && (chkKor(this.state.time6) ===false) && (chkSpc(this.state.time6)===false))){
+                Alert.alert('근로시간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('근로시간(토요일)_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Start7==null)||!(this.state.Start77==null)||!(this.state.End7==null)||!(this.state.End77==null)||!(this.state.time7==null)){
+            console.log('근로시간(일요일)')
+            if(!((chkNum(this.state.Start7)===true) && (chkEng(this.state.Start7)===false) && (chkKor(this.state.Start7) ===false) && (chkSpc(this.state.Start7)===false))||
+            !((chkNum(this.state.Start77)===true) && (chkEng(this.state.Start77)===false) && (chkKor(this.state.Start77) ===false) && (chkSpc(this.state.Start77)===false))||
+            !((chkNum(this.state.End7)===true) && (chkEng(this.state.End7)===false) && (chkKor(this.state.End7) ===false) && (chkSpc(this.state.End7)===false))||
+            !((chkNum(this.state.End77)===true) && (chkEng(this.state.End77)===false) && (chkKor(this.state.End77) ===false) && (chkSpc(this.state.End77)===false))||
+            !((chkNum(this.state.time7)===true) && (chkEng(this.state.time7)===false) && (chkKor(this.state.time7) ===false) && (chkSpc(this.state.time7)===false))){
+                Alert.alert('근로시간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('근로시간(일요일)_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus==null)){
+            if(!((chkNum(this.state.Bonus)===true) && (chkEng(this.state.Bonus)===false) && (chkKor(this.state.Bonus) ===false) && (chkSpc(this.state.Bonus)===false))){
+                Alert.alert('상여금의 숫자가 제대로 입력되었는지 확인해주세요.')  
+                flag=false
+            }else{
+                console.log('상여금_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus1==null)){
+            if(!((chkNum(this.state.Bonus1)===true) && (chkEng(this.state.Bonus1)===false) && (chkKor(this.state.Bonus1) ===false) && (chkSpc(this.state.Bonus1)===false))){
+                Alert.alert('기타급여의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('기타급여_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus2==null)){
+            if(!((chkNum(this.state.Bonus2)===true) && (chkEng(this.state.Bonus2)===false) && (chkKor(this.state.Bonus2) ===false) && (chkSpc(this.state.Bonus2)===false))){
+                Alert.alert('기타급여의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('기타급여_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus3==null)){
+            if(!((chkNum(this.state.Bonus3)===true) && (chkEng(this.state.Bonus3)===false) && (chkKor(this.state.Bonus3) ===false) && (chkSpc(this.state.Bonus3)===false))){
+                Alert.alert('기타급여의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('기타급여_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus4==null)){
+            if(!((chkNum(this.state.Bonus4)===true) && (chkEng(this.state.Bonus4)===false) && (chkKor(this.state.Bonus4) ===false) && (chkSpc(this.state.Bonus4)===false))){
+                Alert.alert('기타급여의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('기타급여_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.AdditionalWageRate==null)){
+            if(!((chkNum(this.state.AdditionalWageRate)===true) && (chkEng(this.state.AdditionalWageRate)===false) && (chkKor(this.state.AdditionalWageRate) ===false) && (chkSpc(this.state.AdditionalWageRate)===false))){
+                Alert.alert('초가근로 가산임금률의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('초가근로 가산임금률_숫자 제대로 확인됨')
+            }
+        }
+
+        if(flag){ 
+            Alert.alert('저장되었습니다.') 
+            this.fetchHtml();
+        }else{
+            //에러 
+        }
+        
     }
   }
+
 
   initfetchHtml = async(bangCode) => {
     axios.post('https://www.toojin.tk:3000/selectContractform2', {
@@ -91,21 +347,7 @@ class ContractformBScreen extends Component{
             'Accept': 'application/json'
         }
     })
-    /*await fetch('https://www.toojin.tk:3000/selectContractform2', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          bang:bangCode,
-          id: this.props.route.params.workername
-        }),
-      }).then(res => res.json())*/
       .then(res => {
-          //res.types1 = JSON.parse(res.types1);
-          //res.types2 = JSON.parse(res.types2);
-          //res.types3 = JSON.parse(res.types3);
           console.log(res.data[0]);
           console.log('--------------')
           
@@ -114,26 +356,34 @@ class ContractformBScreen extends Component{
                 
                 this.StatementScreen();
             }
-                if(JSON.parse(res.data[0].types1)[0].value == 1){
-                    res.data[0].types1 = "없음"
-                }
-                else{
-                    res.data[0].types1 = "있음"
-                }
                 
-                if(JSON.parse(res.data[0].types2)[0].value == 1){
-                    res.data[0].types2 = "없음"
-                }
-                else{
-                    res.data[0].types2 = "있음"
-                }
+            if(res.data[0].value1Index == 0){
+                res.data[0].types1 = "없음"
+            }
+            else{
+                res.data[0].types1 = "있음"
+            }
+            
+            if(res.data[0].value2Index == 0){
+                res.data[0].types2 = "없음"
+            }
+            else{
+                res.data[0].types2 = "있음"
+            }
 
-                if(JSON.parse(res.data[0].types3)[0].value == 1){
-                    res.data[0].types3 = "근로자에게 직접 지급"
-                }
-                else{
-                    res.data[0].types3 = "근로자 명의 예금통장에 입금"
-                }
+            if(JSON.parse(res.data[0].types3)[0].value == 1){
+                res.data[0].types3 = "근로자에게 직접 지급"
+            }
+            else{
+                res.data[0].types3 = "근로자 명의 예금통장에 입금"
+            }
+
+            if(res.data[0].Bonus == null) res.data[0].Bonus = 0
+            if(res.data[0].Bonus1 == null) res.data[0].Bonus1 = 0
+            if(res.data[0].Bonus2 == null) res.data[0].Bonus2 = 0
+            if(res.data[0].Bonus3 == null) res.data[0].Bonus3 = 0
+            if(res.data[0].Bonus4 == null) res.data[0].Bonus4 = 0
+            
                 let t4 = [0,0,0,0,0];
                 console.log('dddd')
                 let n = JSON.parse(res.data[0].value4);
@@ -145,34 +395,34 @@ class ContractformBScreen extends Component{
 
                 this.setState(res.data[0]);
                 this.setState({tableData: [
-                    [<TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.End1} onChangeText={(End1) => this.setState({End1})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.time1} onChangeText={(time1) => this.setState({time1})} placeholder='7' style={styles.tableTextStyle} />],
-                    
-                    [<TextInput value={this.state.Start2} onChangeText={(Start2) => this.setState({Start2})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.End2} onChangeText={(End2) => this.setState({End2})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.time2} onChangeText={(time2) => this.setState({time2})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start1==null||this.state.Start1=='0'?this.state.Start1='X':this.state.Start1}</Text>, 
+                  <Text style={styles.tableTextStyle}>{this.state.End1==null||this.state.End1=='0'?this.state.End1='X':this.state.End1}</Text>, 
+                  <Text style={styles.tableTextStyle}>{this.state.time1==null||this.state.time1=='0'?this.state.time1='X':this.state.time1}</Text>],
+                  
+                  [<Text style={styles.tableTextStyle}>{this.state.Start2==null||this.state.Start2=='0'?this.state.Start2='X':this.state.Start2}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End2==null||this.state.End2=='0'?this.state.End2='X':this.state.End2}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time2==null||this.state.time2=='0'?this.state.time2='X':this.state.time2}</Text>],
 
-                    [<TextInput value={this.state.Start3} onChangeText={(Start3) => this.setState({Start3})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.End3} onChangeText={(End3) => this.setState({End3})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.time3} onChangeText={(time3) => this.setState({time3})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start3==null||this.state.Start3=='0'?this.state.Start3='X':this.state.Start3}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End3==null||this.state.End3=='0'?this.state.End3='X':this.state.End3}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time3==null||this.state.time3=='0'?this.state.time3='X':this.state.time3}</Text>],
 
-                    [<TextInput value={this.state.Start4} onChangeText={(Start4) => this.setState({Start4})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.End4} onChangeText={(End4) => this.setState({End4})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.time4} onChangeText={(time4) => this.setState({time4})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start4==null||this.state.Start4=='0'?this.state.Start4='X':this.state.Start4}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End4==null||this.state.End4=='0'?this.state.End4='X':this.state.End4}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time4==null||this.state.time4=='0'?this.state.time4='X':this.state.time4}</Text>],
 
-                    [<TextInput value={this.state.Start5} onChangeText={(Start5) => this.setState({Start5})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.End5} onChangeText={(End5) => this.setState({End5})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.time5} onChangeText={(time5) => this.setState({time5})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start5==null||this.state.Start5=='0'?this.state.Start5='X':this.state.Start5}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End5==null||this.state.End5=='0'?this.state.End5='X':this.state.End5}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time5==null||this.state.time5=='0'?this.state.time5='X':this.state.time5}</Text>],
 
-                    [<TextInput value={this.state.Start6} onChangeText={(Start6) => this.setState({Start6})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.End6} onChangeText={(End6) => this.setState({End6})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.time6} onChangeText={(time6) => this.setState({time6})} placeholder='7' style={styles.tableTextStyle} />],
+                  [<Text style={styles.tableTextStyle}>{this.state.Start6==null||this.state.Start6=='0'?this.state.Start6='X':this.state.Start6}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End6==null||this.state.End6=='0'?this.state.End6='X':this.state.End6}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time6==null||this.state.time6=='0'?this.state.time6='X':this.state.time6}</Text>],
 
-                    [<TextInput value={this.state.Start7} onChangeText={(Start7) => this.setState({Start7})} placeholder='09:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.End7} onChangeText={(End7) => this.setState({End7})} placeholder='15:00' style={styles.tableTextStyle} />, 
-                    <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='7' style={styles.tableTextStyle} />]
-                ]})
+                  [<Text style={styles.tableTextStyle}>{this.state.Start7==null||this.state.Start7=='0'?this.state.Start7='X':this.state.Start7}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.End7==null||this.state.End7=='0'?this.state.End7='X':this.state.End7}</Text>, 
+                    <Text style={styles.tableTextStyle}>{this.state.time7==null||this.state.time7=='0'?this.state.time7='X':this.state.time7}</Text>]
+              ]})
             }
         })     
     }
@@ -192,25 +442,25 @@ fetchHtml = async(a) => {
                 ContractYear:this.state.ContractYear,
                 Employer:this.state.Employer,
                 Employee:this.state.Employee,
-                End1:this.state.End1
-                ,End2:this.state.End2
-                ,End3:this.state.End3
-                ,End4:this.state.End4
-                ,End5:this.state.End5
-                ,End6:this.state.End6
-                ,End7:this.state.End7,
+                End1:(this.state.End1!=undefined?this.state.End1+":"+this.state.End11:undefined)
+                ,End2:(this.state.End2!=undefined?this.state.End2+":"+this.state.End22:undefined)
+                ,End3:(this.state.End3!=undefined?this.state.End3+":"+this.state.End33:undefined)
+                ,End4:(this.state.End4!=undefined?this.state.End4+":"+this.state.End44:undefined)
+                ,End5:(this.state.End5!=undefined?this.state.End5+":"+this.state.End55:undefined)
+                ,End6:(this.state.End6!=undefined?this.state.End6+":"+this.state.End66:undefined)
+                ,End7:(this.state.Start7!=undefined?this.state.End7+":"+this.state.End77:undefined),
                 EndDay:this.state.EndDay
                 , EndMonth:this.state.EndMonth
                 , EndYear:this.state.EndYear
                 ,Salary:this.state.Salary
                 ,SalaryDay:this.state.SalaryDay,
-                Start1:this.state.Start1
-                ,Start2:this.state.Start2
-                ,Start3:this.state.Start3
-                ,Start4:this.state.Start4
-                ,Start5:this.state.Start5
-                ,Start6:this.state.Start6
-                ,Start7:this.state.Start7,
+                Start1:(this.state.Start1!=undefined?this.state.Start1+":"+this.state.Start11:undefined)
+                ,Start2:(this.state.Start2!=undefined?this.state.Start2+":"+this.state.Start22:undefined)
+                ,Start3:(this.state.Start3!=undefined?this.state.Start3+":"+this.state.Start33:undefined)
+                ,Start4:(this.state.Start4!=undefined?this.state.Start4+":"+this.state.Start44:undefined)
+                ,Start5:(this.state.Start5!=undefined?this.state.Start5+":"+this.state.Start55:undefined)
+                ,Start6:(this.state.Start6!=undefined?this.state.Start6+":"+this.state.Start66:undefined)
+                ,Start7:(this.state.Start7!=undefined?this.state.Start7+":"+this.state.Start77:undefined),
                 StartDay:this.state.StartDay
                 ,StartMonth:this.state.StartMonth
                 ,StartYear:this.state.StartYear
@@ -243,18 +493,6 @@ fetchHtml = async(a) => {
         'Content-Type': 'application/json',
         'Accept': 'application/json'}
     })
-    /*await fetch('https://www.toojin.tk:3000/writeContractform2', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(
-            {
-                
-            }
-        ),
-      }).then(res => res.json())*/
       .then(res => {
         this.props.navigation.goBack();
       })     
@@ -311,14 +549,6 @@ fetchHtml = async(a) => {
                   <form>
                       <span>단기간근로자 표준근로계약서</span>
                       <hr><br>
-                      <svg viewBox = "0 0 500 500" style="left:210px; top:1480px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                      <polyline points="${String(sign)}"
-                      style="fill:none;stroke:black;stroke-width:3" />
-                      </svg>
-                      <svg viewBox = "0 0 500 500" style="left:210px; top:1330px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                      <polyline points="${String(bsign)}"
-                      style="fill:none;stroke:black;stroke-width:3" />
-                      </svg>
                       <label class="text_underline">${this.state.Employer}</label>
                       <label>(이하 "사업주"라 함) 과(와)</label>
                       <label class="text_underline">${this.state.Employee}</label>
@@ -332,11 +562,11 @@ fetchHtml = async(a) => {
                       <label class="text_underline">${this.state.StartDay}</label>
                       <label>일부터</label>
           
-                      <label class="text_underline">${this.state.EndYear}</label>
+                      <label class="text_underline">${this.state.EndYear==null?'-':this.state.EndYear}</label>
                       <label>년</label>
-                      <label class="text_underline">${this.state.EndMonth}</label>
+                      <label class="text_underline">${this.state.EndMonth==null?'-':this.state.EndMonth}</label>
                       <label>월</label>
-                      <label class="text_underline">${this.state.EndDay}</label>
+                      <label class="text_underline">${this.state.EndDay==null?'-':this.state.EndDay}</label>
                       <label>일까지</label><br>
                       
                       <label>2. 근 무 장 소 : </label>
@@ -421,8 +651,11 @@ fetchHtml = async(a) => {
                       <label class="margin_left2">주    소 : </label>
                       <label>${this.state.BusinessAddress}</label><br>
                       <label class="margin_left2">대 표 자 : </label>
-                      <label>${this.state.BusinessOwner1}</label>
-                      <label class="margin_left2">(서명)</label><br><br>
+                      <label>${this.state.BusinessOwner1}</label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                      <polyline points="${String(bsign)}"
+                      style="fill:none;stroke:black;stroke-width:3" />
+                      </svg>
+                      <label class="margin_left2">(서명)</label><br><br><br>
       
                       <label>(근로자)</label>
                       <label>주 소 : </label>
@@ -430,7 +663,10 @@ fetchHtml = async(a) => {
                       <label class="margin_left2">연 락 처 : </label>
                       <label>${this.state.EmployeePhone}</label><br>
                       <label class="margin_left2">성    명 : </label>
-                      <label>${this.state.EmployeeName}</label>
+                      <label>${this.state.EmployeeName}</label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                      <polyline points="${String(sign)}"
+                      style="fill:none;stroke:black;stroke-width:3" />
+                      </svg>
                       <label class="margin_left2">(서명)</label>
                   </form>
               </body>
@@ -670,6 +906,7 @@ fetchHtml = async(a) => {
             <View style={{ width:'100%', height:hp('70%'), }}>
                 <WebView
                     originWhitelist={['*']}
+                    automaticallyAdjustContentInsets={false}
                     source={{ html: this.state.htmlContent }}
                 />
             </View>
@@ -722,7 +959,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput3.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2020'}
-                style={styles.textinputYearStyle1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputYearStyle2}/>
             <Text style={styles.textStyle}>년</Text>
             <TextInput
                 value={this.state.StartMonth} 
@@ -731,7 +969,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput4.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'10'}
-                style={styles.textinputDayStyle1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle2}/>
             <Text style={styles.textStyle}>월</Text>
             <TextInput
                 value={this.state.StartDay} 
@@ -740,7 +979,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput5.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'20'}
-                style={styles.textinputDayStyle1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle2}/>
             <Text style={styles.textStyle}>일부터</Text>
             </View>
             <View style={styles.rowPeriod2}>
@@ -751,7 +991,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput6.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2022'}
-                style={styles.textinputYearStyle1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputYearStyle2}/>
             <Text style={styles.textStyle}>년</Text>
             <TextInput
                 value={this.state.EndMonth} 
@@ -760,7 +1001,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput7.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'12'}
-                style={styles.textinputDayStyle1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle2}/>
             <Text style={styles.textStyle}>월</Text>
             <TextInput
                 value={this.state.EndDay} 
@@ -769,7 +1011,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput8.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'31'}
-                style={styles.textinputDayStyle1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle2}/>
             <Text style={styles.textStyle}>일까지</Text>
             </View>
         </View>
@@ -827,6 +1070,7 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput20.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'8,720'}
+                keyboardType={"number-pad"}
                 style={styles.textinputName1}/>
             <Text style={styles.textStyle}>원</Text>
         </View>
@@ -859,11 +1103,12 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput21.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
+                keyboardType={"number-pad"}
                 style={styles.textinputName1}/>
             <Text style={styles.textStyle}>원</Text>
         </View>
         </View>
-        
+        <View style={{marginTop:hp('1%')}}>
         <View style={styles.rowPeriod}>
             <Text style={styles.textStyle}>-기타급여(제수당 등) : </Text>
             <RadioForm
@@ -892,7 +1137,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput22.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName1}/>
             <Text style={styles.textStyle}>원, </Text>
             <Text style={{marginLeft:wp('5%')}}></Text>
             <TextInput
@@ -902,7 +1148,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput23.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName1}/>
             <Text style={styles.textStyle}>원, </Text>
         </View>
                 <View style={styles.rowPeriod2}>
@@ -913,7 +1160,8 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput24.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName1}/>
             <Text style={styles.textStyle}>원, </Text>
             <Text style={{marginLeft:wp('5%')}}></Text>
             <TextInput
@@ -923,10 +1171,13 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput25.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName1}/>
             <Text style={styles.textStyle}>원, </Text>
         </View>
-        
+        </View>
+
+        <View style={{marginTop:hp('1%')}}>
         <View style={styles.rowPeriod}>
             <Text style={styles.textStyle}>-초과근로에 대한 가산임금률 : </Text>
             <TextInput
@@ -936,9 +1187,12 @@ fetchHtml = async(a) => {
                 onSubmitEditing={() => { this.TextInput26.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'10'}
-                style={styles.textinputDayStyle}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle2}/>
             <Text style={styles.textStyle}>%</Text>
         </View>
+        </View>
+        
         <View>
             <View style={styles.rowPeriod}>
                 <Text style={styles.textStyle}>-임금지급일 : 매월</Text>
@@ -947,7 +1201,8 @@ fetchHtml = async(a) => {
                 onChangeText={(SalaryDay) => this.setState({SalaryDay})}
                 ref={(input) => { this.TextInput26 = input; }}
                 placeholder={'10'}
-                style={styles.textinputDayStyle}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle2}/>
             <Text style={styles.textStyle}>일</Text>
             </View>
             <View style={{marginLeft:wp('30%')}}>
@@ -976,7 +1231,6 @@ fetchHtml = async(a) => {
         </View>
         </View>
 
-        
         <View style={styles.textArea}>
             <Text style={styles.textTitleStyle}>6. 연차유급휴가</Text> 
             <Text style={styles.textLineStyle}> - 통상근로자의 근로시간에 비례하여 연차유급휴가 부여함.</Text>
@@ -1045,7 +1299,8 @@ fetchHtml = async(a) => {
             onSubmitEditing={() => { this.TextInput30.focus(); }}
             blurOnSubmit={false}
             placeholder={'2020'}
-            style={styles.textinputYearStyle1}/>
+            keyboardType={"number-pad"}
+            style={styles.textinputYearStyle2}/>
           <Text style={styles.textTitleStyle}>년</Text>
           <TextInput
             value={this.state.ContractMonth} 
@@ -1054,7 +1309,8 @@ fetchHtml = async(a) => {
             onSubmitEditing={() => { this.TextInput31.focus(); }}
             blurOnSubmit={false}
             placeholder={'11'}
-            style={styles.textinputDayStyle1}/>
+            keyboardType={"number-pad"}
+            style={styles.textinputDayStyle2}/>
           <Text style={styles.textTitleStyle}>월</Text>  
           <TextInput
             value={this.state.ContractDay} 
@@ -1063,7 +1319,8 @@ fetchHtml = async(a) => {
             onSubmitEditing={() => { this.TextInput32.focus(); }}
             blurOnSubmit={false}
             placeholder={'20'}
-            style={styles.textinputDayStyle1}/>
+            keyboardType={"number-pad"}
+            style={styles.textinputDayStyle2}/>
           <Text style={styles.textTitleStyle}>일</Text>      
         </View>
       
@@ -1150,6 +1407,7 @@ fetchHtml = async(a) => {
 }
 
 export default ContractformBScreen;
+
 const styles = StyleSheet.create({
     container: { 
         padding:wp('3%'), 
@@ -1169,6 +1427,11 @@ const styles = StyleSheet.create({
         marginTop:hp('2%'),
         marginBottom:hp('2%'),
         textAlign:"center"
+    },
+    textArea:{
+        marginTop:hp('1.3%'),
+        marginBottom:hp('1.5%'),
+        marginLeft:wp('1.5%'),
     },
     textTitleStyle11:{
         fontSize:wp('4.8%'),
@@ -1199,14 +1462,14 @@ const styles = StyleSheet.create({
     textStyle:{
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
-        marginTop:wp('1.7%'),
+        marginTop:hp('1%'),
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
     },  
     textTitleStyle:{
         fontSize:wp('4.8%'),
         fontFamily:"NanumSquareB",
-        marginTop:wp('1%'),
+        marginTop:hp('1%'),
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
     },
@@ -1231,6 +1494,15 @@ const styles = StyleSheet.create({
         marginLeft:wp('1.5%'),
         width:wp('11%')
     },
+    textinputYearStyle2:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        width:wp('11%'),
+        marginRight:wp('1%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
+    },
     textinputDayStyle:{
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
@@ -1244,6 +1516,15 @@ const styles = StyleSheet.create({
         marginLeft:wp('2%'),
         width:wp('7%'),
     },
+    textinputDayStyle2:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('2%'),
+        width:wp('7%'),
+        marginRight:wp('1%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
+    },
     textinputName:{
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
@@ -1255,7 +1536,10 @@ const styles = StyleSheet.create({
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
-        width:wp('18%')
+        width:wp('16%'),
+        marginRight:wp('2%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
     },
     textinputName_1:{
         width:wp('25%'),
@@ -1269,8 +1553,10 @@ const styles = StyleSheet.create({
         width:wp('25%'),
         fontSize:wp('4.8%'),
         fontFamily:"NanumSquareB",
-        marginBottom:hp('2%'),
+        marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
     },
     textinputStyle:{
         fontSize:wp('4.2%'),
@@ -1284,6 +1570,9 @@ const styles = StyleSheet.create({
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         width:wp('40%'),
+        marginRight:wp('1%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
     },
     rowPeriod:{
         flexDirection:'row',
@@ -1333,6 +1622,7 @@ const styles = StyleSheet.create({
     },
     tableArea:{
         width:wp('90%'), 
+        marginBottom:hp('2%')
     },
     wrapper: {
         flexDirection: 'row'
@@ -1357,5 +1647,19 @@ const styles = StyleSheet.create({
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
         textAlign:"center",
-    }
+    },
+    tableTextStyle1:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        textAlign:"center",
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
+    },
+    tabledatatextStyle:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginRight:wp('1%'),
+        marginLeft:wp('1%'),
+        marginTop:hp('1%')
+    },
 });

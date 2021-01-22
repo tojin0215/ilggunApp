@@ -1,6 +1,6 @@
 const axios = require('axios');
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert, ImageBackground, TouchableOpacity, Image} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert, ImageBackground, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import CheckboxGroup from 'react-native-checkbox-group'
 import { AsyncStorage } from 'react-native';
@@ -21,7 +21,7 @@ class ContractformAScreen extends React.Component{
       types2: [{label: '없음   ', value: 0}, {label: '있음', value: 1}], 
       types3: [{label: '근로자에게 직접지급   ', value: 0}, {label: '근로자 명의 예금통장에 입금', value: 1}], 
       value1: 0, value1Index:0, value2: 0, value2Index:0, value3: 0, value3Index:0,value4: 0,
-      Employee: this.props.route.params.workername, id:this.props.route.params.workername, bang:'', types4:[0,0,0,0,0],
+      Employee: '', id:this.props.route.params.workername, bang:'', types4:[0,0,0,0,0],
 
     };
     
@@ -33,6 +33,23 @@ class ContractformAScreen extends React.Component{
   }
 
   handleSubmit(){
+    const chkNum = (str)=> {
+        var pattern_num = /[0-9]/;
+        return pattern_num.test(str) ? true : false;
+    };
+    const chkEng = (str)=> {
+        var pattern_eng = /[a-zA-Z]/;
+        return pattern_eng.test(str) ? true : false;
+    };
+    const chkKor = (str)=> {
+        var pattern_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        return pattern_kor.test(str) ? true : false;
+    };
+    const chkSpc = (str)=> {
+        var pattern_spc = /[-~!@#$%^&*()_+|<>?:{}.,/]/;
+        return pattern_spc.test(str) ? true : false;
+    };
+
     if(this.state.Employer == null||this.state.Employee ==null
         ||this.state.StartYear==null||this.state.StartMonth==null||this.state.StartDay==null
         ||this.state.WorkPlace==null||this.state.WorkReference==null||this.state.StartTimeHour==null
@@ -40,13 +57,117 @@ class ContractformAScreen extends React.Component{
         ||this.state.WorkingDays==null||this.state.Holiday==null||this.state.Salary==null
         ||this.state.SalaryDay==null||this.state.ContractYear==null||this.state.ContractMonth==null
         ||this.state.ContractDay==null||this.state.BusinessName==null||this.state.BusinessAddress==null
-        ||this.state.BusinessOwner1==null||this.state.BusinessPhone==null){
+        ||this.state.BusinessOwner1==null||/*this.state.EmployeeAddress==null||this.state.EmployeePhone==null
+        ||this.state.EmployeeName==null||*/this.state.BusinessPhone==null){
         Alert.alert('빈칸을 채워주세요.') 
+    } else if(!((chkNum(this.state.StartYear)===true) && (chkEng(this.state.StartYear)===false) && (chkKor(this.state.StartYear) ===false) && (chkSpc(this.state.StartYear)===false))||
+        !((chkNum(this.state.StartMonth)===true) && (chkEng(this.state.StartMonth)===false) && (chkKor(this.state.StartMonth) ===false) && (chkSpc(this.state.StartMonth)===false))||
+        !((chkNum(this.state.StartDay)===true) && (chkEng(this.state.StartDay)===false) && (chkKor(this.state.StartDay) ===false) && (chkSpc(this.state.StartDay)===false))||
+        !((chkNum(this.state.StartTimeHour)===true) && (chkEng(this.state.StartTimeHour)===false) && (chkKor(this.state.StartTimeHour) ===false) && (chkSpc(this.state.StartTimeHour)===false))||
+        !((chkNum(this.state.StartTimeHMin)===true) && (chkEng(this.state.StartTimeHMin)===false) && (chkKor(this.state.StartTimeHMin) ===false) && (chkSpc(this.state.StartTimeHMin)===false))||
+        !((chkNum(this.state.EndTimeHour)===true) && (chkEng(this.state.EndTimeHour)===false) && (chkKor(this.state.EndTimeHour) ===false) && (chkSpc(this.state.EndTimeHour)===false))||
+        !((chkNum(this.state.EndTimeHMin)===true) && (chkEng(this.state.EndTimeHMin)===false) && (chkKor(this.state.EndTimeHMin) ===false) && (chkSpc(this.state.EndTimeHMin)===false))||
+        !((chkNum(this.state.WorkingDays)===true) && (chkEng(this.state.WorkingDays)===false) && (chkKor(this.state.WorkingDays) ===false) && (chkSpc(this.state.WorkingDays)===false))||
+        !((chkNum(this.state.Holiday)===true) && (chkEng(this.state.Holiday)===false) && (chkKor(this.state.Holiday) ===false) && (chkSpc(this.state.Holiday)===false))||
+        !((chkNum(this.state.Salary)===true) && (chkEng(this.state.Salary)===false) && (chkKor(this.state.Salary) ===false) && (chkSpc(this.state.Salary)===false))||
+        !((chkNum(this.state.SalaryDay)===true) && (chkEng(this.state.SalaryDay)===false) && (chkKor(this.state.SalaryDay) ===false) && (chkSpc(this.state.SalaryDay)===false))||
+        !((chkNum(this.state.ContractYear)===true) && (chkEng(this.state.ContractYear)===false) && (chkKor(this.state.ContractYear) ===false) && (chkSpc(this.state.ContractYear)===false))||
+        !((chkNum(this.state.ContractMonth)===true) && (chkEng(this.state.ContractMonth)===false) && (chkKor(this.state.ContractMonth) ===false) && (chkSpc(this.state.ContractMonth)===false))||
+        !((chkNum(this.state.ContractDay)===true) && (chkEng(this.state.ContractDay)===false) && (chkKor(this.state.ContractDay) ===false) && (chkSpc(this.state.ContractDay)===false))
+        ){
+        Alert.alert('계약기간, 근로시간, 임금, 계약날짜의 숫자가 제대로 입력되었는지 확인해주세요.') 
     } else{
-        this.state.type=2;
-        console.log(this.state);
-        this.fetchHtml();
-        Alert.alert('저장되었습니다.')    
+        var flag = true
+        if(!(this.state.EndYear==null)||!(this.state.EndMonth==null)||!(this.state.EndDay==null)){
+            console.log('근로기간 확인')
+            if(!((chkNum(this.state.EndYear)===true) && (chkEng(this.state.EndYear)===false) && (chkKor(this.state.EndYear) ===false) && (chkSpc(this.state.EndYear)===false))||
+            !((chkNum(this.state.EndMonth)===true) && (chkEng(this.state.EndMonth)===false) && (chkKor(this.state.EndMonth) ===false) && (chkSpc(this.state.EndMonth)===false))||
+            !((chkNum(this.state.EndDay)===true) && (chkEng(this.state.EndDay)===false) && (chkKor(this.state.EndDay) ===false) && (chkSpc(this.state.EndDay)===false))){
+                Alert.alert('계약기간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                console.log('근로기간_숫자 제대로 입력안됨')
+                flag=false
+            }else{
+                console.log('근로기간_숫자 제대로 확인됨')
+            }            
+        } 
+
+        if(!(this.state.BreakTimeStartHour==null)||!(this.state.BreakTimeStartMin==null)||!(this.state.BreakTimeEndHour==null)||!(this.state.BreakTimeEndMin==null)){
+            console.log('근로기간 확인')
+            if(!((chkNum(this.state.BreakTimeStartHour)===true) && (chkEng(this.state.BreakTimeStartHour)===false) && (chkKor(this.state.BreakTimeStartHour) ===false) && (chkSpc(this.state.BreakTimeStartHour)===false))||
+            !((chkNum(this.state.BreakTimeStartMin)===true) && (chkEng(this.state.BreakTimeStartMin)===false) && (chkKor(this.state.BreakTimeStartMin) ===false) && (chkSpc(this.state.BreakTimeStartMin)===false))||
+            !((chkNum(this.state.BreakTimeEndHour)===true) && (chkEng(this.state.BreakTimeEndHour)===false) && (chkKor(this.state.BreakTimeEndHour) ===false) && (chkSpc(this.state.BreakTimeEndHour)===false))||
+            !((chkNum(this.state.BreakTimeEndMin)===true) && (chkEng(this.state.BreakTimeEndMin)===false) && (chkKor(this.state.BreakTimeEndMin) ===false) && (chkSpc(this.state.BreakTimeEndMin)===false))){
+                Alert.alert('휴게시간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                console.log('휴게시간_숫자 제대로 입력안됨')
+                flag=false
+            }else{
+                console.log('휴게시간_숫자 제대로 확인됨')
+            }            
+        } 
+
+        if(!(this.state.Bonus==null)){
+            if(!((chkNum(this.state.Bonus)===true) && (chkEng(this.state.Bonus)===false) && (chkKor(this.state.Bonus) ===false) && (chkSpc(this.state.Bonus)===false))){
+                Alert.alert('상여금의 숫자가 제대로 입력되었는지 확인해주세요.')  
+                flag=false
+            }else{
+                console.log('상여금_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus1==null)){
+            if(!((chkNum(this.state.Bonus1)===true) && (chkEng(this.state.Bonus1)===false) && (chkKor(this.state.Bonus1) ===false) && (chkSpc(this.state.Bonus1)===false))){
+                Alert.alert('기타급여의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('기타급여_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus2==null)){
+            if(!((chkNum(this.state.Bonus2)===true) && (chkEng(this.state.Bonus2)===false) && (chkKor(this.state.Bonus2) ===false) && (chkSpc(this.state.Bonus2)===false))){
+                Alert.alert('기타급여의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('기타급여_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus3==null)){
+            if(!((chkNum(this.state.Bonus3)===true) && (chkEng(this.state.Bonus3)===false) && (chkKor(this.state.Bonus3) ===false) && (chkSpc(this.state.Bonus3)===false))){
+                Alert.alert('기타급여의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('기타급여_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.Bonus4==null)){
+            if(!((chkNum(this.state.Bonus4)===true) && (chkEng(this.state.Bonus4)===false) && (chkKor(this.state.Bonus4) ===false) && (chkSpc(this.state.Bonus4)===false))){
+                Alert.alert('기타급여의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('기타급여_숫자 제대로 확인됨')
+            }
+        }
+
+        if(!(this.state.AdditionalWageRate==null)){
+            if(!((chkNum(this.state.AdditionalWageRate)===true) && (chkEng(this.state.AdditionalWageRate)===false) && (chkKor(this.state.AdditionalWageRate) ===false) && (chkSpc(this.state.AdditionalWageRate)===false))){
+                Alert.alert('초가근로 가산임금률의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('초가근로 가산임금률_숫자 제대로 확인됨')
+            }
+        }
+
+        if(flag){ 
+            this.state.type=2;
+            console.log(this.state);
+            this.fetchHtml();
+            Alert.alert('저장되었습니다.')   
+        }else{
+            //에러 
+        }
+        
     }
   }
   initfetchHtml = async(bangCode) => {
@@ -82,14 +203,15 @@ class ContractformAScreen extends React.Component{
                    
                 this.StatementScreen();
           }
-            if(JSON.parse(res.data[0].types1)[0].value == 1){
+          console.log(JSON.parse(res.data[0].types1)[0]);
+            if(res.data[0].value1Index == 0){
                 res.data[0].types1 = "없음"
             }
             else{
                 res.data[0].types1 = "있음"
             }
             
-            if(JSON.parse(res.data[0].types2)[0].value == 1){
+            if(res.data[0].value2Index == 0){
                 res.data[0].types2 = "없음"
             }
             else{
@@ -102,6 +224,13 @@ class ContractformAScreen extends React.Component{
             else{
                 res.data[0].types3 = "근로자 명의 예금통장에 입금"
             }
+
+            if(res.data[0].Bonus == null) res.data[0].Bonus = 0
+            if(res.data[0].Bonus1 == null) res.data[0].Bonus1 = 0
+            if(res.data[0].Bonus2 == null) res.data[0].Bonus2 = 0
+            if(res.data[0].Bonus3 == null) res.data[0].Bonus3 = 0
+            if(res.data[0].Bonus4 == null) res.data[0].Bonus4 = 0
+
             let t4 = [0,0,0,0,0];
             console.log('dddd')
             let n = JSON.parse(res.data[0].value4);
@@ -233,16 +362,6 @@ class ContractformAScreen extends React.Component{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
       })
-      /*fetch('https://www.toojin.tk:3000/selectSign', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          //id : idid
-        }),
-      }).then(res => res.json())*/
       .then(async(res) => {
           sign = res.data[0].sign;
           bsign = res.data[1].sign;
@@ -269,14 +388,6 @@ class ContractformAScreen extends React.Component{
             <form>
             
                 <hr><br>
-                <svg viewBox = "0 0 500 500" style="left:190px; top:1150px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="${String(sign)}"
-                style="fill:none;stroke:black;stroke-width:3" />
-                </svg>
-                <svg viewBox = "0 0 500 500" style="left:190px; top:1000px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                      <polyline points="${String(bsign)}"
-                      style="fill:none;stroke:black;stroke-width:3" />
-                      </svg>
                 <label class="text_underline">${this.state.Employer}</label>
                 <label>(이하 "사업주"라 함) 과(와)</label>
                 <label class="text_underline">${this.state.Employee}</label>
@@ -290,11 +401,11 @@ class ContractformAScreen extends React.Component{
                 <label class="text_underline">${this.state.StartDay}</label>
                 <label>일부터</label>
     
-                <label class="text_underline">${this.state.EndYear}</label>
+                <label class="text_underline">${this.state.EndYear==null?'-':this.state.EndYear}</label>
                 <label>년</label>
-                <label class="text_underline">${this.state.EndMonth}</label>
+                <label class="text_underline">${this.state.EndMonth==null?'-':this.state.EndMonth}</label>
                 <label>월</label>
-                <label class="text_underline">${this.state.EndDay}</label>
+                <label class="text_underline">${this.state.EndDay==null?'-':this.state.EndDay}</label>
                 <label>일까지</label><br>
                 
                 <label>2. 근 무 장 소 : </label>
@@ -388,8 +499,11 @@ class ContractformAScreen extends React.Component{
                 <label class="margin_left2">주    소 : </label>
                 <label>${this.state.BusinessAddress}</label><br>
                 <label class="margin_left2">대 표 자 : </label>
-                <label>${this.state.BusinessOwner1}</label>
-                <label class="margin_left2">(서명)</label><br><br>
+                <label>${this.state.BusinessOwner1}</label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="${String(bsign)}"
+                style="fill:none;stroke:black;stroke-width:3" />
+                </svg>
+                <label class="margin_left2">(서명)</label><br><br><br>
     
                 <label>(근로자)</label>
                 <label>주 소 : </label>
@@ -397,7 +511,10 @@ class ContractformAScreen extends React.Component{
                 <label class="margin_left2">연 락 처 : </label>
                 <label>${this.state.EmployeePhone}</label><br>
                 <label class="margin_left2">성    명 : </label>
-                <label>${this.state.EmployeeName}</label>
+                <label>${this.state.EmployeeName}  </label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px; " xmlns="http://www.w3.org/2000/svg">
+                <polyline points="${String(sign)}"
+                style="fill:none;stroke:black;stroke-width:3" />
+                </svg>
                 <label class="margin_left2">(서명)</label>
             </form>
     
@@ -422,6 +539,7 @@ class ContractformAScreen extends React.Component{
       };
   render() {
     return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.image}>
         <View style={styles.container}>
         <View style={{marginTop:hp('3%')}}>
@@ -655,6 +773,7 @@ class ContractformAScreen extends React.Component{
           <View style={{ width:'100%', height:hp('70%'), }}>
             <WebView
                 originWhitelist={['*']}
+                automaticallyAdjustContentInsets={false}
                 source={{ html: this.state.htmlContent }}
             />
             </View>
@@ -668,8 +787,10 @@ class ContractformAScreen extends React.Component{
             </>
 
           :
-        <ScrollView>
+        <ScrollView style={{flex: 1}}>
+            <TouchableOpacity>
         <View style={styles.textArea}>
+
             <View style={styles.textAreaRow}>
             <TextInput
                 value={this.state.Employer} 
@@ -678,7 +799,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput1.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'사업주이름'}
-                style={styles.textinputName}/>
+                style={styles.textinputName1_1}/>
                 <Text style={styles.textTitleStyle}>(이하 "사업주"라 함) 과(와)</Text>
                 </View>
                 <View style={styles.textAreaRow}>
@@ -689,7 +810,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput2.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'근로자이름'}
-                style={styles.textinputName}/>
+                style={styles.textinputName1_1}/>
             <Text style={styles.textTitleStyle}>(이하 "근로자"라 함) 은</Text>
             </View>
             <View style={{marginLeft:wp('3%'),}}>
@@ -707,6 +828,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput3.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2020'}
+                keyboardType={"number-pad"}
                 style={styles.textinputYearStyle}/>
             <Text style={styles.textStyle}>년</Text>
             <TextInput
@@ -716,6 +838,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput4.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'10'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>월</Text>
             <TextInput
@@ -725,6 +848,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput5.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'20'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>일부터</Text>
             </View>
@@ -737,6 +861,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput6.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2022'}
+                keyboardType={"number-pad"}
                 style={styles.textinputYearStyle}/>
             <Text style={styles.textStyle}>년</Text>
             <TextInput
@@ -746,6 +871,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput7.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'12'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>월</Text>
             <TextInput
@@ -755,6 +881,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput8.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'31'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>일까지</Text>
             </View>
@@ -801,6 +928,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput11.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'9'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>시</Text>
             <TextInput
@@ -810,6 +938,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput12.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'00'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
                 <Text style={styles.textStyle}>분 ~ </Text>
             <TextInput
@@ -819,6 +948,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput13.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'18'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
                 <Text style={styles.textStyle}>시</Text>
             <TextInput
@@ -828,6 +958,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput14.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'00'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>분 </Text>
         </View>
@@ -840,6 +971,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput15.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'12'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>시</Text>
             <TextInput
@@ -849,6 +981,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput16.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'00'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>분 ~ </Text>
             <TextInput
@@ -858,6 +991,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput17.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'13'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
                 <Text style={styles.textStyle}>시</Text>
             <TextInput
@@ -867,6 +1001,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput18.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'00'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>분 </Text>
         </View>
@@ -884,6 +1019,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput19.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'5'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
             <Text style={styles.textStyle}>일 근무</Text>
             </View>
@@ -896,6 +1032,7 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput20.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2'}
+                keyboardType={"number-pad"}
                 style={styles.textinputDayStyle}/>
                 <Text style={styles.textStyle}>일 </Text>
             </View>
@@ -913,7 +1050,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput21.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'2000000'}
-                style={styles.textinputName1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName2}/>
             <Text style={styles.textStyle}>원</Text>
         </View>
         <View style={{marginTop:hp('0.5%')}}>
@@ -945,10 +1083,12 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput22.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName2}/>
             <Text style={styles.textStyle}>원</Text>
         </View>
         </View>
+        <View style={{marginTop:hp('1%')}}>
         <View style={styles.rowPeriod}>
             <Text style={styles.textStyle}>-기타급여(제수당 등) : </Text>
             <RadioForm
@@ -968,7 +1108,8 @@ class ContractformAScreen extends React.Component{
                     })
                 }}
             />
-        </View>
+         </View>
+          </View>
         <View style={styles.rowPeriod2}>
             <TextInput
                 value={this.state.Bonus1} 
@@ -977,7 +1118,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput23.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName2}/>
             <Text style={styles.textStyle}>원, </Text>
             <Text style={{marginLeft:wp('5%')}}></Text>
             <TextInput
@@ -987,7 +1129,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput24.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName2}/>
             <Text style={styles.textStyle}>원</Text>
         </View>
         <View style={styles.rowPeriod2}>
@@ -998,7 +1141,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput25.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName2}/>
             <Text style={styles.textStyle}>원, </Text>
             <Text style={{marginLeft:wp('5%')}}></Text>
             <TextInput
@@ -1008,7 +1152,8 @@ class ContractformAScreen extends React.Component{
                 onSubmitEditing={() => { this.TextInput26.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'100000'}
-                style={styles.textinputName1}/>
+                keyboardType={"number-pad"}
+                style={styles.textinputName2}/>
             <Text style={styles.textStyle}>원</Text>
         </View>
 
@@ -1020,6 +1165,7 @@ class ContractformAScreen extends React.Component{
                     onChangeText={(SalaryDay) => this.setState({SalaryDay})}
                     ref={(input) => { this.TextInput26 = input; }}
                     placeholder={'10'}
+                    keyboardType={"number-pad"}
                     style={styles.textinputDayStyle}/>
                 <Text style={styles.textStyle}>일</Text>
             </View>
@@ -1119,6 +1265,7 @@ class ContractformAScreen extends React.Component{
             onSubmitEditing={() => { this.TextInput30.focus(); }}
             blurOnSubmit={false}
             placeholder={'2020'}
+            keyboardType={"number-pad"}
             style={styles.textinputYearStyle}/>
           <Text style={styles.textTitleStyle}>년</Text>
           <TextInput
@@ -1128,6 +1275,7 @@ class ContractformAScreen extends React.Component{
             onSubmitEditing={() => { this.TextInput31.focus(); }}
             blurOnSubmit={false}
             placeholder={'11'}
+            keyboardType={"number-pad"}
             style={styles.textinputDayStyle}/>
           <Text style={styles.textTitleStyle}>월</Text>
           <TextInput
@@ -1137,6 +1285,7 @@ class ContractformAScreen extends React.Component{
             onSubmitEditing={() => { this.TextInput32.focus(); }}
             blurOnSubmit={false}
             placeholder={'20'}
+            keyboardType={"number-pad"}
             style={styles.textinputDayStyle}/>
           <Text style={styles.textTitleStyle}>일</Text>  
         </View>
@@ -1215,10 +1364,12 @@ class ContractformAScreen extends React.Component{
           </TouchableOpacity>
         </View>
         <View style={{marginBottom:hp('5%')}}><Text></Text></View>
+        </TouchableOpacity>
       </ScrollView>
     }
       </View>
       </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
@@ -1256,7 +1407,7 @@ const styles = StyleSheet.create({
     textStyle:{
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
-        marginTop:wp('1.7%'),
+        marginTop:hp('1%'),
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
     },  
@@ -1274,7 +1425,7 @@ const styles = StyleSheet.create({
     textTitleStyle:{
         fontSize:wp('4.8%'),
         fontFamily:"NanumSquareB",
-        marginTop:wp('1%'),
+        marginTop:hp('1%'),
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
     },
@@ -1297,13 +1448,21 @@ const styles = StyleSheet.create({
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
-        width:wp('11%')
+        textAlign:"center",
+        width:wp('13%'),
+        marginRight:wp('1%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
     },
     textinputDayStyle:{
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
         marginLeft:wp('2%'),
-        width:wp('7%'),
+        width:wp('6%'),
+        textAlign:"center",
+        marginRight:wp('1%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
     },
     textinputYearStyle1:{
         fontSize:wp('4.2%'),
@@ -1325,13 +1484,24 @@ const styles = StyleSheet.create({
         fontFamily:"NanumSquareB",
         marginTop:wp('1%'),
         marginBottom:wp('1.5%'),
+    },
+    textinputName1_1:{
+        width:wp('25%'),
+        fontSize:wp('4.8%'),
+        fontFamily:"NanumSquareB",
+        marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
     },
     textinputStyle:{
         fontSize:wp('4.2%'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         width:wp('40%'),
+        marginRight:wp('1%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
     },
     textinputStyle1:{
         fontSize:wp('4.2%'),
@@ -1353,6 +1523,16 @@ const styles = StyleSheet.create({
         marginTop:wp('1.7%'),
         width:wp('18%'),
         textAlign:"center"
+    },
+    textinputName2:{
+        fontSize:wp('4.2%'),
+        fontFamily:"NanumSquare",
+        marginLeft:wp('1.5%'),
+        textAlign:"center",
+        width:wp('22%'),
+        marginRight:wp('2%'),
+        borderBottomColor:'#D3D6E2',
+        borderBottomWidth:wp('0.5%')
     },
     rowPeriod:{
         flexDirection:'row',

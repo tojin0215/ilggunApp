@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import { View, Modal, Text, Button, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Modal, Text, Button, StyleSheet, ImageBackground, Image,Platform } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { Row } from 'react-native-table-component';
 import axios from 'axios';
@@ -33,8 +32,16 @@ const styles = StyleSheet.create({
     paddingBottom:hp('1%')
   },
   btnImgStyle:{
-    width:wp('50%'),
-    height:hp('6%')
+    ...Platform.select({
+      ios:{
+        width:wp('50%'),
+        height:hp('6.7%')
+      },
+      android:{
+        width:wp('50%'),
+        height:hp('6%')
+      }
+    })
   },
   messageArea:{
     paddingLeft:wp('2%'), 
@@ -110,7 +117,6 @@ const styles = StyleSheet.create({
     paddingTop:hp('1.2')
   }
 });
- 
 const sentMessageScreen = ({ navigation }) => {
   const [idid, setIdid] = useState('');
   //setId('dddd');

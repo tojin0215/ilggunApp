@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import {StyleSheet, Text, View, Button, TextInput, ScrollView, ImageBackground} from 'react-native';
+import {StyleSheet, Text, View, Button, TextInput, ScrollView, ImageBackground, Platform} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import moment from "moment";
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -40,12 +39,12 @@ class CalculatingScreen2 extends Component{
           Term2_1.format('YYYY.MM.DD')+'\n~'+Term2.format('YYYY.MM.DD'), 
           Term1_1.format('YYYY.MM.DD')+'\n~'+Term1.format('YYYY.MM.DD'), '-', '합계'],
         tableData: [
-          [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} autoFocus={true} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />, 
-            <TextInput value={this.state.term3OtherAllowance} onChangeText={(term3OtherAllowance) => this.setState({term3OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput12 = input; }} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
-          [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} /> , 
-            <TextInput value={this.state.term2OtherAllowance} onChangeText={(term2OtherAllowance) => this.setState({term2OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
-          [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput15 = input; }} onSubmitEditing={() => { this.TextInput16.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />,
-            <TextInput value={this.state.term1OtherAllowance} onChangeText={(term1OtherAllowance) => this.setState({term1OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput16 = input; }} onSubmitEditing={() => { this.TextInput30.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
+          [diff3, <TextInput value={this.state.term3BasePay} keyboardType={"number-pad"} onChangeText={(term3BasePay) => this.setState({term3BasePay})} autoFocus={true} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />, 
+            <TextInput value={this.state.term3OtherAllowance} keyboardType={"number-pad"} onChangeText={(term3OtherAllowance) => this.setState({term3OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput12 = input; }} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
+          [diff2, <TextInput value={this.state.term2BasePay} keyboardType={"number-pad"} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} /> , 
+            <TextInput value={this.state.term2OtherAllowance} keyboardType={"number-pad"} onChangeText={(term2OtherAllowance) => this.setState({term2OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
+          [diff1, <TextInput value={this.state.term1BasePay} keyboardType={"number-pad"} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput15 = input; }} onSubmitEditing={() => { this.TextInput16.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />,
+            <TextInput value={this.state.term1OtherAllowance} keyboardType={"number-pad"} onChangeText={(term1OtherAllowance) => this.setState({term1OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput16 = input; }} onSubmitEditing={() => { this.TextInput30.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
           ['-', '-', '-'],
           [diff1+diff2+diff3, 
             parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay), 
@@ -77,14 +76,14 @@ class CalculatingScreen2 extends Component{
           Term2_1.format('YYYY.MM.DD')+'\n~'+Term2.format('YYYY.MM.DD'), 
           Term1_1.format('YYYY.MM.DD')+'\n~'+Term1.format('YYYY.MM.DD'), '합계'],
         tableData: [
-          [diff4, <TextInput value={this.state.term4BasePay} onChangeText={(term4BasePay) => this.setState({term4BasePay})} autoFocus={true} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />, 
-            <TextInput value={this.state.term4OtherAllowance} onChangeText={(term4OtherAllowance) => this.setState({term4OtherAllowance})} placeholder={'200000'} ref={(input) => { this.TextInput12 = input; }} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
-          [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />, 
-            <TextInput value={this.state.term3OtherAllowance} onChangeText={(term3OtherAllowance) => this.setState({term3OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
-          [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput15 = input; }} onSubmitEditing={() => { this.TextInput16.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} /> , 
-            <TextInput value={this.state.term2OtherAllowance} onChangeText={(term2OtherAllowance) => this.setState({term2OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput16 = input; }} onSubmitEditing={() => { this.TextInput17.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
-          [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput17 = input; }} onSubmitEditing={() => { this.TextInput18.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />,
-            <TextInput value={this.state.term1OtherAllowance} onChangeText={(term1OtherAllowance) => this.setState({term1OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput18 = input; }} onSubmitEditing={() => { this.TextInput30.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
+          [diff4, <TextInput value={this.state.term4BasePay} keyboardType={"number-pad"} onChangeText={(term4BasePay) => this.setState({term4BasePay})} autoFocus={true} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />, 
+            <TextInput value={this.state.term4OtherAllowance} keyboardType={"number-pad"} onChangeText={(term4OtherAllowance) => this.setState({term4OtherAllowance})} placeholder={'200000'} ref={(input) => { this.TextInput12 = input; }} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
+          [diff3, <TextInput value={this.state.term3BasePay} keyboardType={"number-pad"} onChangeText={(term3BasePay) => this.setState({term3BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />, 
+            <TextInput value={this.state.term3OtherAllowance} keyboardType={"number-pad"} onChangeText={(term3OtherAllowance) => this.setState({term3OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
+          [diff2, <TextInput value={this.state.term2BasePay} keyboardType={"number-pad"} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput15 = input; }} onSubmitEditing={() => { this.TextInput16.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} /> , 
+            <TextInput value={this.state.term2OtherAllowance} keyboardType={"number-pad"} onChangeText={(term2OtherAllowance) => this.setState({term2OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput16 = input; }} onSubmitEditing={() => { this.TextInput17.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
+          [diff1, <TextInput value={this.state.term1BasePay} keyboardType={"number-pad"} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput17 = input; }} onSubmitEditing={() => { this.TextInput18.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />,
+            <TextInput value={this.state.term1OtherAllowance} keyboardType={"number-pad"} onChangeText={(term1OtherAllowance) => this.setState({term1OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput18 = input; }} onSubmitEditing={() => { this.TextInput30.focus(); }} blurOnSubmit={false} style={styles.textinputStyle} />],
           [diff1+diff2+diff3+diff4,
             parseInt(this.state.term4BasePay)+parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay), 
             parseInt(this.state.term4OtherAllowance)+parseInt(this.state.term3OtherAllowance)+parseInt(this.state.term2OtherAllowance)+parseInt(this.state.term1OtherAllowance)]
@@ -186,6 +185,7 @@ class CalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput1.focus(); }}
               blurOnSubmit={false}
               placeholder={'2015'}
+              keyboardType={"number-pad"}
               style={styles.textinputYearStyle}
             />
             <Text style={styles.textStyle}>년</Text>
@@ -196,6 +196,7 @@ class CalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput2.focus(); }}
               blurOnSubmit={false}
               placeholder={'5'}
+              keyboardType={"number-pad"}
               style={styles.textinputDayStyle}
             />
             <Text style={styles.textStyle}>월</Text>
@@ -206,6 +207,7 @@ class CalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput3.focus(); }}
               blurOnSubmit={false}
               placeholder={'25'}
+              keyboardType={"number-pad"}
               style={styles.textinputDayStyle}
             />
             <Text style={styles.textStyle}>일</Text>
@@ -220,6 +222,7 @@ class CalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput4.focus(); }}
               blurOnSubmit={false}
               placeholder={'2020'}
+              keyboardType={"number-pad"}
               style={styles.textinputYearStyle}
             />
             <Text style={styles.textStyle}>년</Text>
@@ -230,6 +233,7 @@ class CalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput5.focus(); }}
               blurOnSubmit={false}
               placeholder={'10'}
+              keyboardType={"number-pad"}
               style={styles.textinputDayStyle}
             />
             <Text style={styles.textStyle}>월</Text>
@@ -238,6 +242,7 @@ class CalculatingScreen2 extends Component{
               onChangeText={(LeaveDay) => this.setState({LeaveDay})}
               ref={(input) => { this.TextInput5 = input; }}
               placeholder={'10'}
+              keyboardType={"number-pad"}
               style={styles.textinputDayStyle}
             />
             <Text style={styles.textStyle}>일</Text>
@@ -281,6 +286,7 @@ class CalculatingScreen2 extends Component{
                 onSubmitEditing={() => { this.TextInput31.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'연간상여금 총액'}
+                keyboardType={"number-pad"}
                 style={styles.textinputStyle}
               />
               <Text style={styles.textStyle}> 원</Text>
@@ -294,6 +300,7 @@ class CalculatingScreen2 extends Component{
                 ref={(input) => { this.TextInput31 = input; }}
                 blurOnSubmit={false}
                 placeholder={'연차수당'}
+                keyboardType={"number-pad"}
                 style={styles.textinputStyle}
               />
               <Text style={styles.textStyle}> 원</Text>
@@ -362,8 +369,15 @@ class CalculatingScreen2 extends Component{
     tableText: { 
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
-      fontSize:wp('3.8%'),
       color: '#040525',
+      ...Platform.select({
+        ios:{
+          fontSize: wp('3.2%'),
+        },
+        android:{
+          fontSize: wp('3.8%'),
+        }
+      })
     },
     image:{ 
       alignItems: 'center', justifyContent:"center",

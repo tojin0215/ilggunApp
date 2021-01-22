@@ -1,25 +1,33 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, ScrollView, Button, ImageBackground, Alert} from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { View, Text, StyleSheet, ScrollView, Button, ImageBackground, Alert,Platform} from 'react-native';import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { AsyncStorage } from 'react-native';
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%", height: "100%",
+    backgroundColor: 'white',
+    borderTopRightRadius:wp('13%'),
+    borderTopLeftRadius:wp('13%'),
   },
   image:{
-    alignItems: 'center',
     width: "100%", height: "100%", 
+    backgroundColor:'#67C8BA',
   },
   timeArea:{
-    marginLeft:wp('4%'),
-    marginBottom:hp('1.5%')
+    marginLeft:wp('10%'),
+    marginBottom:hp('1.5%'),
+    position:"absolute",
+    top:hp('25%'),
+    ...Platform.select({
+      ios:{
+        zIndex:-1000
+      }
+    })
   }, 
   timeText:{
     fontSize:wp('5.05%'),
@@ -29,7 +37,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row', backgroundColor:'white', 
     width:wp('90%'), height:hp('30%'), borderRadius:wp('4.5%'),
     alignItems:"center", justifyContent:"center",
-    paddingBottom:hp('23%')
+    position:"absolute",
+    top:hp('29%'),
+    paddingBottom:hp('23%'),
+    marginLeft:wp('5%'),
+    ...Platform.select({
+      ios:{
+        zIndex:-2000
+      }
+    })
   },
   dropdownWokerArea:{
     marginTop:hp('8%'),
@@ -42,6 +58,7 @@ const styles = StyleSheet.create({
     bottom: hp('5%'),
     justifyContent:"center",
     width: wp('100%'), height: hp('6%'),
+    alignItems: 'center',
   },
   button: {
       backgroundColor: "#67C8BA",
@@ -63,6 +80,7 @@ const styles = StyleSheet.create({
     marginTop:hp('0.5%')
   }
 });
+
 
 class AlterWorkerScreen extends Component{
 
@@ -213,7 +231,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
     const {workernames} = this.state
     
     return (
-      <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
+      <View style={styles.image}>
         <View style={styles.container}>
           <View style={styles.dropdownWokerArea}>
             <DropDownPicker
@@ -238,7 +256,15 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                   color:'black',
                   fontFamily:"NanumSquare",
                   fontSize: wp('5.3%'),
-                  paddingTop:hp('0.3%')
+                  paddingTop:hp('0.3%'),
+                  ...Platform.select({
+                    ios:{
+                      fontSize: wp('4.7%'),
+                    },
+                    android:{
+                      fontSize: wp('5.3%'),
+                    }
+                  })
                 }}
                 isVisible={this.state.isVisibleC}
                 onOpen={() => this.changeVisibility({
@@ -493,7 +519,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
              </TouchableOpacity>     
         </View>
       </View>
-      </ImageBackground>
+      </View>
     
     )
   }

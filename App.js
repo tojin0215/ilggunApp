@@ -9,19 +9,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import axios from 'axios';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 
-import LandingScreen from './screens/Landing';
 import SignInScreen from './screens/SignIn';
 import SignUpScreen from './screens/SignUp';
+import SignUpGoogleScreen from './screens/SignUpGoogle';
 import SelectScreen from './screens/Select'
 import PasswordForgetScreen from './screens/PasswordForget';
 import PasswordChangeScreen from './screens/PasswordChange';
 import HomeScreen from './screens/Home';
 import WorkerHomeScreen from './screens/WorkerHome';
-import ProfileScreen from './screens/Profile';
-import AccountScreen from './screens/Account';
-import AdminScreen from './screens/Admin';
 import CalculatingScreen from './screens/Calculating';
 import ExpenseScreen1 from './screens/Expense1';
 import ExpenseScreen2 from './screens/Expense2';
@@ -60,12 +56,11 @@ import ReceivedMessageScreen from './screens/ReceivedMessage'
 import SendMessageScreen from './screens/SendMessage';
 import AddWorkTodoScreen from './screens/AddWorkTodo'
 import WorkTodoScreen from './screens/WorkTodo'
-import WebLoginScreen from './screens/WebLogin'
-import LoginExScreen from './screens/LoginEx';
-import ExScreen from './screens/Ex'
+import SplashScreen from './screens/Splash';
 import SvgComponent from './screens/Svg'
 import { color } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
 
 const storeToken = async(user) => {
   try {
@@ -103,7 +98,16 @@ const styles = StyleSheet.create({
   },
   userImage:{
     marginTop:hp('0.6%'),
-    width:wp('5.2%'), height:hp('3.3')
+    ...Platform.select({
+      ios:{
+        width:wp('4.8%'), 
+        height:hp('3.3')
+      },
+      android:{
+        width:wp('5.2%'), 
+        height:hp('3.3')
+      }
+    })
   },
   logoutBtnArea:{
     backgroundColor:'#67C8BA', 
@@ -126,11 +130,29 @@ const styles = StyleSheet.create({
   },
   logoutImage:{
     marginTop:hp('0.7%'), marginLeft:wp('4%'),
-    width:wp('5.5%'), height:hp('3.1')
+    ...Platform.select({
+      ios:{
+        width:wp('5.1%'),
+        height:hp('3.1%')
+      },
+      android:{
+        width:wp('5.5%'),
+        height:hp('3.1%')
+      }
+    })
   },
   msgImage:{
     marginTop:hp('0.9%'), marginLeft:wp('3%'),
-    width:wp('8%'), height:hp('3.0%')
+    ...Platform.select({
+      ios:{
+        width:wp('7.5%'), 
+        height:hp('3.0%')
+      },
+      android:{
+        width:wp('8%'), 
+        height:hp('3.0%')
+      }
+    })
   },
   wokrListLeft:{
     backgroundColor:'#67C8BA',
@@ -182,7 +204,7 @@ const ExpenseTabs = () => {
         inactiveTintColor :'#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
-          fontFamily:"NanumSquare"
+          //fontFamily:"NanumSquare"
         },
         tabStyle:{
           marginTop:hp('1%'),
@@ -217,7 +239,7 @@ const UnemploymentTabs = () => {
         inactiveTintColor :'#D3D6E2',
       labelStyle: {
         fontSize: wp('4.8%'),
-        fontFamily:"NanumSquare"
+        //fontFamily:"NanumSquare"
       },
       tabStyle:{
         marginTop:hp('1%'),
@@ -252,7 +274,7 @@ const WExpenseTabs = () => {
         inactiveTintColor :'#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
-          fontFamily:"NanumSquare"
+          //fontFamily:"NanumSquare"
         },
         tabStyle:{
           marginTop:hp('1%'),
@@ -288,7 +310,7 @@ const WUnemploymentTabs = () => {
         inactiveTintColor :'#D3D6E2',
       labelStyle: {
         fontSize: wp('4.8%'),
-        fontFamily:"NanumSquare"
+        //fontFamily:"NanumSquare"
       },
       tabStyle:{
         marginTop:hp('1%'),
@@ -358,7 +380,7 @@ const DocumentTabs = () => {
       inactiveTintColor :'#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
-          fontFamily:"NanumSquare"
+          //fontFamily:"NanumSquare"
         },
         tabStyle:{
           marginTop:hp('1%'),
@@ -393,7 +415,7 @@ const MessageTabs = () => {
       inactiveTintColor :'#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
-          fontFamily:"NanumSquare"
+          //fontFamily:"NanumSquare"
         },
         tabStyle:{
           marginTop:hp('1%'),
@@ -425,6 +447,7 @@ const RootStack = createStackNavigator();
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [id, setId] = useState('');
+  const [realId, setRearId] = useState('')
   const [bang, setBang] = useState('');
 
   
@@ -435,7 +458,7 @@ const App = () => {
   function callback() {
     try {
       axios.post('https://www.toojin.tk:3000/selectReceivedNewMessage', {
-        t:id,
+        t:realId,
       },
       {  headers:{
         'Content-Type': 'application/json',
@@ -454,24 +477,30 @@ const App = () => {
         console.error(e);
     }
   }
-
+  const [dataLoaded, setDataLoaded] = useState(false);
   useEffect(() => {
     savedCallback.current = callback;
   });
 
   useEffect(() => {
+    fetchFonts();
+
     function tick() {
       savedCallback.current();
     }
     tick();
+
     AsyncStorage.getItem("userData").then((userData) =>{
-      if(JSON.parse(userData) !=""){
-        setIsAuthenticated(true);
-        setId(id => JSON.parse(userData).name);
+      if(JSON.parse(userData)!=null){
+        if(JSON.parse(userData) != ""){
+          setIsAuthenticated(true);
+          setId(id => JSON.parse(userData).name);
+          setRearId(realId => JSON.parse(userData).id)
+        }
       }
-      
-    });
-    let i = setInterval(tick, 2000);
+    }
+    );
+    let i = setInterval(tick, 4000);
     return () => clearInterval(i);
   }, []);
 
@@ -488,6 +517,7 @@ const App = () => {
     // TODO implement real sign in mechanism
     AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).name);
+      setRearId(realId => JSON.parse(userData).id)
     });
   };
 
@@ -496,10 +526,9 @@ const App = () => {
     setIsAuthenticated(false);
     storeToken('');
     setId(id => '');
+    setRearId(realId => '')
     AsyncStorage.setItem("bangCode",'');
     //setId('');
-    
-
   };
   
   const handleSignUp = () => {
@@ -512,26 +541,21 @@ const App = () => {
     return Font.loadAsync({
     'NanumSquare': require("./assets/fonts/NanumSquare_acR.ttf"),
     'NanumSquareB': require("./assets/fonts/NanumSquare_acB.ttf")
-    });
+    }).then(()=>{setDataLoaded(true);})
   }
-  const [dataLoaded, setDataLoaded] = useState(false);
-  if(!dataLoaded){
-      return(
-        <AppLoading
-          startAsync={fetchFonts}
-          onFinish={()=>setDataLoaded(true)}
-        />
-      )
-    }
   return (
     <NavigationContainer>
-      <RootStack.Navigator
+      {dataLoaded!=true? 
+      <RootStack.Screen
+          name="Splash" component={SplashScreen}
+      />
+      :<RootStack.Navigator
       screenOptions={{
         headerTintColor: 'white', // 폰트색
         headerStyle: { backgroundColor: '#67C8BA', shadowOpacity: 0, elevation: 0,}, //배경
         headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}}}
       >
-      {isAuthenticated ? (
+       {isAuthenticated ? (
         <>
         <RootStack.Screen 
           name="Select Page" component={SelectScreen} 
@@ -869,6 +893,19 @@ const App = () => {
                 <SignUpScreen {...props} onSignUp={handleSignUp} />
               )}
         </RootStack.Screen>
+
+        <RootStack.Screen name="Sign Up Google"
+          options={{
+            title:"회원가입",
+
+          }}
+        >
+              {(props) => (
+                <SignUpGoogleScreen {...props} onSignUp={handleSignUp} />
+              )}
+        </RootStack.Screen>
+
+        
         <RootStack.Screen
           name="Password Forget"
           component={PasswordForgetScreen}
@@ -877,6 +914,7 @@ const App = () => {
         </>
         )}
         </RootStack.Navigator>
+        }
     </NavigationContainer>
   );
 };

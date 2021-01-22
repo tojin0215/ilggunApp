@@ -1,11 +1,9 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput,ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput,ImageBackground, TouchableWithoutFeedback, Keyboard,Platform} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 
 //=================바뀐부분A=========================================================
-import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -85,6 +83,7 @@ class WExpenseScreen1 extends Component{
     return (
       
 //=========================바뀐부분A.=========================================================
+<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
   <View style={styles.image}>
   {/* //=========================바뀐부분A.========================================================= */}
       <View style={styles.container}>
@@ -100,6 +99,7 @@ class WExpenseScreen1 extends Component{
               onChangeText={(MonthlySalary) => this.setState({MonthlySalary})}
               autoFocus={true}
               placeholder={'1000000'}
+              keyboardType={"number-pad"}
               style={styles.textinputStyle}
             />
             <Text style={styles.textStyle}>원</Text>
@@ -137,6 +137,7 @@ class WExpenseScreen1 extends Component{
         <Text>고용보험 : {EmploymentInsurance}</Text> */}
       </View>
       </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
@@ -196,9 +197,16 @@ const styles = StyleSheet.create({
   },  
   tableTextStyle:{
     textAlign:"center",
-    fontSize:wp('4.2%'),
     fontFamily:"NanumSquare",
     color:'#040525',
+    ...Platform.select({
+      ios:{
+        fontSize: wp('3.6%') 
+      },
+      android:{
+        fontSize: wp('4.2%') 
+      }
+    })
   },
   textinputStyle:{
     fontSize:wp('4.2%'),

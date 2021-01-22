@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Button, TextInput,FlatList, Alert, ImageBackgro
 import TimePicker from 'react-native-simple-time-picker';
 import CheckboxGroup from 'react-native-checkbox-group';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
@@ -145,6 +144,7 @@ class ExpenseScreen2 extends Component {
                             autoFocus={true}
 //============================================바뀐부분C=============================================
                             placeholder={'8720'}
+                            keyboardType={"number-pad"}
 //============================================바뀐부분C=============================================
                             style={styles.textinputStyle}
                             />
@@ -178,13 +178,11 @@ class ExpenseScreen2 extends Component {
                                     value: 1, // selected value for item, if selected, what value should be sent?
                                     },
                                 ]}
-//=====================================================바뀐부분E=======================================
                                 labelStyle={{
                                     color: '#040525',
                                     marginTop:hp('1%'),
-                                    marginLeft:hp('1.,5%'),
+                                    marginLeft:hp('1.5%'),
                                 }}
-//=====================================================바뀐부분E=======================================
                                 rowStyle={{
                                     flexDirection: 'row'
                                 }}
@@ -256,7 +254,6 @@ class ExpenseScreen2 extends Component {
 
 export default ExpenseScreen2;
 
-//===================================바뀐부분 스타일 전체=====================================
 const styles = StyleSheet.create({
     container: {
         padding:wp('4.5%'), 

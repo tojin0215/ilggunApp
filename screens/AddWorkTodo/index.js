@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, ScrollView, Button, TextInput, FlatList,ImageBackground, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, TextInput, FlatList,ImageBackground, Alert,TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { AsyncStorage } from 'react-native';
 
-import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -251,7 +249,7 @@ savedData = async() => {
     render() {
         
         return (
-          <>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
         <ImageBackground style={styles.image} source={require('../../img/page1_1.png')}>
         <View style={styles.todoArea}>
@@ -336,7 +334,7 @@ savedData = async() => {
                 }}
             />
         </View>*/}
-        </>
+        </TouchableWithoutFeedback>
             
         )
       

@@ -5,12 +5,12 @@ import {
   Text, Button,
   TextInput,
   TouchableOpacity,
-  StyleSheet, ScrollView, Image
+  StyleSheet, ScrollView, Image,
+  TouchableWithoutFeedback, Keyboard
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 //========================================바뀐부분A========================================
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import axios from 'axios';
 //========================================바뀐부분A========================================
@@ -100,6 +100,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
   }
   return (
   //================================여기 아래는 거의 다 바뀜========================================
+  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <View style={styles.TopArea}>
         <View style={styles.titleArea}>
@@ -140,6 +141,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
             onChangeText={businessRegistrationNumber =>setBusinessRegistrationNumber(businessRegistrationNumber)}
             defaultValue={businessRegistrationNumber}
             placeholder={'사업장 등록번호를 입력하세요'}
+            keyboardType={"number-pad"}
             style={styles.textStyle}/>
       </View>
       <View style={styles.textArea}>
@@ -156,6 +158,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
             onChangeText={businessPhoneNumber =>setBusinessPhoneNumber(businessPhoneNumber)}
             defaultValue={businessPhoneNumber}
             placeholder={'사업장 전화번호를 입력하세요'}
+            keyboardType={"number-pad"}
             style={styles.textStyle}/>
       </View>
       <View style={{marginTop:hp('3%')}}>
@@ -218,6 +221,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       <Image style={styles.logobottom} source={require('../../img/logo_bottom.png') }/> 
     </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

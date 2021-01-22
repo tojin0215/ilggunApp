@@ -6,7 +6,6 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import CheckboxGroup from 'react-native-checkbox-group';
 //============================바뀐부분A=============================
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -147,16 +146,6 @@ class WorkerContractformScreen extends Component{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
       })
-      /*fetch('https://www.toojin.tk:3000/selectSign', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          //id : idid
-        }),
-      }).then(res => res.json())*/
       .then(async(res) => {
           sign = res.data[0].sign;
           bsign = res.data[1].sign;
@@ -181,14 +170,6 @@ class WorkerContractformScreen extends Component{
               <span>표준근로계약서</span>
               <form>
                   <hr><br>
-                  <svg viewBox = "0 0 500 500" style="left:190px; top:1150px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="${String(sign)}"
-                  style="fill:none;stroke:black;stroke-width:3" />
-                  </svg>
-                  <svg viewBox = "0 0 500 500" style="left:190px; top:1000px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="${String(bsign)}"
-                  style="fill:none;stroke:black;stroke-width:3" />
-                  </svg>
                   <label class="text_underline">${this.state.Employer}</label>
                   <label>(이하 "사업주"라 함) 과(와)</label>
                   <label class="text_underline">${this.state.Employee}</label>
@@ -202,11 +183,11 @@ class WorkerContractformScreen extends Component{
                   <label class="text_underline">${this.state.StartDay}</label>
                   <label>일부터</label>
       
-                  <label class="text_underline">${this.state.EndYear}</label>
+                  <label class="text_underline">${this.state.EndYear==null?'-':this.state.EndYear}</label>
                   <label>년</label>
-                  <label class="text_underline">${this.state.EndMonth}</label>
+                  <label class="text_underline">${this.state.EndMonth==null?'-':this.state.EndMonth}</label>
                   <label>월</label>
-                  <label class="text_underline">${this.state.EndDay}</label>
+                  <label class="text_underline">${this.state.EndDay==null?'-':this.state.EndDay}</label>
                   <label>일까지</label><br>
                   
                   <label>2. 근 무 장 소 : </label>
@@ -300,8 +281,11 @@ class WorkerContractformScreen extends Component{
                   <label class="margin_left2">주    소 : </label>
                   <label>${this.state.BusinessAddress}</label><br>
                   <label class="margin_left2">대 표 자 : </label>
-                  <label>${this.state.BusinessOwner1}</label>
-                  <label class="margin_left2">(서명)</label><br><br>
+                  <label>${this.state.BusinessOwner1}</label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="${String(bsign)}"
+                  style="fill:none;stroke:black;stroke-width:3" />
+                  </svg>
+                  <label class="margin_left2">(서명)</label><br><br><br>
       
                   <label>(근로자)</label>
                   <label>주 소 : </label>
@@ -309,7 +293,10 @@ class WorkerContractformScreen extends Component{
                   <label class="margin_left2">연 락 처 : </label>
                   <label>${this.state.EmployeePhone}</label><br>
                   <label class="margin_left2">성    명 : </label>
-                  <label>${this.state.EmployeeName}</label>
+                  <label>${this.state.EmployeeName}</label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="${String(sign)}"
+                  style="fill:none;stroke:black;stroke-width:3" />
+                  </svg>
                   <label class="margin_left2">(서명)</label>
                   
               </form>
@@ -374,14 +361,6 @@ class WorkerContractformScreen extends Component{
             <form>
                 <span>단기간근로자 표준근로계약서</span>
                 <hr><br>
-                <svg viewBox = "0 0 500 500" style="left:210px; top:1480px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="${String(sign)}"
-                      style="fill:none;stroke:black;stroke-width:3" />
-                </svg>
-                <svg viewBox = "0 0 500 500" style="left:210px; top:1330px; height:300px; width: 300px; font-size: 1.8em; position: absolute;" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="${String(bsign)}"
-                      style="fill:none;stroke:black;stroke-width:3" />
-                </svg>
                 <label class="text_underline">${this.state.Employer}</label>
                 <label>(이하 "사업주"라 함) 과(와)</label>
                 <label class="text_underline">${this.state.Employee}</label>
@@ -395,11 +374,11 @@ class WorkerContractformScreen extends Component{
                 <label class="text_underline">${this.state.StartDay}</label>
                 <label>일부터</label>
     
-                <label class="text_underline">${this.state.EndYear}</label>
+                <label class="text_underline">${this.state.EndYear==null?'-':this.state.EndYear}</label>
                 <label>년</label>
-                <label class="text_underline">${this.state.EndMonth}</label>
+                <label class="text_underline">${this.state.EndMonth==null?'-':this.state.EndMonth}</label>
                 <label>월</label>
-                <label class="text_underline">${this.state.EndDay}</label>
+                <label class="text_underline">${this.state.EndDay==null?'-':this.state.EndDay}</label>
                 <label>일까지</label><br>
                 
                 <label>2. 근 무 장 소 : </label>
@@ -484,8 +463,11 @@ class WorkerContractformScreen extends Component{
                 <label class="margin_left2">주    소 : </label>
                 <label>${this.state.BusinessAddress}</label><br>
                 <label class="margin_left2">대 표 자 : </label>
-                <label>${this.state.BusinessOwner1}</label>
-                <label class="margin_left2">(서명)</label><br><br>
+                <label>${this.state.BusinessOwner1}</label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="${String(bsign)}"
+                style="fill:none;stroke:black;stroke-width:3" />
+                </svg>
+                <label class="margin_left2">(서명)</label><br><br><br>
 
                 <label>(근로자)</label>
                 <label>주 소 : </label>
@@ -493,7 +475,10 @@ class WorkerContractformScreen extends Component{
                 <label class="margin_left2">연 락 처 : </label>
                 <label>${this.state.EmployeePhone}</label><br>
                 <label class="margin_left2">성    명 : </label>
-                <label>${this.state.EmployeeName}</label>
+                <label>${this.state.EmployeeName}</label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="${String(sign)}"
+                style="fill:none;stroke:black;stroke-width:3" />
+                </svg>
                 <label class="margin_left2">(서명)</label>
             </form>
         </body>
@@ -545,26 +530,32 @@ class WorkerContractformScreen extends Component{
           if(res.data[0].type==3){
             this.StatementScreen()
           }
-          if(JSON.parse(res.data[0].types1)[0].value == 1){
+          if(res.data[0].value1Index == 0){
             res.data[0].types1 = "없음"
-          }
-          else{
+        }
+        else{
             res.data[0].types1 = "있음"
-          }
-          
-          if(JSON.parse(res.data[0].types2)[0].value == 1){
+        }
+        
+        if(res.data[0].value2Index == 0){
             res.data[0].types2 = "없음"
-          }
-          else{
+        }
+        else{
             res.data[0].types2 = "있음"
-          }
+        }
 
-          if(JSON.parse(res.data[0].types3)[0].value == 1){
+        if(JSON.parse(res.data[0].types3)[0].value == 1){
             res.data[0].types3 = "근로자에게 직접 지급"
-          }
-          else{
+        }
+        else{
             res.data[0].types3 = "근로자 명의 예금통장에 입금"
-          }
+        }
+
+        if(res.data[0].Bonus == null) res.data[0].Bonus = 0
+        if(res.data[0].Bonus1 == null) res.data[0].Bonus1 = 0
+        if(res.data[0].Bonus2 == null) res.data[0].Bonus2 = 0
+        if(res.data[0].Bonus3 == null) res.data[0].Bonus3 = 0
+        if(res.data[0].Bonus4 == null) res.data[0].Bonus4 = 0
           let t4 = [0,0,0,0,0];
           console.log('dddd')
           let n = JSON.parse(res.data[0].value4);
@@ -606,26 +597,32 @@ class WorkerContractformScreen extends Component{
             if(res.data[0].type==5){
               this.StatementScreen2()
             }
-            if(JSON.parse(res.data[0].types1)[0].value == 1){
+            if(res.data[0].value1Index == 0){
               res.data[0].types1 = "없음"
             }
             else{
-              res.data[0].types1 = "있음"
+                res.data[0].types1 = "있음"
             }
             
-            if(JSON.parse(res.data[0].types2)[0].value == 1){
-              res.data[0].types2 = "없음"
+            if(res.data[0].value2Index == 0){
+                res.data[0].types2 = "없음"
             }
             else{
-              res.data[0].types2 = "있음"
+                res.data[0].types2 = "있음"
             }
 
             if(JSON.parse(res.data[0].types3)[0].value == 1){
-              res.data[0].types3 = "근로자에게 직접 지급"
+                res.data[0].types3 = "근로자에게 직접 지급"
             }
             else{
-              res.data[0].types3 = "근로자 명의 예금통장에 입금"
+                res.data[0].types3 = "근로자 명의 예금통장에 입금"
             }
+
+            if(res.data[0].Bonus == null) res.data[0].Bonus = 0
+            if(res.data[0].Bonus1 == null) res.data[0].Bonus1 = 0
+            if(res.data[0].Bonus2 == null) res.data[0].Bonus2 = 0
+            if(res.data[0].Bonus3 == null) res.data[0].Bonus3 = 0
+            if(res.data[0].Bonus4 == null) res.data[0].Bonus4 = 0
             let t4 = [0,0,0,0,0];
             console.log('dddd')
             let n = JSON.parse(res.data[0].value4);
@@ -723,33 +720,13 @@ class WorkerContractformScreen extends Component{
           sat: null,
           sun : null,
           eachtime :`${tt}/${tt}/${tt}/${tt}/${tt}/0/0`,
-
+          startdate:`${this.state.StartYear}/${this.state.StartMonth}/${this.state.StartDay}`,
+          endtime:`${this.state.EndYear}/${this.state.EndMonth}/${this.state.EndDay}`,
         },
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-        /*fetch('https://www.toojin.tk:3000/alterState', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type:2,
-            bang: this.state.bangcode,
-            id:'/',
-            pay: this.state.Salary,
-            mon: time,
-            tue:time,
-            wed: time,
-            thu: time,
-            fri : time,
-            sat: 0,
-            sun : 0,
-            eachtime :`${tt}/${tt}/${tt}/${tt}/${tt}/0/0`,
-          }),
-        }).then(res => res.json())*/
         .then(res => {
           console.log(res.data);
           this.props.navigation.navigate('Worker Home',{state:2});
@@ -872,7 +849,9 @@ class WorkerContractformScreen extends Component{
             sat: (t6==null?null:t6),
             sun : (t7==null?null:t7),
             eachtime :`${this.state.time7=='X'?0:this.state.time7}/${this.state.time1=='X'?0:this.state.time1}/${this.state.time2=='X'?0:this.state.time2}/${this.state.time3=='X'?0:this.state.time3}/${this.state.time4=='X'?0:this.state.time4}/${this.state.time5=='X'?0:this.state.time5}/${this.state.time6=='X'?0:this.state.time6}`,
-        },
+            startdate:`${this.state.StartYear}/${this.state.StartMonth}/${this.state.StartDay}`,
+            enddate:`${this.state.EndYear}/${this.state.EndMonth}/${this.state.EndDay}`,
+          },
           {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
@@ -905,6 +884,7 @@ class WorkerContractformScreen extends Component{
               <View style={{ width:'100%', height:hp('70%'), marginTop:hp('1%')}}>
                 <WebView
                   originWhitelist={['*']}
+                  automaticallyAdjustContentInsets={false}
                   source={{ html: this.state.htmlContent }}
                 />
               </View>
@@ -1409,6 +1389,7 @@ class WorkerContractformScreen extends Component{
           <View style={{ width:'100%', height:hp('70%')}}>
                 <WebView
                   originWhitelist={['*']}
+                  automaticallyAdjustContentInsets={false}
                   source={{ html: this.state.htmlContent }}
                 />
               </View>
@@ -1492,6 +1473,9 @@ const styles = StyleSheet.create({
       fontFamily:"NanumSquare",
       marginLeft:wp('1.5%'),
       width:wp('25%'),
+      marginRight:wp('1%'),
+      borderBottomColor:'#D3D6E2',
+      borderBottomWidth:wp('0.5%')
   },
   textinputStyle1:{
       fontSize:wp('4.2%'),

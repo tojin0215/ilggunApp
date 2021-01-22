@@ -5,7 +5,7 @@ import {
   Text, Button,
   TextInput,
   TouchableOpacity,ImageBackground,Image,
-  StyleSheet
+  StyleSheet, TouchableWithoutFeedback, Keyboard,Platform
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { AsyncStorage } from 'react-native';
@@ -53,6 +53,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
     }
   }
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.image}>
     <View style={styles.container}>
       <View style={styles.formArea}>
@@ -66,7 +67,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
             defaultValue={id}
             autoFocus={true}
             style={styles.textStyle} 
-            placeholder={'이름을 입력하세요.'}/>
+            placeholder={'ID를 입력하세요.'}/>
             </View>
         </View>  
         <View style={styles.msgArea}>
@@ -89,9 +90,9 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
     </View>  
     </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
-
 
 const styles = StyleSheet.create({
   image:{
@@ -146,8 +147,16 @@ const styles = StyleSheet.create({
     paddingBottom:hp('1%'),
   },
   btnImgStyle:{
-    width:wp('50%'),
-    height:hp('6%')
+    ...Platform.select({
+      ios:{
+        width:wp('50%'),
+        height:hp('6.7%')
+      },
+      android:{
+        width:wp('50%'),
+        height:hp('6%')
+      }
+    })
   },
   imgArea:{
     width:wp('30%'),
@@ -155,8 +164,16 @@ const styles = StyleSheet.create({
     justifyContent:"center", marginRight:wp('2%')
   },
   toimg:{
-    width:wp('28.2%'),
-    height:hp('6.2%'),
+    ...Platform.select({
+      ios:{
+        width:wp('26%'),
+        height:hp('6.2%')
+      },
+      android:{
+        width:wp('28.2%'),
+        height:hp('6.2%')
+      }
+    })
   },
    textInputArea:{
     borderColor:'#DAE9F7',

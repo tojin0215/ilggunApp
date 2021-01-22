@@ -6,18 +6,21 @@ import {
   View,
   Text, Button, Image, TextInput, 
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 
-import { AppLoading, Asset } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Expo from "expo"
 import * as Font from 'expo-font'
 import * as Network from 'expo-network';
 import axios from 'axios';
 import { Alert } from 'react-native';
-
+//import * as GoogleSignIn from 'expo-google-sign-in'
 //axios.create({baseURL:'',timeout:1000})
+import * as GoogleSignIn from 'expo-google-sign-in';
+
 
 const SignInScreen = ({ onSignIn, navigation }) => {
   const [id, setId] = useState('');
@@ -45,191 +48,109 @@ const SignInScreen = ({ onSignIn, navigation }) => {
     }
   }
 
-  const googleLogin = async() => {
-    Alert.alert("준비 중입니다. 조금만 기다려주세요.")
-    /*try {
-      await Google.logInAsync({
-        androidClientId: "215538713502-hrpk6s7lontr7l1vvlb39rgdqe0f41k1.apps.googleusercontent.com",
-        iosClientId: "215538713502-tdra6mancl9oukjevu4mhmc0441in4vu.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      }).then((result)=>{
-        if (result.type === "success") {
-          console.log(result)
-          setSignedIn(true);
-          setName(result.user.name);
-          setPhotoUrl(result.user.photoUrl)
-          setId(result.user.email); setPassword(result.user.id)
-          fetch('https://www.toojin.tk:3000/signup', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            id:result.user.email,
-            name:result.user.name,
-            password: result.user.id,
-            sign:''
-          }),
-        }).then(async(res)=> {
-          fetch('https://www.toojin.tk:3000/signin', {
-            credentials: 'include',
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              id: result.user.email,
-              password: result.user.id,
-            }),
-          }).then((response) => 
-            response.json()
-          )
-          .then((responseData) => {
-            console.log("-----------------------------------");
-            console.log(responseData);
-            storeToken(responseData[0].id);
-            
-            getToken();
-
-            if(responseData[0].id){
-              onSignIn();
-            
-              navigation.navigate('Select Page');
-            }
-            else{
-
-            }
-          })
-          .catch((error)=>{
-            console.log('Error fetching man',error);
-          });
-        });
-        
-        } else {
-          console.log("cancelled")
-        }
-    })
-    } catch (e) {
-      console.log("error", e)
-    }*/
-  }
   const SignPost = async(str) => {
-    /*try {
-      await Network.getIpAddressAsync().then((ip)=>{console.log(ip)})
-      // now use the ipAddress
-     } catch (error) {
-       console.log("???"+error)
-     }*/
     try {
-      let err ;
-      await axios.post('https://www.toojin.tk:3000/signin', { id: id,
-        password: password, headers:{
+      await axios.post('https://www.toojin.tk:3000/signin', { 
+        id: id,
+        password: password, 
+        headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
       })
-        /*a.then(res => {
-          console.log(res);
-          console.log(res.data);
-        })
-        console.log("???")
-      let res = await fetch('https://www.toojin.tk:3000/signin', {
-        credentials: 'include',
-        method: 'POST',
-        
-        headers: {
-          //'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: id,
-          password: password,
-        }),})
-      .then((response) => 
-        response.json()
-      )*/
       .then((responseData) => {
-        err=responseData.data.status;
-        //console.log(responseData.data[0]);
-        if(responseData.data[0] == undefined){
+        console.log(responseData);
+        if(responseData.data[0] == undefined || responseData.data[0] == ''){
           Alert.alert("아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요.")
         }else{
-          console.log("여기!!")
-          console.log(responseData.data[0]);
           storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
           getToken();
-
-          // save token
-          //AsyncStorage.setItem("TOKEN", token);
-
-          // get token
-          //AsyncStorage.getItem("TOKEN").then(token => {
-              // token value could be used
-          //});
       
           if(responseData.data[0].id){
             onSignIn();
             navigation.navigate('Select Page');
           }
-          else{
+        }
+      })
+      .catch(function(error) {
+        Alert.alert("아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요.")
 
+        if (!error.response) {
+          // network error
+          console.log('hh'+error)
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    } 
+  }
+
+
+
+  const initAsync = async () => {
+    await GoogleSignIn.initAsync({
+      // You may ommit the clientId when the firebase `googleServicesFile` is configured
+      //clientId: '<YOUR_IOS_CLIENT_ID>',
+    });
+  };
+
+  const _syncUserWithStateAsync = async () => {
+    const user = await GoogleSignIn.signInSilentlyAsync();
+    try {
+      await axios.post('https://www.toojin.tk:3000/signin', { id: user.email,
+        password: user.uid, headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+      })
+      .then((responseData) => {
+        if(responseData.data[0] == undefined || responseData.data[0] == ''){
+          navigation.navigate('Sign Up Google',{id:user.email, password:user.uid});
+        }else{
+          storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
+          getToken();
+      
+          if(responseData.data[0].id){
+            onSignIn();
+            navigation.navigate('Select Page');
           }
         }
       })
       .catch(function(error) {
-        console.log("에러")
-
-        console.log(err);
-        if (!error.response) {
-          // network error
-          console.log('hh'+error)
-        } else {
-          // http status code
-          const code = error.response.status
-          // response data
-          const response = error.response.data
-          console.log(code)
-          console.log(response)
-        }
+          Alert.alert('hh'+error)
       });
-      
-      //res = await res;
-      //onSignIn();
-      //navigation.navigate({onSignIn})
-      //console.log(res)
-      //console.log("떠나요~")
-      
     } catch (e) {
-      console.error(e);
+      Alert.alert(e);
+    } 
+  };
+
+  const signOutAsync = async () => {
+    await GoogleSignIn.signOutAsync();
+  };
+
+  const signInAsync = async () => {
+    try {
+      await GoogleSignIn.askForPlayServicesAsync();
+      const { type, user } = await GoogleSignIn.signInAsync();
+      if (type === 'success') {
+        _syncUserWithStateAsync();
+      }
+    } catch ({ message }) {
+      alert('login: Error:' + message);
     }
+  };
 
-    
-  }
-  /*const fetchFonts = () => {
-    return Font.loadAsync({
-    'NanumSquare': require("../../assets/fonts/NanumSquare_acR.ttf"),
-    'NanumSquareB': require("../../assets/fonts/NanumSquare_acB.ttf")
-    });
-  }
-  const [dataLoaded, setDataLoaded] = useState(false);
-  if(!dataLoaded){
-      return(
-        <AppLoading
-          startAsync={fetchFonts}
-          onFinish={()=>setDataLoaded(true)}
-        />
-      )
-    }*/
+  const onpress = () => {
+      signInAsync();
+  };
 
-    setTimeout(() => {setIsReady(true)},3000);
-    console.ignoredYellowBox = [
-      'Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).',
-    ];
+  setTimeout(() => {setIsReady(true)},1500);
+  //setIsReady(true);
+  initAsync();
+
   return (
-      <View>
+      <>
         {isReady?
         <>
+         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
       <View style={styles.titleArea}>
           <Image style={styles.logo} source={require('../../img/logo.png')}/>
@@ -260,40 +181,31 @@ const SignInScreen = ({ onSignIn, navigation }) => {
               onPress={SignPost}>
               <Text style={styles.buttonLoginTitle}>로그인</Text>
           </TouchableOpacity>
-
           <TouchableOpacity 
             style={styles.button1}
-            onPress={googleLogin}>
+            onPress={onpress}>
             <Image style={styles.googleImg} source={require('../../img/google_icon.png')}/>
-            <Text style={styles.buttonGoogleTitle}>구글 로그인</Text></TouchableOpacity>
-         
+            <Text style={styles.buttonGoogleTitle}>구글 로그인</Text>
+          </TouchableOpacity>
           <TouchableOpacity 
             style={styles.button2}
             onPress={() => navigation.navigate('Sign Up')}>
             <Text style={styles.buttonTitle}>회원가입</Text>
           </TouchableOpacity>
+
+          
       </View>
       <View style={styles.buttonlogoArea}>
         <Image style={styles.logobottom} source={require('../../img/logo_bottom.png') }/> 
       </View>
+      
       </View>
+      </TouchableWithoutFeedback>
       </>
     :
-      <View style={styles.containerL}>
-        <View style={styles.titleAreaL}>
-          <Image style={styles.logoL} source={require('../../img/mainlogo.png')}/>
-        </View>
-        <View style={styles.textAreaL}>
-          <Text style={styles.text1L}>반갑습니다.</Text>
-          <Text style={styles.text2L}>오늘도 일꾼과 함께 화이팅해요.</Text>
-        </View>
-        <View style={styles.buttonlogoAreaL}>
-          <Image style={styles.logobottom} source={require('../../img/mainlogowhite.png') }/> 
-        </View>
-      </View>
+      <Image style={styles.image} source={require('../../assets/splash.png') }/> 
   }
-     </View>
-  //</ImageBackground>
+     </>
 
   );
 };

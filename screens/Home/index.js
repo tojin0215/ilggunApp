@@ -2,10 +2,8 @@ import React, { useEffect, useState} from 'react';
 import { View, Button, Text, StyleSheet, TouchableOpacity, ImageBackground, Image} from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 
-//========================바뀐부분 스타일====================================
+
 const styles = StyleSheet.create({
   container: {
     width: "100%", height: "100%",

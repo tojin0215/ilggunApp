@@ -136,25 +136,35 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                         secureTextEntry={true}
                         placeholder={"비밀번호를 한번 더 입력하세요."}/>
                 </View>    
-                <View style={styles.textArea}>
+                <View style={styles.textArea2}>
+                    <View style={styles.signBtnArea}>
                     <Text style={styles.titleSignStyle}>서명</Text>
+                        <TouchableOpacity
+                            style={styles.signBtnArea2}
+                            onPress={async()=>{
+                                setPath('');
+                                setSavePath('')
+                            }}>
+                            <Text style={styles.signTextStyle}>지우기</Text>
+                        </TouchableOpacity> 
+                    </View>
                     <View style={styles.sign} onTouchMove={(e) => {
                     console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
                     setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
                     setPath(path+' L'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
-                    console.log(path)
+                    console.log(savePath)
                     }}
                     ontouchend={(e) => {
                         console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
                         setSavePath(savePath)
                         setPath(path+' Z')
-                        console.log(path)
+                        console.log(savePath)
                     }}
                     onTouchStart={(e) => {
                         console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
-                        setSavePath(savePath+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
+                        setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
                         setPath(path+' M'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
-                        console.log(path)
+                        console.log(savePath)
                     }}
                 >
                 <Svg>
@@ -164,18 +174,8 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                     stroke="black"
                 />
                 </Svg>
-
                 </View>
-
-                <TouchableOpacity
-                    style={styles.signBtnArea}
-                    onPress={async()=>{
-                        setPath('');
-                        setSavePath('')
-                    }}>
-                    <Text style={styles.signTextStyle}>지우기</Text>
-                    </TouchableOpacity> 
-                </View> 
+                </View>
                 
                 <View style={styles.buttonArea}>
                     <TouchableOpacity 
@@ -228,22 +228,27 @@ const styles = StyleSheet.create({
     titleSignStyle:{
         fontSize: wp('4.3%'),
         fontFamily:"NanumSquareB",
-        marginBottom:hp('1%')
+        marginTop:hp('1%')
+    },
+    textArea2:{
+        marginTop:hp('1.5%'),
     },
     sign : { 
-        height:hp('19%'), 
+        height:hp('30%'), 
         width:"100%" , 
         backgroundColor: '#E4E5EA' 
     },
     signBtnArea:{
-        backgroundColor:'#E4E5EA',
-        height:hp('6%'),
-        justifyContent:"center", alignItems:"center"
+        height:hp('4%'),
+        flexDirection:"row"
+    },
+    signBtnArea2:{
+        position:"absolute", top:0,right:0,
+        width:wp('15%'),height:hp('4%'),
+        flexDirection:"row"
     },
     signTextStyle:{
-        position:"absolute",
-        bottom:hp('0.8%'),right:hp('0.8%'),
-        width:wp('15%'), height:hp('5%'),
+        width:wp('15%'), height:hp('4%'),
         backgroundColor:'#040525',
         color:'white',
         fontSize: wp('3.8%'),
@@ -252,6 +257,7 @@ const styles = StyleSheet.create({
         paddingTop:hp('1.3%'),
         borderRadius:wp('1.5%')
     },
+  
     buttonArea: {
         width: '100%',
         height: hp('5.5%'),

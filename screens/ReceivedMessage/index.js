@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
-import { View, Modal, Text, Button, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Modal, Text, Button, StyleSheet, ImageBackground, Image,Platform } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import axios from 'axios';
 const styles = StyleSheet.create({
   image:{
@@ -30,8 +29,16 @@ const styles = StyleSheet.create({
     paddingBottom:hp('1%')
   },
   btnImgStyle:{
-    width:wp('50%'),
-    height:hp('6%')
+    ...Platform.select({
+      ios:{
+        width:wp('50%'),
+        height:hp('6.7%')
+      },
+      android:{
+        width:wp('50%'),
+        height:hp('6%')
+      }
+    })
   },
   messageArea:{
     flexDirection:'row',
@@ -315,7 +322,11 @@ function setModalVisibility(visible, msg ,t, index, r) {
         >
           <View style={styles.modalContainer}>
             <Text style={styles.modaltextStyle}>{message}</Text>
-                <Text onPress={() => setModalVisibility(!visibility,'')} style={styles.modalBtn}>닫기</Text>
+                <Text onPress={() => {
+                    setModalVisibility(!visibility,'');
+                    alterRead();
+                  }} 
+                  style={styles.modalBtn}>닫기</Text>
             </View>
         </Modal>
 

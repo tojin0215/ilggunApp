@@ -4,7 +4,6 @@ import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import { Row } from 'react-native-table-component';
 import axios from 'axios';
 
@@ -292,11 +291,11 @@ const WorkManageScreen = ({navigation, route}) => {
                     
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
-                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.mon!=undefined || b.mon!=null)?b.mon.slice(0,2)+":"+b.mon.slice(2,4)+" - "+b.mon.slice(4,6)+":"+b.mon.slice(6,8):'- -')}</Text>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.mon!=undefined || b.mon!=null)?b.mon.slice(0,2)+":"+b.mon.slice(2,4)+" ~ "+b.mon.slice(4,6)+":"+b.mon.slice(6,8):'- -')}</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
                     <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':(timelog[b.workername].slice(0,1)==''?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4))}</Text>
-                    <Text style={styles.werkerTextTime}>-</Text>
+                    <Text style={styles.werkerTextTime}> ~ </Text>
                     <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':(timelog[b.workername].slice(4,5)==''?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8))}</Text>
                   </View>
                 </View>
@@ -315,7 +314,7 @@ const WorkManageScreen = ({navigation, route}) => {
                     
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
-                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.tue!=undefined || b.tue!=null)?b.tue.slice(0,2)+" : "+b.tue.slice(2,4)+" ~ "+b.tue.slice(4,6)+" : "+b.tue.slice(6,8):'- -')}</Text>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.tue!=undefined || b.tue!=null)?b.tue.slice(0,2)+":"+b.tue.slice(2,4)+" ~ "+b.tue.slice(4,6)+":"+b.tue.slice(6,8):'- -')}</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
                     <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
@@ -336,7 +335,7 @@ const WorkManageScreen = ({navigation, route}) => {
                     
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
-                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.wed!=undefined || b.wed!=null)?b.wed.slice(0,2)+" : "+b.wed.slice(2,4)+" ~ "+b.wed.slice(4,6)+" : "+b.wed.slice(6,8):'- -')}</Text>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.wed!=undefined || b.wed!=null)?b.wed.slice(0,2)+":"+b.wed.slice(2,4)+" ~ "+b.wed.slice(4,6)+":"+b.wed.slice(6,8):'- -')}</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
                     <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
@@ -358,7 +357,7 @@ const WorkManageScreen = ({navigation, route}) => {
                     {console.log(timelog)}
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
-                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.thu!=undefined || b.thu!=null)?b.thu.slice(0,2)+" : "+b.thu.slice(2,4)+" ~ "+b.thu.slice(4,6)+" : "+b.thu.slice(6,8):'- -')}</Text>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.thu!=undefined || b.thu!=null)?b.thu.slice(0,2)+":"+b.thu.slice(2,4)+" ~ "+b.thu.slice(4,6)+":"+b.thu.slice(6,8):'- -')}</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
                     <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
@@ -379,7 +378,7 @@ const WorkManageScreen = ({navigation, route}) => {
                     
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
-                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.fri!=undefined || b.fri!=null)?b.fri.slice(0,2)+" : "+b.fri.slice(2,4)+" ~ "+b.fri.slice(4,6)+" : "+b.fri.slice(6,8):'- -')}</Text>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.fri!=undefined || b.fri!=null)?b.fri.slice(0,2)+":"+b.fri.slice(2,4)+" ~ "+b.fri.slice(4,6)+":"+b.fri.slice(6,8):'- -')}</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
                     <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
@@ -400,7 +399,7 @@ const WorkManageScreen = ({navigation, route}) => {
                     
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
-                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.sat!=undefined || b.sat!=null)?b.sat.slice(0,2)+" : "+b.sat.slice(2,4)+" ~ "+b.sat.slice(4,6)+" : "+b.sat.slice(6,8):'- -')}</Text>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.sat!=undefined || b.sat!=null)?b.sat.slice(0,2)+":"+b.sat.slice(2,4)+" ~ "+b.sat.slice(4,6)+":"+b.sat.slice(6,8):'- -')}</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
                     <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
@@ -421,7 +420,7 @@ const WorkManageScreen = ({navigation, route}) => {
                     
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
-                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.sun!=undefined || b.sun!=null)?b.sun.slice(0,2)+" : "+b.sun.slice(2,4)+" ~ "+b.sun.slice(4,6)+" : "+b.sun.slice(6,8):'- -')}</Text>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.sun!=undefined || b.sun!=null)?b.sun.slice(0,2)+":"+b.sun.slice(2,4)+" ~ "+b.sun.slice(4,6)+":"+b.sun.slice(6,8):'- -')}</Text>
                   </View>
                   <View style={{flexDirection:"row"}}>
                     <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>

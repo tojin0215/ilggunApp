@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity,ImageBackground,Image,Alert } from 'react-native';
+import { View, Text, StyleSheet, Button,ImageBackground,TouchableOpacity, Image, Alert,Platform } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -33,8 +33,17 @@ const styles = StyleSheet.create({
     width:wp('90%'), height: hp('10%'),
   },
   imgStyle:{
-    width:wp('90%'),height:hp('5.91%'),
-  },
+    ...Platform.select({
+      ios:{
+        width:wp('90%'),
+        height:hp('6.4%')
+      },
+      android:{
+        width:wp('90%'),
+        height:hp('5.91%')
+      }
+    })
+  },  
   image:{
     justifyContent: "center",
     width: "100%", height: "100%",
@@ -187,13 +196,17 @@ const WorkerManageScreen = ({navigation, route}) => {
       <ScrollView>
       {
           business.map((b, id) => (
-          <View style={styles.worker}  key={id}>
+          <View style={styles.worker} key={id}>
             <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
             <Text style={styles.textTitle}>{b.workername}</Text>
             <View style={styles.ContbuttonArea}>
               <TouchableOpacity
                 style={styles.Contbutton}
-                onPress={() => navigation.navigate(('Contract FormA'),{workername: b.workername, bid:idid })}>
+                onPress={() => {
+                  if(b.state!=0){
+                    navigation.navigate(('Contract FormA'),{workername: b.workername, bid:idid })
+                  }
+                }}>
                   {b.state==0?
                    <Text style={styles.deleteTitlex}>X</Text>:
                 <Image style={styles.contractImage} source={require('../../img/contractImg.png')}/>

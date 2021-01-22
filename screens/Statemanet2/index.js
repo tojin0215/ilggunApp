@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground, Image} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground, Image, Platform} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper,  Col, Cols, Cell } from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
 import StatementScreen1 from '../Statemanet1';
 import { AsyncStorage } from 'react-native';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -50,8 +49,8 @@ class StatementScreen2 extends Component{
 
     fetchData = async(flag) => { 
       try {
-        console.log(this.state.itemAA.split('년')[0] + " \\\\\\\\\\\\ "+ this.state.itemBB.split('월')[0]);
         axios.post('https://www.toojin.tk:3000/selectOvertimework', {
+          business: this.state.bangCode,
           year : this.state.itemAA.split('년')[0]*1,
           month : this.state.itemBB.split('월')[0]*1,
         },
@@ -59,17 +58,6 @@ class StatementScreen2 extends Component{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*await fetch('https://www.toojin.tk:3000/selectOvertimework', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              year : this.state.itemAA.split('년')[0]*1,
-              month : this.state.itemBB.split('월')[0]*1,
-            }),
-          }).then(res => res.json())*/
           .then(res => {
             console.log(this.state.itemAA.split('년')[0]*1);
             console.log(this.state.itemBB.split('월')[0]*1);
@@ -97,25 +85,13 @@ class StatementScreen2 extends Component{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-      /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          business : this.state.bangCode
-        }),
-      }).then(res => res.json())*/
       .then(res => {
-
-        console.log(res.data);
-        console.log(":::::::::::::::::::::::")
         let week=[4,4,4,4,4,4,4];
         let t1=[];
         let t2=[];
         let rowall = []
-        if(this.state.itemBB.split('월')[0] != new Date().getMonth()+1){
+        
+        if(this.state.itemAA.split('년')[0]*1!=new Date().getFullYear() || this.state.itemBB.split('월')[0] != new Date().getMonth()+1){
           console.log(":::::::::::::::::::::::")
         // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
           let nalsu = new Date(this.state.itemAA.split('년')[0], this.state.itemBB.split('월')[0], 0).getDate();
@@ -126,12 +102,58 @@ class StatementScreen2 extends Component{
             week[(it-i)%7]++;
           }
         for (let i = 0; i < res.data.length; i++) {
+          if(this.state.itemAA.split('년')[0]*1>new Date().getFullYear() || 
+          (this.state.itemAA.split('년')[0]*1==new Date().getFullYear() && this.state.itemBB.split('월')[0]*1>new Date().getMonth()+1)){
+            if(res.data[i].type==1){
+              rowall.push([res.data[i].workername, "알바", '0', '0' , '0', '0']);
+              t1.push({label: res.data[i].workername, value: res.data[i].workername})
+            }
+            else{
+              rowall.push([res.data[i].workername, "정규직", '0', '0', '0']);
+              t2.push({label: res.data[i].workername, value: res.data[i].workername})
+            }
+            this.setState({nname: rowall, type1:t1, type2:t2},() => 
+            {
+              if(flag==1){
+                this.show();
+              }
+            })
+          }
+          else{
+          if(this.state.itemAA.split('년')[0]*1 < res.data[i].startdate.split('/')[0]*1 || ( (this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1) && (this.state.itemBB.split('월')[0]*1 < res.data[i].startdate.split('/')[1]*1))){
+            if(res.data[i].type==1){
+              rowall.push([res.data[i].workername, "알바", '0', '0' , '0', '0']);
+              t1.push({label: res.data[i].workername, value: res.data[i].workername})
+            }
+            else{
+              rowall.push([res.data[i].workername, "정규직", '0', '0', '0']);
+              t2.push({label: res.data[i].workername, value: res.data[i].workername})
+            }
+            this.setState({nname: rowall, type1:t1, type2:t2},() => 
+            {
+              if(flag==1){
+                this.show();
+              }
+            })
+          }else{
           if(res.data[i].type==1){
+            let weekk=[0,0,0,0,0,0,0];
+            if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0] && this.state.itemBB.split('월')[0]== res.data[i].startdate.split('/')[1]){
+              let nn = Math.floor((res.data[i].startdate.split('/')[2]-1)/7);
+              weekk=[nn,nn,nn,nn,nn,nn,nn];
+              console.log(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1], res.data[i].startdate.split('/')[2]);
+              let dd = new Date(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1]*1-1, 1).getDay();
+              console.log("오늘 날짜까지 끊자!"+dd);
+              for(let j=0; j<((res.data[i].startdate.split('/')[2]-1)%7) ; j++){
+                weekk[dd]++;
+                dd++; dd=dd%7;
+              }
+            }
             let sum = 0;
             let eachtime = res.data[i].eachtime.split('/');
             for(let i=0 ; i<7 ; i++){
               console.log((eachtime[i]*1) , week[i]);
-              sum += (eachtime[i]*1) * week[i];
+              sum += (eachtime[i]*1) * (week[i]-weekk[i]);
             }
             console.log(">>>");
             console.log(res.data);
@@ -141,12 +163,17 @@ class StatementScreen2 extends Component{
                 t1.push({label: res.data[i].workername, value: res.data[i].workername})
               }
               else{
-                rowall.push([res.data[i].workername, "정규직", String(res.data[i].pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
+                if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                  pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
+                }
+                rowall.push([res.data[i].workername, "정규직", String(pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                 t2.push({label: res.data[i].workername, value: res.data[i].workername})
               }
             }
-            
+            }
           }
+        } 
         else{
           let n = Math.floor(new Date().getDate()/7);
               let week=[n,n,n,n,n,n,n];
@@ -160,13 +187,47 @@ class StatementScreen2 extends Component{
               }
 
               for (let i = 0; i < res.data.length; i++) {
+                console.log('======================================================///////===========================')
+                console.log('><><><><'+this.state.itemAA.split('년')[0]*1 , res.data[i].startdate.split('/')[0]*1 , this.state.itemBB.split('월')[0]*1 , res.data[i].startdate.split('/')[1]*1)
+                if(this.state.itemAA.split('년')[0]*1 < res.data[i].startdate.split('/')[0]*1 || ( (this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1) && (this.state.itemBB.split('월')[0]*1 < res.data[i].startdate.split('/')[1]*1))){ 
+                  if(res.data[i].type==1){
+                    rowall.push([res.data[i].workername, "알바", '0', '0' , '0', '0']);
+                    t1.push({label: res.data[i].workername, value: res.data[i].workername})
+                  }
+                  else{
+                    rowall.push([res.data[i].workername, "정규직", '0', '0', '0']);
+                    t2.push({label: res.data[i].workername, value: res.data[i].workername})
+                  }
+                  this.setState({nname: rowall, type1:t1, type2:t2},() => 
+                  {
+                    if(flag==1){
+                      this.show();
+                    }
+                  })
+                }
                 console.log(res.data);
                 if(res.data[i].type==1){
+                  
+                  let weekk=[0,0,0,0,0,0,0];
+                  if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                    let nn = Math.floor((res.data[i].startdate.split('/')[2]-1)/7);
+                    weekk=[nn,nn,nn,nn,nn,nn,nn];
+                    console.log(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1], res.data[i].startdate.split('/')[2]);
+                    let dd = new Date(res.data[i].startdate.split('/')[0], (res.data[i].startdate.split('/')[1]*1)-1, 1).getDay();
+                    console.log("오늘 날짜까지 끊자!"+dd);
+                    for(let j=0; j<((res.data[i].startdate.split('/')[2]-1)%7) ; j++){
+                      weekk[dd]++;
+                      dd++; dd=dd%7;
+                    }
+                    console.log('///////////////////////////////////////////22')
+                    console.log(weekk)
+                  }
+
                   let sum = 0;
                   let eachtime = res.data[i].eachtime.split('/');
                   for(let i=0 ; i<7 ; i++){
                     console.log((eachtime[i]*1) , week[i]);
-                    sum += (eachtime[i]*1) * week[i];
+                    sum += (eachtime[i]*1) * (week[i]-weekk[i]);
                   }
                   console.log(">>>");
                   console.log(res.data);
@@ -175,7 +236,12 @@ class StatementScreen2 extends Component{
                   t1.push({label: res.data[i].workername, value: res.data[i].workername})
                 }
                 else{
-                  rowall.push([res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                  let date = new Date().getDate();
+                    if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                      if(date <= res.data[i].startdate.split('/')[2]*1) date = 0;
+                      else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
+                    }
+                  rowall.push([res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                   t2.push({label: res.data[i].workername, value: res.data[i].workername});
                 }
               }
@@ -186,7 +252,6 @@ class StatementScreen2 extends Component{
               this.show();
             }
           });
-      
           
       } catch (e) {
           console.error(e);
@@ -529,18 +594,19 @@ class StatementScreen2 extends Component{
                         {label: '2018년', value: '2018년'},
                         {label: '2019년', value: '2019년'},
                         {label: '2020년', value: '2020년'},
+                        {label: '2021년', value: '2021년'},
                     ]}
                     defaultValue={this.state.itemAA}
                     containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('3%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: 5, borderBottomRightRadius: 5}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
-                      height:hp('4%'),
+                      height:hp('3%'),
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
                       fontSize: wp('4%'),
-                      marginTop:hp('1.4%')
+                      marginTop:hp('1%')
                     }}
                     isVisible={this.state.isVisibleAA}
                     onOpen={() => this.changeVisibility({
@@ -559,15 +625,15 @@ class StatementScreen2 extends Component{
             
                 <DropDownPicker
                     items={[
-                    {label: '1월', value: '01월'},
-                    {label: '2월', value: '02월'},
-                    {label: '3월', value: '03월'},
-                    {label: '4월', value: '04월'},
-                    {label: '5월', value: '05월'},
-                    {label: '6월', value: '06월'},
-                    {label: '7월', value: '07월'},
-                    {label: '8월', value: '08월'},
-                    {label: '9월', value: '09월'},
+                    {label: '1월', value: '1월'},
+                    {label: '2월', value: '2월'},
+                    {label: '3월', value: '3월'},
+                    {label: '4월', value: '4월'},
+                    {label: '5월', value: '5월'},
+                    {label: '6월', value: '6월'},
+                    {label: '7월', value: '7월'},
+                    {label: '8월', value: '8월'},
+                    {label: '9월', value: '9월'},
                     {label: '10월', value: '10월'},
                     {label: '11월', value: '11월'},
                     {label: '12월', value: '12월'},
@@ -575,14 +641,15 @@ class StatementScreen2 extends Component{
                     defaultValue={this.state.itemBB}
                     containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('1%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
+
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
-                      height:hp('4%'),
+                      height:hp('3%'),
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
                       fontSize: wp('4%'),
-                      marginTop:hp('1.4%')
+                      marginTop:hp('1%')
                     }}
                 
                     isVisible={this.state.isVisibleBB}
@@ -598,22 +665,30 @@ class StatementScreen2 extends Component{
                 />
                 </View>
             
-                
                 <View style={styles.dropDownArea2}>
                 <DropDownPicker
                     items={this.state.type2}
                     placeholder='정규직/계약직'
                     defaultValue={this.state.itemA}
                     containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('3%'), marginTop:wp('1%')}}
-                    dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: 5, borderBottomRightRadius: 5}}
-                    itemStyle={{justifyContent: 'center', }}
+                    dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%'),}}
+
+                    itemStyle={{justifyContent: 'center', alignItems:"center" }}
                     labelStyle={{
-                      height:hp('4%'),
+                      height:hp('3%'),
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
                       fontSize: wp('3.8%'),
-                      marginTop:hp('0.1%')
+                      marginTop:hp('1%'),
+                      ...Platform.select({
+                        ios:{
+                          fontSize: wp('3.3%'),
+                        },
+                        android:{
+                          fontSize: wp('3.8%'),
+                        }
+                      })
                     }}
                     isVisible={this.state.isVisibleA}
                     onOpen={() => this.changeVisibility({
@@ -630,18 +705,27 @@ class StatementScreen2 extends Component{
                 />
                 <DropDownPicker
                     items={this.state.type1}
-                    placeholder='알바/일용근로자'
+                    placeholder='알바/단기'
                     defaultValue={this.state.itemB}
-                    containerStyle={{height: hp('6%'), width: wp('30%'),backgroundColor: 'white', marginLeft:wp('1%'), marginTop:wp('1%')}}
+                    containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('1%'), marginTop:wp('1%'),}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
                     itemStyle={{justifyContent: 'center', }}
+                     
                     labelStyle={{
-                      height:hp('4%'),
+                      height:hp('3%'),
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
                       fontSize: wp('3.8%'),
-                      marginTop:hp('0.1%')
+                      marginTop:hp('1%'),
+                      ...Platform.select({
+                        ios:{
+                          fontSize: wp('3.3%'),
+                        },
+                        android:{
+                          fontSize: wp('3.8%'),
+                        }
+                      })
                     }}
 
                     isVisible={this.state.isVisibleB}
@@ -670,7 +754,7 @@ class StatementScreen2 extends Component{
                     <Text style={styles.textStyle}>이름 : {Name}</Text>
                     <Text style={styles.textStyle}>, 근무형태 : {WorkingType}</Text>
                 </View>
-                <ScrollView>
+                <ScrollView style={{zIndex: -2000}}>
                 <View style={styles.tableArea}>
                     <Table style={styles.wrapper} borderStyle={{borderWidth: 1,borderColor:'white'}}>
                       {/* Left Wrapper */}
@@ -716,6 +800,7 @@ class StatementScreen2 extends Component{
 export default StatementScreen2;
 
 const styles = StyleSheet.create({
+  
   image:{
     alignItems: 'center', justifyContent:"center",
     width: "100%", height: "100%", 
@@ -750,10 +835,14 @@ const styles = StyleSheet.create({
   dropDownArea2:{
     flexDirection:'row',
     marginTop:hp('0.1%'),
-    marginBottom:hp('2%'),
-    width:wp('90%'), height:hp('6%'),
-    alignItems:"center", justifyContent:"flex-start",
-    marginLeft:wp('5%')
+    marginLeft:wp('5%'),
+    width:wp('90%'), height:hp('18%'),
+    alignItems:"flex-start", justifyContent:"flex-start",
+    ...Platform.select({
+      ios:{
+        zIndex:-1000
+      }
+    })
   },
   button: {
     backgroundColor: "#67C8BA", marginLeft:wp('2%'),marginTop:wp('1%'),
@@ -764,18 +853,24 @@ const styles = StyleSheet.create({
   buttonTitle: {
     color: 'white',
     fontFamily:"NanumSquare",
-    fontSize:wp('4.8%'),
+    fontSize:wp('4.5%'),
   },
   tableArea:{
-    marginTop:hp('1%'),
     marginBottom:hp('5%'),
     width:wp('90%'),
-    marginLeft:wp('5%')
+    marginLeft:wp('5%'),
   },
   textArea:{
-    marginTop:hp('1%'),
-    marginLeft:wp('7%'),
-    flexDirection:"row"
+    flexDirection:"row",
+    marginTop:hp('2%'),
+    width:wp('80%'),
+    position:"absolute",
+    top:hp('27%'),
+    ...Platform.select({
+      ios:{
+        zIndex:-2000
+      }
+    })
   },
   textStyle:{
     fontSize:wp('4.2%'),
@@ -796,15 +891,23 @@ const styles = StyleSheet.create({
   title1: { flex: 1, backgroundColor: '#A3E5DA' },
   
   tableText: { 
-      textAlign: 'center', 
-      fontFamily:"NanumSquare", 
-      color: '#040525',
-      fontSize: wp('3.35%') },
+    textAlign: 'center', 
+    fontFamily:"NanumSquare", 
+    color: '#040525',
+    fontSize: wp('3.35%') },
   tableTitleText: { 
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
       color: '#040525',
-      fontSize: wp('3.8%') },
+      ...Platform.select({
+        ios:{
+          fontSize: wp('3.2%')
+        },
+        android:{
+          fontSize: wp('3.8%')
+        }
+      })
+  },
   tableTitleWhiteText: { 
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
@@ -823,6 +926,15 @@ const styles = StyleSheet.create({
     marginTop:hp('2%')
   },
   excelBtn:{
-  width:wp('85%'), height:hp('5.6%')
+    ...Platform.select({
+      ios:{
+        width:wp('80%'), 
+        height:hp('5.6%')
+      },
+      android:{
+        width:wp('85%'), 
+        height:hp('5.6%')
+      }
+    })
   }
 });

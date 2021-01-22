@@ -4,7 +4,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import { AsyncStorage } from 'react-native';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { abs } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -86,7 +85,7 @@ class VacationRequestScreen extends Component{
     console.log("매개변수 : ");
     this.state = {
         bangCode:'',
-      itemA: '2020', //'2020년',
+      itemA: '2021', //'2020년',
       isVisibleA: false,
    
       itemB: '1',//'10월',
@@ -128,7 +127,7 @@ if(this.state.comment){
             system:1,
             f: this.props.route.params.id,
             t : this.state.owner,
-            message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+(this.state.itemB.length==1?'0'+this.state.itemB.length:this.state.itemB.length)+"-"+(this.state.itemAA.length==1?'0'+this.state.itemAA.length:this.state.itemAA.length)+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
+            message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+(this.state.itemB.length==1?'0'+this.state.itemB:this.state.itemB)+"-"+(this.state.itemAA.length==1?'0'+this.state.itemAA:this.state.itemAA)+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
             time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA,
             r:0
         },
@@ -219,7 +218,7 @@ if(this.state.comment){
                 dropDownStyle={{backgroundColor: 'white',}}
                 itemStyle={{justifyContent: 'center'}}
                 labelStyle={{
-                  height:hp('4%'),
+                  height:hp('3%'),
                   textAlign: 'center',
                   color:'#040525',
                   fontFamily:"NanumSquare",
@@ -270,7 +269,7 @@ if(this.state.comment){
                 dropDownStyle={{backgroundColor: 'white',}}
                 itemStyle={{justifyContent: 'center'}}
                 labelStyle={{
-                  height:hp('4%'),
+                  height:hp('3%'),
                   textAlign: 'center',
                   color:'#040525',
                   fontFamily:"NanumSquare",
@@ -336,7 +335,7 @@ if(this.state.comment){
                 dropDownStyle={{backgroundColor: 'white',}}
                 itemStyle={{justifyContent: 'center'}}
                 labelStyle={{
-                  height:hp('4%'),
+                  height:hp('3%'),
                   textAlign: 'center',
                   color:'#040525',
                   fontFamily:"NanumSquare",

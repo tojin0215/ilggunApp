@@ -1,9 +1,8 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ImageBackground} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ImageBackground, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -79,6 +78,7 @@ class ExpenseScreen1 extends Component{
     const{MonthlySalary, SocialInsurance, NationalPension, HealthInsurance, RegularCare, EmploymentInsurance, TaxDeduction,TotalSalary} = this.state
     
     return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 //============================바뀐부분A================================================================
   <View style={styles.image}>     
      {/* //============================바뀐부분A================================================================ */}
@@ -94,6 +94,7 @@ class ExpenseScreen1 extends Component{
               onChangeText={(MonthlySalary) => this.setState({MonthlySalary})}
               autoFocus={true}
               placeholder={'1000000'}
+              keyboardType={"number-pad"}
               style={styles.textinputStyle}
             />
             <Text style={styles.textStyle}>원</Text>
@@ -122,6 +123,7 @@ class ExpenseScreen1 extends Component{
 {/* //============================바뀐부분B================================================================         */}
       </View>
       </View>
+      </TouchableWithoutFeedback>
     )
   }
 }

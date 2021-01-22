@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
  
 const SelectScreen = ({ onSignIn, navigation }) => {
 

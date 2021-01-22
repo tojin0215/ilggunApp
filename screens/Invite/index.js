@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import { View, Text, StyleSheet, ScrollView, Button, TextInput, FlatList, ImageBackground, Image, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Button, TextInput, FlatList, ImageBackground, Image, Alert ,TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import axios from 'axios';
 
 const styles = StyleSheet.create({
@@ -84,7 +83,7 @@ class InviteScreen extends Component{
     super(props);
     this.state = {
         bangCode : null, id:'',
-        workerList: [], item:''
+        workerList: [], item:'', clicked:false,
     }
 
     AsyncStorage.getItem("bangCode")
@@ -141,7 +140,7 @@ class InviteScreen extends Component{
         'Accept': 'application/json'}
         })
         .then(res => {
-          console.log("LLLLLLLLLLLLLLLLLL")
+          console.log(JSON.stringify(res.data))
           if(res.data[0]==undefined){
             axios.post('https://www.toojin.tk:3000/sendMessage', {
               type: 1,
@@ -156,6 +155,8 @@ class InviteScreen extends Component{
             'Accept': 'application/json'}
             })
             .then(res => {
+              console.log("선택 :???"+this.state.clicked)
+
             });
             console.log(this.state.bangCode, name, this.props.route.params.type)
             axios.post('https://www.toojin.tk:3000/addWorker', {
@@ -169,6 +170,7 @@ class InviteScreen extends Component{
               'Accept': 'application/json'}
             })
             .then(res => {
+              console.log("선택 :??"+this.state.clicked)
               this.props.navigation.navigate('Worker Management')
             });
           }else{
@@ -182,8 +184,8 @@ class InviteScreen extends Component{
       }
     }
     render() {
-        
         return (
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.image}>
           <View style={styles.container}>
 
@@ -224,7 +226,12 @@ class InviteScreen extends Component{
                 <Text style={styles.textStyle}>{item.name}({item.id})</Text>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={()=>{console.log(item.id+'<<<<<<<<<<<<<,'); this.sendInviteMessage(item.id); }}
+                  onPress={()=>{
+                    if(this.state.clicked==false){
+                      this.setState({clicked:true})
+                      this.sendInviteMessage(item.id) 
+                    }
+                  }}
                 >
                   <Image style={styles.inviteImage} source={require('../../img/inviteBtn.png')}/>
                 </TouchableOpacity>
@@ -234,7 +241,7 @@ class InviteScreen extends Component{
       </View>      
     </View>
     </View>
-            
+    </TouchableWithoutFeedback>       
         )
     }
 }

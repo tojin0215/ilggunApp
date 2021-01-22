@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ImageBackground, View, Button,Alert, Animated, Image} from 'react-native';
+import { StyleSheet, Text, ImageBackground, View, Button,Alert, Animated, Image,Platform} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper,  Col, Cols, Cell } from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
 import StatementScreen1 from '../Statemanet1';
 import { AsyncStorage } from 'react-native';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -26,6 +25,7 @@ const name = [['김수정','알바','8590','80','10000','40000'],['권소령','�
 class WorkerStatementScreen extends Component{
 // 급여대장
     constructor(props) {
+      console.log( String(new Date().getFullYear())+'년')
       super(props);
       this.state = {
         itemAA: String(new Date().getFullYear())+'년' , isVisibleAA: false, itemBB: String(new Date().getMonth()+1)+'월', isVisibleBB: false,
@@ -129,6 +129,7 @@ class WorkerStatementScreen extends Component{
       try {
 
         axios.post('https://www.toojin.tk:3000/selectOvertimework', {
+          business: bangCode,
           year : this.state.itemAA.split('년')[0]*1,
           month : this.state.itemBB.split('월')[0]*1,
         },
@@ -136,21 +137,7 @@ class WorkerStatementScreen extends Component{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*await fetch('https://www.toojin.tk:3000/selectOvertimework', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              year : this.state.itemAA.split('년')[0]*1,
-              month : this.state.itemBB.split('월')[0]*1,
-            }),
-          }).then(res => res.json())*/
           .then(res => {
-            console.log(this.state.itemAA.split('년')[0]*1);
-            console.log(this.state.itemBB.split('월')[0]*1);
-            console.log("???");
               console.log(res.data);
             let dic ={};
             for(let i=0 ; i<res.data.length ; i++){
@@ -158,7 +145,7 @@ class WorkerStatementScreen extends Component{
                 dic[res.data[i].workername] = res.data[i].subt;   
               }
               else{
-                dic[res.data[i].workername] += res.data[i].subt;   //this.setState({addtime :{...this.state.addtime, n : s}});
+                dic[res.data[i].workername] += res.data[i].subt;   
               }
             }
             console.log("???");
@@ -176,26 +163,13 @@ class WorkerStatementScreen extends Component{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-          /*
-          let res = await fetch('https://www.toojin.tk:3000/selectWorkerEach', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              business : bangCode
-            }),
-          }).then(res => res.json())*/
           .then(res => {
             let rowall = [];
             let week=[4,4,4,4,4,4,4];
             let t1=[];
             let t2=[];
             let t3=[];
-            if(this.state.itemBB.split('월')[0] != new Date().getMonth()+1){
-              console.log(":::::::::::::::::::::::")
-            // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
+            if(this.state.itemAA.split('년')[0]*1!=new Date().getFullYear() || this.state.itemBB.split('월')[0] != new Date().getMonth()+1){
               let nalsu = new Date(this.state.itemAA.split('년')[0], this.state.itemBB.split('월')[0], 0).getDate();
               let namugi = nalsu%7;
               let it = new Date(this.state.itemAA.split('년')[0], this.state.itemBB.split('월')[0], 0).getDay();
@@ -204,36 +178,86 @@ class WorkerStatementScreen extends Component{
                 week[(it-i)%7]++;
               }
             for (let i = 0; i < res.data.length; i++) {
+              if(res.data[i].state==2){
+              if(this.state.itemAA.split('년')[0]*1>new Date().getFullYear() || 
+              (this.state.itemAA.split('년')[0]*1==new Date().getFullYear() && this.state.itemBB.split('월')[0]*1>new Date().getMonth()+1)){
+                if(res.data[i].type==1){
+                  rowall.push([res.data[i].workername, "알바", '0', '0' , '0', '0']);
+                  t1.push({label: res.data[i].workername, value: res.data[i].workername})
+                }
+                else{
+                  rowall.push([res.data[i].workername, "정규직", '0', '0', '0']);
+                  t2.push({label: res.data[i].workername, value: res.data[i].workername})
+                }
+                this.setState({nname: rowall, type1:t1, type2:t2},() => 
+                {
+                    this.show();
+                })
+              }
+              else{
+              if(this.state.itemAA.split('년')[0]*1 < res.data[i].startdate.split('/')[0]*1 || ( (this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1) && (this.state.itemBB.split('월')[0]*1 < res.data[i].startdate.split('/')[1]*1))){
+                if(res.data[i].type==1){
+                  rowall.push([res.data[i].workername, "알바", '0', '0' , '0', '0']);
+                  t1.push({label: res.data[i].workername, value: res.data[i].workername})
+                }
+                else{
+                  rowall.push([res.data[i].workername, "정규직", '0', '0', '0']);
+                  t2.push({label: res.data[i].workername, value: res.data[i].workername})
+                }
+                this.setState({nname: rowall, type1:t1, type2:t2},() => 
+                {
+                  
+                    this.show();
+                  
+                })
+              }else{
+              if(res.data[i].type==1){
+                let weekk=[0,0,0,0,0,0,0];
+                if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0] && this.state.itemBB.split('월')[0]== res.data[i].startdate.split('/')[1]){
+                  let nn = Math.floor((res.data[i].startdate.split('/')[2]-1)/7);
+                  weekk=[nn,nn,nn,nn,nn,nn,nn];
+                  console.log(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1], res.data[i].startdate.split('/')[2]);
+                  let dd = new Date(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1]*1-1, 1).getDay();
+                  console.log("오늘 날짜까지 끊자!"+dd);
+                  for(let j=0; j<((res.data[i].startdate.split('/')[2]-1)%7) ; j++){
+                    weekk[dd]++;
+                    dd++; dd=dd%7;
+                  }
+                }
                 let sum = 0;
                 let eachtime = res.data[i].eachtime.split('/');
                 for(let i=0 ; i<7 ; i++){
                   console.log((eachtime[i]*1) , week[i]);
-                  sum += (eachtime[i]*1) * week[i];
+                  sum += (eachtime[i]*1) * (week[i]-weekk[i]);
                 }
                 console.log(">>>");
                 console.log(res.data);
                 console.log(">>>");
-              if(res.data[i].state==2){
-                if(res.data[i].type==1){
+              
                   rowall.push([res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/)]);
                   t1.push({label: res.data[i].workername, value: res.data[i].workername})
                   this.setState({itemA:res.data[i].workername});
                   this.setState({nname: rowall, type1:t1})
                 }
                 else{
-                  rowall.push([res.data[i].workername, "정규직", String(res.data[i].pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                  let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
+                  if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                    pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
+                  }
+                  rowall.push([res.data[i].workername, "정규직", String(pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                   t2.push({label: res.data[i].workername, value: res.data[i].workername})
                   this.setState({itemB:res.data[i].workername});
                   this.setState({nname: rowall,type2:t2})
                 }
               }
+            }}
               else{
                 rowall.push (['계약서가 작성되지 않았습니다',"계약서가 작성되지 않았습니다",'X','X','X'])
                 t3.push({label: 'X', value: 'X'})
                 this.setState({itemC:"계약서가 작성되지 않았습니다"});
                 this.setState({nname: rowall,type3:t3})
-              }
-            }
+          }
+        }
           }else{
             let n = Math.floor(new Date().getDate()/7);
                 let week=[n,n,n,n,n,n,n];
@@ -247,14 +271,45 @@ class WorkerStatementScreen extends Component{
                 }
   
                 for (let i = 0; i < res.data.length; i++) {
+                  
                   console.log(res.data);
                   if(res.data[i].state==2){
+                    if(this.state.itemAA.split('년')[0]*1 < res.data[i].startdate.split('/')[0]*1 || ( (this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1) && (this.state.itemBB.split('월')[0]*1 < res.data[i].startdate.split('/')[1]*1))){ 
+                      if(res.data[i].type==1){
+                        rowall.push([res.data[i].workername, "알바", '0', '0' , '0', '0']);
+                        t1.push({label: res.data[i].workername, value: res.data[i].workername})
+                      }
+                      else{
+                        rowall.push([res.data[i].workername, "정규직", '0', '0', '0']);
+                        t2.push({label: res.data[i].workername, value: res.data[i].workername})
+                      }
+                      this.setState({nname: rowall, type1:t1, type2:t2},() => 
+                      {
+                          this.show();
+                        
+                      })
+                    }
                     if(res.data[i].type==1){
+                      let weekk=[0,0,0,0,0,0,0];
+                      if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                        let nn = Math.floor((res.data[i].startdate.split('/')[2]-1)/7);
+                        weekk=[nn,nn,nn,nn,nn,nn,nn];
+                        console.log(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1], res.data[i].startdate.split('/')[2]);
+                        let dd = new Date(res.data[i].startdate.split('/')[0], (res.data[i].startdate.split('/')[1]*1)-1, 1).getDay();
+                        console.log("오늘 날짜까지 끊자!"+dd);
+                        for(let j=0; j<((res.data[i].startdate.split('/')[2]-1)%7) ; j++){
+                          weekk[dd]++;
+                          dd++; dd=dd%7;
+                        }
+                        console.log('///////////////////////////////////////////22')
+                        console.log(weekk)
+                      }
+
                       let sum = 0;
                       let eachtime = res.data[i].eachtime.split('/');
                       for(let i=0 ; i<7 ; i++){
                         console.log((eachtime[i]*1) , week[i]);
-                        sum += (eachtime[i]*1) * week[i];
+                        sum += (eachtime[i]*1) * (week[i]-weekk[i]);
                       }
                       console.log(">>>");
                       console.log(String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/));
@@ -265,7 +320,12 @@ class WorkerStatementScreen extends Component{
                       this.setState({nname: rowall, type1:t1})
                     }
                     else{
-                      rowall.push([res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                      let date = new Date().getDate();
+                      if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                        if(date <= res.data[i].startdate.split('/')[2]*1) date = 0;
+                        else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
+                      }
+                      rowall.push([res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                       t2.push({label: res.data[i].workername, value: res.data[i].workername});
                       this.setState({itemB:res.data[i].workername});
                       this.setState({nname: rowall,type2:t2})
@@ -569,18 +629,19 @@ class WorkerStatementScreen extends Component{
                         {label: '2018년', value: '2018년'},
                         {label: '2019년', value: '2019년'},
                         {label: '2020년', value: '2020년'},
+                        {label: '2021년', value: '2021년'},
                     ]}
                     defaultValue={this.state.itemAA}
                     containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('3%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: 5, borderBottomRightRadius: 5}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
-                      height:hp('4%'),
+                      height:hp('3%'),
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
                       fontSize: wp('4%'),
-                      marginTop:hp('1.4%')
+                      marginTop:hp('1%')
                     }}
                     isVisible={this.state.isVisibleAA}
                     onOpen={() => this.changeVisibility({
@@ -599,15 +660,15 @@ class WorkerStatementScreen extends Component{
             
                 <DropDownPicker
                     items={[
-                    {label: '1월', value: '01월'},
-                    {label: '2월', value: '02월'},
-                    {label: '3월', value: '03월'},
-                    {label: '4월', value: '04월'},
-                    {label: '5월', value: '05월'},
-                    {label: '6월', value: '06월'},
-                    {label: '7월', value: '07월'},
-                    {label: '8월', value: '08월'},
-                    {label: '9월', value: '09월'},
+                    {label: '1월', value: '1월'},
+                    {label: '2월', value: '2월'},
+                    {label: '3월', value: '3월'},
+                    {label: '4월', value: '4월'},
+                    {label: '5월', value: '5월'},
+                    {label: '6월', value: '6월'},
+                    {label: '7월', value: '7월'},
+                    {label: '8월', value: '8월'},
+                    {label: '9월', value: '9월'},
                     {label: '10월', value: '10월'},
                     {label: '11월', value: '11월'},
                     {label: '12월', value: '12월'},
@@ -617,12 +678,12 @@ class WorkerStatementScreen extends Component{
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
-                      height:hp('4%'),
+                      height:hp('3%'),
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
                       fontSize: wp('4%'),
-                      marginTop:hp('1.4%')
+                      marginTop:hp('1%')
                     }}
                 
                     isVisible={this.state.isVisibleBB}
@@ -653,7 +714,7 @@ class WorkerStatementScreen extends Component{
                 <Text style={styles.textStyle}>, 근무형태 : {WorkingType}</Text>
             </View>
           
-            <ScrollView>
+            <ScrollView style={{zIndex: -2000}}>
             <View style={styles.tableArea}>
             <Table style={styles.wrapper} borderStyle={{borderWidth: 1, borderColor:'white'}}>
                     {/* Left Wrapper */}
@@ -696,7 +757,6 @@ class WorkerStatementScreen extends Component{
 }
 
 export default WorkerStatementScreen;
-
 const styles = StyleSheet.create({
   image:{
     alignItems: 'center', justifyContent:"center",
@@ -714,15 +774,33 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     marginTop:hp('3%'),
     marginBottom:hp('0.1%'),
-    width:wp('90%'), height:hp('6%'),
-    alignItems:"center", justifyContent:"flex-start",
+    width:wp('90%'), height:hp('15%'),
+    alignItems:"flex-start", justifyContent:"flex-start",
     marginLeft:wp('5%')
+  },
+  buttonTitle: {
+        color: 'white',
+        fontFamily:"NanumSquare",
+        ...Platform.select({
+          ios:{
+            fontSize: wp('4.3%') 
+          },
+          android:{
+            fontSize: wp('4.8%') 
+          }
+        })
   },
   textArea:{
     flexDirection:"row",
     padding:wp('5%'),
-    marginTop:hp('2%'),
-    marginLeft:wp('1.5%')
+    marginLeft:wp('1.5%'),
+    position:"absolute",
+    top:hp('11%'),
+    ...Platform.select({
+      ios:{
+        zIndex:-1000
+      }
+    })
   },
   tableArea:{
     paddingLeft:wp('5%'),
@@ -742,13 +820,22 @@ const styles = StyleSheet.create({
   },
   
   button2: {
-    backgroundColor: "#D3DDFF", marginLeft:wp('2%'),marginTop:wp('1%'),
+    backgroundColor: "#7085DF", marginLeft:wp('2%'),
     width:wp('20%'), height: hp('6%'),
     justifyContent: 'center', alignItems:"center",
     borderRadius:wp('1.7%'),
   },
   excelBtn:{
-    width:wp('85%'), height:hp('5.6%')
+    ...Platform.select({
+      ios:{
+        width:wp('80%'), 
+        height:hp('5.6%')
+      },
+      android:{
+        width:wp('85%'), 
+        height:hp('5.6%')
+      }
+    })
   },
   textStyle:{
     fontSize:wp('4.2%'),
@@ -802,19 +889,25 @@ const styles = StyleSheet.create({
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
       color: '#040525',
-      fontSize: wp('3.35%') },
+      fontSize: wp('3.35%')
+    },
   tableTitleText: { 
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
       color: '#040525',
-      fontSize: wp('3.8%') 
+      ...Platform.select({
+        ios:{
+          fontSize: wp('3.2%') 
+        },
+        android:{
+          fontSize: wp('3.8%') 
+        }
+      })
   }, 
     tableTitleWhiteText:{
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
       color: 'white',
       fontSize: wp('3.8%') 
-
     }
-      
 });

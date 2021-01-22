@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import {StyleSheet, Text, View, Button, TextInput, ScrollView, ImageBackground} from 'react-native';
+import {StyleSheet, Text, View, Button, TextInput, ScrollView, ImageBackground,Platform} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import moment from "moment";
-import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -55,12 +53,12 @@ class WCalculatingScreen2 extends Component{
           Term2_1.format('YYYY.MM.DD')+'\n~'+Term2.format('YYYY.MM.DD'), 
           Term1_1.format('YYYY.MM.DD')+'\n~'+Term1.format('YYYY.MM.DD'), '-', '합계'],
         tableData: [
-          [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.input} />, 
-            <TextInput value={this.state.term3OtherAllowance} onChangeText={(term3OtherAllowance) => this.setState({term3OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput12 = input; }} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.input} />],
-          [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.input} /> , 
-            <TextInput value={this.state.term2OtherAllowance} onChangeText={(term2OtherAllowance) => this.setState({term2OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.input} />],
-          [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput15 = input; }} onSubmitEditing={() => { this.TextInput16.focus(); }} blurOnSubmit={false} style={styles.input} />,
-            <TextInput value={this.state.term1OtherAllowance} onChangeText={(term1OtherAllowance) => this.setState({term1OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput16 = input; }} style={styles.input} />],
+          [diff3, <TextInput value={this.state.term3BasePay} keyboardType={"number-pad"} onChangeText={(term3BasePay) => this.setState({term3BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.input} />, 
+            <TextInput value={this.state.term3OtherAllowance} keyboardType={"number-pad"} onChangeText={(term3OtherAllowance) => this.setState({term3OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput12 = input; }} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.input} />],
+          [diff2, <TextInput value={this.state.term2BasePay} keyboardType={"number-pad"} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.input} /> , 
+            <TextInput value={this.state.term2OtherAllowance} keyboardType={"number-pad"} onChangeText={(term2OtherAllowance) => this.setState({term2OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.input} />],
+          [diff1, <TextInput value={this.state.term1BasePay} keyboardType={"number-pad"} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput15 = input; }} onSubmitEditing={() => { this.TextInput16.focus(); }} blurOnSubmit={false} style={styles.input} />,
+            <TextInput value={this.state.term1OtherAllowance} keyboardType={"number-pad"} onChangeText={(term1OtherAllowance) => this.setState({term1OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput16 = input; }} style={styles.input} />],
           ['-', '-', '-'],
           [diff1+diff2+diff3, 
             parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay), 
@@ -92,14 +90,14 @@ class WCalculatingScreen2 extends Component{
           Term2_1.format('YYYY.MM.DD')+'\n~'+Term2.format('YYYY.MM.DD'), 
           Term1_1.format('YYYY.MM.DD')+'\n~'+Term1.format('YYYY.MM.DD'), '합계'],
         tableData: [
-          [diff4, <TextInput value={this.state.term4BasePay} onChangeText={(term4BasePay) => this.setState({term4BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.input} />, 
-            <TextInput value={this.state.term4OtherAllowance} onChangeText={(term4OtherAllowance) => this.setState({term4OtherAllowance})} placeholder={'200000'} ref={(input) => { this.TextInput12 = input; }} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.input} />],
-          [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.input} />, 
-            <TextInput value={this.state.term3OtherAllowance} onChangeText={(term3OtherAllowance) => this.setState({term3OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.input} />],
-          [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput15 = input; }} onSubmitEditing={() => { this.TextInput16.focus(); }} blurOnSubmit={false} style={styles.input} /> , 
-            <TextInput value={this.state.term2OtherAllowance} onChangeText={(term2OtherAllowance) => this.setState({term2OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput16 = input; }} onSubmitEditing={() => { this.TextInput17.focus(); }} blurOnSubmit={false} style={styles.input} />],
-          [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput17 = input; }} onSubmitEditing={() => { this.TextInput18.focus(); }} blurOnSubmit={false} style={styles.input} />,
-            <TextInput value={this.state.term1OtherAllowance} onChangeText={(term1OtherAllowance) => this.setState({term1OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput18 = input; }} style={styles.input} />],
+          [diff4, <TextInput value={this.state.term4BasePay} keyboardType={"number-pad"} onChangeText={(term4BasePay) => this.setState({term4BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.input} />, 
+            <TextInput value={this.state.term4OtherAllowance} keyboardType={"number-pad"} onChangeText={(term4OtherAllowance) => this.setState({term4OtherAllowance})} placeholder={'200000'} ref={(input) => { this.TextInput12 = input; }} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.input} />],
+          [diff3, <TextInput value={this.state.term3BasePay} keyboardType={"number-pad"} onChangeText={(term3BasePay) => this.setState({term3BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.input} />, 
+            <TextInput value={this.state.term3OtherAllowance} keyboardType={"number-pad"} onChangeText={(term3OtherAllowance) => this.setState({term3OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.input} />],
+          [diff2, <TextInput value={this.state.term2BasePay} keyboardType={"number-pad"} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput15 = input; }} onSubmitEditing={() => { this.TextInput16.focus(); }} blurOnSubmit={false} style={styles.input} /> , 
+            <TextInput value={this.state.term2OtherAllowance} keyboardType={"number-pad"} onChangeText={(term2OtherAllowance) => this.setState({term2OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput16 = input; }} onSubmitEditing={() => { this.TextInput17.focus(); }} blurOnSubmit={false} style={styles.input} />],
+          [diff1, <TextInput value={this.state.term1BasePay} keyboardType={"number-pad"} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput17 = input; }} onSubmitEditing={() => { this.TextInput18.focus(); }} blurOnSubmit={false} style={styles.input} />,
+            <TextInput value={this.state.term1OtherAllowance} keyboardType={"number-pad"} onChangeText={(term1OtherAllowance) => this.setState({term1OtherAllowance})} placeholder={'20000'} ref={(input) => { this.TextInput18 = input; }} style={styles.input} />],
           [diff1+diff2+diff3+diff4,
             parseInt(this.state.term4BasePay)+parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay), 
             parseInt(this.state.term4OtherAllowance)+parseInt(this.state.term3OtherAllowance)+parseInt(this.state.term2OtherAllowance)+parseInt(this.state.term1OtherAllowance)]
@@ -155,6 +153,17 @@ class WCalculatingScreen2 extends Component{
   constructor(props) {
     super(props);
     this.state = {
+      JoinYear:'2020', JoinMonth:'1', JoinDay:'1', //입사 년,월,일
+      LeaveYear:'2020', LeaveMonth:'12', LeaveDay:'31', //퇴사 년,월,일
+      NumberOfWorkingDays:'0', //재직일수
+      EnteringDate:'0', //입사일자
+      DateOfResignation:'0', //퇴사일자
+      term1BasePay:null, term2BasePay:null, term3BasePay:null, term4BasePay:null,
+      term1OtherAllowance:null, term2OtherAllowance:null, term3OtherAllowance:null, term4OtherAllowance:null,
+      diff3Month:'0',
+      AnnualBonus:'0', // 연간상여금
+      AnnualAllowance:'0', //연차수당
+      SeverancePay:'0', //퇴직금
       tableHead: ['기간', '기간별일수', '기본급', '기타수당'],
       tableTitle: ['기간1', '기간2', '기간3', '기간4','합계'],
       tableData: [
@@ -173,7 +182,7 @@ class WCalculatingScreen2 extends Component{
     
     return(
   //=================================================바뀐부분A========================================
-  <ImageBackground style={styles.image} source={require('../../img/page2_1.png')}>
+  <View style={styles.image}>
 
   {/* //=================================================바뀐부분A==================================== */}
       <View style={styles.container}>
@@ -191,6 +200,7 @@ class WCalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput1.focus(); }}
               blurOnSubmit={false}
               placeholder={'2015'}
+              keyboardType={"number-pad"}
               style={styles.textinputYearStyle}
             />
             <Text style={styles.textStyle}>년</Text>
@@ -201,6 +211,7 @@ class WCalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput2.focus(); }}
               blurOnSubmit={false}
               placeholder={'5'}
+              keyboardType={"number-pad"}
               style={styles.textinputDayStyle}
             />
             <Text style={styles.textStyle}>월</Text>
@@ -211,6 +222,7 @@ class WCalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput3.focus(); }}
               blurOnSubmit={false}
               placeholder={'25'}
+              keyboardType={"number-pad"}
               style={styles.textinputDayStyle}
             />
             <Text style={styles.textStyle}>일</Text>
@@ -225,6 +237,7 @@ class WCalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput4.focus(); }}
               blurOnSubmit={false}
               placeholder={'2020'}
+              keyboardType={"number-pad"}
               style={styles.textinputYearStyle}
             />
             <Text style={styles.textStyle}>년</Text>
@@ -235,6 +248,7 @@ class WCalculatingScreen2 extends Component{
               onSubmitEditing={() => { this.TextInput5.focus(); }}
               blurOnSubmit={false}
               placeholder={'10'}
+              keyboardType={"number-pad"}
               style={styles.textinputDayStyle}
             />
             <Text style={styles.textStyle}>월</Text>
@@ -243,6 +257,7 @@ class WCalculatingScreen2 extends Component{
               onChangeText={(LeaveDay) => this.setState({LeaveDay})}
               ref={(input) => { this.TextInput5 = input; }}
               placeholder={'10'}
+              keyboardType={"number-pad"}
               style={styles.textinputDayStyle}
             />
             <Text style={styles.textStyle}>일</Text>
@@ -264,13 +279,13 @@ class WCalculatingScreen2 extends Component{
 
   {/* //=================================================바뀐부분B==================================== */}
           <View style={styles.tableArea}>
-          <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
-            <Row data={state.tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
-            <TableWrapper style={styles.wrapper}>
-              <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%'),hp('6%'),hp('6%')]} textStyle={styles.tableText}/>
-              <Rows data={state.tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.tableText}/>
-            </TableWrapper>
-          </Table>
+            <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
+              <Row data={state.tableHead} flexArr={[0.8, 1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
+              <TableWrapper style={styles.wrapper}>
+                <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%'),hp('6%'),hp('6%')]} textStyle={styles.tableText}/>
+                <Rows data={state.tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.tableText}/>
+              </TableWrapper>
+            </Table>
           </View>
   {/* //=================================================바뀐부분B==================================== */}
 
@@ -285,6 +300,7 @@ class WCalculatingScreen2 extends Component{
                 onSubmitEditing={() => { this.TextInput31.focus(); }}
                 blurOnSubmit={false}
                 placeholder={'연간상여금 총액'}
+                keyboardType={"number-pad"}
                 style={styles.textinputStyle}
               />
               <Text style={styles.textStyle}> 원</Text>
@@ -297,6 +313,7 @@ class WCalculatingScreen2 extends Component{
                 ref={(input) => { this.TextInput31 = input; }}
                 blurOnSubmit={false}
                 placeholder={'연차수당'}
+                keyboardType={"number-pad"}
                 style={styles.textinputStyle}
               />
               <Text style={styles.textStyle}> 원</Text>
@@ -334,7 +351,7 @@ class WCalculatingScreen2 extends Component{
           </View>
         </ScrollView>    
       </View>
-      </ImageBackground>
+      </View>
     )
   }
   
@@ -347,25 +364,17 @@ class WCalculatingScreen2 extends Component{
     container: {
       padding:wp('5%'), 
       width: "100%", 
-      height: "100%",
+      height: "100%",    
       backgroundColor: 'white',
       borderTopRightRadius:wp('13%'),
-      borderTopLeftRadius:wp('13%'),  
+      borderTopLeftRadius:wp('13%'),
+  
     },
     rowView: { flexDirection: 'row' },
     marginTop : {marginTop: hp('1.3%')},
     wrapper: { flexDirection: 'row' },
-    head: {
-      height: hp('6%'),
-      backgroundColor: '#D3DDFF',
-      borderTopRightRadius:wp('4%'), 
-      borderTopLeftRadius:wp('4%')
-    },
-    title: {
-      flex: 1,
-      backgroundColor: '#D3DDFF',  
-      borderBottomLeftRadius:wp('4%')
-    },
+    head: {  height: hp('6%'),  backgroundColor: '#E2F2EF', borderTopRightRadius:wp('4%'), borderTopLeftRadius:wp('4%') },
+    title: { flex: 0.8, backgroundColor: '#E2F2EF',  borderBottomLeftRadius:wp('4%')},
     row: {  height:hp('6%') },
     titleArea:{
       alignItems:"center"
@@ -373,13 +382,20 @@ class WCalculatingScreen2 extends Component{
     tableText: { 
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
-      fontSize:wp('3.8%'),
       color: '#040525',
+      ...Platform.select({
+        ios:{
+          fontSize: wp('3.2%'),
+        },
+        android:{
+          fontSize: wp('3.8%'),
+        }
+      })
     },
     image:{ 
       alignItems: 'center', justifyContent:"center",
       width: "100%", height: "100%",     
-      backgroundColor:'#7085DF'
+      backgroundColor:'#67C8BA'
     },
     textTitle:{
       fontSize: wp('5.55%'),
@@ -414,7 +430,6 @@ class WCalculatingScreen2 extends Component{
       marginTop:wp('1%'),
       marginBottom:wp('1.5%'),
       marginRight:wp('2%'),
-
     },
     textinputStyle:{
       fontSize:wp('4.2%'),
@@ -440,7 +455,7 @@ class WCalculatingScreen2 extends Component{
       marginBottom:hp('2%'),
     },
     button: {
-        backgroundColor: "#7085DF",
+        backgroundColor: "#67C8BA",
         width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
         borderRadius:wp('6%'),

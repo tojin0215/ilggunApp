@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground, Image} from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Animated, ImageBackground, Image, Platform} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import DropDownPicker from 'react-native-dropdown-picker';
 import StatementScreen from '../Statemanet';
 import { AsyncStorage } from 'react-native';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -55,134 +54,192 @@ class StatementScreen1 extends React.Component {
 
     fetchData = async(bangCode) => { 
       try {
-        
-        console.log(bangCode);
-        await axios.post('https://www.toojin.tk:3000/selectOvertimework', {
-          year : this.state.itemA.split('년')[0]*1,
-          month : this.state.itemB.split('월')[0]*1,
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-        })
-        /*  await fetch('https://www.toojin.tk:3000/selectOvertimework', {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
+        if(this.state.itemA.split('년')[0]*1>new Date().getFullYear() || 
+        (this.state.itemA.split('년')[0]*1==new Date().getFullYear() && this.state.itemB.split('월')[0]*1>new Date().getMonth()+1)){
+          console.log("????")
+          this.setState({arrName:[]}, () => this.show())
+        }
+        else{
+          console.log(bangCode);
+          await axios.post('https://www.toojin.tk:3000/selectOvertimework', {
+            business: bangCode,
+            year : this.state.itemA.split('년')[0]*1,
+            month : this.state.itemB.split('월')[0]*1,
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+          /*  await fetch('https://www.toojin.tk:3000/selectOvertimework', {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    year : this.state.itemA.split('년')[0]*1,
+                    month : this.state.itemB.split('월')[0]*1,
+                  }),
+                }).then(res => res.json())*/
+                .then(async(res) => {
+                  console.log("???");
+                    console.log(res.data);
+                  let dic ={};
+                  for(let i=0 ; i<res.data.length ; i++){
+                    if(!dic[res.data[i].workername]){
+                      dic[res.data[i].workername] = res.data[i].subt;   
+                    }
+                    else{
+                      dic[res.data[i].workername] += res.data[i].subt;   //this.setState({addtime :{...this.state.addtime, n : s}});
+                    }
+                  }
+                  console.log("???");
+                    console.log(dic);
+                  this.setState({addtime : dic})
+                  
+
+                });
+
+                await axios.post('https://www.toojin.tk:3000/selectWorker', {
+                  business : bangCode
                 },
-                body: JSON.stringify({
-                  year : this.state.itemA.split('년')[0]*1,
-                  month : this.state.itemB.split('월')[0]*1,
-                }),
-              }).then(res => res.json())*/
-              .then(async(res) => {
-                console.log("???");
-                  console.log(res.data);
-                let dic ={};
-                for(let i=0 ; i<res.data.length ; i++){
-                  if(!dic[res.data[i].workername]){
-                    dic[res.data[i].workername] = res.data[i].subt;   
+                {  headers:{
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'}
+                })
+            /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                business : bangCode
+              }),
+            }).then(res => res.json())*/
+            .then(res => {
+              let rowall = []
+              if(this.state.itemA.split('년')[0]*1!=new Date().getFullYear() || this.state.itemB.split('월')[0] != new Date().getMonth()+1){
+                let week=[4,4,4,4,4,4,4];
+          
+                // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
+                  let nalsu = new Date(this.state.itemA.split('년')[0], this.state.itemB.split('월')[0], 0).getDate();
+                  let namugi = nalsu%7;
+                  let it = new Date(this.state.itemA.split('년')[0], this.state.itemB.split('월')[0], 0).getDay();
+                  console.log(nalsu, namugi, it, this.state.itemA.split('년')[0], this.state.itemB.split('월')[0]);
+                  for(let i=0 ; i<namugi ; i++){
+                    week[(it-i)%7]++;
+                  }
+
+                
+                for (let i = 0; i < res.data.length; i++) {
+                  console.log(this.state.itemA.split('년')[0] , res.data[i].startdate.split('/')[0] , this.state.itemB.split('월')[0], res.data[i].startdate.split('/')[1])
+                  if(this.state.itemA.split('년')[0]*1 < res.data[i].startdate.split('/')[0]*1 || ( (this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1) && (this.state.itemB.split('월')[0]*1 < res.data[i].startdate.split('/')[1]*1))){
+                    break;
+                  }
+                  if(res.data[i].type==1){
+                    //==========================================
+                    let weekk=[0,0,0,0,0,0,0];
+                    if(this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0] && this.state.itemB.split('월')[0]== res.data[i].startdate.split('/')[1]){
+                      let nn = Math.floor((res.data[i].startdate.split('/')[2]-1)/7);
+                      weekk=[nn,nn,nn,nn,nn,nn,nn];
+                      console.log(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1], res.data[i].startdate.split('/')[2]);
+                      let dd = new Date(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1]*1-1, 1).getDay();
+                      console.log("오늘 날짜까지 끊자!"+dd);
+                      for(let j=0; j<((res.data[i].startdate.split('/')[2]-1)%7) ; j++){
+                        weekk[dd]++;
+                        dd++; dd=dd%7;
+                      }
+                      console.log('///////////////////////////////////////////')
+                      console.log(weekk)
+                    }
+                    //==========================================
+                    let sum = 0;
+                    let eachtime = res.data[i].eachtime.split('/');
+                    for(let i=0 ; i<7 ; i++){
+                      console.log((eachtime[i]*1) , week[i], weekk[i]);
+                      if(weekk[i]<=week[i]){
+                        sum += (eachtime[i]*1) * (week[i]-weekk[i]);
+                      }
+                    }
+
+                    
+                    console.log(">>>");
+                    console.log(res.data);
+                    console.log(">>>");
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                   }
                   else{
-                    dic[res.data[i].workername] += res.data[i].subt;   //this.setState({addtime :{...this.state.addtime, n : s}});
+                    let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
+                    if(this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                      pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
+                    }
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
                   }
                 }
-                console.log("???");
-                  console.log(dic);
-                this.setState({addtime : dic})
                 
-
-              });
-
-              await axios.post('https://www.toojin.tk:3000/selectWorker', {
-                business : bangCode
-              },
-              {  headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'}
-              })
-          /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              business : bangCode
-            }),
-          }).then(res => res.json())*/
-          .then(res => {
-            let rowall = []
-            if(this.state.itemB.split('월')[0] != new Date().getMonth()+1){
-              let week=[4,4,4,4,4,4,4];
-        
-              // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
-                let nalsu = new Date(this.state.itemA.split('년')[0], this.state.itemB.split('월')[0], 0).getDate();
-                let namugi = nalsu%7;
-                let it = new Date(this.state.itemA.split('년')[0], this.state.itemB.split('월')[0], 0).getDay();
-                console.log(nalsu, namugi, it, this.state.itemA.split('년')[0], this.state.itemB.split('월')[0]);
-                for(let i=0 ; i<namugi ; i++){
-                  week[(it-i)%7]++;
+              }else{
+                
+                let n = Math.floor(new Date().getDate()/7);
+                let week=[n,n,n,n,n,n,n];
+                console.log(week)
+                console.log(new Date().getFullYear(), new Date().getMonth(), 1);
+                let d = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay();
+                console.log("오늘 날짜까지 끊자!"+d);
+                for(let i=0; i<(new Date().getDate()%7) ; i++){
+                  week[d]++;
+                  d++; d=d%7;
                 }
 
-              
-              for (let i = 0; i < res.data.length; i++) {
-                if(res.data[i].type==1){
-                  let sum = 0;
-                  let eachtime = res.data[i].eachtime.split('/');
-                  for(let i=0 ; i<7 ; i++){
-                    console.log((eachtime[i]*1) , week[i]);
-                    sum += (eachtime[i]*1) * week[i];
+                for (let i = 0; i < res.data.length; i++) {
+                  if(this.state.itemA.split('년')[0]*1 < res.data[i].startdate.split('/')[0]*1 || ( (this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1) && (this.state.itemB.split('월')[0]*1 < res.data[i].startdate.split('/')[1]*1))){
+                    break;
                   }
-                  console.log(">>>");
                   console.log(res.data);
-                  console.log(">>>");
-                  rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
-                }
-                else{
-                  console.log();
-                  rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(res.data[i].pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
-                }
-              }
-              
+                  if(res.data[i].type==1){
+                    
+                    let weekk=[0,0,0,0,0,0,0];
+                    if(this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                      let nn = Math.floor((res.data[i].startdate.split('/')[2]-1)/7);
+                      weekk=[nn,nn,nn,nn,nn,nn,nn];
+                      console.log(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1], res.data[i].startdate.split('/')[2]);
+                      let dd = new Date(res.data[i].startdate.split('/')[0], (res.data[i].startdate.split('/')[1]*1)-1, 1).getDay();
+                      console.log("오늘 날짜까지 끊자!"+dd);
+                      for(let j=0; j<((res.data[i].startdate.split('/')[2]-1)%7) ; j++){
+                        weekk[dd]++;
+                        dd++; dd=dd%7;
+                      }
+                      console.log('///////////////////////////////////////////22')
+                      console.log(weekk)
+                    }
 
-              console.log(this.state.arrName);
-            }else{
-              let n = Math.floor(new Date().getDate()/7);
-              let week=[n,n,n,n,n,n,n];
-              console.log(week)
-              console.log(new Date().getFullYear(), new Date().getMonth(), 1);
-              let d = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay();
-              console.log("오늘 날짜까지 끊자!"+d);
-              for(let i=0; i<(new Date().getDate()%7) ; i++){
-                week[d]++;
-                d++; d=d%7;
-              }
-
-              for (let i = 0; i < res.data.length; i++) {
-                console.log(res.data);
-                if(res.data[i].type==1){
-                  let sum = 0;
-                  let eachtime = res.data[i].eachtime.split('/');
-                  for(let i=0 ; i<7 ; i++){
-                    console.log((eachtime[i]*1) , week[i]);
-                    sum += (eachtime[i]*1) * week[i];
+                    let sum = 0;
+                    let eachtime = res.data[i].eachtime.split('/');
+                    for(let i=0 ; i<7 ; i++){
+                      console.log((eachtime[i]*1) , week[i], weekk[i]);
+                      sum += (eachtime[i]*1) * (week[i]-weekk[i]);
+                    }
+                    console.log(">>>");
+                    console.log(String(res.data[i].pay/*시급*/),">>>>>", String(sum/* 시간 */) ,">>>>>", String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/));
+                    console.log(">>>");
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                   }
-                  console.log(">>>");
-                  console.log(String(res.data[i].pay/*시급*/),">>>>>", String(sum/* 시간 */) ,">>>>>", String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/));
-                  console.log(">>>");
-                  rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
-                }
-                else{
-                  console.log(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate())
-                  rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                  else{
+                    let date = new Date().getDate();
+                    if(this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                      if(date <= res.data[i].startdate.split('/')[2]*1) date = 0;
+                      else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
+                    }
+                    console.log(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate())
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                  }
                 }
               }
-            }
-            this.setState({arrName: rowall})
-            this.show();
-          });
+              this.setState({arrName: rowall},() => this.show())
+             
+            });
+          }
+          
       } catch (e) {
           console.error(e);
           
@@ -487,18 +544,19 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
                         {label: '2018년', value: '2018년'},
                         {label: '2019년', value: '2019년'},
                         {label: '2020년', value: '2020년'},
+                        {label: '2021년', value: '2021년'},
                     ]}
                     defaultValue={this.state.itemA}
                     containerStyle={{height: hp('6%'), width:wp('35%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
                     itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
-                      height:hp('4%'),
+                      height:hp('3%'),
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
                       fontSize: wp('4.2%'),
-                      marginTop:hp('1.4%')
+                      marginTop:hp('1%')
                     }}
                     isVisible={this.state.isVisibleA}
                     onOpen={() => this.changeVisibility({
@@ -517,15 +575,15 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
             
                 <DropDownPicker
                     items={[
-                    {label: '1월', value: '01월'},
-                    {label: '2월', value: '02월'},
-                    {label: '3월', value: '03월'},
-                    {label: '4월', value: '04월'},
-                    {label: '5월', value: '05월'},
-                    {label: '6월', value: '06월'},
-                    {label: '7월', value: '07월'},
-                    {label: '8월', value: '08월'},
-                    {label: '9월', value: '09월'},
+                    {label: '1월', value: '1월'},
+                    {label: '2월', value: '2월'},
+                    {label: '3월', value: '3월'},
+                    {label: '4월', value: '4월'},
+                    {label: '5월', value: '5월'},
+                    {label: '6월', value: '6월'},
+                    {label: '7월', value: '7월'},
+                    {label: '8월', value: '8월'},
+                    {label: '9월', value: '9월'},
                     {label: '10월', value: '10월'},
                     {label: '11월', value: '11월'},
                     {label: '12월', value: '12월'},
@@ -533,14 +591,15 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
                     defaultValue={this.state.itemB}
                     containerStyle={{height: hp('6%'), width:wp('25%'), marginLeft:wp('0.5%')}}
                     dropDownStyle={{backgroundColor: 'white', borderBottomLeftRadius: wp('1.7%'), borderBottomRightRadius: wp('1.7%')}}
-                    itemStyle={{justifyContent: 'center'}}
+
+                    itemStyle={{justifyContent: 'center', }}
                     labelStyle={{
-                      height:hp('4%'),
+                      height:hp('3%'),
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
                       fontSize: wp('4.2%'),
-                      marginTop:hp('1.4%')
+                      marginTop:hp('1%')
                     }}
                     isVisible={this.state.isVisibleB}
                     onOpen={() => this.changeVisibility({
@@ -555,9 +614,10 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
                 />
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={()=>{
-                    this.fetchData(this.state.bangcode)
-                    this.show()}
+                  onPress={()=>
+                    {
+                      this.fetchData(this.state.bangcode)
+                    }
                   }>
                   <Text style={styles.buttonTitle}>조회하기</Text>
                 </TouchableOpacity>
@@ -568,7 +628,7 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
                 </View>
 
 
-                <ScrollView>
+                <ScrollView style={{zIndex: -2000}}>
                 <View  style={styles.tableArea}>
                     <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
                         <Row data={state.tableHead} flexArr={[1, 0.8, 1, 0.8, 1, 1]} style={styles.head} textStyle={styles.tableTitleText}/>
@@ -609,7 +669,7 @@ const styles = StyleSheet.create({
   image:{
     alignItems: 'center', justifyContent:"center",
     width: "100%", height: "100%", 
-    backgroundColor:'#67C8BA'
+    backgroundColor:'#67C8BA',
   },
   container: {
     width:'100%', height:'100%',
@@ -619,6 +679,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius:wp('13%'),
     borderTopLeftRadius:wp('13%'),
   },
+  
   titleArea:{
     alignItems:"center"
   },
@@ -633,7 +694,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     marginTop:hp('3%'),
     marginLeft:wp('3%'),
-    width:wp('80%'), height:hp('20%'),
+    width:wp('80%'), height:hp('18%'),
     alignItems:"flex-start", justifyContent:"center",
   },
   button: {
@@ -656,7 +717,12 @@ const styles = StyleSheet.create({
     marginTop:hp('2%'),
     marginLeft:wp('1.5%'),
     position:"absolute",
-    top:hp('23%'),
+    top:hp('20%'),
+    ...Platform.select({
+      ios:{
+        zIndex:-1000
+      }
+    })
   },
   textStyle:{
     fontSize:wp('4.5%'),
@@ -701,7 +767,15 @@ const styles = StyleSheet.create({
         marginTop:hp('2%')
   },
   excelBtn:{
-    width:wp('85%'), height:hp('5.6%')
+    ...Platform.select({
+      ios:{
+        width:wp('80%'), 
+        height:hp('5.6%')
+      },
+      android:{
+        width:wp('85%'), 
+        height:hp('5.6%')
+      }
+    })
   }
-  
 });

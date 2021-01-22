@@ -4,7 +4,6 @@ import TimePicker from 'react-native-simple-time-picker';
 
 import CheckboxGroup from 'react-native-checkbox-group';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
@@ -145,6 +144,7 @@ class WExpenseScreen2 extends Component {
                             autoFocus={true}
 //======================================바뀐부분C========================================= 
                             placeholder={'8720'}
+                            keyboardType={"number-pad"}
 //======================================바뀐부분C========================================= 
                             style={styles.textinputStyle}
                             />
@@ -183,7 +183,7 @@ class WExpenseScreen2 extends Component {
                                 labelStyle={{
                                     color: '#040525',
                                     marginTop:hp('1%'),
-                                    marginLeft:hp('1.,5%'),
+                                    marginLeft:hp('1.5%'),
                                 }}
 //=====================================================바뀐부분E=======================================
                                 rowStyle={{

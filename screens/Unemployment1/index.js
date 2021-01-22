@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button,BackHandler, Alert, ImageBackground, } from 'react-native';
+import { StyleSheet, Text, View, Button,BackHandler, Alert, ImageBackground, Platform} from 'react-native';
 import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import moment from "moment";
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -21,7 +20,7 @@ class UnemploymentScreen1 extends Component{
         Age:0, Period:0, //만 나이, 가입기간
         OneDayUnemploymentBenefitAmount:0, UnemploymentBenefitAmount:0, PaymentDays:0,
         DateOfResignation:0, //퇴사일자
-        term1BasePay:null, term2BasePay:null, term3BasePay:null, term4BasePay:null,
+        term1BasePay:0, term2BasePay:0, term3BasePay:0, term4BasePay:0,
         term1OtherAllowance:null, term2OtherAllowance:null, term3OtherAllowance:null, term4OtherAllowance:null,
         AverageSalary:0, diff3Month:0,
     }
@@ -66,9 +65,9 @@ class UnemploymentScreen1 extends Component{
                     //(1일 평균급여액 = 최근 3개월 급여액 / 최근 3개월 근무기간)
                     //월 납부 보험료 = 월 평균급여(1일평균급여*30) X 0.8%)
                 tableData: [
-                    [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} autoFocus={true} placeholder={'1000000'} onSubmitEditing={() => { this.TextInput11.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
-                    [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
-                    [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput12 = input; }} style={styles.tableText} />],
+                    [diff3, <TextInput value={this.state.term3BasePay} keyboardType={"number-pad"} onChangeText={(term3BasePay) => this.setState({term3BasePay})} autoFocus={true} placeholder={'1000000'} onSubmitEditing={() => { this.TextInput11.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff2, <TextInput value={this.state.term2BasePay} keyboardType={"number-pad"} onChangeText={(term2BasePay) => this.setState({term2BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput11 = input; }} onSubmitEditing={() => { this.TextInput12.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff1, <TextInput value={this.state.term1BasePay} keyboardType={"number-pad"} onChangeText={(term1BasePay) => this.setState({term1BasePay})} placeholder={'1000000'} ref={(input) => { this.TextInput12 = input; }} style={styles.tableText} />],
                     ['-', '-'],
                     [diff1+diff2+diff3, 
                         ((parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay))/(diff1+diff2+diff3)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")],
@@ -102,10 +101,10 @@ class UnemploymentScreen1 extends Component{
                     Term2_1.format('YYYY.MM.DD')+'\n~'+Term2.format('YYYY.MM.DD'), 
                     Term1_1.format('YYYY.MM.DD')+'\n~'+Term1.format('YYYY.MM.DD'), '1일 평균 급여액','월 납부 보험료'],
                 tableData: [
-                    [diff4, <TextInput value={this.state.term4BasePay} onChangeText={(term4BasePay) => this.setState({term4BasePay})} autoFocus={true} placeholder={'1000000'} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
-                    [diff3, <TextInput value={this.state.term3BasePay} onChangeText={(term3BasePay) => this.setState({term3BasePay})} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
-                    [diff2, <TextInput value={this.state.term2BasePay} onChangeText={(term2BasePay) => this.setState({term2BasePay})} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
-                    [diff1, <TextInput value={this.state.term1BasePay} onChangeText={(term1BasePay) => this.setState({term1BasePay})} ref={(input) => { this.TextInput15 = input; }} style={styles.tableText} />],
+                    [diff4, <TextInput value={this.state.term4BasePay} keyboardType={"number-pad"} onChangeText={(term4BasePay) => this.setState({term4BasePay})} autoFocus={true} placeholder={'1000000'} onSubmitEditing={() => { this.TextInput13.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff3, <TextInput value={this.state.term3BasePay} keyboardType={"number-pad"} onChangeText={(term3BasePay) => this.setState({term3BasePay})} ref={(input) => { this.TextInput13 = input; }} onSubmitEditing={() => { this.TextInput14.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff2, <TextInput value={this.state.term2BasePay} keyboardType={"number-pad"} onChangeText={(term2BasePay) => this.setState({term2BasePay})} ref={(input) => { this.TextInput14 = input; }} onSubmitEditing={() => { this.TextInput15.focus(); }} blurOnSubmit={false} style={styles.tableText} />],
+                    [diff1, <TextInput value={this.state.term1BasePay} keyboardType={"number-pad"} onChangeText={(term1BasePay) => this.setState({term1BasePay})} ref={(input) => { this.TextInput15 = input; }} style={styles.tableText} />],
                     [diff1+diff2+diff3+diff4,
                         ((parseInt(this.state.term4BasePay)+parseInt(this.state.term3BasePay)+parseInt(this.state.term2BasePay)+parseInt(this.state.term1BasePay))/(diff1+diff2+diff3+diff4)).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")],
                     ['',
@@ -335,6 +334,9 @@ class UnemploymentScreen1 extends Component{
             types1: [{label: '예', value: 0}, {label: '아니오', value: 1}],
             value1:0,
             value1Index: 0,
+            DateOfBirth:'19901122',
+            JoinYear:'2019', JoinMonth:'1', JoinDay:'1', //고용보험가입시작 년,월,일
+            LeaveYear:'2020', LeaveMonth:'12', LeaveDay:'31', //고용보험가입끝 년,월,일
         }
     }
 
@@ -367,6 +369,7 @@ class UnemploymentScreen1 extends Component{
                         onChangeText={(DateOfBirth) => this.setState({DateOfBirth})}
                         onSubmitEditing={() => { this.TextInput2.focus(); }}
                         blurOnSubmit={false}
+                        keyboardType={"number-pad"}
                         placeholder={'19901013'}
                         style={styles.textinputStyle}
                     />
@@ -402,6 +405,7 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput3.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'2015'}
+                        keyboardType={"number-pad"}
                         style={styles.textinputYearStyle}
                     />
                     <Text style={styles.textStyle}>년 </Text>
@@ -412,6 +416,7 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput4.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'5'}
+                        keyboardType={"number-pad"}
                         style={styles.textinputDayStyle}
                         />
                     <Text style={styles.textStyle}>월 </Text>
@@ -422,6 +427,7 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput5.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'25'}
+                        keyboardType={"number-pad"}
                         style={styles.textinputDayStyle}
                     />
                     <Text style={styles.textStyle}>일 </Text>
@@ -435,6 +441,7 @@ class UnemploymentScreen1 extends Component{
                             onSubmitEditing={() => { this.TextInput6.focus(); }}
                             blurOnSubmit={false}
                             placeholder={'2020'}
+                            keyboardType={"number-pad"}
                             style={styles.textinputYearStyle}
                         />
                     <Text style={styles.textStyle}>년 </Text>
@@ -445,6 +452,7 @@ class UnemploymentScreen1 extends Component{
                         onSubmitEditing={() => { this.TextInput7.focus(); }}
                         blurOnSubmit={false}
                         placeholder={'9'}
+                        keyboardType={"number-pad"}
                         style={styles.textinputDayStyle}
                         />
                     <Text style={styles.textStyle}>월 </Text>
@@ -453,6 +461,7 @@ class UnemploymentScreen1 extends Component{
                         onChangeText={(LeaveDay) => this.setState({LeaveDay})}
                         ref={(input) => { this.TextInput7 = input; }}
                         placeholder={'18'}
+                        keyboardType={"number-pad"}
                         style={styles.textinputDayStyle}
                     />
                     <Text style={styles.textStyle}>일</Text>
@@ -555,7 +564,7 @@ const styles = StyleSheet.create({
     },
     image:{ 
         alignItems: 'center', justifyContent:"center",
-        width: "100%", height: "103%", 
+        width: "100%", height: "100%", 
         backgroundColor:'#67C8BA'
     },
     
@@ -691,5 +700,13 @@ const styles = StyleSheet.create({
         textAlign: 'center', 
         fontFamily:"NanumSquare", 
         color: '#040525',
-        fontSize: wp('3.8%')},
+        ...Platform.select({
+            ios:{
+            fontSize: wp('3.2%'),
+            },
+            android:{
+            fontSize: wp('3.8%'),
+            }
+        })
+    },
 });

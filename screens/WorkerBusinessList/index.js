@@ -4,7 +4,6 @@ import { View, Text, Button, StyleSheet, TouchableOpacity,ImageBackground } from
 // ======================바뀐부분A==================================================================
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import axios from 'axios';
 const styles = StyleSheet.create({
   container: {

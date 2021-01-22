@@ -3,7 +3,6 @@ import { View, Button, Text, StyleSheet, TouchableOpacity,Image,ImageBackground,
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import axios from 'axios';
 const styles = StyleSheet.create({
   container: {
@@ -162,8 +161,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             let dic = JSON.parse(res.data[0].bang);
             //console.log(res.data[0].bang+" "+bangCode+ " " +dic[String(bangCode)]+"???");
             
-            setCommute(dic[String(route.params.bname)]?'출근':'퇴근');
-            commuteChangeImg(dic[String(route.params.bname)]?'출근':'퇴근',1);
+            setCommute(dic[String(route.params.bname)]?'퇴근':'출근');
+            commuteChangeImg(dic[String(route.params.bname)]?'퇴근':'출근',1);
             
             //setBusiness(bangCode);
             //console.log("..................//"+business);
@@ -185,7 +184,18 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             'Accept': 'application/json'}
           
             })
-            .then(res => err = res.status)
+            .then(res => {
+              if(res.data.result=="a"){
+                Alert.alert("퇴근 완료!\n 오늘도 고생많으셨어요.");
+                setCommuteImgSelected(commuteI.commuteImg)
+              }else if(res.data.result=="b"){
+        
+                Alert.alert("출근 완료!");
+                setCommuteImgSelected(commuteI.commuteImgChecked)
+              }else{
+                Alert.alert("e");
+              }
+            })
             .then((res) => {
             })
       } catch (e) {
@@ -207,14 +217,6 @@ const WorkerHomeScreen = ({ navigation, route }) => {
         if(com == '출근'){
           setCommuteImgSelected(commuteI.commuteImgChecked)
         } else{
-          setCommuteImgSelected(commuteI.commuteImg)
-        }
-      }else{
-        if(com == '출근'){
-          Alert.alert("출근 완료!");
-          setCommuteImgSelected(commuteI.commuteImgChecked)
-        } else{
-          Alert.alert("퇴근 완료!\n 오늘도 고생많으셨어요.");
           setCommuteImgSelected(commuteI.commuteImg)
         }
       }
@@ -316,7 +318,10 @@ const WorkerHomeScreen = ({ navigation, route }) => {
        style={styles.button2}
        onPress={() => {
          console.log(worktodo);
-        if(state==2|| route.params.state==2){
+        if(commute=='퇴근' && (state==2 || route.params.state==2)){
+          Alert.alert("출근을 먼저 해주세요.")
+        }
+        else if(state==2 || route.params.state==2){
           setClicked4(0);
           navigation.navigate('WorkTodo',{id:route.params.id})
           setTimeout(() => {setClicked4(-1)},500);

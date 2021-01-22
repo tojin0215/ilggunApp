@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "~1.12.0",
+    "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-firebase/auth": "^10.4.0",
     "@react-navigation/bottom-tabs": "^5.9.2",
     "@react-navigation/drawer": "^5.9.3",
     "@react-navigation/native": "^5.7.6",
@@ -28,8 +30,10 @@
     "expo-print": "~9.1.0",
     "expo-sharing": "~8.4.1",
     "expo-status-bar": "~1.0.2",
+    "expo-updates": "~0.3.3",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
+    "native-base": "^2.15.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
@@ -53,8 +57,7 @@
     "react-native-web": "~0.13.12",
     "react-native-webview": "10.7.0",
     "react-navigation": "^4.4.2",
-    "xlsx": "^0.16.8",
-    "expo-updates": "~0.3.3"
+    "xlsx": "^0.16.8"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
