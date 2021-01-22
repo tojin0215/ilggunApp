@@ -33,7 +33,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.toojin.illgun",
-      "icon" : "./img/logo_ios.jpg",
+      "icon" : "./img/logo_ios.png",
       "supportsTablet": true,
       "config":{
         "googleSignIn":{
