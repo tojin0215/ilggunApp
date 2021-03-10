@@ -11,11 +11,12 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import axios from 'axios';
 
 const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
-  const [email, setEmail] = useState(route.params.id);
+  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState(route.params.password);
   const [path, setPath] = useState('');
   const [savePath, setSavePath] = useState('');
+  const [code, setCode] = useState(route.params.password);
 
   const SignPost = async(str) => {
     try {
@@ -23,11 +24,12 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
             Alert.alert('빈 칸을 채워주세요.');
         }
         else{
-            await axios.post('https://www.toojin.tk:3000/signup', { 
-                    id:email,
-                    name:name,
+            await axios.post('https://www.toojin.tk:3000/signupByCode', { 
+                    id: email,
+                    name: name,
                     password: password,
-                    sign:savePath
+                    sign: savePath,
+                    code: code,
                 },{
                 headers:{
                     'Content-Type': 'application/json',
@@ -52,6 +54,8 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
         <View style={styles.container}>
                 <View style={styles.formArea}>
                 <ScrollView>
+
+
                 <View style={styles.textArea}>
                     <Text style={styles.titleStyle}>이름</Text>
                     <TextInput 
@@ -60,7 +64,15 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
                         style={styles.textStyle} 
                         placeholder={"이름을 입력하세요."}/>
                 </View>   
-
+                <View style={styles.textArea}>
+                    <Text style={styles.titleStyle}>ID</Text>
+                    <TextInput 
+                        onChangeText={email =>setEmail(email)}
+                        defaultValue={email}
+                        style={styles.textStyle} 
+                        placeholder={"ID를 입력하세요."}/>
+                </View>
+                
                 <View style={styles.textArea}>
                     <Text style={styles.titleSignStyle}>서명</Text>
                     <View style={styles.sign} onTouchMove={(e) => {

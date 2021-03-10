@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert, ImageBack
 import { Table, TableWrapper,Row, Rows,  Col, Cols, Cell } from 'react-native-table-component';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import CheckboxGroup from 'react-native-checkbox-group';
-//============================바뀐부분A=============================
 import * as Font from 'expo-font';
 
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';

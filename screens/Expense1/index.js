@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ImageBackground, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ImageBackground, TouchableWithoutFeedback, Keyboard, Platform} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 import * as Font from 'expo-font';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -183,9 +183,16 @@ const styles = StyleSheet.create({
   },  
   tableTextStyle:{
     textAlign:"center",
-    fontSize:wp('4.2%'),
     fontFamily:"NanumSquare",
     color:'#040525',
+    ...Platform.select({
+      ios:{
+        fontSize: wp('3.6%') 
+      },
+      android:{
+        fontSize: wp('4.2%') 
+      }
+    })
   },
   textinputStyle:{
     fontSize:wp('4.2%'),
@@ -228,3 +235,4 @@ const styles = StyleSheet.create({
     marginTop:hp('2%'), marginBottom:hp('3%')
   },
 });
+

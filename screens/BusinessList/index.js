@@ -88,7 +88,6 @@ const BusinessListScreen = ({navigation}) => {
         setId(JSON.parse(userData).id);
         fetchData(JSON.parse(userData).id);
       });
-     
     });
   }, []);
 

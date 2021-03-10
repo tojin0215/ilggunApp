@@ -97,6 +97,7 @@ class StatementScreen extends Component{
                     {label: '2018년', value: '2018년'},
                     {label: '2019년', value: '2019년'},
                     {label: '2020년', value: '2020년'},
+                    {label: '2021년', value: '2021년'},
                 ]}
                 defaultValue={this.state.itemA}
                 containerStyle={{height: 40, width:100}}

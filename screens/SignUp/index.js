@@ -32,7 +32,8 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
             id:email,
             name:name,
             password: password,
-            sign:savePath
+            sign:savePath,
+            code:null,
         },{
         headers:{
             'Content-Type': 'application/json',

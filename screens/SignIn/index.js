@@ -12,15 +12,14 @@ import {
 } from 'react-native';
 
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import Expo from "expo"
-import * as Font from 'expo-font'
-import * as Network from 'expo-network';
+
 import axios from 'axios';
 import { Alert } from 'react-native';
 //import * as GoogleSignIn from 'expo-google-sign-in'
 //axios.create({baseURL:'',timeout:1000})
 import * as GoogleSignIn from 'expo-google-sign-in';
-
+import * as AppleAuthentication from 'expo-apple-authentication';
+import * as Crypto from "expo-crypto";
 
 const SignInScreen = ({ onSignIn, navigation }) => {
   const [id, setId] = useState('');
@@ -96,14 +95,14 @@ const SignInScreen = ({ onSignIn, navigation }) => {
   const _syncUserWithStateAsync = async () => {
     const user = await GoogleSignIn.signInSilentlyAsync();
     try {
-      await axios.post('https://www.toojin.tk:3000/signin', { id: user.email,
-        password: user.uid, headers:{
+      await axios.post('https://www.toojin.tk:3000/signinByCode', { code: user.uid,
+        headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
       })
       .then((responseData) => {
         if(responseData.data[0] == undefined || responseData.data[0] == ''){
-          navigation.navigate('Sign Up Google',{id:user.email, password:user.uid});
+          navigation.navigate('Sign Up Google',{code:user.uid, password:user.uid});
         }else{
           storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
           getToken();
@@ -142,9 +141,29 @@ const SignInScreen = ({ onSignIn, navigation }) => {
       signInAsync();
   };
 
+  const loginWithApple = async () => {
+    const csrf = Math.random().toString(36).substring(2, 15);
+    const nonce = Math.random().toString(36).substring(2, 10);
+    const hashedNonce = await Crypto.digestStringAsync(
+      Crypto.CryptoDigestAlgorithm.SHA256, nonce);
+    const appleCredential = await AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL
+      ],
+      state: csrf,
+      nonce: hashedNonce
+    });
+    const { identityToken, email, state } = appleCredential;
+  }
+  // This should go in state
+  const loginAvailable = AppleAuthentication.isAvailableAsync();
+
   setTimeout(() => {setIsReady(true)},1500);
   //setIsReady(true);
   initAsync();
+
+
 
   return (
       <>
@@ -187,6 +206,68 @@ const SignInScreen = ({ onSignIn, navigation }) => {
             <Image style={styles.googleImg} source={require('../../img/google_icon.png')}/>
             <Text style={styles.buttonGoogleTitle}>구글 로그인</Text>
           </TouchableOpacity>
+          {AppleAuthentication.isAvailableAsync()?
+          <>
+            <AppleAuthentication.AppleAuthenticationButton
+          buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+          buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+          cornerRadius={5}
+          style={{ width: 250, height: 50 }}
+          onPress={loginWithApple}
+      />
+
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+            cornerRadius={5}
+            style={styles.button1}
+            onPress={async () => {
+              try {
+                const credential = await AppleAuthentication.signInAsync({
+                  requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                  ],
+                });
+
+                try {
+                  await axios.post('https://www.toojin.tk:3000/signinByCode', { code: credential.user,
+                    headers:{
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'}
+                  })
+                  .then((responseData) => {
+                    console.log(credential.user);
+                    if(responseData.data[0] == undefined || responseData.data[0] == ''){
+                      console.log('-----------------------');
+                      navigation.navigate('Sign Up Google',{code: credential.user, password:credential.user});
+                    }else{
+                      storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
+                      getToken();
+                  
+                      if(responseData.data[0].id){
+                        onSignIn();
+                        navigation.navigate('Select Page');
+                      }
+                    }
+                  })
+                  .catch(function(error) {
+                      Alert.alert('hh'+error)
+                  });
+                } catch (e) {
+                  Alert.alert(e);
+                } 
+                // signed in
+              } catch (e) {
+                if (e.code === 'ERR_CANCELED') {
+                  // handle that the user canceled the sign-in flow
+                } else {
+                  // handle other errors
+                }
+              }
+            }}
+          /></>:null}
+
           <TouchableOpacity 
             style={styles.button2}
             onPress={() => navigation.navigate('Sign Up')}>
@@ -290,6 +371,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: wp('6%'),
+    marginBottom:wp('3%')
   },
   googleImg:{
     position:"absolute", top:hp('1%'), left:wp('5%'),

@@ -2,7 +2,7 @@
   "expo": {
     "name": "일꾼",
     "slug": "pro1",
-    "version": "1.0.0",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
@@ -33,13 +33,16 @@
     },
     "ios": {
       "bundleIdentifier": "com.toojin.illgun",
+      "buildNumber":"1.0.5",
       "icon" : "./img/logo_ios.png",
-      "supportsTablet": true,
+      "supportsTablet": false,
+      "usesAppleSignIn": true,
       "config":{
         "googleSignIn":{
-          "reservedClientId":"com.googleusercontent.apps.215538713502-tdra6mancl9oukjevu4mhmc0441in4vu"
+          "reservedClientId":"com.googleusercontent.apps.193721987512-qb62deqfn1dti9uapv4udj4rt0netcji"
         }
       },
+      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSExceptionDomains": {

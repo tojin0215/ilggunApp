@@ -19,6 +19,8 @@
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "expo": "^39.0.4",
+    "expo-apple-authentication": "~2.2.1",
+    "expo-crypto": "^9.0.0",
     "expo-file-system": "~9.2.0",
     "expo-firebase-analytics": "^2.5.1",
     "expo-font": "~8.3.0",
