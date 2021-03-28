@@ -112,7 +112,7 @@ class VacationRequestScreen extends Component{
     try {
 if(this.state.comment){
 
-      await axios.post('https://www.toojin.tk:3000/selectBusinessByName', {
+      await axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
         bname : this.state.bangCode
         },
         {  headers:{
@@ -122,7 +122,7 @@ if(this.state.comment){
         .then(res => {
           this.setState({owner : res.data[0].id});
         });
-        await axios.post('https://www.toojin.tk:3000/sendMessage', {
+        await axios.post('https://www.toojin.cf:3000/sendMessage', {
             type: 2,
             system:1,
             f: this.props.route.params.id,

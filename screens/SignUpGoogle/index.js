@@ -24,7 +24,7 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
             Alert.alert('빈 칸을 채워주세요.');
         }
         else{
-            await axios.post('https://www.toojin.tk:3000/signupByCode', { 
+            await axios.post('https://www.toojin.cf:3000/signupByCode', { 
                     id: email,
                     name: name,
                     password: password,

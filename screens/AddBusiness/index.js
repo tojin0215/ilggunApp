@@ -58,7 +58,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       if(workplace=='' || businessRegistrationNumber=='' || businessOwner=='' || businessPhoneNumber=='' || address1=='' || address2=='' ||zipCode==''){
         Alert.alert("빈 칸을 채워주세요.")
       }else{
-        /*let res = await fetch('https://www.toojin.tk:3000/addBusiness', {
+        /*let res = await fetch('https://www.toojin.cf:3000/addBusiness', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -74,7 +74,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
           }),
         });
         res = await res;*/
-        await axios.post('https://www.toojin.tk:3000/addBusiness',{
+        await axios.post('https://www.toojin.cf:3000/addBusiness',{
           id : id,
           name : businessOwner,
           bname: workplace,

@@ -2,7 +2,7 @@
   "expo": {
     "name": "일꾼",
     "slug": "pro1",
-    "version": "1.0.5",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
@@ -21,19 +21,20 @@
       "android"
     ],
     "android": {
+      "permissions":[],
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {
             "certificateHash": "DC:63:1A:19:FD:BC:71:E2:EC:C4:20:4E:14:7E:CB:EC:01:B8:64:28"
         }
       },
-      "versionCode": 7,
+      "versionCode": 14,
       "package": "com.toojin.illgun",
       "icon" : "./img/logo.png"
     },
     "ios": {
       "bundleIdentifier": "com.toojin.illgun",
-      "buildNumber":"1.0.5",
+      "buildNumber":"1.0.8",
       "icon" : "./img/logo_ios.png",
       "supportsTablet": false,
       "usesAppleSignIn": true,
@@ -46,10 +47,10 @@
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSExceptionDomains": {
-            "https://www.toojin.tk:3000": {
+            "https://www.toojin.cf:3000": {
               "NSTemporaryExceptionAllowsInsecureHTTPLoads": true
             },
-            "https://www.toojin.tk": {
+            "https://www.toojin.cf": {
               "NSTemporaryExceptionAllowsInsecureHTTPLoads": true
             }
           }

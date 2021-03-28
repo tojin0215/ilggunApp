@@ -98,12 +98,12 @@ class InviteScreen extends Component{
   fetchData = async(name) => { 
     try {
       if(name!=''){
-      axios.post('https://www.toojin.tk:3000/selectId', {id : name},
+      axios.post('https://www.toojin.cf:3000/selectId', {id : name},
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.tk:3000/selectId', {
+        /*let res = await fetch('https://www.toojin.cf:3000/selectId', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -131,7 +131,7 @@ class InviteScreen extends Component{
     }
     sendInviteMessage = async(name) => { 
       try {
-        axios.post('https://www.toojin.tk:3000/selectWorkerEach', {
+        axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
           business: this.state.bangCode,
           workername:name,
         },
@@ -142,7 +142,7 @@ class InviteScreen extends Component{
         .then(res => {
           console.log(JSON.stringify(res.data))
           if(res.data[0]==undefined){
-            axios.post('https://www.toojin.tk:3000/sendMessage', {
+            axios.post('https://www.toojin.cf:3000/sendMessage', {
               type: 1,
               system:1,
                 f: this.state.id,
@@ -159,7 +159,7 @@ class InviteScreen extends Component{
 
             });
             console.log(this.state.bangCode, name, this.props.route.params.type)
-            axios.post('https://www.toojin.tk:3000/addWorker', {
+            axios.post('https://www.toojin.cf:3000/addWorker', {
               business: this.state.bangCode,
               workername : name,
               type : this.props.route.params.type,

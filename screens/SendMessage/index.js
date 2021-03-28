@@ -23,7 +23,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
 
   const SignPost = async() => {
     try {
-      axios.post('https://www.toojin.tk:3000/sendMessage', {
+      axios.post('https://www.toojin.cf:3000/sendMessage', {
           f: idid,
           message : password,
           t: id,
@@ -33,7 +33,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
       }).then((res) => {
-      /*let res = await fetch('https://www.toojin.tk:3000/sendMessage', {
+      /*let res = await fetch('https://www.toojin.cf:3000/sendMessage', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

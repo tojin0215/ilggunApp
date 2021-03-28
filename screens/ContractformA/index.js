@@ -172,7 +172,7 @@ class ContractformAScreen extends React.Component{
   }
   initfetchHtml = async(bangCode) => {
     
-    axios.post('https://www.toojin.tk:3000/selectContractform', {
+    axios.post('https://www.toojin.cf:3000/selectContractform', {
         bang:bangCode,
         id: this.props.route.params.workername
     },
@@ -180,7 +180,7 @@ class ContractformAScreen extends React.Component{
         'Content-Type': 'application/json',
       'Accept': 'application/json'}
     })
-    /*await fetch('https://www.toojin.tk:3000/selectContractform', {
+    /*await fetch('https://www.toojin.cf:3000/selectContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -247,12 +247,12 @@ class ContractformAScreen extends React.Component{
       })     
     }
   fetchHtml = async(a) => {
-    axios.post('https://www.toojin.tk:3000/writeContractform', this.state,
+    axios.post('https://www.toojin.cf:3000/writeContractform', this.state,
     {  headers:{
         'Content-Type': 'application/json',
       'Accept': 'application/json'}
     })
-    /*await fetch('https://www.toojin.tk:3000/writeContractform', {
+    /*await fetch('https://www.toojin.cf:3000/writeContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -345,8 +345,35 @@ class ContractformAScreen extends React.Component{
       }).then(res => res.json())*/
       .then(res => {
         this.props.navigation.goBack();
+        axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+            bname : this.state.bang
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+            .then(res => {
+              try {
+                axios.post('https://www.toojin.cf:3000/sendMessage', {
+                  t: this.state.id,
+                  message :"<"+this.state.bang+">사업주가 "+this.state.id+"님의 계약서를 작성했습니다. [문서함>계약서]를 확인해주세요.",
+                  f: res.data[0].id,
+                  r:0,
+                  system:1,
+                  type:3
+                },
+                {  headers:{
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'}
+              }).then((res) => {
+              })} catch (e) {
+                console.error(e);
+              }
+            });   
+
         //this.initfetchHtml(this.state.bangCode);
-      })     
+      })
+        
     }
 
     StatementScreen = async() => {
@@ -354,7 +381,7 @@ class ContractformAScreen extends React.Component{
         let bsign="";
         console.log("33333333 ");
         console.log(this.props.route.params.bid);
-      axios.post('https://www.toojin.tk:3000/selectSign', {
+      axios.post('https://www.toojin.cf:3000/selectSign', {
           id:this.props.route.params.workername,
           id2: this.props.route.params.bid
       },
@@ -491,7 +518,7 @@ class ContractformAScreen extends React.Component{
                 <label>일</label></div><br>
               
                 <label>(사업주)</label>
-                <label>사업체명 : </label>
+                <label>사업체명 : </lab
                 <label>${this.state.BusinessName}</label>
                 <label class="margin_left2">(전 화 : </label>
                 <label>${this.state.BusinessPhone}</label>

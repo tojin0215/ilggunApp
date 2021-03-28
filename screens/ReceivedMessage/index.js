@@ -136,16 +136,17 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   const [visibility3, setVisibility3] = useState([]);
   const [message, setMessage] = useState('');
   const [index, setIndex] = useState(-1);
+  const [to, setTo] = useState('');
   async function fetchData(idid) { 
       try {
-        axios.post('https://www.toojin.tk:3000/selectReceivedMessage', {
+        axios.post('https://www.toojin.cf:3000/selectReceivedMessage', {
           t:idid
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-          /*let res = await fetch('https://www.toojin.tk:3000/selectReceivedMessage', {
+          /*let res = await fetch('https://www.toojin.cf:3000/selectReceivedMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -166,7 +167,7 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   }
 function setModalVisibility(visible, msg ,t, index, r) {
     setIndex(index);
-    if(!t||r==1){
+    if(!t||r==1||t==3){
       setMessage(msg)
       setVisibility(visible)
     }
@@ -191,7 +192,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         let dd = d.split('-');
 
         let ori = 0;
-        axios.post('https://www.toojin.tk:3000/selectWorkerEach', {
+        axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
           business: busi,
           workername: work
         },
@@ -199,7 +200,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-      /*let res = await fetch('https://www.toojin.tk:3000/selectWorkerEach', {
+      /*let res = await fetch('https://www.toojin.cf:3000/selectWorkerEach', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -216,7 +217,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         //console.log("오리"+ori);
       
       console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
-      axios.post('https://www.toojin.tk:3000/addWork', {
+      axios.post('https://www.toojin.cf:3000/addWork', {
         business : busi,
         workername : work,
         month : dd[1]*1,
@@ -231,7 +232,24 @@ function setModalVisibility(visible, msg ,t, index, r) {
           'Accept': 'application/json'}
         })
         });
-    } catch (e) {
+    
+        try {
+          axios.post('https://www.toojin.cf:3000/sendMessage', {
+            f: id,
+            message :"<"+busi+">에서 "+to+"님의 휴가 신청("+d+")을 승인하였습니다.",
+            t: to,
+            r:0,
+            system:1,
+            type:3
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+        }).then((res) => {
+        })} catch (e) {
+          console.error(e);
+        }
+      } catch (e) {
         console.error(e);
       }
     }
@@ -239,7 +257,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
     async function alterRead() {
       console.log("////////////////////////////////id : "+id);
       try {
-        axios.post('https://www.toojin.tk:3000/alterReadMessage', {
+        axios.post('https://www.toojin.cf:3000/alterReadMessage', {
           ind:index,
         },
         {  headers:{
@@ -262,7 +280,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
           let busi = message.split('(')[1].split(')')[0];
          console.log("pppppppppppppp "+busi);
 
-        axios.post('https://www.toojin.tk:3000/addBang', {
+        axios.post('https://www.toojin.cf:3000/addBang', {
           bang: busi,
           id: id
         },
@@ -273,7 +291,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         .then(res => {
           console.log(res)
         });
-        axios.post('https://www.toojin.tk:3000/alterState', {
+        axios.post('https://www.toojin.cf:3000/alterState', {
             bang: busi,
             type : 1,
             id : id
@@ -285,10 +303,102 @@ function setModalVisibility(visible, msg ,t, index, r) {
         .then(res => {
           console.log(res.data)
         });
+        axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+          bname : busi
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+          .then(res => {
+            console.log("<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다");
+            try {
+              axios.post('https://www.toojin.cf:3000/sendMessage', {
+                f: id,
+                message :"<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다. 근로계약서를 작성해주세요.",
+                t: res.data[0].id,
+                r:0,
+                system:1,
+                type:3
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+            }).then((res) => {
+            })} catch (e) {
+              console.error(e);
+            }
+          });
+
       } catch (e) {
           console.error(e);
         }
+        
+        /*axios.post('https://www.toojin.cf:3000/sendMessage', {
+        f: busi,
+        message : password,
+        t: id,
+        r:0,
+      },
+      {  headers:{
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'}
+    }).then((res) => {
+    })*/
+
     }
+
+    function massageX(i) { 
+      let busi = message.split('(')[1].split(')')[0];
+      if(i == 2){
+        try {
+          axios.post('https://www.toojin.cf:3000/sendMessage', {
+            f: id,
+            message :"<"+busi+">에서 "+to+"님의 휴가 신청이 거절되었습니다.",
+            t: to,
+            r:0,
+            system:1,
+            type:3
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+        }).then((res) => {
+        })} catch (e) {
+          console.error(e);
+        }
+      }else if(i == 3){
+        
+        axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+          bname : busi
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+          .then(res => {
+            try {
+              axios.post('https://www.toojin.cf:3000/sendMessage', {
+                f: id,
+                message :"<"+busi+"> 근로자 '"+id+"'님이 초대를 거절했습니다.",
+                t: res.data[0].id,
+                r:0,
+                system:1,
+                type:3
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+            }).then((res) => {
+            })} catch (e) {
+              console.error(e);
+            }
+          });
+
+      }
+    }
+
+
     return (
       <View style={styles.image}>
         <View style={styles.container}>
@@ -302,7 +412,11 @@ function setModalVisibility(visible, msg ,t, index, r) {
               <Image style={styles.userImage} source={require('../../img/user_blue.png')}/>
               <TouchableOpacity 
                 style={styles.touchArea}
-                onPress={() => setModalVisibility(true, b.message, b.type, b.ind, b.r)} 
+                onPress={() => {
+                    setModalVisibility(true, b.message, b.type, b.ind, b.r)
+                    setTo(b.t);
+                  }
+                } 
               >
                 <Text 
                   key={id} 
@@ -354,6 +468,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   onPress={() => {
                     setModalVisibility(!visibility2,'',2)
                     alterRead();
+                    massageX(2);
                   }}
                 >아니오</Text>
               </View>
@@ -383,6 +498,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   style={styles.modalBtn2}
                   onPress={() => {
                     setModalVisibility(!visibility3,'',1);
+                    massageX(3);
                     alterRead();
                   }}
                 >아니오</Text>

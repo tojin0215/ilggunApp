@@ -49,7 +49,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
 
   const SignPost = async(str) => {
     try {
-      await axios.post('https://www.toojin.tk:3000/signin', { 
+      await axios.post('https://www.toojin.cf:3000/signin', { 
         id: id,
         password: password, 
         headers:{
@@ -95,7 +95,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
   const _syncUserWithStateAsync = async () => {
     const user = await GoogleSignIn.signInSilentlyAsync();
     try {
-      await axios.post('https://www.toojin.tk:3000/signinByCode', { code: user.uid,
+      await axios.post('https://www.toojin.cf:3000/signinByCode', { code: user.uid,
         headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
@@ -140,22 +140,6 @@ const SignInScreen = ({ onSignIn, navigation }) => {
   const onpress = () => {
       signInAsync();
   };
-
-  const loginWithApple = async () => {
-    const csrf = Math.random().toString(36).substring(2, 15);
-    const nonce = Math.random().toString(36).substring(2, 10);
-    const hashedNonce = await Crypto.digestStringAsync(
-      Crypto.CryptoDigestAlgorithm.SHA256, nonce);
-    const appleCredential = await AppleAuthentication.signInAsync({
-      requestedScopes: [
-        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-        AppleAuthentication.AppleAuthenticationScope.EMAIL
-      ],
-      state: csrf,
-      nonce: hashedNonce
-    });
-    const { identityToken, email, state } = appleCredential;
-  }
   // This should go in state
   const loginAvailable = AppleAuthentication.isAvailableAsync();
 
@@ -208,14 +192,6 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           </TouchableOpacity>
           {AppleAuthentication.isAvailableAsync()?
           <>
-            <AppleAuthentication.AppleAuthenticationButton
-          buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-          buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-          cornerRadius={5}
-          style={{ width: 250, height: 50 }}
-          onPress={loginWithApple}
-      />
-
           <AppleAuthentication.AppleAuthenticationButton
             buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
             buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
@@ -231,7 +207,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
                 });
 
                 try {
-                  await axios.post('https://www.toojin.tk:3000/signinByCode', { code: credential.user,
+                  await axios.post('https://www.toojin.cf:3000/signinByCode', { code: credential.user,
                     headers:{
                       'Content-Type': 'application/json',
                       'Accept': 'application/json'}

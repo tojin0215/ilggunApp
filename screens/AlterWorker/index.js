@@ -124,7 +124,7 @@ class AlterWorkerScreen extends Component{
   fetchData = async(bangCode) => { 
     try {
          console.log(bangCode);
-          axios.post('https://www.toojin.tk:3000/selectWorker', {
+          axios.post('https://www.toojin.cf:3000/selectWorker', {
             business : bangCode,
             type : 1
           },
@@ -132,7 +132,7 @@ class AlterWorkerScreen extends Component{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-        /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
+        /*let res = await fetch('https://www.toojin.cf:3000/selectWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -175,7 +175,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
         let subTime2 = (((et2-st2)*60) + (em2-sm2));
         let subt = (subTime2-subTime)/60;
         console.log("subttttt "+subt);
-        axios.post('https://www.toojin.tk:3000/addWork', {
+        axios.post('https://www.toojin.cf:3000/addWork', {
             business : bangCode,
             workername : worker,
             month : month,
@@ -190,7 +190,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
           'Accept': 'application/json'}
         }).then(res => {this.props.navigation.navigate('Work Management');})
         
-        /*let res = await fetch('https://www.toojin.tk:3000/addWork', {
+        /*let res = await fetch('https://www.toojin.cf:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

@@ -82,7 +82,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [worktodo, setWorktodo] = useState(0);
   useEffect(() => {
     navigation.addListener('focus', () => {
-      axios.post('https://www.toojin.tk:3000/selectWorkTodo', {
+      axios.post('https://www.toojin.cf:3000/selectWorkTodo', {
            bang : route.params.bname,
            year : new Date().getFullYear(),
            month: new Date().getMonth() + 1,
@@ -110,7 +110,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
            setWorktodo(td);
          }
     });
-    axios.post('https://www.toojin.tk:3000/selectWorkerEach', {
+    axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
       business:route.params.bname,
       workername:route.params.id,
     },
@@ -142,7 +142,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       
   async function fetchData(bangCode,idid) { 
     try {
-        /*let res = await fetch('https://www.toojin.tk:3000/selectBusinessByWorker', {
+        /*let res = await fetch('https://www.toojin.cf:3000/selectBusinessByWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -152,7 +152,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             //id : idid
           }),
         })*/
-        await axios.post('https://www.toojin.tk:3000/selectBusinessByWorker', {id:idid},
+        await axios.post('https://www.toojin.cf:3000/selectBusinessByWorker', {id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
@@ -178,7 +178,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     async function commuteData(idid) { 
       let err;  
       try {
-          await axios.post('https://www.toojin.tk:3000/updateCommute', {bang : route.params.bname, id:idid},
+          await axios.post('https://www.toojin.cf:3000/updateCommute', {bang : route.params.bname, id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}

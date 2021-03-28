@@ -61,7 +61,7 @@ class StatementScreen1 extends React.Component {
         }
         else{
           console.log(bangCode);
-          await axios.post('https://www.toojin.tk:3000/selectOvertimework', {
+          await axios.post('https://www.toojin.cf:3000/selectOvertimework', {
             business: bangCode,
             year : this.state.itemA.split('년')[0]*1,
             month : this.state.itemB.split('월')[0]*1,
@@ -70,7 +70,7 @@ class StatementScreen1 extends React.Component {
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-          /*  await fetch('https://www.toojin.tk:3000/selectOvertimework', {
+          /*  await fetch('https://www.toojin.cf:3000/selectOvertimework', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json',
@@ -100,14 +100,14 @@ class StatementScreen1 extends React.Component {
 
                 });
 
-                await axios.post('https://www.toojin.tk:3000/selectWorker', {
+                await axios.post('https://www.toojin.cf:3000/selectWorker', {
                   business : bangCode
                 },
                 {  headers:{
                   'Content-Type': 'application/json',
                   'Accept': 'application/json'}
                 })
-            /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
+            /*let res = await fetch('https://www.toojin.cf:3000/selectWorker', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',

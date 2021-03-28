@@ -49,7 +49,7 @@ class StatementScreen2 extends Component{
 
     fetchData = async(flag) => { 
       try {
-        axios.post('https://www.toojin.tk:3000/selectOvertimework', {
+        axios.post('https://www.toojin.cf:3000/selectOvertimework', {
           business: this.state.bangCode,
           year : this.state.itemAA.split('년')[0]*1,
           month : this.state.itemBB.split('월')[0]*1,
@@ -78,7 +78,7 @@ class StatementScreen2 extends Component{
             
 
           });
-          axios.post('https://www.toojin.tk:3000/selectWorker', {
+          axios.post('https://www.toojin.cf:3000/selectWorker', {
             business : this.state.bangCode
           },
           {  headers:{

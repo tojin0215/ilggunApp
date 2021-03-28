@@ -93,7 +93,7 @@ const BusinessListScreen = ({navigation}) => {
 
     async function fetchData(idid) { 
         try {
-          await axios.post('https://www.toojin.tk:3000/selectBusiness', {id:idid},
+          await axios.post('https://www.toojin.cf:3000/selectBusiness', {id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}

@@ -60,7 +60,7 @@ import SplashScreen from './screens/Splash';
 import SvgComponent from './screens/Svg'
 import { color } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import * as GoogleSignIn from 'expo-google-sign-in';
 
 const storeToken = async(user) => {
   try {
@@ -457,7 +457,7 @@ const App = () => {
 
   function callback() {
     try {
-      axios.post('https://www.toojin.tk:3000/selectReceivedNewMessage', {
+      axios.post('https://www.toojin.cf:3000/selectReceivedNewMessage', {
         t:realId,
       },
       {  headers:{
@@ -528,6 +528,9 @@ const App = () => {
     setId(id => '');
     setRearId(realId => '')
     AsyncStorage.setItem("bangCode",'');
+    GoogleSignIn.signOutAsync();
+
+  
     //setId('');
   };
   

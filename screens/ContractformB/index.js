@@ -337,7 +337,7 @@ class ContractformBScreen extends Component{
 
 
   initfetchHtml = async(bangCode) => {
-    axios.post('https://www.toojin.tk:3000/selectContractform2', {
+    axios.post('https://www.toojin.cf:3000/selectContractform2', {
         bang:bangCode,
         id: this.props.route.params.workername
     },
@@ -428,7 +428,7 @@ class ContractformBScreen extends Component{
     }
 
 fetchHtml = async(a) => {
-    axios.post('https://www.toojin.tk:3000/writeContractform2', {
+    axios.post('https://www.toojin.cf:3000/writeContractform2', {
         type: 4,
                 id: this.state.id,
                 bang: this.state.bang,
@@ -495,6 +495,32 @@ fetchHtml = async(a) => {
     })
       .then(res => {
         this.props.navigation.goBack();
+
+        axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+            bname : this.state.bang
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+            .then(res => {
+              try {
+                axios.post('https://www.toojin.cf:3000/sendMessage', {
+                  t: this.state.id,
+                  message :"<"+this.state.bang+">사업주가 "+this.state.id+"님의 계약서를 작성했습니다. [문서함>계약서]를 확인해주세요.",
+                  f: res.data[0].id,
+                  r:0,
+                  system:1,
+                  type:3
+                },
+                {  headers:{
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'}
+              }).then((res) => {
+              })} catch (e) {
+                console.error(e);
+              }
+            });   
       })     
     }
 
@@ -504,7 +530,7 @@ fetchHtml = async(a) => {
         let sign="";
         console.log("33333333 ");
         console.log(this.props.route.params.bid);
-        axios.post('https://www.toojin.tk:3000/selectSign', {
+        axios.post('https://www.toojin.cf:3000/selectSign', {
             id:this.props.route.params.workername,
             id2:this.props.route.params.bid,
         },
@@ -512,7 +538,7 @@ fetchHtml = async(a) => {
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-      /*fetch('https://www.toojin.tk:3000/selectSign', {
+      /*fetch('https://www.toojin.cf:3000/selectSign', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

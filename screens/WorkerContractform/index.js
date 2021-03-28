@@ -128,7 +128,7 @@ class WorkerContractformScreen extends Component{
       let sign="";
       let bsign="";
       let idid2="";
-      axios.post('https://www.toojin.tk:3000/selectBusinessByName', {
+      axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
         bname : this.state.bangCode
         },
         {  headers:{
@@ -137,7 +137,7 @@ class WorkerContractformScreen extends Component{
         }).then(res => {
           idid2 = res.data[0].id;
        
-      axios.post('https://www.toojin.tk:3000/selectSign', {
+      axios.post('https://www.toojin.cf:3000/selectSign', {
         id:this.state.idid,
         id2:idid2
       },
@@ -316,7 +316,7 @@ class WorkerContractformScreen extends Component{
     let sign="";
       let bsign="";
       let idid2="";
-      axios.post('https://www.toojin.tk:3000/selectBusinessByName', {
+      axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
         bname : this.state.bangCode
         },
         {  headers:{
@@ -325,7 +325,7 @@ class WorkerContractformScreen extends Component{
         }).then(res => {
           idid2 = res.data[0].id;
         
-      axios.post('https://www.toojin.tk:3000/selectSign', {
+      axios.post('https://www.toojin.cf:3000/selectSign', {
         id:this.state.idid,
         id2:idid2
       },
@@ -501,7 +501,7 @@ class WorkerContractformScreen extends Component{
     };
 
     fetchHtml = async(bangCode,idid) => {
-    axios.post('https://www.toojin.tk:3000/selectContractform', {
+    axios.post('https://www.toojin.cf:3000/selectContractform', {
       bang:bangCode,
       id: idid,
     },
@@ -509,7 +509,7 @@ class WorkerContractformScreen extends Component{
       'Content-Type': 'application/json',
     'Accept': 'application/json'}
     })
-    /*await fetch('https://www.toojin.tk:3000/selectContractform', {
+    /*await fetch('https://www.toojin.cf:3000/selectContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -569,14 +569,14 @@ class WorkerContractformScreen extends Component{
           this.setState(res.data[0]);
         }else{
 
-          axios.post('https://www.toojin.tk:3000/selectContractform2', {
+          axios.post('https://www.toojin.cf:3000/selectContractform2', {
             bang:bangCode, id: idid,
           },
           {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-          /*fetch('https://www.toojin.tk:3000/selectContractform2', {
+          /*fetch('https://www.toojin.cf:3000/selectContractform2', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -679,12 +679,12 @@ class WorkerContractformScreen extends Component{
   }
 
   fetch = async() => {
-          axios.post('https://www.toojin.tk:3000/updateContractform', this.state,
+          axios.post('https://www.toojin.cf:3000/updateContractform', this.state,
           {  headers:{
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-    /*await fetch('https://www.toojin.tk:3000/updateContractform', {
+    /*await fetch('https://www.toojin.cf:3000/updateContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -706,7 +706,7 @@ class WorkerContractformScreen extends Component{
         let t2 = this.state.BreakTimeEndHour*60 - this.state.BreakTimeStartHour*60 +this.state.BreakTimeEndMin*1 - this.state.BreakTimeStartMin*1; 
         let tt = String((t1-t2)/60)
 
-        axios.post('https://www.toojin.tk:3000/alterState', {
+        axios.post('https://www.toojin.cf:3000/alterState', {
           type:2,
           bang: this.state.bang,
           id:this.state.id,
@@ -730,6 +730,34 @@ class WorkerContractformScreen extends Component{
           console.log(res.data);
           this.props.navigation.navigate('Worker Home',{state:2});
         })     
+
+        axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+          bname : this.state.bang
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+          .then(res => {
+            try {
+              axios.post('https://www.toojin.cf:3000/sendMessage', {
+                t: res.data[0].id,
+                message :"<"+this.state.bang+"> 근로자 '"+this.state.id+"'가 계약서를 최종 완료했습니다. 이제부터 근로자를 관리할 수 있습니다.",
+                f: this.state.id,
+                r:0,
+                system:1,
+                type:3
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+            }).then((res) => {
+            })} catch (e) {
+              console.error(e);
+            }
+          });
+
+
       }
 
     }
@@ -747,7 +775,7 @@ class WorkerContractformScreen extends Component{
 
     
   fetch2 = async() => {
-    axios.post('https://www.toojin.tk:3000/updateContractform2', {
+    axios.post('https://www.toojin.cf:3000/updateContractform2', {
       type: 5,
           id: this.state.id,
           bang: this.state.bang,
@@ -815,7 +843,7 @@ class WorkerContractformScreen extends Component{
         'Content-Type': 'application/json',
         'Accept': 'application/json'}
       })
-    /*await fetch('https://www.toojin.tk:3000/updateContractform2', {
+    /*await fetch('https://www.toojin.cf:3000/updateContractform2', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -835,7 +863,7 @@ class WorkerContractformScreen extends Component{
         let t6 = this.state.Start6=='X'?null:(this.state.Start6.split(':')[0].length<2?'0'+ this.state.Start6.split(':')[0]:this.state.Start6.split(':')[0]) + (this.state.Start6.split(':')[1].length<2?'0'+ this.state.Start6.split(':')[1]:this.state.Start6.split(':')[1]) + (this.state.End6.split(':')[0].length<2?'0'+ this.state.End6.split(':')[0]:this.state.End6.split(':')[0]) + (this.state.End6.split(':')[1].length<2?'0'+ this.state.End6.split(':')[1]:this.state.End6.split(':')[1]);
         let t7 = this.state.Start7=='X'?null:(this.state.Start7.split(':')[0].length<2?'0'+ this.state.Start7.split(':')[0]:this.state.Start7.split(':')[0]) + (this.state.Start7.split(':')[1].length<2?'0'+ this.state.Start7.split(':')[1]:this.state.Start7.split(':')[1]) + (this.state.End7.split(':')[0].length<2?'0'+ this.state.End7.split(':')[0]:this.state.End7.split(':')[0]) + (this.state.End7.split(':')[1].length<2?'0'+ this.state.End7.split(':')[1]:this.state.End7.split(':')[1]);
 
-        axios.post('https://www.toojin.tk:3000/alterState', {
+        axios.post('https://www.toojin.cf:3000/alterState', {
           type:2,
             bang: this.state.bang,
             id:this.state.id,
@@ -859,7 +887,33 @@ class WorkerContractformScreen extends Component{
           console.log(res.data);
           this.props.navigation.navigate('Worker Home',{state:2});
         })     
-      
+        
+        axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+          bname : this.state.bang
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+          .then(res => {
+            try {
+              axios.post('https://www.toojin.cf:3000/sendMessage', {
+                t: res.data[0].id,
+                message :"<"+this.state.bang+"> 근로자 '"+this.state.id+"'가 계약서를 최종 완료했습니다. 이제부터 근로자를 관리할 수 있습니다.",
+                f: this.state.id,
+                r:0,
+                system:1,
+                type:3
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+            }).then((res) => {
+            })} catch (e) {
+              console.error(e);
+            }
+          });
+
 
     }
   

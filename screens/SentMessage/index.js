@@ -146,14 +146,14 @@ const sentMessageScreen = ({ navigation }) => {
   
   async function fetchData(ididid) { 
       try {
-        axios.post('https://www.toojin.tk:3000/selectSentMessage', {
+        axios.post('https://www.toojin.cf:3000/selectSentMessage', {
           id:ididid
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*  let res = await fetch('https://www.toojin.tk:3000/selectSentMessage', {
+        /*  let res = await fetch('https://www.toojin.cf:3000/selectSentMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -178,7 +178,7 @@ const sentMessageScreen = ({ navigation }) => {
         let busi = message.split('(')[1].split(')')[0];
         let d = message.split(' ')[1].split('에')[0];
         let dd = d.split('-');
-        axios.post('https://www.toojin.tk:3000/addWork', {
+        axios.post('https://www.toojin.cf:3000/addWork', {
             business : busi,
             workername : work,
             month : dd[1]*1,
@@ -192,7 +192,7 @@ const sentMessageScreen = ({ navigation }) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.tk:3000/addWork', {
+        /*let res = await fetch('https://www.toojin.cf:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

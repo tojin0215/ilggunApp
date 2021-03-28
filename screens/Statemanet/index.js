@@ -43,7 +43,7 @@ class StatementScreen extends Component{
   fetchData = async(bangCode) => { 
     try {
       console.log(bangCode);
-        axios.post('https://www.toojin.tk:3000/selectWorker', {
+        axios.post('https://www.toojin.cf:3000/selectWorker', {
             business : bangCode,
             type : 1
         },
@@ -51,7 +51,7 @@ class StatementScreen extends Component{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.tk:3000/selectWorker', {
+        /*let res = await fetch('https://www.toojin.cf:3000/selectWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

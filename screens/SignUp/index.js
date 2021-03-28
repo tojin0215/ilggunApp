@@ -28,7 +28,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
             Alert.alert('비밀번호와 재확인 비밀번호가 다릅니다.\n 다시 확인해주세요.')  
         }
         else{
-        await axios.post('https://www.toojin.tk:3000/signup', { 
+        await axios.post('https://www.toojin.cf:3000/signup', { 
             id:email,
             name:name,
             password: password,
@@ -39,7 +39,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
         }).then((res)=>{
-      /*let res = await fetch('https://www.toojin.tk:3000/signup', {
+      /*let res = await fetch('https://www.toojin.cf:3000/signup', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

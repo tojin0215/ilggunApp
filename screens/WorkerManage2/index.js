@@ -122,7 +122,7 @@ const WorkerManageScreen2 = ({navigation}) => {
             style: "cancel"
           },
           { text: "네", onPress: () => {
-            axios.post('https://www.toojin.tk:3000/deleteWorker', {
+            axios.post('https://www.toojin.cf:3000/deleteWorker', {
               business:bangCode,  
               workername : name,
             },
@@ -144,7 +144,7 @@ const WorkerManageScreen2 = ({navigation}) => {
   }
     async function fetchData(bangCode) { 
         try {
-          await axios.post('https://www.toojin.tk:3000/selectWorkerByType', {
+          await axios.post('https://www.toojin.cf:3000/selectWorkerByType', {
             business : bangCode,
                 type : 1
           },
@@ -153,7 +153,7 @@ const WorkerManageScreen2 = ({navigation}) => {
             'Accept': 'application/json'
           }
           })
-          /*  let res = await fetch('https://www.toojin.tk:3000/selectWorkerByType', {
+          /*  let res = await fetch('https://www.toojin.cf:3000/selectWorkerByType', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
