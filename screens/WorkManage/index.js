@@ -196,11 +196,62 @@ const WorkManageScreen = ({navigation, route}) => {
           }).then(res => res.json())*/
           .then(async(res) => 
             {
+              let resultData = res.data.ori;
+              console.log(res.data.ori);
+              console.log(res.data.alter);
+              let alter = res.data.alter;
+              if(resultData.length == 0){
+                console.log("2222222222222222222222")
+                resultData = res.data.alter
+              }
+              else{
+                for(let j=0 ; j<alter.length ; j++){
+                  let flag=0;
+                  for(let i=0 ; i<resultData.length ; i++){
+                    if(alter[j]!=null){
+                      if(resultData[i].workername == alter[j].workername){
+                        flag=1;
+                        if(alter[j].time=='0'){
+                          resultData[i] = null
+                        }
+                        else{
+                          resultData[i] = alter[j];
+                        }
+                        alter[j] = null;
+                        break;
+                      }
+                    }
+                  }
+                  if(flag==0){
+                    resultData.push(alter[j]);
+                  }
+                }
+                resultData = resultData.filter(data => data !== null)
+              }
               //console.log(res);
-              console.log("받아오는 날짜:"+date)
-              console.log("///////////////////");
-              setBusiness(res.data);
-              console.log(res.data)
+              console.log("받아오는 날짜:")
+              console.log(resultData)
+              let tmp = [];
+              for(let i=0 ; i<resultData.length ; i++){
+                console.log('날짜 : ');
+                /*let dd = resultData[i].startdate.split('/');
+                if((d[3]*1==dd[0] && d[1]*1==dd[1] && d[2]*1>=dd[2]) 
+                || (d[3]*1==dd[0] && d[1]*1>dd[1]) 
+                || (d[3]*1>dd[0]) ){
+                }
+                else{
+                  tmp.push(resultData[i].workername);
+                }*/
+              }
+              console.log("-------------------------------------")
+              console.log(tmp)
+              for(let i=0 ; i<=tmp.length ; i++){
+                resultData = resultData.filter(data => data.workername !== tmp[i])
+              }
+              console.log("-------------------------------------")
+              
+              setBusiness(resultData);
+              console.log(resultData)
               console.log(business)
             });
           
