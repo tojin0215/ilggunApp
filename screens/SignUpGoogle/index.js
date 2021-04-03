@@ -11,8 +11,8 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import axios from 'axios';
 
 const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState(route.params.email);
+  const [name, setName] = useState(route.params.name);
   const [password, setPassword] = useState(route.params.password);
   const [path, setPath] = useState('');
   const [savePath, setSavePath] = useState('');
@@ -20,8 +20,8 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
 
   const SignPost = async(str) => {
     try {
-        if(name=='' || email=='' || password=='' || path==''){
-            Alert.alert('빈 칸을 채워주세요.');
+        if(path==''){
+            Alert.alert('sign을 채워주세요.');
         }
         else{
             await axios.post('https://www.toojin.cf:3000/signupByCode', { 
@@ -54,25 +54,6 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
         <View style={styles.container}>
                 <View style={styles.formArea}>
                 <ScrollView>
-
-
-                <View style={styles.textArea}>
-                    <Text style={styles.titleStyle}>이름</Text>
-                    <TextInput 
-                        onChangeText={name =>setName(name)}
-                        defaultValue={name}
-                        style={styles.textStyle} 
-                        placeholder={"이름을 입력하세요."}/>
-                </View>   
-                <View style={styles.textArea}>
-                    <Text style={styles.titleStyle}>ID</Text>
-                    <TextInput 
-                        onChangeText={email =>setEmail(email)}
-                        defaultValue={email}
-                        style={styles.textStyle} 
-                        placeholder={"ID를 입력하세요."}/>
-                </View>
-                
                 <View style={styles.textArea}>
                     <Text style={styles.titleSignStyle}>서명</Text>
                     <View style={styles.sign} onTouchMove={(e) => {

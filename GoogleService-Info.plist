@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>193721987512-qb62deqfn1dti9uapv4udj4rt0netcji.apps.googleusercontent.com</string>
+	<string>567366538740-kb7dd4hcclbjsovh2tmdcdedhmov2jqk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.193721987512-qb62deqfn1dti9uapv4udj4rt0netcji</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>193721987512-hdm7l783r4iuhkhd2me04bfvct5a7n5m.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.567366538740-kb7dd4hcclbjsovh2tmdcdedhmov2jqk</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBkBlNC_u-Vt_7MaDnrZXUq23pzn8mEjs0</string>
+	<string>AIzaSyDK6RGPchQSzNpLWwBEzAlM7gTg_tqojh8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>193721987512</string>
+	<string>567366538740</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.toojin.illgun</string>
+	<string>com.tojin.ilggun</string>
 	<key>PROJECT_ID</key>
-	<string>ilggun</string>
+	<string>tojin-4e2dd</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ilggun.appspot.com</string>
+	<string>tojin-4e2dd.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:193721987512:ios:5ee1f13ad5a4c236a9df4d</string>
+	<string>1:567366538740:ios:eb46bd30a2aa188e4895a1</string>
 </dict>
 </plist>

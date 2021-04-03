@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
 import { Alert, AsyncStorage } from 'react-native';
 import {
-  View,
+  View, Input,
   Text, Button,
   TextInput,
   TouchableOpacity,
   StyleSheet, ScrollView, Image,
   TouchableWithoutFeedback, Keyboard
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 //========================================바뀐부분A========================================
 import * as Font from 'expo-font';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import axios from 'axios';
-//========================================바뀐부분A========================================
+
 
 
 const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
@@ -30,6 +31,12 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
   const [radioIndex, setRadioIndex] = useState('');
   //=============================================바뀐부분B========================================
   const [id, setId] = useState('');
+  const [selectedFile, setSelectedFile] =useState(null);
+  const [result, setResult] = useState(null);
+  const [localUri, setLocalUri] = useState('');
+  const [filename, setFilename] = useState('');
+  const [type, setType] = useState('');
+  const [r, setR] = useState(0);
   /*AsyncStorage.getItem("userData").then((userData) =>{
     setId(id => JSON.parse(userData));
   });*/
@@ -43,15 +50,54 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
     AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).id);
     });
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
   }, []);
-  
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+      base64: true,
+    });
+    setResult(result);
+    let localUri1 = result.uri;
+    let filename1 = localUri1.split('/').pop();
+
+    // Infer the type of the image
+    let match = /\.(\w+)$/.exec(filename);
+    let type1 = match ? `image/${match[1]}` : `image`;
+
+    setLocalUri(result.uri);
+    setFilename(filename1);
+    setType(type1);
+
+    if (!result.cancelled) {
+      setSelectedFile(result.uri);
+    }
+  };
   //=============================================바뀐부분C========================================
   var radio_props = [
     {label: '5인 이하', value: 0 },
     {label: '5인 이상', value: 1 }
   ];
 
+  var radio_props2 = [
+    {label: '기존 서명 사용', value: 0 },
+    {label: '도장', value: 1 }
+  ];
   //=============================================바뀐부분C========================================
+
+
+
+
   const SignPost = async(str) => {
     try {
       
@@ -74,32 +120,72 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
           }),
         });
         res = await res;*/
-        await axios.post('https://www.toojin.cf:3000/addBusiness',{
-          id : id,
-          name : businessOwner,
-          bname: workplace,
-          bnumber:businessRegistrationNumber,
-          bphone:businessPhoneNumber,
-          baddress: address1+ ' '+address2 +"("+ zipCode +")",
-        },
-        {  headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'}
-        }).then((res)=> {
-          if(res.data.err!=null){
-            Alert.alert('이미 존재하는 사업장 이름입니다. \n변경해주세요.')  
-          }else{
-            console.log(res); console.log('안녕하세용'); navigation.navigate('Business List');
+        let err = false;
+        if(r==1){
+          if(selectedFile==null){
+            err=true
+            Alert.alert("도장 사진을 넣어주세요.")
           }
-        })
-        
+          else if(selectedFile!==null){
+            const formData = new FormData();
+            formData.append('file', {
+              selectedFile,
+              name: `image`,
+              type: `image/jpg`,
+            });
+          
+            axios.post("https://www.toojin.cf:3000/uploadStamp", {
+              method: 'POST',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                file: result.base64,
+                bname: workplace
+              }),
+            }).then(async(res) => {
+
+
+            }).catch(err => {
+                alert(err)
+                err=true;
+            })
+        }
       }
-    } catch (e) {
-      Alert.alert("사업장 이름이 중복됩니다. 지점 이름을 포함해서 써주세요.")
-    }
+        if(!err){
+          await axios.post('https://www.toojin.cf:3000/addBusiness',{
+            id : id,
+            name : businessOwner,
+            bname: workplace,
+            bnumber:businessRegistrationNumber,
+            bphone:businessPhoneNumber,
+            baddress: address1+ ' '+address2 +"("+ zipCode +")",
+            stamp: r
+          },
+          {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+          }).then((res)=> {
+            if(res.data.err!=null){
+              Alert.alert('이미 존재하는 사업장 이름입니다. \n변경해주세요.')  
+              //Alert.alert(res.data.err);
+            }else{
+              console.log(res); console.log('안녕하세용'); navigation.navigate('Business List');
+            }
+          })
+        
+        
+        }}
+        } catch (e) {
+          Alert.alert("사업장 이름이 중복됩니다. 지점 이름을 포함해서 써주세요."+e)
+        }
+  
   }
+  
   return (
   //================================여기 아래는 거의 다 바뀜========================================
+  
   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <View style={styles.TopArea}>
@@ -125,7 +211,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       </View> 
 
       <View style={styles.formArea}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1}}>
       <View style={styles.textForm}>        
       <View style={styles.textArea}>
         <Text style={styles.titleStyle}>사업장 이름</Text>
@@ -193,6 +279,36 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
                 placeholder={'상세주소를 입력하세요'}
                 style={styles.textStyle}/>
           </View>
+          <View style={{marginTop:hp('3%')}}>
+            <RadioForm
+              radio_props={radio_props2}
+              formHorizontal={true}
+              labelHorizontal={true}
+              buttonColor={'#67C8BA'}
+              selectedButtonColor={'#67C8BA'}
+              labelStyle={{fontSize: wp('4%'), color: '#040525', marginRight:wp('7%'),fontFamily:"NanumSquare"}}
+              animation={true}
+              initial={0}
+              onPress={(value) => {setR(value), ()=> console.log(r)}}
+            />
+
+            {r==0 && 
+              <View>
+              </View>
+            }
+            {r==1 && 
+              <View style={{ width: 200}}>
+                <TouchableOpacity 
+                  style={styles.searchArea2}
+                  onPress={pickImage}>
+                  <Text style={styles.textStyle}>도장 사진 가져오기</Text>
+                </TouchableOpacity> 
+                {selectedFile && <Image contentContainerStyle={{ flex: 1}} source={{ uri: selectedFile }} style={{ width: 200, height: 200, flex:1,marginTop:hp('1%') }} />}
+
+                
+              </View>
+            }
+          </View>
           </View>
       </View>
       </View>
@@ -259,7 +375,8 @@ const styles = StyleSheet.create({
       borderTopRightRadius:wp('13%'),
       borderTopLeftRadius:wp('13%'),
       backgroundColor:'white',
-      paddingTop:hp('3%')
+      paddingTop:hp('3%'),
+      flexGrow: 1,
   },
   textForm: {
       width: '100%', 
@@ -291,6 +408,13 @@ const styles = StyleSheet.create({
   searchArea:{
     marginLeft:wp('2%'),
     width:wp('25%'), height:hp('5%'), 
+    backgroundColor:'#67C8BA', 
+    alignItems:"center", 
+    justifyContent:"center",
+    borderRadius:wp('2%')
+  },  
+  searchArea2:{
+    width:wp('53%'), height:hp('5%'), 
     backgroundColor:'#67C8BA', 
     alignItems:"center", 
     justifyContent:"center",

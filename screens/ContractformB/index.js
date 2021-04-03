@@ -530,6 +530,20 @@ fetchHtml = async(a) => {
         let sign="";
         console.log("33333333 ");
         console.log(this.props.route.params.bid);
+
+        let signOrStamp = '';
+        await axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+            bname : this.state.bang
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+            .then(res => {
+                if(res.data[0].stamp ==1){
+                    signOrStamp = `<img src="https://www.toojin.cf:3000/${this.state.bang}.png" alt="도장" z-index="2" width="100" height="100"></img>`
+                }
+        });
         axios.post('https://www.toojin.cf:3000/selectSign', {
             id:this.props.route.params.workername,
             id2:this.props.route.params.bid,
@@ -552,6 +566,12 @@ fetchHtml = async(a) => {
           sign = res.data[0].sign;
           bsign = res.data[1].sign;
           console.log(sign)
+          if(signOrStamp ==''){
+            signOrStamp = `<svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="${String(bsign)}"
+                    style="fill:none;stroke:black;stroke-width:3" />
+            </svg>`
+          }
           const htmlContent = `
           <!DOCTYPE html>
           <html>
@@ -677,11 +697,8 @@ fetchHtml = async(a) => {
                       <label class="margin_left2">주    소 : </label>
                       <label>${this.state.BusinessAddress}</label><br>
                       <label class="margin_left2">대 표 자 : </label>
-                      <label>${this.state.BusinessOwner1}</label><svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
-                      <polyline points="${String(bsign)}"
-                      style="fill:none;stroke:black;stroke-width:3" />
-                      </svg>
-                      <label class="margin_left2">(서명)</label><br><br><br>
+                      <label>${this.state.BusinessOwner1}</label>
+                      <label class="margin_left2">(서명)</label>${signOrStamp}<br><br><br>
       
                       <label>(근로자)</label>
                       <label>주 소 : </label>

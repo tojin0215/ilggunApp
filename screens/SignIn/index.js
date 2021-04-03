@@ -101,8 +101,9 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           'Accept': 'application/json'}
       })
       .then((responseData) => {
+        
         if(responseData.data[0] == undefined || responseData.data[0] == ''){
-          navigation.navigate('Sign Up Google',{code:user.uid, password:user.uid});
+          navigation.navigate('Sign Up Google',{code: user.uid, password:user.uid, email:user.email, name:user.displayName});
         }else{
           storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
           getToken();
@@ -205,7 +206,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
                     AppleAuthentication.AppleAuthenticationScope.EMAIL,
                   ],
                 });
-
+                console.log(credential);
                 try {
                   await axios.post('https://www.toojin.cf:3000/signinByCode', { code: credential.user,
                     headers:{
@@ -213,10 +214,10 @@ const SignInScreen = ({ onSignIn, navigation }) => {
                       'Accept': 'application/json'}
                   })
                   .then((responseData) => {
-                    console.log(credential.user);
+                    console.log(credential);
                     if(responseData.data[0] == undefined || responseData.data[0] == ''){
                       console.log('-----------------------');
-                      navigation.navigate('Sign Up Google',{code: credential.user, password:credential.user});
+                      navigation.navigate('Sign Up Google',{code: credential.user, password:credential.user, email:credential.email, name:credential.fullName.givenName});
                     }else{
                       storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
                       getToken();
