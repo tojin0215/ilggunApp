@@ -186,11 +186,12 @@ function setModalVisibility(visible, msg ,t, index, r) {
         let week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
         let work = message.split('(')[0];
         let busi = message.split('(')[1].split(')')[0];
-        let d = message.split(' ')[1].split('에')[0];
+        let d = message.split(')님이 ')[1].split('에')[0];
         let dayOfWeek = week[new Date(d).getDay()];
         console.log(dayOfWeek);
         let dd = d.split('-');
-
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!")
+        console.log(work+"/"+busi+"/"+d+"/"+dayOfWeek+"/"+dd)
         let ori = 0;
         axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
           business: busi,
@@ -214,9 +215,13 @@ function setModalVisibility(visible, msg ,t, index, r) {
       .then(res => {
         console.log(res)
         ori = res.data[0].eachtime.split('/');
-        //console.log("오리"+ori);
-      
+        console.log("오리"+ori);
+      console.log(d)
+      console.log(new Date(d).getDay());
       console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
+
+
+
       axios.post('https://www.toojin.cf:3000/addWork', {
         business : busi,
         workername : work,

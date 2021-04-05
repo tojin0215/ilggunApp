@@ -183,7 +183,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
             day :day,
             year : year,
             time : time,
-            subt : subt
+            subt : subt,
         },
         {  headers:{
           'Content-Type': 'application/json',
@@ -513,7 +513,14 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
             <TouchableOpacity 
             style={styles.button}
                 onPress={() => {
-                    this.savedData(this.state.bangCode,this.state.itemC,this.state.monthh,this.state.datee,this.state.dayy, this.state.yearr,(this.state.itemA.length<2?'0'+this.state.itemA:this.state.itemA)+(this.state.itemB.length<2?'0'+this.state.itemB:this.state.itemB) + (this.state.itemAA.length<2?'0'+this.state.itemAA:this.state.itemAA)+(this.state.itemBB.length<2?'0'+this.state.itemBB:this.state.itemBB)) 
+                    if((this.state.itemA*1 < this.state.itemAA*1) ||(this.state.itemA*1 === this.state.itemAA*1 && (this.state.itemB*1 <= this.state.itemBB*1))){ 
+
+                      this.savedData(this.state.bangCode,this.state.itemC,this.state.monthh,this.state.datee,this.state.dayy, this.state.yearr,
+                        (this.state.itemA.length<2?'0'+this.state.itemA:this.state.itemA)+(this.state.itemB.length<2?'0'+this.state.itemB:this.state.itemB) + (this.state.itemAA.length<2?'0'+this.state.itemAA:this.state.itemAA)+(this.state.itemBB.length<2?'0'+this.state.itemBB:this.state.itemBB)) 
+                    }
+                    else{
+                      Alert.alert("시간이 잘못 입력되었습니다.")
+                    }
                 }}>
                 <Text style={styles.buttonTitle}>변경 완료</Text>
              </TouchableOpacity>     
