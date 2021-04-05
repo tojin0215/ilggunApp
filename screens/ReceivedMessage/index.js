@@ -5,6 +5,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import axios from 'axios';
+import { Alert } from 'react-native';
 const styles = StyleSheet.create({
   image:{
     width:'100%', height:'100%', 
@@ -139,7 +140,7 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   const [to, setTo] = useState('');
   async function fetchData(idid) { 
       try {
-        axios.post('https://www.toojin.cf:3000/selectReceivedMessage', {
+        await axios.post('https://www.toojin.cf:3000/selectReceivedMessage', {
           t:idid
         },
         {  headers:{
@@ -260,7 +261,6 @@ function setModalVisibility(visible, msg ,t, index, r) {
     }
 
     async function alterRead() {
-      console.log("////////////////////////////////id : "+id);
       try {
         axios.post('https://www.toojin.cf:3000/alterReadMessage', {
           ind:index,
@@ -271,7 +271,6 @@ function setModalVisibility(visible, msg ,t, index, r) {
         })
         .then(res => 
           {
-              console.log("////////////////////////////////id : "+id);
               fetchData(id);
               //console.log(res.data);
           });
@@ -338,18 +337,6 @@ function setModalVisibility(visible, msg ,t, index, r) {
       } catch (e) {
           console.error(e);
         }
-        
-        /*axios.post('https://www.toojin.cf:3000/sendMessage', {
-        f: busi,
-        message : password,
-        t: id,
-        r:0,
-      },
-      {  headers:{
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'}
-    }).then((res) => {
-    })*/
 
     }
 
@@ -402,6 +389,20 @@ function setModalVisibility(visible, msg ,t, index, r) {
 
       }
     }
+    function delMessage(i) { 
+      try {
+        axios.post('https://www.toojin.cf:3000/delMessage', {
+          ind: i
+        },
+        {  headers:{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'}
+      }).then((res) => {
+        
+      })} catch (e) {
+        console.error(e);
+      }
+    }
 
 
     return (
@@ -413,7 +414,6 @@ function setModalVisibility(visible, msg ,t, index, r) {
         {
           business.map((b, id) => (
           <View style={b.r?styles.readMessageArea:styles.messageArea}>
-              
               <Image style={styles.userImage} source={require('../../img/user_blue.png')}/>
               <TouchableOpacity 
                 style={styles.touchArea}
@@ -446,6 +446,13 @@ function setModalVisibility(visible, msg ,t, index, r) {
                     alterRead();
                   }} 
                   style={styles.modalBtn}>닫기</Text>
+                <Text onPress={async() => {
+                  console.log("indexxxxxxxxx : " +index)
+                    await delMessage(index)
+                    await fetchData(id);
+                    await setModalVisibility(!visibility,'');
+                  }} 
+                  style={styles.modalBtn}>메세지 삭제</Text>
             </View>
         </Modal>
 

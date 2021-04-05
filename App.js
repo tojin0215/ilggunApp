@@ -47,6 +47,7 @@ import WorkerBusinessListScreen from './screens/WorkerBusinessList';
 import AddBusinessScreen from './screens/AddBusiness';
 import MapScreen from './screens/Map'
 import CalendarScreen from './screens/Calendar';
+import ModifyScreen from './screens/Modify';
 import VacationRequestScreen from './screens/VacationRequest';
 import WorkerStatementScreen from './screens/WorkerStatement';
 import WorkerContractformScreen from './screens/WorkerContractform';
@@ -568,9 +569,11 @@ const App = () => {
             headerTitle: getFocusedRouteNameFromRoute(route),
             headerRight: () => (
               <View style={styles.rowArea}>
-              <View style={styles.userArea}>
+              <View>
+              <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
                 <Text style={styles.logoutText}>{id} </Text>
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
+              </TouchableOpacity>
               </View>
               <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
                 <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
@@ -706,6 +709,12 @@ const App = () => {
               </View>
               ),
             })}
+          />
+          <RootStack.Screen 
+          options={{
+            title:"정보 수정",
+            }}
+            name="Modify" component={ModifyScreen}
           />
           <RootStack.Screen 
           options={{
