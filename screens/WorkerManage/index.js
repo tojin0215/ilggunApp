@@ -62,6 +62,11 @@ const styles = StyleSheet.create({
       fontSize:wp('4.8%'),
       fontFamily:"NanumSquareB",
   },
+  textTitle2:{
+    color: '#040525',
+    fontSize:wp('3.5%'),
+    fontFamily:"NanumSquare",
+},
   ContbuttonArea: {
     position:"absolute",
     top:hp('0.5%'),right:wp('22%'),
@@ -198,7 +203,7 @@ const WorkerManageScreen = ({navigation, route}) => {
           business.map((b, id) => (
           <View style={styles.worker} key={id}>
             <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
-            <Text style={styles.textTitle}>{b.workername}</Text>
+            <Text style={styles.textTitle}>{b.workername2}</Text><Text style={styles.textTitle2}>({b.workername.substr(0,4)}{b.workername.length>4?'**':''})</Text>
             <View style={styles.ContbuttonArea}>
               <TouchableOpacity
                 style={styles.Contbutton}

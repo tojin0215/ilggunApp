@@ -48,6 +48,10 @@ import AddBusinessScreen from './screens/AddBusiness';
 import MapScreen from './screens/Map'
 import CalendarScreen from './screens/Calendar';
 import ModifyScreen from './screens/Modify';
+import ModifySignScreen from './screens/ModifySign';
+import ModifyPasswordScreen1 from './screens/ModifyPassword1';
+import ModifyPasswordScreen2 from './screens/ModifyPassword2';
+import ModifyNameScreen from './screens/ModifyName';
 import VacationRequestScreen from './screens/VacationRequest';
 import WorkerStatementScreen from './screens/WorkerStatement';
 import WorkerContractformScreen from './screens/WorkerContractform';
@@ -569,12 +573,10 @@ const App = () => {
             headerTitle: getFocusedRouteNameFromRoute(route),
             headerRight: () => (
               <View style={styles.rowArea}>
-              <View>
               <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
                 <Text style={styles.logoutText}>{id} </Text>
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
               </TouchableOpacity>
-              </View>
               <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
                 <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
               </TouchableOpacity>
@@ -592,10 +594,10 @@ const App = () => {
             //headerTitle: getFocusedRouteNameFromRoute(route),
             headerRight: () => (
               <View style={styles.rowArea}>
-              <View style={styles.userArea}>
+              <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
                 <Text style={styles.logoutText}>{id} </Text>
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
-              </View>
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
                 <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
               </TouchableOpacity>
@@ -614,10 +616,10 @@ const App = () => {
             headerStyle:{backgroundColor:'#7085DF', shadowOpacity: 0, elevation: 0,},
             headerRight: () => (
               <View style={styles.rowArea}>
-                <View style={styles.userArea}>
+                <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
                   <Text style={styles.logoutText}>{id} </Text>
                   <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
                   <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
                 </TouchableOpacity>
@@ -659,10 +661,10 @@ const App = () => {
               ),
               headerRight: () => (
                 <View style={styles.rowArea}>
-                <View style={styles.userArea}>
-                  <Text style={styles.logoutText}>{id} </Text>
-                  <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
-                </View>
+                <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
+                <Text style={styles.logoutText}>{id} </Text>
+                <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
+              </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
                   <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
                 </TouchableOpacity>
@@ -696,10 +698,10 @@ const App = () => {
               ),
               headerRight: () => (
                 <View style={styles.rowArea}>
-                <View style={styles.userArea}>
-                  <Text style={styles.logoutText}>{id} </Text>
-                  <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
-                </View>
+                <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
+                <Text style={styles.logoutText}>{id} </Text>
+                <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
+              </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.worker}>
                   <Image style={styles.msgImage} source={count?require('./img/msg2.png'):require('./img/msg.png')}></Image>
                 </TouchableOpacity>
@@ -715,6 +717,30 @@ const App = () => {
             title:"정보 수정",
             }}
             name="Modify" component={ModifyScreen}
+          />
+          <RootStack.Screen 
+          options={{
+            title:"비밀번호 확인",
+            }}
+            name="Modify Password1" component={ModifyPasswordScreen1}
+          />
+          <RootStack.Screen 
+          options={{
+            title:"비밀번호 수정",
+            }}
+            name="Modify Password2" component={ModifyPasswordScreen2}
+          />
+          <RootStack.Screen 
+          options={{
+            title:"서명 수정",
+            }}
+            name="Modify Sign" component={ModifySignScreen}
+          />
+          <RootStack.Screen 
+          options={{
+            title:"이름 수정",
+            }}
+            name="Modify Name" component={ModifyNameScreen}
           />
           <RootStack.Screen 
           options={{

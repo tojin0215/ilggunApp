@@ -98,12 +98,12 @@ class InviteScreen extends Component{
   fetchData = async(name) => { 
     try {
       if(name!=''){
-      axios.post('https://www.toojin.cf:3000/selectId', {id : name},
+      axios.post('https://www.toojin.cf:3000/searchId', {id : name},
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.cf:3000/selectId', {
+        /*let res = await fetch('https://www.toojin.cf:3000/searchId', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -131,7 +131,7 @@ class InviteScreen extends Component{
     }
     sendInviteMessage = async(name) => { 
       try {
-        axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
+        await axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
           business: this.state.bangCode,
           workername:name,
         },
@@ -158,21 +158,33 @@ class InviteScreen extends Component{
               console.log("선택 :???"+this.state.clicked)
 
             });
-            console.log(this.state.bangCode, name, this.props.route.params.type)
-            axios.post('https://www.toojin.cf:3000/addWorker', {
-              business: this.state.bangCode,
-              workername : name,
-              type : this.props.route.params.type,
-              state: 0
+            
+            axios.post('https://www.toojin.cf:3000/selectUsername', {
+              id : name
             },
             {  headers:{
               'Content-Type': 'application/json',
               'Accept': 'application/json'}
             })
             .then(res => {
-              console.log("선택 :??"+this.state.clicked)
-              this.props.navigation.navigate('Worker Management')
+              axios.post('https://www.toojin.cf:3000/addWorker', {
+                business: this.state.bangCode,
+                workername : name,
+                workername2 : res.data[0].name,
+                type : this.props.route.params.type,
+                state: 0
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+              })
+              .then(res => {
+                console.log("선택 :??"+this.state.clicked)
+                this.props.navigation.navigate('Worker Management')
+              });
             });
+
+            
           }else{
             Alert.alert("이미 근무하고 있는 근로자입니다.")
           }

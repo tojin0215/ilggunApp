@@ -187,7 +187,7 @@ const WorkerManageScreen2 = ({navigation}) => {
           business.map((b, id) => (
             <View style={styles.worker} key={id}>
               <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
-              <Text style={styles.textTitle}>{b.workername}</Text>
+              <Text style={styles.textTitle}>{b.workername2}({b.workername})</Text>
               
                 <View style={styles.ContbuttonArea}>
                 <TouchableOpacity
