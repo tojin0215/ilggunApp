@@ -47,7 +47,22 @@ const styles = StyleSheet.create({
   todobuttonImg:{
     width: wp('80%'),
     height: hp('7.2%')
-  }
+  },
+  tinyLogo: {
+    width: wp('11%'),
+    height:  wp('11%'),
+    marginLeft:wp('4%')
+  },
+  rowArea:{
+    flexDirection:'row',
+    marginRight:wp('5%')
+  },
+  titleText:{
+    color:'white',
+    fontSize:18,
+    fontFamily:"NanumSquare",
+    marginTop:hp('1.7%')
+  },
 });
 
 
@@ -58,10 +73,22 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [onlyOne, setOnlyOne] = useState(0);
   const [business, setBusiness] = useState([]);
   const [id,setId] = useState('');
-  
+
+
   navigation.addListener('focus', () => {
     navigation.setOptions({
-          headerTitle: route.params.bname,
+         // headerTitle: route.params.bname,
+         headerLeft: () => (
+          <View style={styles.rowArea}>
+            <Image
+              style={styles.tinyLogo}
+              source={
+                require('../../img/logo_purple.png')
+              }
+            />
+            <Text style={styles.titleText}>{route.params.bname}</Text>
+          </View>
+        ),
     });
     setBusiness(route.params.bname);
     setId(route.params.id);
@@ -82,7 +109,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [worktodo, setWorktodo] = useState(0);
   useEffect(() => {
     navigation.addListener('focus', () => {
-      axios.post('https://www.toojin.cf:3000/selectWorkTodo', {
+      axios.post('http://13.124.141.28:3000/selectWorkTodo', {
            bang : route.params.bname,
            year : new Date().getFullYear(),
            month: new Date().getMonth() + 1,
@@ -110,7 +137,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
            setWorktodo(td);
          }
     });
-    axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
+    axios.post('http://13.124.141.28:3000/selectWorkerEach', {
       business:route.params.bname,
       workername:route.params.id,
     },
@@ -142,7 +169,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       
   async function fetchData(bangCode,idid) { 
     try {
-        /*let res = await fetch('https://www.toojin.cf:3000/selectBusinessByWorker', {
+        /*let res = await fetch('http://13.124.141.28:3000/selectBusinessByWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -152,7 +179,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             //id : idid
           }),
         })*/
-        await axios.post('https://www.toojin.cf:3000/selectBusinessByWorker', {id:idid},
+        await axios.post('http://13.124.141.28:3000/selectBusinessByWorker', {id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
@@ -178,7 +205,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     async function commuteData(idid) { 
       let err;  
       try {
-          await axios.post('https://www.toojin.cf:3000/updateCommute', {bang : route.params.bname, id:idid},
+          await axios.post('http://13.124.141.28:3000/updateCommute', {bang : route.params.bname, id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}

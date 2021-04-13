@@ -13,6 +13,7 @@ import { AsyncStorage } from 'react-native';
 const SendMessageScreen = ({ onSignUp, navigation }) => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const [press, setPress] = useState(false);
 
   const [idid, setIdid] = useState('');
   React.useEffect(() => {
@@ -23,7 +24,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
 
   const SignPost = async() => {
     try {
-      axios.post('https://www.toojin.cf:3000/sendMessage', {
+      axios.post('http://13.124.141.28:3000/sendMessage', {
           f: idid,
           message : password,
           t: id,
@@ -33,7 +34,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
       }).then((res) => {
-      /*let res = await fetch('https://www.toojin.cf:3000/sendMessage', {
+      /*let res = await fetch('http://13.124.141.28:3000/sendMessage', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -83,7 +84,11 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
     <View style={styles.sendBtnArea}>
       
       <TouchableOpacity
-        onPress={SignPost}
+        onPress={() => {
+          if(!press){
+            setPress(true, () => SignPost())
+          }
+        }}
       >
       <Image style={styles.btnImgStyle} source={require('../../img/message.png')}></Image>  
       </TouchableOpacity>

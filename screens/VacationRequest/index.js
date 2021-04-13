@@ -100,6 +100,7 @@ class VacationRequestScreen extends Component{
       comment: '',
 
       owner:'',
+      clicked: false
     }
 
     AsyncStorage.getItem("bangCode")
@@ -110,46 +111,55 @@ class VacationRequestScreen extends Component{
   }
   fetchData = async() => { 
     try {
-if(this.state.comment){
-
-      await axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
-        bname : this.state.bangCode
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-        })
-        .then(res => {
-          this.setState({owner : res.data[0].id});
-        });
-        await axios.post('https://www.toojin.cf:3000/sendMessage', {
-            type: 2,
-            system:1,
-            f: this.props.route.params.id,
-            t : this.state.owner,
-            message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+(this.state.itemB.length==1?'0'+this.state.itemB:this.state.itemB)+"-"+(this.state.itemAA.length==1?'0'+this.state.itemAA:this.state.itemAA)+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
-            time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA,
-            r:0
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-        })
-        .then(res => {
-          console.log("뭘까요?2")
-          console.log(res.data);
-          let rowall = []
-          for (let i = 0; i < res.data.length; i++) {
-            rowall.push({label: res.data[i].workername, value: res.data[i]});
-          }
-          this.setState({workernames: rowall})
-          Alert.alert("휴가 신청이 완료되었습니다.")
-          this.props.navigation.navigate('Worker Home');
-        });
+      let today = new Date();
+      console.log(today.getFullYear()+"/"+this.state.itemA*1 +"//"+(today.getMonth()+1)+"/"+this.state.itemB*1 +"//"+ today.getDate()+"/"+this.state.itemAA*1)
+      if(today.getFullYear()<this.state.itemA*1 
+        || (today.getFullYear()==this.state.itemA*1 && today.getMonth()+1<this.state.itemB*1)
+        || (today.getFullYear()==this.state.itemA*1 && today.getMonth()+1==this.state.itemB*1 && today.getDate()<this.state.itemAA*1)
+        ){
+        if(this.state.comment){
+          await axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+            bname : this.state.bangCode
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+          .then(res => {
+            this.setState({owner : res.data[0].id});
+          });
+          await axios.post('http://13.124.141.28:3000/sendMessage', {
+              type: 2,
+              system:1,
+              f: this.props.route.params.id,
+              t : this.state.owner,
+              message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+(this.state.itemB.length==1?'0'+this.state.itemB:this.state.itemB)+"-"+(this.state.itemAA.length==1?'0'+this.state.itemAA:this.state.itemAA)+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
+              time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA,
+              r:0
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+          .then(res => {
+            console.log("뭘까요?2")
+            console.log(res.data);
+            let rowall = []
+            for (let i = 0; i < res.data.length; i++) {
+              rowall.push({label: res.data[i].workername, value: res.data[i]});
+            }
+            this.setState({workernames: rowall})
+            Alert.alert("휴가 신청이 완료되었습니다.")
+            this.props.navigation.navigate('Worker Home');
+          });
+        }
+        else{
+          Alert.alert("휴가신청 사유를 입력해주세요.")
+        }
       }
-      else{
-        Alert.alert("휴가신청 사유를 입력해주세요.")
-      }
+    else{  
+      Alert.alert("날짜가 제대로 입력되었는지 확인해주세요.")
+    }
     } catch (e) {
       Alert.alert("휴가 신청이 완료되었습니다.")
         console.error(e);
@@ -202,8 +212,8 @@ if(this.state.comment){
           <View style={styles.pickerArea}>
           <DropDownPicker
                 items={[
-                    {label: '2020', value: '2020'},
                     {label: '2021', value: '2021'},
+                    {label: '2022', value: '2022'},
                 ]}
                 defaultValue={this.state.itemA}
                 containerStyle={{height:hp('7%'), width:wp('22%'),}}
@@ -363,8 +373,9 @@ if(this.state.comment){
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                this.fetchData() 
-                
+                if(!this.state.clicked){
+                  this.setState({clicked : true}, () => this.fetchData())
+                }                
               }}>
 {/* =====================================================바뀐부분J====================================== */}
                 <Text style={styles.buttonTitle}>완료</Text>

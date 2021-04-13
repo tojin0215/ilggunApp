@@ -128,7 +128,7 @@ class WorkerStatementScreen extends Component{
     fetchData = async(bangCode,idid) => { 
       try {
 
-        axios.post('https://www.toojin.cf:3000/selectOvertimework', {
+        axios.post('http://13.124.141.28:3000/selectOvertimework', {
           business: bangCode,
           year : this.state.itemAA.split('년')[0]*1,
           month : this.state.itemBB.split('월')[0]*1,
@@ -155,7 +155,7 @@ class WorkerStatementScreen extends Component{
 
           
           console.log(bangCode);
-          axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
+          axios.post('http://13.124.141.28:3000/selectWorkerEach', {
             workername : idid,
             business : bangCode
           },

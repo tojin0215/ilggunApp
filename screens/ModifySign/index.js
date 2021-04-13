@@ -27,7 +27,7 @@ const ModifySignScreen = ({ onSignUp, navigation, route }) => {
             Alert.alert('sign을 채워주세요.');
         }
         else{
-            await axios.post('https://www.toojin.cf:3000/changeSign', { 
+            await axios.post('http://13.124.141.28:3000/changeSign', { 
                     id: id,
                     sign: savePath,
             },{

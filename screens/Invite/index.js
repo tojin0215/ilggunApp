@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
   },
   textStyle:{
     paddingTop:hp('2%'),
-    paddingLeft:wp('5%'),
     marginLeft:wp('5%'),
     width:wp('38%'), height:hp('6%'),
     fontSize: wp('4.6%'),
@@ -83,7 +82,7 @@ class InviteScreen extends Component{
     super(props);
     this.state = {
         bangCode : null, id:'',
-        workerList: [], item:'', clicked:false,
+        workerList: [], item:'', clicked:false, press : false
     }
 
     AsyncStorage.getItem("bangCode")
@@ -98,12 +97,12 @@ class InviteScreen extends Component{
   fetchData = async(name) => { 
     try {
       if(name!=''){
-      axios.post('https://www.toojin.cf:3000/searchId', {id : name},
+      axios.post('http://13.124.141.28:3000/searchId', {id : name},
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.cf:3000/searchId', {
+        /*let res = await fetch('http://13.124.141.28:3000/searchId', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -131,7 +130,7 @@ class InviteScreen extends Component{
     }
     sendInviteMessage = async(name) => { 
       try {
-        await axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
+        await axios.post('http://13.124.141.28:3000/selectWorkerEach', {
           business: this.state.bangCode,
           workername:name,
         },
@@ -142,7 +141,7 @@ class InviteScreen extends Component{
         .then(res => {
           console.log(JSON.stringify(res.data))
           if(res.data[0]==undefined){
-            axios.post('https://www.toojin.cf:3000/sendMessage', {
+            axios.post('http://13.124.141.28:3000/sendMessage', {
               type: 1,
               system:1,
                 f: this.state.id,
@@ -159,7 +158,7 @@ class InviteScreen extends Component{
 
             });
             
-            axios.post('https://www.toojin.cf:3000/selectUsername', {
+            axios.post('http://13.124.141.28:3000/selectUsername', {
               id : name
             },
             {  headers:{
@@ -167,7 +166,7 @@ class InviteScreen extends Component{
               'Accept': 'application/json'}
             })
             .then(res => {
-              axios.post('https://www.toojin.cf:3000/addWorker', {
+              axios.post('http://13.124.141.28:3000/addWorker', {
                 business: this.state.bangCode,
                 workername : name,
                 workername2 : res.data[0].name,
@@ -235,13 +234,12 @@ class InviteScreen extends Component{
             <FlatList data={this.state.workerList} 
                 renderItem={({ item }) => 
                 <View style={styles.listStyle}>
-                <Text style={styles.textStyle}>{item.name}({item.id})</Text>
+                <Text style={styles.textStyle}>{item.name}({item.id.substring(0,4)+(item.id.length>4?'**':'')})</Text>
                 <TouchableOpacity
                   style={styles.button}
                   onPress={()=>{
                     if(this.state.clicked==false){
-                      this.setState({clicked:true})
-                      this.sendInviteMessage(item.id) 
+                      this.setState({clicked:true},() => this.sendInviteMessage(item.id))
                     }
                   }}
                 >

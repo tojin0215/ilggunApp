@@ -168,7 +168,7 @@ const WorkManageScreen = ({navigation, route}) => {
       try {
           let d = String(date).split(' ');
           //console.log(d);
-          await axios.post('https://www.toojin.cf:3000/selectWorkerAsDay', {
+          await axios.post('http://13.124.141.28:3000/selectWorkerAsDay', {
               business: bangCode,
               year : d[3]*1,
               month: d[1]*1,
@@ -180,7 +180,7 @@ const WorkManageScreen = ({navigation, route}) => {
             'Accept': 'application/json'
           }
           })
-          /*await fetch('https://www.toojin.cf:3000/selectWorkerAsDay', {
+          /*await fetch('http://13.124.141.28:3000/selectWorkerAsDay', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -264,7 +264,7 @@ const WorkManageScreen = ({navigation, route}) => {
               console.log(business)
             });
           
-          await axios.post('https://www.toojin.cf:3000/selectTimelog', {
+          await axios.post('http://13.124.141.28:3000/selectTimelog', {
                     bang: bangCode,
                     year : d[3]*1,
                     month: d[1]*1,
@@ -275,7 +275,7 @@ const WorkManageScreen = ({navigation, route}) => {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json'}
                 })
-                /*fetch('https://www.toojin.cf:3000/selectTimelog', {
+                /*fetch('http://13.124.141.28:3000/selectTimelog', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json',

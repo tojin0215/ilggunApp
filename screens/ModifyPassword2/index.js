@@ -30,7 +30,7 @@ const ModifyPasswordScreen2 = ({ onSignUp, navigation }) => {
         }
         else{
             console.log(id, password)
-            await axios.post('https://www.toojin.cf:3000/changePassword', { 
+            await axios.post('http://13.124.141.28:3000/changePassword', { 
                 id: id,
                 password: password, 
                 headers:{

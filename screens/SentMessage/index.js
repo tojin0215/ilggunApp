@@ -6,7 +6,7 @@ import * as Font from 'expo-font';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { Row } from 'react-native-table-component';
 import axios from 'axios';
-
+import { Alert } from 'react-native';
 const styles = StyleSheet.create({
   
   image:{
@@ -143,17 +143,17 @@ const sentMessageScreen = ({ navigation }) => {
   const [visibility, setVisibility] = useState([]);
   const [visibility2, setVisibility2] = useState([]);
   const [message, setMessage] = useState('');
-  
+  const [index, setIndex] = useState(-1);
   async function fetchData(ididid) { 
       try {
-        axios.post('https://www.toojin.cf:3000/selectSentMessage', {
+        axios.post('http://13.124.141.28:3000/selectSentMessage', {
           id:ididid
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*  let res = await fetch('https://www.toojin.cf:3000/selectSentMessage', {
+        /*  let res = await fetch('http://13.124.141.28:3000/selectSentMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -165,7 +165,7 @@ const sentMessageScreen = ({ navigation }) => {
           .then(res => 
             {
               console.log(res.data);
-              setBusiness(res.data);
+              setBusiness(res.data.reverse());
               console.log("dddd" +business);
             });
       } catch (e) {
@@ -178,7 +178,7 @@ const sentMessageScreen = ({ navigation }) => {
         let busi = message.split('(')[1].split(')')[0];
         let d = message.split(' ')[1].split('에')[0];
         let dd = d.split('-');
-        axios.post('https://www.toojin.cf:3000/addWork', {
+        axios.post('http://13.124.141.28:3000/addWork', {
             business : busi,
             workername : work,
             month : dd[1]*1,
@@ -192,7 +192,7 @@ const sentMessageScreen = ({ navigation }) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://www.toojin.cf:3000/addWork', {
+        /*let res = await fetch('http://13.124.141.28:3000/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -213,9 +213,41 @@ const sentMessageScreen = ({ navigation }) => {
         console.error(e);
       }
 }
-  function setModalVisibility(visible, msg ,t) {
+  function setModalVisibility(visible, msg ,t, index) {
+      setIndex(index);
       setMessage(msg)
       setVisibility(visible)
+  }
+  function delMessage(i) { 
+    Alert.alert(
+      "메세지 삭제",
+      "메세지를 삭제하시겠습니까?",
+      [
+        { text: "OK", onPress: () => {
+          try {
+            axios.post('http://13.124.141.28:3000/delMessage', {
+              ind: i
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+          }).then((res) => {
+            fetchData(idid);
+            setModalVisibility(!visibility,'');
+          })} catch (e) {
+            console.error(e);
+          }
+        } },
+        {
+          text: "Cancel",
+          onPress: () => setModalVisibility(!visibility,''),
+          style: "cancel"
+        }
+        
+      ]
+    );
+    
+    
   }
     return (
       <View style={styles.image}>
@@ -227,7 +259,7 @@ const sentMessageScreen = ({ navigation }) => {
             <View style={styles.messageArea}>
               <TouchableOpacity 
                 style={styles.touchArea}
-                onPress={() => setModalVisibility(true, b.message, b.time)} 
+                onPress={() => setModalVisibility(true, b.message, b.time, b.ind)} 
               >
                   <View style={styles.titleArea}>
                     <Image style={styles.userImage} source={require('../../img/mm.png')}/>
@@ -254,6 +286,10 @@ const sentMessageScreen = ({ navigation }) => {
             <View>
               <Text style={styles.modaltextStyle}>{message}</Text>
               <Text onPress={() => setModalVisibility(!visibility,'')} style={styles.modalBtn}>닫기</Text>
+              <Text onPress={async() => {
+                    await delMessage(index)
+                  }} 
+                  style={styles.modalBtn}>메세지 삭제</Text>
             </View>
           </View>
         </Modal>

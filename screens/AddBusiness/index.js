@@ -100,11 +100,14 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
 
   const SignPost = async(str) => {
     try {
-      
+      let regPlace = /^[0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]{1,15}$/;
+
       if(workplace=='' || businessRegistrationNumber=='' || businessOwner=='' || businessPhoneNumber=='' || address1=='' || address2=='' ||zipCode==''){
         Alert.alert("빈 칸을 채워주세요.")
+      }else if(!regPlace.test(workplace)){
+        Alert.alert("사업장 이름에 공백, 특수기호는 들어갈 수 없습니다.")
       }else{
-        /*let res = await fetch('https://www.toojin.cf:3000/addBusiness', {
+        /*let res = await fetch('http://13.124.141.28:3000/addBusiness', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -134,7 +137,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
               type: `image/jpg`,
             });
           
-            axios.post("https://www.toojin.cf:3000/uploadStamp", {
+            axios.post("http://13.124.141.28:3000/uploadStamp", {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -154,7 +157,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
         }
       }
         if(!err){
-          await axios.post('https://www.toojin.cf:3000/addBusiness',{
+          await axios.post('http://13.124.141.28:3000/addBusiness',{
             id : id,
             name : businessOwner,
             bname: workplace,
@@ -171,12 +174,13 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
               Alert.alert('이미 존재하는 사업장 이름입니다. \n변경해주세요.')  
               //Alert.alert(res.data.err);
             }else{
-              console.log(res); console.log('안녕하세용'); navigation.navigate('Business List');
+              navigation.navigate('Business List');
             }
           })
         
         
-        }}
+        }
+      }
         } catch (e) {
           Alert.alert("사업장 이름이 중복됩니다. 지점 이름을 포함해서 써주세요."+e)
         }
@@ -214,7 +218,9 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       <ScrollView contentContainerStyle={{ flexGrow: 1}}>
       <View style={styles.textForm}>        
       <View style={styles.textArea}>
-        <Text style={styles.titleStyle}>사업장 이름</Text>
+          <View style={{flexDirection:'row'}}>
+            <Text style={styles.titleStyle}>사업장 이름</Text><Text style={{fontSize:11, marginTop: hp('0.4%'),}}> (15자 이내)</Text>
+          </View>
           <TextInput 
             onChangeText={workplace =>setWorkplace(workplace)}
             defaultValue={workplace}

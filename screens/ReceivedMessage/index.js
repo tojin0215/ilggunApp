@@ -121,12 +121,12 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   //console.log(id);
   React.useEffect(() => {
     //const unsubscribe =
-      //navigation.addListener('focus', () => {
+      navigation.addListener('focus', () => {
         AsyncStorage.getItem("userData").then((userData) =>{
           setId(id => JSON.parse(userData).id);
           fetchData(JSON.parse(userData).id);
         });
-      
+      });
   //return unsubscribe;
   }, []);
 
@@ -140,14 +140,14 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   const [to, setTo] = useState('');
   async function fetchData(idid) { 
       try {
-        await axios.post('https://www.toojin.cf:3000/selectReceivedMessage', {
-          t:idid
+        await axios.post('http://13.124.141.28:3000/selectReceivedMessage', {
+          t:idid, ft:0
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-          /*let res = await fetch('https://www.toojin.cf:3000/selectReceivedMessage', {
+          /*let res = await fetch('http://13.124.141.28:3000/selectReceivedMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -159,7 +159,7 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
           .then(res => 
             {
               console.log(res.data);
-              setBusiness(res.data);
+              setBusiness(res.data.reverse());
               console.log("dddd" +business);
             });
       } catch (e) {
@@ -194,7 +194,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         console.log("!!!!!!!!!!!!!!!!!!!!!!!!")
         console.log(work+"/"+busi+"/"+d+"/"+dayOfWeek+"/"+dd)
         let ori = 0;
-        axios.post('https://www.toojin.cf:3000/selectWorkerEach', {
+        axios.post('http://13.124.141.28:3000/selectWorkerEach', {
           business: busi,
           workername: work
         },
@@ -202,7 +202,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-      /*let res = await fetch('https://www.toojin.cf:3000/selectWorkerEach', {
+      /*let res = await fetch('http://13.124.141.28:3000/selectWorkerEach', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -223,7 +223,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
 
 
 
-      axios.post('https://www.toojin.cf:3000/addWork', {
+      axios.post('http://13.124.141.28:3000/addWork', {
         business : busi,
         workername : work,
         month : dd[1]*1,
@@ -240,7 +240,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         });
     
         try {
-          axios.post('https://www.toojin.cf:3000/sendMessage', {
+          axios.post('http://13.124.141.28:3000/sendMessage', {
             f: id,
             message :"<"+busi+">에서 "+to+"님의 휴가 신청("+d+")을 승인하였습니다.",
             t: to,
@@ -262,7 +262,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
 
     async function alterRead() {
       try {
-        axios.post('https://www.toojin.cf:3000/alterReadMessage', {
+        axios.post('http://13.124.141.28:3000/alterReadMessage', {
           ind:index,
         },
         {  headers:{
@@ -279,12 +279,11 @@ function setModalVisibility(visible, msg ,t, index, r) {
       }
     }
 
-    addBang= async() => { 
+    async function addBang(){ 
       try {
           let busi = message.split('(')[1].split(')')[0];
-         console.log("pppppppppppppp "+busi);
 
-        axios.post('https://www.toojin.cf:3000/addBang', {
+        axios.post('http://13.124.141.28:3000/addBang', {
           bang: busi,
           id: id
         },
@@ -295,7 +294,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         .then(res => {
           console.log(res)
         });
-        axios.post('https://www.toojin.cf:3000/alterState', {
+        axios.post('http://13.124.141.28:3000/alterState', {
             bang: busi,
             type : 1,
             id : id
@@ -307,7 +306,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         .then(res => {
           console.log(res.data)
         });
-        axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+        axios.post('http://13.124.141.28:3000/selectBusinessByName', {
           bname : busi
           },
           {  headers:{
@@ -317,7 +316,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
           .then(res => {
             console.log("<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다");
             try {
-              axios.post('https://www.toojin.cf:3000/sendMessage', {
+              axios.post('http://13.124.141.28:3000/sendMessage', {
                 f: id,
                 message :"<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다. 근로계약서를 작성해주세요.",
                 t: res.data[0].id,
@@ -344,7 +343,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
       let busi = message.split('(')[1].split(')')[0];
       if(i == 2){
         try {
-          axios.post('https://www.toojin.cf:3000/sendMessage', {
+          axios.post('http://13.124.141.28:3000/sendMessage', {
             f: id,
             message :"<"+busi+">에서 "+to+"님의 휴가 신청이 거절되었습니다.",
             t: to,
@@ -361,7 +360,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         }
       }else if(i == 3){
         
-        axios.post('https://www.toojin.cf:3000/selectBusinessByName', {
+        axios.post('http://13.124.141.28:3000/selectBusinessByName', {
           bname : busi
           },
           {  headers:{
@@ -370,7 +369,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
           })
           .then(res => {
             try {
-              axios.post('https://www.toojin.cf:3000/sendMessage', {
+              axios.post('http://13.124.141.28:3000/sendMessage', {
                 f: id,
                 message :"<"+busi+"> 근로자 '"+id+"'님이 초대를 거절했습니다.",
                 t: res.data[0].id,
@@ -390,18 +389,35 @@ function setModalVisibility(visible, msg ,t, index, r) {
       }
     }
     function delMessage(i) { 
-      try {
-        axios.post('https://www.toojin.cf:3000/delMessage', {
-          ind: i
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-      }).then((res) => {
-        
-      })} catch (e) {
-        console.error(e);
-      }
+      Alert.alert(
+        "메세지 삭제",
+        "메세지를 삭제하시겠습니까?",
+        [
+          { text: "OK", onPress: () => {
+            try {
+              axios.post('http://13.124.141.28:3000/delMessage', {
+                ind: i
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+            }).then((res) => {
+              fetchData(id);
+              setModalVisibility(!visibility,'');
+            })} catch (e) {
+              console.error(e);
+            }
+          } },
+          {
+            text: "Cancel",
+            onPress: () => setModalVisibility(!visibility,''),
+            style: "cancel"
+          }
+          
+        ]
+      );
+      
+      
     }
 
 
@@ -449,8 +465,6 @@ function setModalVisibility(visible, msg ,t, index, r) {
                 <Text onPress={async() => {
                   console.log("indexxxxxxxxx : " +index)
                     await delMessage(index)
-                    await fetchData(id);
-                    await setModalVisibility(!visibility,'');
                   }} 
                   style={styles.modalBtn}>메세지 삭제</Text>
             </View>

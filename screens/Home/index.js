@@ -37,7 +37,22 @@ const styles = StyleSheet.create({
     width: wp('40%'),
     height: wp('40%'),
     
-  }
+  },
+  tinyLogo: {
+    width: wp('11%'),
+    height:  wp('11%'),
+    marginLeft:wp('4%')
+  },
+  rowArea:{
+    flexDirection:'row',
+    marginRight:wp('5%')
+  },
+  titleText:{
+    color:'white',
+    fontSize:18,
+    fontFamily:"NanumSquare",
+    marginTop:hp('1.7%')
+  },
 });
 
 
@@ -47,7 +62,18 @@ const HomeScreen = ({ navigation, props }) => {
     AsyncStorage.getItem("bangCode")
       .then((bangCode) =>{
         navigation.setOptions({
-          headerTitle: bangCode,
+          //headerTitle: bangCode,
+          headerLeft: () => (
+            <View style={styles.rowArea}>
+              <Image
+                style={styles.tinyLogo}
+                source={
+                  require('../../img/logo.png')
+                }
+              />
+              <Text style={styles.titleText}>{bangCode}</Text>
+            </View>
+          ),
         });
       });
     

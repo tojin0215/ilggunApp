@@ -49,7 +49,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
 
   const SignPost = async(str) => {
     try {
-      await axios.post('https://www.toojin.cf:3000/signin', { 
+      await axios.post('http://13.124.141.28:3000/signin', { 
         id: id,
         password: password, 
         headers:{
@@ -95,7 +95,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
   const _syncUserWithStateAsync = async () => {
     const user = await GoogleSignIn.signInSilentlyAsync();
     try {
-      await axios.post('https://www.toojin.cf:3000/signinByCode', { code: user.uid,
+      await axios.post('http://13.124.141.28:3000/signinByCode', { code: user.uid,
         headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
@@ -208,7 +208,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
                 });
                 console.log(credential);
                 try {
-                  await axios.post('https://www.toojin.cf:3000/signinByCode', { code: credential.user,
+                  await axios.post('http://13.124.141.28:3000/signinByCode', { code: credential.user,
                     headers:{
                       'Content-Type': 'application/json',
                       'Accept': 'application/json'}
