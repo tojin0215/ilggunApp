@@ -9,15 +9,26 @@ import {
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import axios from 'axios';
+import { WebView } from 'react-native-webview'
 
 const ModifySignScreen = ({ onSignUp, navigation, route }) => {
   const [id, setId] = useState('');
   const [path, setPath] = useState('');
   const [savePath, setSavePath] = useState('');
-
+    const [sign, setSign] = useState('');
   React.useEffect(() => {
     AsyncStorage.getItem("userData").then((userData) =>{
-      setId(id => JSON.parse(userData).id);
+        setId(id => JSON.parse(userData).id);
+        axios.post('http://13.124.141.28:3000/selectSign', { 
+            id: JSON.parse(userData).id,
+            id2: JSON.parse(userData).id,
+        },{
+        headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+        }).then((res)=>{
+            setSign(res.data[0].sign)        
+        })
     });
   }, []);
 
@@ -50,7 +61,25 @@ const ModifySignScreen = ({ onSignUp, navigation, route }) => {
         <View style={styles.container}>
                 <View style={styles.formArea}>
                 <ScrollView>
+                
                 <View style={styles.textArea}>
+                    <Text style={styles.titleSignStyle}>현재 등록된 서명</Text>
+                    <View style={{ width:'100%', height:hp('15%'), }}>
+                    <WebView
+                        originWhitelist={['*']}
+                        automaticallyAdjustContentInsets={false}
+                        source={{ html: `<!DOCTYPE html>
+                        <html>
+                        <body>
+                        <svg viewBox = "0 0 500 500" style="position:absolute; height:400px; width:400px; " xmlns="http://www.w3.org/2000/svg">
+                                <polyline points="${String(sign)}"
+                                style="fill:none;stroke:black;stroke-width:3" />
+                            </svg>
+                        </body>
+                        </html>`
+                        }}
+                    />
+                    </View>
                     <Text style={styles.titleSignStyle}>서명</Text>
                     <View style={styles.sign} onTouchMove={(e) => {
                     console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 

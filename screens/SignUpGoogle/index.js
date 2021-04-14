@@ -24,7 +24,19 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
             Alert.alert('sign을 채워주세요.');
         }
         else{
-            await axios.post('http://13.124.141.28:3000/signupByCode', { 
+            await axios.post('http://13.124.141.28:3000/changeSign', { 
+                id: email,
+                sign: savePath,
+            },{
+            headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'}
+            }).then((res)=>{
+                Alert.alert("서명 등록이 완료되었습니다. 다시 로그인해주세요.")
+                navigation.navigate('Sign In')   
+            })
+
+            /*await axios.post('http://13.124.141.28:3000/signupByCode', { 
                     id: email,
                     name: name,
                     password: password,
@@ -41,8 +53,8 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
                 navigation.navigate('Sign In')
                 Alert.alert('회원가입이 완료되었습니다.')    
             }        
-        })
-    }
+        })*/
+        }
     } catch (e) {
         console.log(e);
     }
@@ -70,7 +82,7 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
                     }}
                     onTouchStart={(e) => {
                         console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
-                        setSavePath(savePath+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
+                        setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
                         setPath(path+' M'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
                         console.log(path)
                     }}

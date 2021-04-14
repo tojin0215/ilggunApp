@@ -27,6 +27,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop:hp('1%')
   },
+  buttonArea3: {
+    flexDirection:"column",
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end', marginTop:hp('25%'),marginLeft:hp('30%')
+  },
   button: {
     width: wp('40%'),
     height: wp('40%'),
@@ -52,6 +57,18 @@ const styles = StyleSheet.create({
     fontSize:18,
     fontFamily:"NanumSquare",
     marginTop:hp('1.7%')
+  },
+  settingButton: {
+    backgroundColor: "#67C8BA",
+    width:wp('20%'), height: hp('5.9%'),
+    justifyContent: 'center', alignItems:"center",
+    borderRadius:wp('1.7%'),
+    marginLeft:wp('2%'),
+  },
+  settingButtonTitle: {
+    color: 'white',
+    fontFamily:"NanumSquare",
+    fontSize: wp('4.8%'),
   },
 });
 
@@ -191,8 +208,18 @@ const [clicked4, setClicked4] = useState(-1);
           setTimeout(() => {setClicked4(-1)},500);}}>
         <Image style={styles.buttonImg} source={clicked4==0? require('../../img/statement_clicked.png'): require('../../img/statement.png')}/>
       </TouchableOpacity>
-{/*  --------------------------------바뀐부분D----------------------- */}
-    </View>
+      </View>
+
+      <View style={styles.buttonArea3}>
+        <TouchableOpacity
+          style={styles.settingButton}
+          onPress={()=> {
+            navigation.navigate('Modify Business'); 
+          }}>
+          <Text style={styles.settingButtonTitle}>정보 수정</Text>
+        </TouchableOpacity>
+      </View>
+    
     </View>
     </View>
   );

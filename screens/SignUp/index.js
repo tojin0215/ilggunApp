@@ -161,19 +161,16 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                         </TouchableOpacity> 
                     </View>
                     <View style={styles.sign} onTouchMove={(e) => {
-                    console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
                     setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
                     setPath(path+' L'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
                     console.log(savePath)
                     }}
                     ontouchend={(e) => {
-                        console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
                         setSavePath(savePath)
                         setPath(path+' Z')
                         console.log(savePath)
                     }}
                     onTouchStart={(e) => {
-                        console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
                         setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
                         setPath(path+' M'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
                         console.log(savePath)

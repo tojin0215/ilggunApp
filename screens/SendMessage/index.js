@@ -5,17 +5,19 @@ import {
   Text, Button,
   TextInput,
   TouchableOpacity,ImageBackground,Image,
-  StyleSheet, TouchableWithoutFeedback, Keyboard,Platform
+  StyleSheet, TouchableWithoutFeedback, Keyboard,Platform,ScrollView
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { AsyncStorage } from 'react-native';
+import SearchBar from 'react-native-elements/dist/searchbar/SearchBar-ios';
 
 const SendMessageScreen = ({ onSignUp, navigation }) => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [press, setPress] = useState(false);
-
+  const [items, setItem] = useState([]);
   const [idid, setIdid] = useState('');
+  const [afterClick, setAfterClick] = useState(false);
   React.useEffect(() => {
         AsyncStorage.getItem("userData").then((userData) =>{
           setIdid(id => JSON.parse(userData).id);
@@ -53,6 +55,22 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
       console.error(e);
     }
   }
+  const search = async(search_id) => {
+    setAfterClick(false)
+    axios.post('http://13.124.141.28:3000/searchId', {id : search_id},
+    {  headers:{
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'}
+    })
+    .then(res => {
+      console.log(res)
+      let arr=[]
+      for(let i=0; i<res.data.length ;i++){
+        arr.push({id: res.data[i].id, name: res.data[i].name});
+      }
+      setItem(arr);
+    });
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.image}>
@@ -64,13 +82,26 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
           </View>
           <View style={styles.textInputArea}>
           <TextInput 
-            onChangeText={id =>setId(id)}
+            onChangeText={id => {setId(id); search(id);} }
             defaultValue={id}
             autoFocus={true}
             style={styles.textStyle} 
             placeholder={'ID를 입력하세요.'}/>
-            </View>
-        </View>  
+          </View>
+          </View> 
+          {afterClick==false && id.length>0 && <View style={styles.searchInputArea}>
+            <View style={styles.searchStyle} >
+            {//keywords.map(({ id, text }) => {
+              //return (
+              <ScrollView>
+                {items.map((i, id) => (
+                  <Text style={styles.searchItemStyle} onPress={()=>{setId(i.id); setAfterClick(true)}}>{i.id}({i.name})</Text>
+                ))}
+              </ScrollView>
+            //)
+            }</View>
+            </View>}
+         
         <View style={styles.msgArea}>
           <TextInput 
             onChangeText={password => setPassword(password)}
@@ -121,17 +152,27 @@ const styles = StyleSheet.create({
     paddingTop:hp('2.5%'),
   },
   titleArea:{
-    width:'100%', height:hp('9%'),
+    width:'100%', height:hp('7%'),
     flexDirection:"row", 
   },
   msgArea:{
-    height:hp('55%'),
+    height:hp('55%'),zIndex: 0,
   },
   textStyle: {
     fontSize: wp('4.2%'),
     fontFamily:"NanumSquare",
     color:'#040525',
     width:wp('40%'),
+  },
+  searchStyle: {
+    fontSize: wp('4.2%'),
+    fontFamily:"NanumSquare",
+    color:'#040525',
+    width:wp('40%'),
+  },
+  searchItemStyle: {
+    marginTop:hp('0.4%'),
+    marginBottom:hp('0.4%')
   },
   textLineStyle:{
     fontSize: wp('4.2%'),
@@ -189,6 +230,17 @@ const styles = StyleSheet.create({
     height:hp('6.2%'),
     justifyContent:"center", alignItems:'flex-start',
     paddingLeft:wp('3%')
+   },
+   searchInputArea:{
+    borderColor:'#DAE9F7',
+    borderWidth:wp('0.3%'),
+    borderRadius:wp('2.5%'),
+    width:wp('47%'),
+    height:hp('10%'),
+    justifyContent:"center", alignItems:'center',
+    paddingLeft:wp('3%'), marginLeft:hp('21%'),marginTop:hp('10%'),
+    zIndex: 2,position: 'absolute',
+    backgroundColor:'#ffffff'
    }
 })
  

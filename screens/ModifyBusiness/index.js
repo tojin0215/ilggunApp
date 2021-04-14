@@ -16,8 +16,7 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import axios from 'axios';
 import { WebView } from 'react-native-webview'
 
-
-const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
+const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
   //=============================================바뀐부분B========================================
   const [workplace, setWorkplace] = useState('');
   const [businessRegistrationNumber, setBusinessRegistrationNumber] = useState('');
@@ -28,7 +27,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
   const [zipCode, setZipCode] = useState('');
   const [introduction, setIntroduction] = useState('');
   const [radioValue, setRadioValue] = useState('');
-  const [radioIndex, setRadioIndex] = useState('');
+  const [radioIndex, setRadioIndex] = useState(-1);
   //=============================================바뀐부분B========================================
   const [id, setId] = useState('');
   const [selectedFile, setSelectedFile] =useState(null);
@@ -36,18 +35,61 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
   const [localUri, setLocalUri] = useState('');
   const [filename, setFilename] = useState('');
   const [type, setType] = useState('');
-  const [r, setR] = useState(0);
+  const [r, setR] = useState(-1);
+  const [bangCode, setBangCode] = useState('');
   const [sign, setSign] = useState(0);
   /*AsyncStorage.getItem("userData").then((userData) =>{
     setId(id => JSON.parse(userData));
   });*/
-  navigation.addListener('focus', () => {
-    if(route.params != undefined){
-      setAddress1(route.params.address1);
-      setZipCode(route.params.zipCode);
-    }
-  });
+
   React.useEffect(() => {
+    
+    navigation.addListener('focus', () => {
+        AsyncStorage.getItem("bangCode")
+        .then((bangCode) =>{
+            setBangCode(bangCode);
+            navigation.setOptions({
+                //headerTitle: bangCode,
+                headerRight: () => (
+                    <View>
+                        <Text style={styles.delBusiness} onPress={()=>{delB(bangCode)}}>{'사업장삭제'}</Text>
+                    </View>
+                ),
+              });
+            axios.post("http://13.124.141.28:3000/selectBusinessByName",
+            { bname: bangCode },
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 
+                    'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }).then(async(res) => {
+                setRadioIndex(res.data[0].fivep)
+                setId(res.data[0].id)
+                setBusinessOwner(res.data[0].name)
+                setWorkplace(res.data[0].bname)
+                setBusinessRegistrationNumber(res.data[0].bnumber);
+                setBusinessPhoneNumber(res.data[0].bphone)
+                if(route.params != undefined){
+                    setAddress1(route.params.address1);
+                    setAddress2("");
+                    setZipCode(route.params.zipCode);
+                }
+                else{
+                    setAddress1(res.data[0].baddress.split('  ')[0]) 
+                    let addr2 = res.data[0].baddress.split('  ')[1]
+                    setAddress2(addr2.split('(')[0]) 
+                    let addr3 = addr2.split('(')[1]
+                    setZipCode(addr3.split(')')[0])
+                }
+                setR(res.data[0].stamp);
+            }).catch(err => {
+                
+            })
+        });
+    });
     AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).id);
       axios.post('http://13.124.141.28:3000/selectSign', { 
@@ -106,7 +148,32 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
   ];
   //=============================================바뀐부분C========================================
 
-
+    const delB = async(bc) => {
+        Alert.alert(
+            "사업장 삭제",
+            "사업장을 삭제하면 복구할 수 없습니다. 그래도 삭제하시겠습니까?",
+            [
+              { text: "OK", onPress: () => {
+                axios.post('http://13.124.141.28:3000/delBusiness', { 
+                    bang: bc,
+                },{
+                headers:{
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'}
+                }).then((res)=>{
+                    navigation.navigate('Business List');
+                })
+              } },
+              {
+                text: "Cancel",
+                //onPress: () => setModalVisibility(!visibility,''),
+                style: "cancel"
+              }
+              
+            ]
+          );
+        
+    }
 
 
   const SignPost = async(str) => {
@@ -135,35 +202,31 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
         });
         res = await res;*/
         let err = false;
-        if(r==0){
-          axios.post('http://13.124.141.28:3000/addBusiness',{
-            id : id,
-            name : businessOwner,
-            bname: workplace,
-            bnumber:businessRegistrationNumber,
-            bphone:businessPhoneNumber,
-            baddress: address1+ '  '+address2 +"("+ zipCode +")",
-            stamp: r,
-            fivep: radioIndex
-          },
-          {  headers:{
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'}
-          }).then((res)=> {
-            if(res.data.err!=null){
-              Alert.alert('이미 존재하는 사업장 이름입니다. \n변경해주세요.')  
-              //Alert.alert(res.data.err);
-            }else{
-              navigation.navigate('Business List');
-            }
-          })
+        if(r==0 || (r==1 && selectedFile===null)){
+            axios.post('http://13.124.141.28:3000/updateBusiness',{
+                id : id,
+                name : businessOwner,
+                bname: workplace,
+                bnumber:businessRegistrationNumber,
+                bphone:businessPhoneNumber,
+                baddress: address1+ '  '+address2 +"("+ zipCode +")",
+                stamp: r,
+                fivep: radioIndex
+            },
+            {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+            }).then((res)=> {
+                if(res.data.err!=null){
+                Alert.alert('이미 존재하는 사업장 이름입니다. \n변경해주세요.')  
+                //Alert.alert(res.data.err);
+                }else{
+                navigation.navigate('Home');
+                }
+            })
         }
         if(r==1){
-          if(selectedFile==null){
-            err=true
-            Alert.alert("도장 사진을 넣어주세요.")
-          }
-          else if(selectedFile!==null){
+          if(selectedFile!==null){
             const formData = new FormData();
             formData.append('file', {
               selectedFile,
@@ -182,31 +245,29 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
                 bname: workplace
               }),
             }).then(async(res) => {
-              axios.post('http://13.124.141.28:3000/addBusiness',{
-                id : id,
-                name : businessOwner,
-                bname: workplace,
-                bnumber:businessRegistrationNumber,
-                bphone:businessPhoneNumber,
-                baddress: address1+ '  '+address2 +"("+ zipCode +")",
-                stamp: r,
-                fivep: radioIndex
-              },
-              {  headers:{
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'}
-              }).then((res)=> {
-                if(res.data.err!=null){
-                  Alert.alert('이미 존재하는 사업장 이름입니다. \n변경해주세요.')  
-                  //Alert.alert(res.data.err);
-                }else{
-                  navigation.navigate('Business List');
-                }
-              })
-
+                axios.post('http://13.124.141.28:3000/updateBusiness',{
+                    id : id,
+                    name : businessOwner,
+                    bname: workplace,
+                    bnumber:businessRegistrationNumber,
+                    bphone:businessPhoneNumber,
+                    baddress: address1+ '  '+address2 +"("+ zipCode +")",
+                    stamp: r,
+                    fivep: radioIndex
+                },
+                {  headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'}
+                }).then((res)=> {
+                    if(res.data.err!=null){
+                    Alert.alert('이미 존재하는 사업장 이름입니다. \n변경해주세요.')  
+                    //Alert.alert(res.data.err);
+                    }else{
+                    navigation.navigate('Home');
+                    }
+                })
             }).catch(err => {
                 alert(err)
-                err=true;
             })
         }
       }
@@ -226,9 +287,9 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
         <View style={styles.titleArea}>
           <Text style={styles.titleStyle}>사업장 정보</Text>
           <View style={styles.radioArea}>
-            <RadioForm
+            {radioIndex>=0 && <RadioForm
               radio_props={radio_props}
-              initial={0}
+              initial={radioIndex}
               formHorizontal={true}
               labelHorizontal={true}
               buttonColor={'#67C8BA'}
@@ -239,7 +300,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
                 setRadioIndex(index),
                 setRadioValue(value)
               }}
-            />
+            />}
            </View>
           </View>
       </View> 
@@ -247,15 +308,11 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       <View style={styles.formArea}>
       <ScrollView contentContainerStyle={{ flexGrow: 1}}>
       <View style={styles.textForm}>        
-      <View style={styles.textArea}>
+      <View style={styles.textArea2}>
           <View style={{flexDirection:'row'}}>
             <Text style={styles.titleStyle}>사업장 이름</Text><Text style={{fontSize:11, marginTop: hp('0.4%'),}}> (15자 이내)</Text>
           </View>
-          <TextInput 
-            onChangeText={workplace =>setWorkplace(workplace)}
-            defaultValue={workplace}
-            placeholder={'사업장 이름을 입력하세요'}
-            style={styles.textStyle}/>
+          <Text style={styles.textStyle}>{workplace}</Text> 
       </View>
       <View style={styles.textArea}>
         <Text style={styles.titleStyle}>사업장 등록번호 </Text>
@@ -297,7 +354,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
 
             <TouchableOpacity 
               style={styles.searchArea}
-              onPress={()=>{ navigation.navigate('Map') }}>
+              onPress={()=>{ navigation.navigate('Map2') }}>
               <Text style={styles.textStyle}>우편번호 찾기</Text>
             </TouchableOpacity> 
           </View>
@@ -316,7 +373,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
                 style={styles.textStyle}/>
           </View>
           <View style={{marginTop:hp('3%')}}>
-            <RadioForm
+            {r>=0 && <RadioForm
               radio_props={radio_props2}
               formHorizontal={true}
               labelHorizontal={true}
@@ -324,9 +381,9 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
               selectedButtonColor={'#67C8BA'}
               labelStyle={{fontSize: wp('4%'), color: '#040525', marginRight:wp('7%'),fontFamily:"NanumSquare"}}
               animation={true}
-              initial={0}
+              initial={r}
               onPress={(value) => {setR(value), ()=> console.log(r)}}
-            />
+            />}
 
             {r==0 && 
               <View style={{ width:'100%', height:hp('15%'), }}>
@@ -353,7 +410,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
                   onPress={pickImage}>
                   <Text style={styles.textStyle}>도장 사진 가져오기</Text>
                 </TouchableOpacity> 
-                {selectedFile && <Image contentContainerStyle={{ flex: 1}} source={{ uri: selectedFile }} style={{ width: 200, height: 200, flex:1,marginTop:hp('1%') }} />}
+                <Image contentContainerStyle={{ flex: 1}} source={{ uri: selectedFile?selectedFile:`http://13.124.141.28:3000/${workplace}.png` }} style={{ width: 200, height: 200, flex:1,marginTop:hp('1%') }} />
 
                 
               </View>
@@ -368,7 +425,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
           <TouchableOpacity 
             style={styles.button}
             onPress={SignPost}>
-          <Text style={styles.buttonTitle}>완료</Text>
+          <Text style={styles.buttonTitle}>수정하기</Text>
           </TouchableOpacity>
       </View>
 {/* 여기가 검색창 나오는 부분!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
@@ -416,6 +473,9 @@ const styles = StyleSheet.create({
     fontSize: wp('4.3%'),
     fontFamily:"NanumSquareB"
   },
+  delBusiness:{
+      marginRight:hp('1%'),
+  },
   textStyle:{
       fontSize: wp('4%'),
       fontFamily:"NanumSquare"
@@ -437,6 +497,9 @@ const styles = StyleSheet.create({
     marginTop:hp('3%'),
     borderBottomColor:'#D3D6E2', 
     borderBottomWidth:hp('0.2%'),
+  },
+  textArea2:{
+    marginTop:hp('3%'),
   },
   textArea1:{
     marginTop:wp('1%'),
@@ -504,4 +567,4 @@ const styles = StyleSheet.create({
   },
 })
  
-export default AddBusinessScreen;
+export default ModifyBusinessScreen;

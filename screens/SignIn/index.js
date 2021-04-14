@@ -103,7 +103,26 @@ const SignInScreen = ({ onSignIn, navigation }) => {
       .then((responseData) => {
         
         if(responseData.data[0] == undefined || responseData.data[0] == ''){
-          navigation.navigate('Sign Up Google',{code: user.uid, password:user.uid, email:user.email, name:user.displayName});
+          axios.post('http://13.124.141.28:3000/signupByCode', { 
+            id: user.email,
+            name: user.displayName,
+            password: user.uid,
+            sign: '',
+            code: user.uid,
+          },{
+          headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+          }).then((res)=>{
+            if(res.data.err!=null){
+              Alert.alert('다른 방식으로 동일한 이메일이 가입되어있습니다.')  
+            }else{
+              navigation.navigate('Sign Up Google',{email:user.email});
+              Alert.alert('회원가입이 완료되었습니다. 서명을 등록해주세요.')    
+            }
+          }); 
+          
         }else{
           storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
           getToken();
@@ -217,7 +236,27 @@ const SignInScreen = ({ onSignIn, navigation }) => {
                     console.log(credential);
                     if(responseData.data[0] == undefined || responseData.data[0] == ''){
                       console.log('-----------------------');
-                      navigation.navigate('Sign Up Google',{code: credential.user, password:credential.user, email:credential.email, name:credential.fullName.givenName});
+                      axios.post('http://13.124.141.28:3000/signupByCode', { 
+                          id: credential.email,
+                          name: credential.fullName.givenName,
+                          password: credential.user,
+                          sign: '',
+                          code: credential.user,
+                      },{
+                          headers:{
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                          }
+                      }).then((res)=>{
+                        if(res.data.err!=null){
+                            Alert.alert('다른 방식으로 동일한 이메일이 가입되어있습니다.')  
+                        }else{
+                          navigation.navigate('Sign Up Google',{email:credential.email});
+                          Alert.alert('회원가입이 완료되었습니다. 서명을 등록해주세요.')    
+                        }
+                      });      
+
+                      
                     }else{
                       storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
                       getToken();

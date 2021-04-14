@@ -12,7 +12,8 @@ import axios from 'axios';
 
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
 
 
 //data 순서 : 입사일/월급(보수총액)->DB/추가금액->DB/공제액->계산/실지금액->계산
@@ -36,7 +37,7 @@ class StatementScreen2 extends Component{
               ['-','-','-','-','-','-','-','-','-'],
           ],
           addtime: {},
-          nname :[], type1:[], type2:[], bangCode:''
+          nname :[], type1:[], type2:[], bangCode:'' , id:''
       }
     
       AsyncStorage.getItem("bangCode")
@@ -44,7 +45,9 @@ class StatementScreen2 extends Component{
           this.setState({bangCode : bangCode})
             this.fetchData(0);
       })
-
+      AsyncStorage.getItem("userData").then((userData) =>{
+        this.setState({id:JSON.parse(userData).id});
+      });
     }
 
     fetchData = async(flag) => { 
@@ -258,7 +261,87 @@ class StatementScreen2 extends Component{
         }
     }
     clickHandler = async() => {
+      try {
         let t = this.state.tableData[0];
+        let signOrStamp = '';
+        
+        await axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+            bname : this.state.bangCode
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+            .then(res => {
+                if(res.data[0].stamp == 1){
+                    signOrStamp = `<img src="http://13.124.141.28:3000/${this.state.bangCode}.png" alt="도장" z-index="2" width="100" height="100"></img>`
+                }
+        });
+        axios.post('http://13.124.141.28:3000/selectSign', {
+            id:this.state.id,
+            id2: this.state.id
+        },
+        {  headers:{
+              'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+        })
+        .then(async(res) => {
+            let sign = res.data[0].sign;
+
+            if(signOrStamp ==''){
+              signOrStamp = `<svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="${String(sign)}"
+                      style="fill:none;stroke:black;stroke-width:3" />
+              </svg>`
+            }
+            html =`
+              <!DOCTYPE html>
+              <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>월별 급여대장</title>
+                </head>
+                <style>
+                    body{margin:30px 30px 30px 30px; line-height: 30px;}
+                    span{margin-left:240px;}
+                    table{border-collapse:collapse; margin: 10px 30px 10px 10px;}
+                    h1{ text-align: center; }
+                    th{border:1px solid; padding-left: 15px; padding-right: 15px; text-align: center;}
+                    td{border:1px solid; padding-left: 15px; padding-right: 15px; text-align: center;}
+                    .text_underline {text-decoration: underline;}
+                    .margin_left{margin-left:15px;}
+                    .margin_left2{margin-left:65px;}
+                    .text_underline_margin_left{text-decoration: underline;margin-left:50px;}
+                    .contract_day{position:relative; left:50%; margin-left: -100px;}
+                </style>
+                <body>
+                  <h1>[${this.state.bangCode}] 근로자 급여명세서</h1>
+                  <b>날짜 : ${this.state.itemAA} ${this.state.itemBB}</b><br>
+                  <b>이름 : ${this.state.Name}(${this.state.WorkingType})</b><br>
+                  <table>
+                    <th>내역</th><th>금액</th>
+                    <tr><td>(+) 기본급</td><td>${String(t[0])}</td></tr>
+                    <tr><td>(+) 추가근로수당</td><td>${String(t[1])}</td></tr>
+                    <tr><td>(+) 식대</td><td>${String(t[2])}</td></tr>
+                    <tr><td>(-) 국민연금</td><td>${String(t[3])}</td></tr>
+                    <tr><td>(-) 건강보험료</td><td>${String(t[4])}</td></tr>
+                    <tr><td>(-) 장기요양보험료</td><td>${String(t[5])}</td></tr>
+                    <tr><td>(-) 고용보험료</td><td>${String(t[6])}</td></tr>
+                    <tr><td>(-) 소득세</td><td>${String(t[7])}</td></tr>
+                    <tr><td>(-) 주민세</td><td>${String(t[8])}</td></tr>
+                    <tr><td>(+) 지급액계</td><td>${this.state.PaymentSum}</td></tr>
+                    <tr><td>(-) 공제액계</td><td>${this.state.DeductionSum}</td></tr>
+                    <tr><td>(=) 차인지급액계</td><td>${this.state.Difference}</td></tr>
+                  </table><span>${signOrStamp}</span>
+                </body>
+              </html>`;
+            const { uri } = await Print.printToFileAsync({ html },true);
+            Sharing.shareAsync(uri); 
+        }); 
+      } catch (error) {
+        console.error(error);
+      }
+        /*let t = this.state.tableData[0];
         var data = [
           {
             "이름" : this.state.Name,
@@ -330,7 +413,7 @@ class StatementScreen2 extends Component{
           mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           dialogTitle: 'MyWater data',
           UTI: 'com.microsoft.excel.xlsx'
-        });
+        });*/
       }
     show(){
           //console.log('itmeA : ' + this.state.itemA);

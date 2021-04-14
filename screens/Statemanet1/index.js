@@ -9,10 +9,11 @@ import * as Font from 'expo-font';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
+import * as Print from "expo-print";
+import * as Sharing from "expo-sharing";
 
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
 
 //data 순서 : 입사일/월급(보수총액)->DB/추가금액->DB/공제액->계산/실지금액->계산
 
@@ -42,6 +43,7 @@ class StatementScreen1 extends React.Component {
           week: [],
           addtime: {},
           bangcode: '',
+          id:'',
       }
       AsyncStorage.getItem("bangCode")
       .then((bangCode) => {
@@ -49,7 +51,9 @@ class StatementScreen1 extends React.Component {
         this.fetchData(bangCode)
       })
       
-
+      AsyncStorage.getItem("userData").then((userData) =>{
+        this.setState({id:JSON.parse(userData).id});
+      });
     }
 
     fetchData = async(bangCode) => { 
@@ -247,7 +251,83 @@ class StatementScreen1 extends React.Component {
         
     }
     clickHandler = async() => {
-      console.log(this.state.tableTitle);
+      try {
+        let t = this.state.tableData;
+        var yymm = this.state.arrName[0][0];
+        let trs = '';
+        for(let i=0 ; i<t.length ; i++){
+          trs += `<tr><td>${this.state.tableTitle[i]}</td><td>${t[i][0]}</td><td>${t[i][1]}</td><td>${t[i][2]}</td><td>${t[i][3]}</td><td>${t[i][4]}</td></tr>`;
+        }
+        let signOrStamp = '';
+        
+        await axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+            bname : this.state.bangcode
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+            .then(res => {
+                if(res.data[0].stamp == 1){
+                    signOrStamp = `<img src="http://13.124.141.28:3000/${this.state.bangcode}.png" alt="도장" z-index="2" width="100" height="100"></img>`
+                }
+        });
+        axios.post('http://13.124.141.28:3000/selectSign', {
+            id:this.state.id,
+            id2: this.state.id
+        },
+        {  headers:{
+              'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+        })
+        .then(async(res) => {
+            let sign = res.data[0].sign;
+
+            if(signOrStamp ==''){
+              signOrStamp = `<svg viewBox = "0 0 500 500" style="position:absolute; z-index: 2; height:300px; width: 300px;" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="${String(sign)}"
+                      style="fill:none;stroke:black;stroke-width:3" />
+              </svg>`
+            }
+            html =`
+              <!DOCTYPE html>
+              <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>월별 급여대장</title>
+                </head>
+                <style>
+                    body{margin:30px 30px 30px 30px; line-height: 30px;}
+                    span{margin-left:440px;}
+                    table{border-collapse:collapse; margin: 10px 30px 10px 10px;}
+                    h1{ text-align: center; }
+                    h3{ text-align: center; }
+                    th{border:1px solid; padding-left: 15px; padding-right: 15px; text-align: center;}
+                    td{border:1px solid; padding-left: 15px; padding-right: 15px; text-align: center;}
+                    .text_underline {text-decoration: underline;}
+                    .margin_left{margin-left:15px;}
+                    .margin_left2{margin-left:65px;}
+                    .text_underline_margin_left{text-decoration: underline;margin-left:50px;}
+                    .contract_day{position:relative; left:50%; margin-left: -100px;}
+                </style>
+                <body>
+                  <h1>[${this.state.bangcode}] 월별 급여대장</h1>
+                  <h3>${yymm.split('.')[0]}년 ${yymm.split('.')[1]}월</h3>
+                  <table>
+                    <th>이름</th><th>분류</th><th>보수총액(신고금액)</th><th>추가금</th><th>공제</th><th>실지금액</th>
+                    ${trs}
+                  </table><span>${signOrStamp}</span>
+                </body>
+              </html>`;
+            const { uri } = await Print.printToFileAsync({ html },true);
+            Sharing.shareAsync(uri); 
+        }); 
+      } catch (error) {
+        console.error(error);
+      }
+      
+      //엑셀로 공유하기
+      /*console.log(this.state.tableTitle);
       console.log(this.state.arrName)
       let t = this.state.tableData;
       var data = [
@@ -283,7 +363,10 @@ class StatementScreen1 extends React.Component {
         mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         dialogTitle: 'MyWater data',
         UTI: 'com.microsoft.excel.xlsx'
-      });
+      });*/
+
+
+
     }
     show(){
       //console.log(this.state.itemA);

@@ -61,6 +61,8 @@ const ModifyScreen = ({navigation}) => {
   React.useEffect(() => {
     AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).id);
+
+
     });
   }, []);
   return (
@@ -87,6 +89,7 @@ const ModifyScreen = ({navigation}) => {
         onPress={() => navigation.navigate('Modify Name')}>
         <Text style={styles.buttonTitle}>이름 수정</Text>
       </TouchableOpacity>
+      
     </View>
     </View>
     </View>

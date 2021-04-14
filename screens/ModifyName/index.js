@@ -10,7 +10,7 @@ import {
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import axios from 'axios';
 
-const ModifyNameScreen = ({ onSignUp, navigation }) => {
+const ModifyNameScreen = ({ onSignIn, navigation }) => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [userData, setUserData] = useState('');
@@ -40,6 +40,7 @@ const ModifyNameScreen = ({ onSignUp, navigation }) => {
 
                 AsyncStorage.setItem("userData", JSON.stringify(userd));
                 Alert.alert("이름 변경이 완료되었습니다.")
+                onSignIn();
                 navigation.navigate("Select Page");
             })
             .catch(function(error) {

@@ -46,12 +46,14 @@ import BusinessListScreen from './screens/BusinessList';
 import WorkerBusinessListScreen from './screens/WorkerBusinessList';
 import AddBusinessScreen from './screens/AddBusiness';
 import MapScreen from './screens/Map'
+import MapScreen2 from './screens/Map2'
 import CalendarScreen from './screens/Calendar';
 import ModifyScreen from './screens/Modify';
 import ModifySignScreen from './screens/ModifySign';
 import ModifyPasswordScreen1 from './screens/ModifyPassword1';
 import ModifyPasswordScreen2 from './screens/ModifyPassword2';
 import ModifyNameScreen from './screens/ModifyName';
+import ModifyBusinessScreen from './screens/ModifyBusiness'
 import VacationRequestScreen from './screens/VacationRequest';
 import WorkerStatementScreen from './screens/WorkerStatement';
 import WorkerContractformScreen from './screens/WorkerContractform';
@@ -639,6 +641,9 @@ const App = () => {
           <RootStack.Screen
           name="Map" component={MapScreen}
           />
+          <RootStack.Screen
+          name="Map2" component={MapScreen2}
+          />
           <RootStack.Screen 
             name="Home" 
             component={HomeScreen}//HomeDrawer} 
@@ -737,10 +742,19 @@ const App = () => {
             name="Modify Sign" component={ModifySignScreen}
           />
           <RootStack.Screen 
+            name= "Modify Name"
+            options={{title:"이름 수정"}}
+          >
+          {(props) => (
+            <ModifyNameScreen {...props} onSignIn={handleSignIn} />
+          )}
+        </RootStack.Screen>
+
+          <RootStack.Screen 
           options={{
-            title:"이름 수정",
+            title:"사업장 수정",
             }}
-            name="Modify Name" component={ModifyNameScreen}
+            name="Modify Business" component={ModifyBusinessScreen}
           />
           <RootStack.Screen 
           options={{

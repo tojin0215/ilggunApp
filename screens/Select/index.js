@@ -21,14 +21,15 @@ const SelectScreen = ({ onSignIn, navigation }) => {
     };
 
     React.useEffect(() => {
+      navigation.addListener('focus', () => {
       AsyncStorage.getItem("userData").then((userData) =>{
         setId(JSON.parse(userData).name);
       });
         if(!dataLoaded){
             fetchFonts();
         }
-        
-    }, [dataLoaded, setDataLoaded, fetchFonts, id, setId]);
+      });
+    }, []);
 
 
   const ownerImg = require('../../img/onwer.png')
