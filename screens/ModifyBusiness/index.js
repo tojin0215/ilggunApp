@@ -161,6 +161,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'}
                 }).then((res)=>{
+                    Alert.alert("사업장이 삭제되었습니다.")
                     navigation.navigate('Business List');
                 })
               } },

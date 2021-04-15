@@ -171,14 +171,14 @@ class StatementScreen1 extends React.Component {
                     console.log(">>>");
                     console.log(res.data);
                     console.log(">>>");
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                   }
                   else{
                     let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
                     if(this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
                       pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
                     }
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
                   }
                 }
                 
@@ -226,7 +226,7 @@ class StatementScreen1 extends React.Component {
                     console.log(">>>");
                     console.log(String(res.data[i].pay/*시급*/),">>>>>", String(sum/* 시간 */) ,">>>>>", String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/));
                     console.log(">>>");
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                   }
                   else{
                     let date = new Date().getDate();
@@ -235,7 +235,7 @@ class StatementScreen1 extends React.Component {
                       else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
                     }
                     console.log(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate())
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
                   }
                 }
               }

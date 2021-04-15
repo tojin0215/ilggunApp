@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Modal, Text, Button, StyleSheet, ImageBackground, Image,Platform } from 'react-native';
+import { View, Modal, Text, Button, StyleSheet, ImageBackground, Image,Platform} from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
@@ -181,83 +181,98 @@ function setModalVisibility(visible, msg ,t, index, r) {
       setVisibility3(visible)
     }
   }
-
   async function savedData() { 
-    try {
-        let week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-        let work = message.split('(')[0];
-        let busi = message.split('(')[1].split(')')[0];
-        let d = message.split(')님이 ')[1].split('에')[0];
-        let dayOfWeek = week[new Date(d).getDay()];
-        console.log(dayOfWeek);
-        let dd = d.split('-');
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!!")
-        console.log(work+"/"+busi+"/"+d+"/"+dayOfWeek+"/"+dd)
-        let ori = 0;
-        axios.post('http://13.124.141.28:3000/selectWorkerEach', {
-          business: busi,
-          workername: work
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-        })
-      /*let res = await fetch('http://13.124.141.28:3000/selectWorkerEach', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          business: busi,
-          workername: work
-         }),
-      }).then(res => res.json())*/
-      .then(res => {
-        console.log(res)
-        ori = res.data[0].eachtime.split('/');
-        console.log("오리"+ori);
-      console.log(d)
-      console.log(new Date(d).getDay());
-      console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
-
-
-
-      axios.post('http://13.124.141.28:3000/addWork', {
-        business : busi,
-        workername : work,
-        month : dd[1]*1,
-        date : dd[2]*1,
-        day : dayOfWeek,
-        year : dd[0]*1,
-        time : 0,
-        subt : -ori[new Date(d).getDay()]
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-        })
-        });
-    
-        try {
-          axios.post('http://13.124.141.28:3000/sendMessage', {
-            f: id,
-            message :"<"+busi+">에서 "+to+"님의 휴가 신청("+d+")을 승인하였습니다.",
-            t: to,
-            r:0,
-            system:1,
-            type:3
+    let busi = message.split('(')[1].split(')')[0];
+    axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+            bname: busi
           },
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
-        }).then((res) => {
-        })} catch (e) {
-          console.error(e);
-        }
-      } catch (e) {
-        console.error(e);
-      }
+          })
+          .then(async(res) => {
+            if(res.data[0] === undefined){
+              await setModalVisibility(!visibility,'')
+              console.log("더 이상 사업장이 존재하지 않습니다.")
+              alert("더 이상 사업장이 존재하지 않습니다.")
+            }else{
+            
+              try {
+                  let week = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+                  let work = message.split('(')[0];
+                  busi = message.split('(')[1].split(')')[0];
+                  let d = message.split(')님이 ')[1].split('에')[0];
+                  let dayOfWeek = week[new Date(d).getDay()];
+                  console.log(dayOfWeek);
+                  let dd = d.split('-');
+                  console.log(work+"/"+busi+"/"+d+"/"+dayOfWeek+"/"+dd)
+                  let ori = 0;
+                  axios.post('http://13.124.141.28:3000/selectWorkerEach', {
+                    business: busi,
+                    workername: work
+                  },
+                  {  headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'}
+                  })
+                /*let res = await fetch('http://13.124.141.28:3000/selectWorkerEach', {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    business: busi,
+                    workername: work
+                  }),
+                }).then(res => res.json())*/
+                .then(res => {
+                  console.log(res)
+                  ori = res.data[0].eachtime.split('/');
+                  console.log("오리"+ori);
+                console.log(d)
+                console.log(new Date(d).getDay());
+                console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
+
+
+
+                axios.post('http://13.124.141.28:3000/addWork', {
+                  business : busi,
+                  workername : work,
+                  month : dd[1]*1,
+                  date : dd[2]*1,
+                  day : dayOfWeek,
+                  year : dd[0]*1,
+                  time : 0,
+                  subt : -ori[new Date(d).getDay()]
+                  },
+                  {  headers:{
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'}
+                  })
+                  });
+              
+                  try {
+                    axios.post('http://13.124.141.28:3000/sendMessage', {
+                      f: id,
+                      message :"<"+busi+">에서 "+to+"님의 휴가 신청("+d+")을 승인하였습니다.",
+                      t: to,
+                      r:0,
+                      system:1,
+                      type:3
+                    },
+                    {  headers:{
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'}
+                  }).then((res) => {
+                  })} catch (e) {
+                    console.error(e);
+                  }
+                } catch (e) {
+                  console.error(e);
+                }
+            }
+          }); 
     }
 
     async function alterRead() {
@@ -282,57 +297,70 @@ function setModalVisibility(visible, msg ,t, index, r) {
     async function addBang(){ 
       try {
           let busi = message.split('(')[1].split(')')[0];
-
-        axios.post('http://13.124.141.28:3000/addBang', {
-          bang: busi,
-          id: id
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-        })
-        .then(res => {
-          console.log(res)
-        });
-        axios.post('http://13.124.141.28:3000/alterState', {
-            bang: busi,
-            type : 1,
-            id : id
-        },
-        {  headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-        })
-        .then(res => {
-          console.log(res.data)
-        });
-        axios.post('http://13.124.141.28:3000/selectBusinessByName', {
-          bname : busi
+          axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+            bname: busi
           },
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-          .then(res => {
-            console.log("<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다");
-            try {
-              axios.post('http://13.124.141.28:3000/sendMessage', {
-                f: id,
-                message :"<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다. 근로계약서를 작성해주세요.",
-                t: res.data[0].id,
-                r:0,
-                system:1,
-                type:3
+          .then(async(res) => {
+            if(res.data[0] === undefined){
+              await setModalVisibility(!visibility,'')
+              console.log("더 이상 사업장이 존재하지 않습니다.")
+              alert("더 이상 사업장이 존재하지 않습니다.")
+            }else{
+              axios.post('http://13.124.141.28:3000/addBang', {
+                bang: busi,
+                id: id
               },
               {  headers:{
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'}
-            }).then((res) => {
-            })} catch (e) {
-              console.error(e);
-            }
-          });
-
+              })
+              .then(res => {
+                console.log(res)
+              });
+              axios.post('http://13.124.141.28:3000/alterState', {
+                  bang: busi,
+                  type : 1,
+                  id : id
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'}
+              })
+              .then(res => {
+                console.log(res.data)
+              });
+              axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+                bname : busi
+                },
+                {  headers:{
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'}
+                })
+                .then(res => {
+                  console.log("<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다");
+                  try {
+                    axios.post('http://13.124.141.28:3000/sendMessage', {
+                      f: id,
+                      message :"<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다. 근로계약서를 작성해주세요.",
+                      t: res.data[0].id,
+                      r:0,
+                      system:1,
+                      type:3
+                    },
+                    {  headers:{
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'}
+                  }).then((res) => {
+                  })} catch (e) {
+                    console.error(e);
+                  }
+            });
+          }
+        });
       } catch (e) {
           console.error(e);
         }

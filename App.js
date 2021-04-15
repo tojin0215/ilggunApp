@@ -464,7 +464,7 @@ const App = () => {
 
   function callback() {
     try {
-      axios.post('https://www.toojin.cf:3000/selectReceivedNewMessage', {
+      axios.post('http://13.124.141.28:3000/selectReceivedNewMessage', {
         t:realId,
       },
       {  headers:{
@@ -473,7 +473,7 @@ const App = () => {
       })
       .then(res => 
           {
-            console.log(res.data[0]==undefined);
+            console.log(res.data[0]);
             if(res.data[0]==undefined){
               setCount(0);
             }else{
