@@ -13,6 +13,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent:"flex-start",
   },
+  timeText :{
+    height: "3%",
+    marginTop:hp('5%'),
+    marginBottom:hp('0%'),
+    
+  },
+  textTitle1:{
+    fontSize:15,
+    fontFamily:"NanumSquareB",
+  },
+  textTitle2:{
+    marginTop:hp('0.5%'),
+    fontSize:15,
+    fontFamily:"NanumSquareB",
+  },
+  text1:{
+    fontSize:15,
+    fontFamily:"NanumSquare",
+  },
+  text2:{
+    marginTop:hp('0.5%'),
+    fontSize:15,
+    fontFamily:"NanumSquare",
+    color:'#7085DF'
+  },
+
   image:{
     alignItems: 'center',
     width: "100%", height: "100%",    
@@ -73,7 +99,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [onlyOne, setOnlyOne] = useState(0);
   const [business, setBusiness] = useState([]);
   const [id,setId] = useState('');
-
+  const [time, setTime] = useState('')
+  const [timelog, setTimelog] = useState('')
 
   navigation.addListener('focus', () => {
     navigation.setOptions({
@@ -198,6 +225,112 @@ const WorkerHomeScreen = ({ navigation, route }) => {
         .then((res) => {
             setBusiness(res);
         })*/
+              let day = '';
+              let d = new Date().getDay();
+              if(d==0) day = 'sun';
+              else if(d==1) day = 'mon';
+              else if(d==2) day = 'tue';
+              else if(d==3) day = 'wed';
+              else if(d==4) day = 'thu';
+              else if(d==5) day = 'fri';
+              else if(d==6) day = 'sat';
+
+              //console.log(d);
+              await axios.post('http://13.124.141.28:3000/selectWorkerAsDayAsWorker', {
+                  business: bangCode,
+                  year : new Date().getFullYear(),
+                  month: new Date().getMonth() + 1,
+                  date: new Date().getDate(),
+                  day: day,
+                  workername: idid,
+              },
+              {  headers:{
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              }
+              })
+              .then(async(res) => 
+                {
+                  let resultData = res.data.ori;
+                  console.log(res.data.ori);
+                  console.log(res.data.alter);
+                  let alter = res.data.alter;
+                  if(resultData.length == 0){
+                    resultData = res.data.alter
+    
+                    for(let i=0 ; i<resultData.length ; i++){
+                      if(resultData[i].time=='0'){
+                        resultData[i] = null
+                      }
+                    }
+                    resultData = resultData.filter(data => data !== null)
+                  }
+                  else{
+                    for(let j=0 ; j<alter.length ; j++){
+                      let flag=0;
+                      for(let i=0 ; i<resultData.length ; i++){
+                        if(alter[j]!=null){
+                          if(resultData[i].workername == alter[j].workername){
+                            flag=1;
+                            if(alter[j].time=='0'){
+                              console.log("121221212212")
+                              resultData[i] = null
+                            }
+                            else{
+                              resultData[i] = alter[j];
+                            }
+                            alter[j] = null;
+                            break;
+                          }
+                        }
+                      }
+                      if(flag==0){
+                        resultData.push(alter[j]);
+                      }
+                    }
+                    resultData = resultData.filter(data => data !== null)
+                  }
+                  //console.log(res);
+
+                  console.log("받아오는 날짜:")
+                  console.log(resultData)
+                  
+                  console.log("-------------------------------------")
+                  if(resultData[0] !== undefined){
+                   
+                    if(resultData[0].time == null){
+                      setTime(resultData[0][day])
+                    }else{
+                      setTime(resultData[0].time)
+                    }
+                  }
+                  else { setTime(undefined) }
+                });
+              
+              await axios.post('http://13.124.141.28:3000/selectTimelogAsWorker', {
+                        bang: bangCode,
+                        year : new Date().getFullYear(),
+                        month: new Date().getMonth() + 1,
+                        date: new Date().getDate(),
+                        day: day,
+                        workername: idid,
+                    },
+                    {  headers:{
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'}
+                    })
+                  .then(async(res) => 
+                    {
+                      let dic={}
+                      for(let i=0 ; i<res.data.length ; i++){
+                        dic[res.data[i].workername] = (res.data[i].goto==null?'':res.data[i].goto)+(res.data[i].leavee==null?'':res.data[i].leavee);
+                      }
+                      console.log("-------------------------------------")
+                      setTimelog(dic[idid]);
+                    
+                    });
+
+
     } catch (e) {
         console.error(e);
       }
@@ -224,6 +357,37 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               }
             })
             .then((res) => {
+              let day = '';
+              let d = new Date().getDay();
+              if(d==0) day = 'sun';
+              else if(d==1) day = 'mon';
+              else if(d==2) day = 'tue';
+              else if(d==3) day = 'wed';
+              else if(d==4) day = 'thu';
+              else if(d==5) day = 'fri';
+              else if(d==6) day = 'sat';
+              axios.post('http://13.124.141.28:3000/selectTimelogAsWorker', {
+                        bang: route.params.bname,
+                        year : new Date().getFullYear(),
+                        month: new Date().getMonth() + 1,
+                        date: new Date().getDate(),
+                        day: day,
+                        workername: idid,
+                    },
+                    {  headers:{
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'}
+                    })
+                  .then(async(res) => 
+                    {
+                      let dic={}
+                      for(let i=0 ; i<res.data.length ; i++){
+                        dic[res.data[i].workername] = (res.data[i].goto==null?'':res.data[i].goto)+(res.data[i].leavee==null?'':res.data[i].leavee);
+                      }
+                      console.log("-------------------------------------")
+                        setTimelog(dic[idid]);
+                    
+                    });
             })
       } catch (e) {
             console.log(err);
@@ -258,7 +422,11 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   return (
     <View style={styles.image}>
       <View style={styles.container}>
-        <View style={styles.buttonArea1}>
+      <View style={styles.timeText}>
+        <Text style={styles.textTitle1}>근무 시간   {time==undefined?<Text style={styles.text1}>-- : --  -  -- : --</Text>:<Text style={styles.text1}>{time.substring(0,2)}:{time.substring(2,4)} - {time.substring(4,6)}:{time.substring(6,8)}</Text>}</Text>
+        <Text style={styles.textTitle2}>출근/퇴근  {timelog==undefined||time==undefined ?<Text style={styles.text2}>-- : --  -  -- : --</Text>:<Text style={styles.text2}>{timelog.substring(0,2)}:{timelog.substring(2,4)} - {timelog.substring(4,6)}:{timelog.substring(6,8)}</Text>}</Text>
+      </View>
+      <View style={styles.buttonArea1}>    
       <TouchableOpacity 
         style={styles.button}
         onPress={() => { 

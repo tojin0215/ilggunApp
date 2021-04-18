@@ -91,6 +91,7 @@ class AlterWorkerScreen extends Component{
     console.log("매개변수 : ");
     console.log(this.props.route.params["date"].split(' '));
     this.state = {
+      id : '' ,
         dayy: this.props.route.params["date"].split(' ')[0],
         monthh: this.props.route.params["date"].split(' ')[1]*1,
         datee: this.props.route.params["date"].split(' ')[2]*1,
@@ -120,6 +121,9 @@ class AlterWorkerScreen extends Component{
         this.setState({bangCode: bangCode})
         this.fetchData(bangCode)
       })
+    AsyncStorage.getItem("userData").then((userData) =>{
+        this.setState({id:JSON.parse(userData).id});
+      });
   }
   fetchData = async(bangCode) => { 
     try {
@@ -188,7 +192,25 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
-        }).then(res => {this.props.navigation.navigate('Work Management');})
+        }).then(res => {
+          axios.post('http://13.124.141.28:3000/sendMessage', {
+            f: this.state.id,
+            message :"<"+bangCode+">에서 "+worker+"님의 ["+year+"년 "+month+"월 "+date+"일]의 근로시간을 "
+            + time.substring(0,2) +":"+ time.substring(2,4) +"-"
+            + time.substring(4,6) +":"+ time.substring(6,8) 
+            +"으로 변경하였습니다.",
+            t: worker,
+            r:0,
+            system:1,
+            type:3
+          },
+          {  headers:{
+            'Content-Type': 'application/json',
+             'Accept': 'application/json'}
+          }).then((res) => {
+            this.props.navigation.navigate('Work Management');
+          })
+        })
         
         /*let res = await fetch('http://13.124.141.28:3000/addWork', {
           method: 'POST',

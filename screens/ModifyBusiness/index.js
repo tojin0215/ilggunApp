@@ -38,13 +38,15 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
   const [r, setR] = useState(-1);
   const [bangCode, setBangCode] = useState('');
   const [sign, setSign] = useState(0);
-  /*AsyncStorage.getItem("userData").then((userData) =>{
-    setId(id => JSON.parse(userData));
-  });*/
-
+  
+  navigation.addListener('focus', () => {
+    if(route.params != undefined){
+      setAddress1(route.params.address1);
+      setAddress2('');
+      setZipCode(route.params.zipCode);
+    }
+  });
   React.useEffect(() => {
-    
-    navigation.addListener('focus', () => {
         AsyncStorage.getItem("bangCode")
         .then((bangCode) =>{
             setBangCode(bangCode);
@@ -73,9 +75,9 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
                 setBusinessRegistrationNumber(res.data[0].bnumber);
                 setBusinessPhoneNumber(res.data[0].bphone)
                 if(route.params != undefined){
-                    setAddress1(route.params.address1);
-                    setAddress2("");
-                    setZipCode(route.params.zipCode);
+                  setAddress1(route.params.address1);
+                  setAddress2("");
+                  setZipCode(route.params.zipCode);
                 }
                 else{
                     setAddress1(res.data[0].baddress.split('  ')[0]) 
@@ -88,7 +90,6 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
             }).catch(err => {
                 
             })
-        });
     });
     AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).id);
@@ -112,6 +113,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
       }
     })();
   }, []);
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,

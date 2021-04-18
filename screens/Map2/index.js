@@ -11,7 +11,7 @@ const MapScreen2 = ({ navigation, props }) => {
             style={{ width: "100%", height: "100%" }}
             jsOptions={{ animated: true }}
             onSelected={(data) =>{
-                navigation.replace('Modify Business',{address1:JSON.parse(JSON.stringify(data)).address, zipCode: JSON.parse( JSON.stringify(data)).zonecode}) 
+              navigation.navigate(('Modify Business'),{address1:JSON.parse(JSON.stringify(data)).address, zipCode: JSON.parse( JSON.stringify(data)).zonecode}) 
             }}/>
     </View>
   );
