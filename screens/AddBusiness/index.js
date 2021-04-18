@@ -245,7 +245,8 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       </View> 
 
       <View style={styles.formArea}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1}}>
+      <ScrollView style={{flex: 1}}>
+        <TouchableOpacity>
       <View style={styles.textForm}>        
       <View style={styles.textArea}>
           <View style={{flexDirection:'row'}}>
@@ -379,6 +380,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
               onSelected={(data) =>{setAddress1(JSON.parse(JSON.stringify(data)).address), setZipCode(JSON.parse( JSON.stringify(data)).zonecode)} }
           />
           </View> */}
+      </TouchableOpacity>
     </ScrollView>
     
     </View>

@@ -204,6 +204,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
         res = await res;*/
         let err = false;
         if(r==0 || (r==1 && selectedFile===null)){
+          console.log("aaaaaaaaaaaaaaa"+id+businessOwner+workplace+businessRegistrationNumber+r+radioIndex)
             axios.post('http://13.124.141.28:3000/updateBusiness',{
                 id : id,
                 name : businessOwner,
@@ -226,8 +227,10 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
                 }
             })
         }
-        if(r==1){
+        else if(r==1){
+          console.log("bbbbbbbbbbbbbbb")
           if(selectedFile!==null){
+            console.log("ccccccccccccccccc")
             const formData = new FormData();
             formData.append('file', {
               selectedFile,
@@ -307,7 +310,8 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
       </View> 
 
       <View style={styles.formArea}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1}}>
+      <ScrollView style={{flex: 1}}>
+        <TouchableOpacity>
       <View style={styles.textForm}>        
       <View style={styles.textArea2}>
           <View style={{flexDirection:'row'}}>
@@ -387,14 +391,14 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
             />}
 
             {r==0 && 
-              <View style={{ width:'100%', height:hp('15%'), }}>
+              <View style={{ width:'100%', height:hp('19%'), }}>
               <WebView
                   originWhitelist={['*']}
                   automaticallyAdjustContentInsets={false}
                   source={{ html: `<!DOCTYPE html>
                   <html>
                   <body>
-                  <svg viewBox = "0 0 500 500" style="position:absolute; height:500px; width: 500px; " xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox = "0 0 280 280" style="position:absolute; height:380px; width: 380px; " xmlns="http://www.w3.org/2000/svg">
                           <polyline points="${String(sign)}"
                           style="fill:none;stroke:black;stroke-width:3" />
                       </svg>
@@ -437,6 +441,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
               onSelected={(data) =>{setAddress1(JSON.parse(JSON.stringify(data)).address), setZipCode(JSON.parse( JSON.stringify(data)).zonecode)} }
           />
           </View> */}
+         </TouchableOpacity>
     </ScrollView>
     
     </View>

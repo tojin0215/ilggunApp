@@ -19,13 +19,14 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
   const [idid, setIdid] = useState('');
   const [afterClick, setAfterClick] = useState(false);
   React.useEffect(() => {
-        AsyncStorage.getItem("userData").then((userData) =>{
+      AsyncStorage.getItem("userData").then((userData) =>{
           setIdid(id => JSON.parse(userData).id);
       })
   }, []);
 
   const SignPost = async() => {
     try {
+      console.log("!!!!!!!!!!!!!!!!!!!")
       axios.post('http://13.124.141.28:3000/sendMessage', {
           f: idid,
           message : password,
@@ -117,7 +118,8 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
       <TouchableOpacity
         onPress={() => {
           if(!press){
-            setPress(true, () => SignPost())
+            setPress(true)
+            SignPost()
           }
         }}
       >

@@ -166,7 +166,7 @@ class AddWorkTodoScreen extends Component{
 savedData = async() => { 
     try {
       if(this.state.item){
-        axios.post('http://13.124.141.28:3000:3000/addWorkTodo', {
+        axios.post('http://13.124.141.28:3000/addWorkTodo', {
             bang : this.state.bangCode,
             year : this.state.yearr,
             month: this.state.monthh,

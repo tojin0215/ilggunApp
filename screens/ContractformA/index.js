@@ -156,10 +156,10 @@ class ContractformAScreen extends React.Component{
 
         if(!(this.state.AdditionalWageRate==null)){
             if(!((chkNum(this.state.AdditionalWageRate)===true) && (chkEng(this.state.AdditionalWageRate)===false) && (chkKor(this.state.AdditionalWageRate) ===false) && (chkSpc(this.state.AdditionalWageRate)===false))){
-                Alert.alert('초가근로 가산임금률의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                Alert.alert('초과근로 가산임금률의 숫자가 제대로 입력되었는지 확인해주세요.') 
                 flag=false
             }else{
-                console.log('초가근로 가산임금률_숫자 제대로 확인됨')
+                console.log('초과근로 가산임금률_숫자 제대로 확인됨')
             }
         }
 
@@ -604,7 +604,8 @@ class ContractformAScreen extends React.Component{
         {
             
             this.state.type==2?
-            <ScrollView>
+            <ScrollView style={{flex: 1}}>
+                <TouchableOpacity>
                 <Text style={styles.textTitleStyle11}>근로자가 확인하고 있습니다.</Text>
             <View style={styles.textArea}>
                 <View style={styles.textAreaRow}>
@@ -817,7 +818,7 @@ class ContractformAScreen extends React.Component{
             </View>
             <View style={{marginBottom:hp('5%')}}><Text></Text></View>
         </View>
-    
+        </TouchableOpacity>
           </ScrollView>
           :
           this.state.type==3?
