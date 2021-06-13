@@ -163,6 +163,17 @@ class ContractformAScreen extends React.Component{
             }
         }
 
+        if(!(this.state.SalaryCalculationPeriodStart==null)){
+            if(!((chkNum(this.state.SalaryCalculationPeriodStart)===true) && (chkEng(this.state.SalaryCalculationPeriodStart)===false) && (chkKor(this.state.SalaryCalculationPeriodStart) ===false) && (chkSpc(this.state.SalaryCalculationPeriodStart)===false))||
+            !((chkNum(this.state.SalaryCalculationPeriodEnd)===true) && (chkEng(this.state.SalaryCalculationPeriodEnd)===false) && (chkKor(this.state.SalaryCalculationPeriodEnd) ===false) && (chkSpc(this.state.SalaryCalculationPeriodEnd)===false))
+            ){
+                Alert.alert('급여산정기간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('급여산정기간_숫자 제대로 확인됨')
+            }
+        }
+
         if(flag){ 
             this.state.type=2;
             console.log(this.state);
@@ -234,6 +245,7 @@ class ContractformAScreen extends React.Component{
             if(res.data[0].Bonus2 == null) res.data[0].Bonus2 = 0
             if(res.data[0].Bonus3 == null) res.data[0].Bonus3 = 0
             if(res.data[0].Bonus4 == null) res.data[0].Bonus4 = 0
+            if(res.data[0].AdditionalWageRate == null) res.data[0].AdditionalWageRate = 0
 
             let t4 = [0,0,0,0,0];
             console.log('dddd')
@@ -511,6 +523,11 @@ class ContractformAScreen extends React.Component{
                 <label>원, </label>
                 <label class="text_underline_margin_left">${this.state.Bonus4}</label>
                 <label>원 </label><br>
+                <label class="margin_left">- 급여산정기간 :</label> 
+                <label class="text_underline">${this.state.SalaryCalculationPeriodStart}</label>
+                <label>일~</label>
+                <label class="text_underline">${this.state.SalaryCalculationPeriodEnd}</label>
+                <label>일</label><br>
                 <label class="margin_left">- 임금지급일 : 매월</label>
                 <label class="text_underline">${this.state.SalaryDay}</label>
                 <label>일 (휴일의 경우에는 전일 지급)</label><br>
@@ -728,6 +745,14 @@ class ContractformAScreen extends React.Component{
                 <Text style={{marginLeft:wp('5%')}}></Text>
                 <Text style={styles.textinputName1}>{this.state.Bonus4}</Text>
                 <Text style={styles.textStyle}>원</Text>
+            </View>
+            
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-급여산정기간 : </Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.SalaryCalculationPeriodStart}</Text>
+                <Text style={styles.textStyle}>일 ~ </Text>
+                <Text style={styles.textinputDayStyle1}>{this.state.SalaryCalculationPeriodEnd}</Text>
+                <Text style={styles.textStyle}>일</Text>
             </View>
              <View>   
                 <View style={styles.rowPeriod}>
@@ -1212,12 +1237,35 @@ class ContractformAScreen extends React.Component{
         </View>
 
         <View>
+        <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-급여산정기간 :</Text>
+            <TextInput
+                value={this.state.SalaryCalculationPeriodStart} 
+                onChangeText={(SalaryCalculationPeriodStart) => this.setState({SalaryCalculationPeriodStart})}
+                ref={(input) => { this.TextInput26 = input; }}
+                onSubmitEditing={() => { this.TextInput27.focus(); }}
+                placeholder={'1'}
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>일   ~ </Text>
+            <TextInput
+                value={this.state.SalaryCalculationPeriodEnd} 
+                onChangeText={(SalaryCalculationPeriodEnd) => this.setState({SalaryCalculationPeriodEnd})}
+                ref={(input) => { this.TextInput27 = input; }}
+                onSubmitEditing={() => { this.TextInput28.focus(); }}
+                placeholder={'31'}
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle}/>
+            <Text style={styles.textStyle}>일 </Text>
+            </View>
+        </View>
+        <View>
             <View style={styles.rowPeriod}>
                 <Text style={styles.textStyle}>-임금지급일 : 매월</Text>
                 <TextInput
                     value={this.state.SalaryDay} 
                     onChangeText={(SalaryDay) => this.setState({SalaryDay})}
-                    ref={(input) => { this.TextInput26 = input; }}
+                    ref={(input) => { this.TextInput28 = input; }}
                     placeholder={'10'}
                     keyboardType={"number-pad"}
                     style={styles.textinputDayStyle}/>

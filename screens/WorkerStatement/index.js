@@ -90,6 +90,7 @@ class WorkerStatementScreen extends Component{
                           <h1>[${this.state.bangCode}] 근로자 급여명세서</h1>
                           <b>날짜 : ${this.state.itemAA} ${this.state.itemBB}</b><br>
                           <b>이름 : ${this.state.Name}(${this.state.WorkingType})</b><br>
+                          <b>급여산정기간 : 1일 ~ 말일</b><br>
                           <table>
                             <th>내역</th><th>금액</th>
                             <tr><td>(+) 기본급</td><td>${String(t[0])}</td></tr>
@@ -154,6 +155,7 @@ class WorkerStatementScreen extends Component{
                           <h1>[${this.state.bangCode}] 근로자 급여명세서</h1>
                           <b>날짜 : ${this.state.itemAA} ${this.state.itemBB}</b><br>
                           <b>이름 : ${this.state.Name}(${this.state.WorkingType})</b><br>
+                          <b>급여산정기간 : 1일 ~ 말일</b><br>
                           <table>
                             <th>내역</th><th>금액</th>
                             <tr><td>(+) 기본급</td><td>${String(t[0])}</td></tr>
@@ -856,13 +858,14 @@ class WorkerStatementScreen extends Component{
                 </View>
 
                 
+                <View style={styles.textArea}>
+                  <View style={{flexDirection:'row'}}>
+                    <Text style={styles.textStyle}>이름 : {Name}</Text>
+                    <Text style={styles.textStyle}>, 근무형태 : {WorkingType}</Text>
 
-
-            <View style={styles.textArea}>
-                <Text style={styles.textStyle}>이름 : {Name}</Text>
-                <Text style={styles.textStyle}>, 근무형태 : {WorkingType}</Text>
-            </View>
-          
+                  </View>
+                    <Text style={styles.textStyle}>급여산정기간 : 1일 ~ 말일</Text>
+                </View>
             <ScrollView style={{zIndex: -2000}}>
             <View style={styles.tableArea}>
             <Table style={styles.wrapper} borderStyle={{borderWidth: 1, borderColor:'white'}}>
@@ -940,7 +943,6 @@ const styles = StyleSheet.create({
         })
   },
   textArea:{
-    flexDirection:"row",
     padding:wp('5%'),
     marginLeft:wp('1.5%'),
     position:"absolute",
@@ -953,7 +955,7 @@ const styles = StyleSheet.create({
   },
   tableArea:{
     paddingLeft:wp('5%'),
-    marginTop:hp('1%'),
+    marginTop:hp('5%'),
     marginBottom:hp('2%'),
     width:wp('92%'),
   },

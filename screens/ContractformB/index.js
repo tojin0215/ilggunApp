@@ -27,7 +27,7 @@ class ContractformBScreen extends Component{
       tableTitle: ['월', '화', '수', '목', '금', '토', '일'], 
       tableData: [
         [<View style={{flexDirection:"row", justifyContent:"center"}}>
-            <TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='08' keyboardType={"number-pad"} onSubmitEditing={() => { this.Tabledata1.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <TextInput value={this.state.Start1} onChangeText={(Start1) => this.setState({Start1})} placeholder='09' keyboardType={"number-pad"} onSubmitEditing={() => { this.Tabledata1.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.Start11} onChangeText={(Start11) => this.setState({Start11})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata1 = input; }} onSubmitEditing={() => { this.Tabledata2.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
@@ -36,10 +36,10 @@ class ContractformBScreen extends Component{
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.End11} onChangeText={(End11) => this.setState({End11})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata3 = input; }} onSubmitEditing={() => { this.Tabledata4.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
-        <TextInput value={this.state.time1} onChangeText={(time1) => this.setState({time1})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata4 = input; }} onSubmitEditing={() => { this.Tabledata5.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
+        <TextInput value={this.state.time1} onChangeText={(time1) => this.setState({time1})} placeholder='5' keyboardType={"number-pad"} ref={(input) => { this.Tabledata4 = input; }} onSubmitEditing={() => { this.Tabledata5.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
         
         [<View style={{flexDirection:"row", justifyContent:"center"}}>
-            <TextInput value={this.state.Start2} onChangeText={(Start2) => this.setState({Start2})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata5 = input; }} onSubmitEditing={() => { this.Tabledata6.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <TextInput value={this.state.Start2} onChangeText={(Start2) => this.setState({Start2})} placeholder='09' keyboardType={"number-pad"} ref={(input) => { this.Tabledata5 = input; }} onSubmitEditing={() => { this.Tabledata6.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.Start22} onChangeText={(Start22) => this.setState({Start22})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata6 = input; }} onSubmitEditing={() => { this.Tabledata7.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
@@ -48,10 +48,10 @@ class ContractformBScreen extends Component{
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.End22} onChangeText={(End22) => this.setState({End22})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata8 = input; }} onSubmitEditing={() => { this.Tabledata9.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
-        <TextInput value={this.state.time2} onChangeText={(time2) => this.setState({time2})} placeholder='7'  keyboardType={"number-pad"} ref={(input) => { this.Tabledata9 = input; }} onSubmitEditing={() => { this.Tabledata10.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
+        <TextInput value={this.state.time2} onChangeText={(time2) => this.setState({time2})} placeholder='5'  keyboardType={"number-pad"} ref={(input) => { this.Tabledata9 = input; }} onSubmitEditing={() => { this.Tabledata10.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
         [<View style={{flexDirection:"row", justifyContent:"center"}}>
-            <TextInput value={this.state.Start3} onChangeText={(Start3) => this.setState({Start3})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata10 = input; }} onSubmitEditing={() => { this.Tabledata11.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <TextInput value={this.state.Start3} onChangeText={(Start3) => this.setState({Start3})} placeholder='09' keyboardType={"number-pad"} ref={(input) => { this.Tabledata10 = input; }} onSubmitEditing={() => { this.Tabledata11.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.Start33} onChangeText={(Start33) => this.setState({Start33})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata11 = input; }} onSubmitEditing={() => { this.Tabledata12.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
@@ -60,10 +60,10 @@ class ContractformBScreen extends Component{
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.End33} onChangeText={(End33) => this.setState({End33})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata13 = input; }} onSubmitEditing={() => { this.Tabledata14.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
-        <TextInput value={this.state.time3} onChangeText={(time3) => this.setState({time3})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata14 = input; }} onSubmitEditing={() => { this.Tabledata15.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
+        <TextInput value={this.state.time3} onChangeText={(time3) => this.setState({time3})} placeholder='5' keyboardType={"number-pad"} ref={(input) => { this.Tabledata14 = input; }} onSubmitEditing={() => { this.Tabledata15.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
         [<View style={{flexDirection:"row", justifyContent:"center"}}>
-            <TextInput value={this.state.Start4} onChangeText={(Start4) => this.setState({Start4})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata15 = input; }} onSubmitEditing={() => { this.Tabledata16.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <TextInput value={this.state.Start4} onChangeText={(Start4) => this.setState({Start4})} placeholder='09' keyboardType={"number-pad"} ref={(input) => { this.Tabledata15 = input; }} onSubmitEditing={() => { this.Tabledata16.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.Start44} onChangeText={(Start44) => this.setState({Start44})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata16 = input; }} onSubmitEditing={() => { this.Tabledata17.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
@@ -72,10 +72,10 @@ class ContractformBScreen extends Component{
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.End44} onChangeText={(End44) => this.setState({End44})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata18 = input; }} onSubmitEditing={() => { this.Tabledata19.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
-        <TextInput value={this.state.time4} onChangeText={(time4) => this.setState({time4})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata19 = input; }} onSubmitEditing={() => { this.Tabledata20.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
+        <TextInput value={this.state.time4} onChangeText={(time4) => this.setState({time4})} placeholder='5' keyboardType={"number-pad"} ref={(input) => { this.Tabledata19 = input; }} onSubmitEditing={() => { this.Tabledata20.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
         [<View style={{flexDirection:"row", justifyContent:"center"}}>
-            <TextInput value={this.state.Start5} onChangeText={(Start5) => this.setState({Start5})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata20 = input; }} onSubmitEditing={() => { this.Tabledata21.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <TextInput value={this.state.Start5} onChangeText={(Start5) => this.setState({Start5})} placeholder='09' keyboardType={"number-pad"} ref={(input) => { this.Tabledata20 = input; }} onSubmitEditing={() => { this.Tabledata21.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.Start55} onChangeText={(Start55) => this.setState({Start55})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata21 = input; }} onSubmitEditing={() => { this.Tabledata22.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
@@ -84,10 +84,10 @@ class ContractformBScreen extends Component{
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.End55} onChangeText={(End55) => this.setState({End55})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata23 = input; }} onSubmitEditing={() => { this.Tabledata24.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
-        <TextInput value={this.state.time5} onChangeText={(time5) => this.setState({time5})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata24 = input; }} onSubmitEditing={() => { this.Tabledata25.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
+        <TextInput value={this.state.time5} onChangeText={(time5) => this.setState({time5})} placeholder='5' keyboardType={"number-pad"} ref={(input) => { this.Tabledata24 = input; }} onSubmitEditing={() => { this.Tabledata25.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
         [<View style={{flexDirection:"row", justifyContent:"center"}}>
-            <TextInput value={this.state.Start6} onChangeText={(Start6) => this.setState({Start6})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata25 = input; }} onSubmitEditing={() => { this.Tabledata26.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <TextInput value={this.state.Start6} onChangeText={(Start6) => this.setState({Start6})} placeholder='09' keyboardType={"number-pad"} ref={(input) => { this.Tabledata25 = input; }} onSubmitEditing={() => { this.Tabledata26.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.Start66} onChangeText={(Start66) => this.setState({Start66})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata26 = input; }} onSubmitEditing={() => { this.Tabledata27.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
@@ -96,10 +96,10 @@ class ContractformBScreen extends Component{
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.End66} onChangeText={(End66) => this.setState({End66})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata28 = input; }} onSubmitEditing={() => { this.Tabledata29.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
-        <TextInput value={this.state.time6} onChangeText={(time6) => this.setState({time6})} placeholder='7'  keyboardType={"number-pad"} ref={(input) => { this.Tabledata29 = input; }} onSubmitEditing={() => { this.Tabledata30.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
+        <TextInput value={this.state.time6} onChangeText={(time6) => this.setState({time6})} placeholder='5'  keyboardType={"number-pad"} ref={(input) => { this.Tabledata29 = input; }} onSubmitEditing={() => { this.Tabledata30.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />],
 
         [<View style={{flexDirection:"row", justifyContent:"center"}}>
-            <TextInput value={this.state.Start7} onChangeText={(Start7) => this.setState({Start7})} placeholder='08' keyboardType={"number-pad"} ref={(input) => { this.Tabledata30 = input; }} onSubmitEditing={() => { this.Tabledata31.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
+            <TextInput value={this.state.Start7} onChangeText={(Start7) => this.setState({Start7})} placeholder='09' keyboardType={"number-pad"} ref={(input) => { this.Tabledata30 = input; }} onSubmitEditing={() => { this.Tabledata31.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.Start77} onChangeText={(Start77) => this.setState({Start77})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata31 = input; }} onSubmitEditing={() => { this.Tabledata32.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
@@ -108,7 +108,7 @@ class ContractformBScreen extends Component{
             <Text style={styles.tabledatatextStyle}>:</Text>
             <TextInput value={this.state.End77} onChangeText={(End77) => this.setState({End77})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata33 = input; }} onSubmitEditing={() => { this.Tabledata34.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
-        <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='7' keyboardType={"number-pad"} ref={(input) => { this.Tabledata34 = input; }} blurOnSubmit={false} style={styles.tableTextStyle1} />]
+        <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='5' keyboardType={"number-pad"} ref={(input) => { this.Tabledata34 = input; }} blurOnSubmit={false} style={styles.tableTextStyle1} />]
     ], id:this.props.route.params.workername, bang:''//, types4:[0,0,0,0,0]
     };
     
@@ -328,9 +328,21 @@ class ContractformBScreen extends Component{
             }
         }
 
+        if(!(this.state.SalaryCalculationPeriodStart==null)){
+            if(!((chkNum(this.state.SalaryCalculationPeriodStart)===true) && (chkEng(this.state.SalaryCalculationPeriodStart)===false) && (chkKor(this.state.SalaryCalculationPeriodStart) ===false) && (chkSpc(this.state.SalaryCalculationPeriodStart)===false))||
+            !((chkNum(this.state.SalaryCalculationPeriodEnd)===true) && (chkEng(this.state.SalaryCalculationPeriodEnd)===false) && (chkKor(this.state.SalaryCalculationPeriodEnd) ===false) && (chkSpc(this.state.SalaryCalculationPeriodEnd)===false))
+            ){
+                Alert.alert('급여산정기간의 숫자가 제대로 입력되었는지 확인해주세요.') 
+                flag=false
+            }else{
+                console.log('급여산정기간_숫자 제대로 확인됨')
+            }
+        }
+
         if(flag){ 
-            Alert.alert('저장되었습니다.') 
+            console.log(this.state);
             this.fetchHtml();
+            Alert.alert('저장되었습니다.') 
         }else{
             //에러 
         }
@@ -386,6 +398,7 @@ class ContractformBScreen extends Component{
             if(res.data[0].Bonus2 == null) res.data[0].Bonus2 = 0
             if(res.data[0].Bonus3 == null) res.data[0].Bonus3 = 0
             if(res.data[0].Bonus4 == null) res.data[0].Bonus4 = 0
+            if(res.data[0].AdditionalWageRate == null) res.data[0].AdditionalWageRate = 0
             
                 let t4 = [0,0,0,0,0];
                 console.log('dddd')
@@ -490,7 +503,9 @@ fetchHtml = async(a) => {
                 ,Bonus2:this.state.Bonus2
                 ,Bonus3:this.state.Bonus3
                 ,Bonus4:this.state.Bonus4
-                ,value4:JSON.stringify(this.state.value4)
+                ,value4:JSON.stringify(this.state.value4),
+                SalaryCalculationPeriodStart:this.state.SalaryCalculationPeriodStart,
+                SalaryCalculationPeriodEnd:this.state.SalaryCalculationPeriodEnd
     },
     {  headers:{
         'Content-Type': 'application/json',
@@ -661,6 +676,11 @@ fetchHtml = async(a) => {
                       <label class="margin_left">- 초과근로에 대한 가산임금률</label>
                       <label class="text_underline">${this.state.AdditionalWageRate}</label>
                       <label>%</label><br>
+                      <label class="margin_left">- 급여산정기간 :</label> 
+                      <label class="text_underline">${this.state.SalaryCalculationPeriodStart}</label>
+                      <label>일~ </label>
+                      <label class="text_underline">${this.state.SalaryCalculationPeriodEnd}</label>
+                      <label>일</label><br>
                       <label class="margin_left">- 임금지급일 : 매일</label>
                       <label class="text_underline">${this.state.SalaryDay}</label>
                       <label>일 (휴일의 경우에는 전일 지급)</label><br>
@@ -842,6 +862,13 @@ fetchHtml = async(a) => {
                 <Text style={styles.textStyle}>-초과근로에 대한 가산임금률 : </Text>
                 <Text style={styles.textinputDayStyle}>{this.state.AdditionalWageRate}</Text>
                 <Text style={styles.textStyle}>%</Text>
+            </View>
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-급여산정기간 : </Text>
+                <Text style={styles.textinputDayStyle}>{this.state.SalaryCalculationPeriodStart}</Text>
+                <Text style={styles.textStyle}>일 ~ </Text>
+                <Text style={styles.textinputDayStyle}>{this.state.SalaryCalculationPeriodEnd}</Text>
+                <Text style={styles.textStyle}>일</Text>
             </View>
             <View>
                 <View style={styles.rowPeriod}>
@@ -1238,14 +1265,36 @@ fetchHtml = async(a) => {
             <Text style={styles.textStyle}>%</Text>
         </View>
         </View>
-        
+        <View>
+        <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-급여산정기간 :</Text>
+            <TextInput
+                value={this.state.SalaryCalculationPeriodStart} 
+                onChangeText={(SalaryCalculationPeriodStart) => this.setState({SalaryCalculationPeriodStart})}
+                ref={(input) => { this.TextInput26 = input; }}
+                onSubmitEditing={() => { this.TextInput27.focus(); }}
+                placeholder={'1'}
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle2}/>
+            <Text style={styles.textStyle}>일   ~ </Text>
+            <TextInput
+                value={this.state.SalaryCalculationPeriodEnd} 
+                onChangeText={(SalaryCalculationPeriodEnd) => this.setState({SalaryCalculationPeriodEnd})}
+                ref={(input) => { this.TextInput27 = input; }}
+                onSubmitEditing={() => { this.TextInput28.focus(); }}
+                placeholder={'31'}
+                keyboardType={"number-pad"}
+                style={styles.textinputDayStyle2}/>
+            <Text style={styles.textStyle}>일 </Text>
+            </View>
+        </View>
         <View>
             <View style={styles.rowPeriod}>
                 <Text style={styles.textStyle}>-임금지급일 : 매월</Text>
             <TextInput
                 value={this.state.SalaryDay} 
                 onChangeText={(SalaryDay) => this.setState({SalaryDay})}
-                ref={(input) => { this.TextInput26 = input; }}
+                ref={(input) => { this.TextInput28 = input; }}
                 placeholder={'10'}
                 keyboardType={"number-pad"}
                 style={styles.textinputDayStyle2}/>
