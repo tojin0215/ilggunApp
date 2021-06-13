@@ -21,10 +21,10 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
   
   const SignPost = async(str) => {
     try {
-        //let regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        let regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
         let reg = /^[0-9a-zA-Z]{2,15}$/;
-        if(!reg.test(email)){
-            Alert.alert('아이디가 영어대소문자, 숫자로만 이루어져있는지 확인해주세요.')
+        if(!regEmail.test(email)){
+            Alert.alert('이메일 주소가 맞는지 확인해주세요.')
         }
         if(!reg.test(password)){
             Alert.alert('비밀번호가 영어대소문자, 숫자로만 이루어져있는지 확인해주세요.')
@@ -119,13 +119,13 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
 
                 <View style={styles.textArea}>
                     <View style={{flexDirection:'row'}}>
-                    <Text style={styles.titleStyle}>ID</Text><Text style={{fontSize:11, marginTop: hp('0.4%'),}}> (2~15자, 영어대소문자)</Text>
+                    <Text style={styles.titleStyle}>EMAIL</Text><Text style={{fontSize:11, marginTop: hp('0.4%'),}}> (2~15자, 영어대소문자)</Text>
                     </View>
                     <TextInput 
                         onChangeText={email =>setEmail(email)}
                         defaultValue={email}
                         style={styles.textStyle} 
-                        placeholder={"ID를 입력하세요."}/>
+                        placeholder={"이메일을 입력하세요."}/>
                 </View>
                 
                 

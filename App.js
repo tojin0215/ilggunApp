@@ -957,6 +957,17 @@ const App = () => {
               )}
         </RootStack.Screen>
 
+        <RootStack.Screen name="Sign Up Apple"
+          options={{
+            title:"회원가입",
+
+          }}
+        >
+              {(props) => (
+                <SignUpAppleScreen {...props} onSignUp={handleSignUp} />
+              )}
+        </RootStack.Screen>
+
         
         <RootStack.Screen
           name="Password Forget"
