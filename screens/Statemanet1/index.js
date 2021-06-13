@@ -44,6 +44,8 @@ class StatementScreen1 extends React.Component {
           addtime: {},
           bangcode: '',
           id:'',
+          EmploymentInsurancePercentage:0,HealthInsurancePercentage:0,NationalPensionPercentage:0,RegularCarePercentage:0
+          
       }
       AsyncStorage.getItem("bangCode")
       .then((bangCode) => {
@@ -102,6 +104,23 @@ class StatementScreen1 extends React.Component {
                   this.setState({addtime : dic})
                   
 
+                });
+
+                axios.post('http://13.124.141.28:3000/insurancePercentage',
+                {  headers:{
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'}
+                })
+                  .then(res => {
+                      for(let i=0 ; i<res.data.length ; i++){
+                        this.setState({
+                          NationalPensionPercentage:res.data[i].NationalPensionPercentage,
+                          HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
+                          RegularCarePercentage:res.data[i].RegularCarePercentage,
+                          EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
+                        })
+                      }
+                      
                 });
 
                 await axios.post('http://13.124.141.28:3000/selectWorker', {
@@ -401,15 +420,20 @@ class StatementScreen1 extends React.Component {
                   tableTitleArr.push(this.state.arrName[i][1])
                   MonthlySalary = this.state.arrName[i][3]
                   AddSalary = this.state.arrName[i][4]
+
+                  console.log('국민연금(%) : ', this.state.NationalPensionPercentage)
+                  console.log('건강보험(%) : ', this.state.HealthInsurancePercentage)
+                  console.log('건강보험(정기요양)(%) : ', this.state.RegularCarePercentage)
+                  console.log('고용보험(%) : ', this.state.EmploymentInsurancePercentage)
       
                   // NationalPension:국민연금 (보수총액*4.5%)
-                  let NationalPension = Math.floor(((parseInt(MonthlySalary)*4.5/100).toFixed(0))/10)*10;
+                  let NationalPension = Math.floor(((parseInt(MonthlySalary)*this.state.NationalPensionPercentage/100).toFixed(0))/10)*10;
                   // HealthInsurance:건강보험 (보수총액*3.3335%)
-                  let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*3.335/100).toFixed(0))/10)*10;
+                  let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*this.state.HealthInsurancePercentage/100).toFixed(0))/10)*10;
                   // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-                  let RegularCare = Math.floor(((HealthInsurance*10.25/100).toFixed(0))/10)*10;
+                  let RegularCare = Math.floor(((HealthInsurance*this.state.RegularCarePercentage/100).toFixed(0))/10)*10;
                   // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-                  let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*0.8/100).toFixed(0))/10)*10;//근로자_고용보험
+                  let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*this.state.EmploymentInsurancePercentage/100).toFixed(0))/10)*10;//근로자_고용보험
                   // SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
                   let SocialInsurance = (parseInt(NationalPension)+parseInt(HealthInsurance)+parseInt(RegularCare)+parseInt(EmploymentInsurance)).toFixed(0);
                   
@@ -545,7 +569,7 @@ class StatementScreen1 extends React.Component {
                     console.log('--------------------------------'+parseInt(SocialInsurance) , parseInt(IncomeTax) , parseInt(InhabitantsTax))
                     // TotalDeduction:공제총액(사대보험+갑근세+주민세)
                   let TotalDeduction = parseInt(SocialInsurance) + parseInt(IncomeTax) + parseInt(InhabitantsTax)
-      
+                  
       
                   // 실지급액(보수총액+추가급여-공제총액)
                   let ActualSalary = parseInt(MonthlySalary) + parseInt(AddSalary) - parseInt(TotalDeduction);

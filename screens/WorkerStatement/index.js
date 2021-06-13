@@ -38,6 +38,7 @@ class WorkerStatementScreen extends Component{
           ],
           addtime: {}, bangCode: '',id:'',
           nname :[], type1:[], type2:[],
+          EmploymentInsurancePercentage:'',HealthInsurancePercentage:'',NationalPensionPercentage:'',RegularCarePercentage:''
           
       }
       console.log(this.props);
@@ -279,7 +280,24 @@ class WorkerStatementScreen extends Component{
               console.log(dic);
             this.setState({addtime : dic})
             
-
+            axios.post('http://13.124.141.28:3000/insurancePercentage',
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+              .then(res => {
+                  console.log('a__________________________제발좀',res.data);
+                  for(let i=0 ; i<res.data.length ; i++){
+                    this.setState({
+                      NationalPensionPercentage:res.data[i].NationalPensionPercentage,
+                      HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
+                      RegularCarePercentage:res.data[i].RegularCarePercentage,
+                      EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
+                    })
+                  }
+                  
+            });
+            
           
           console.log(bangCode);
           axios.post('http://13.124.141.28:3000/selectWorkerEach', {
@@ -526,15 +544,19 @@ class WorkerStatementScreen extends Component{
             }
         }
 
+        console.log('국민연금(%) : ', this.state.NationalPensionPercentage)
+        console.log('건강보험(%) : ', this.state.HealthInsurancePercentage)
+        console.log('건강보험(정기요양)(%) : ', this.state.RegularCarePercentage)
+        console.log('고용보험(%) : ', this.state.EmploymentInsurancePercentage)
         //----------------------계산식---------------------------------------------
         // NationalPension:국민연금 (보수총액*4.5%)
-        let NationalPension = Math.floor(((parseInt(MonthlySalary)*4.5/100).toFixed(0))/10)*10;
+        let NationalPension = Math.floor(((parseInt(MonthlySalary)*this.state.NationalPensionPercentage/100).toFixed(0))/10)*10;
         // HealthInsurance:건강보험 (보수총액*3.3335%)
-        let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*3.335/100).toFixed(0))/10)*10;
+        let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*this.state.HealthInsurancePercentage/100).toFixed(0))/10)*10;
         // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-        let RegularCare = Math.floor(((HealthInsurance*10.25/100).toFixed(0))/10)*10;
+        let RegularCare = Math.floor(((HealthInsurance*this.state.RegularCarePercentage/100).toFixed(0))/10)*10;
         // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-        let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*0.8/100).toFixed(0))/10)*10;//근로자_고용보험
+        let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*this.state.EmploymentInsurancePercentage/100).toFixed(0))/10)*10;//근로자_고용보험
         // SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
         let SocialInsurance = (parseInt(NationalPension)+parseInt(HealthInsurance)+parseInt(RegularCare)+parseInt(EmploymentInsurance)).toFixed(0);
 
