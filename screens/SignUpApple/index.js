@@ -76,8 +76,8 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
                 <ScrollView>
                 <View style={styles.textArea}>
                     <View style={{flexDirection:'row'}}>
-                    <Text style={styles.titleStyle}>EMAIL</Text><Text style={{fontSize:11, marginTop: hp('0.4%'),}}> (2~15자, 영어대소문자)</Text>
-                    </View>
+                    <Text style={styles.titleStyle}>EMAIL</Text>
+                </View>
                     <TextInput 
                         onChangeText={email =>setEmail(email)}
                         defaultValue={email}

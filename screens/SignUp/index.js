@@ -26,7 +26,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
         if(!regEmail.test(email)){
             Alert.alert('이메일 주소가 맞는지 확인해주세요.')
         }
-        if(!reg.test(password)){
+        else if(!reg.test(password)){
             Alert.alert('비밀번호가 영어대소문자, 숫자로만 이루어져있는지 확인해주세요.')
         }
         else if(name=='' || email=='' || password=='' ||repassword==''|| path==''){
@@ -119,7 +119,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
 
                 <View style={styles.textArea}>
                     <View style={{flexDirection:'row'}}>
-                    <Text style={styles.titleStyle}>EMAIL</Text><Text style={{fontSize:11, marginTop: hp('0.4%'),}}> (2~15자, 영어대소문자)</Text>
+                    <Text style={styles.titleStyle}>EMAIL</Text>
                     </View>
                     <TextInput 
                         onChangeText={email =>setEmail(email)}

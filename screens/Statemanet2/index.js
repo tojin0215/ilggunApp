@@ -100,6 +100,25 @@ class StatementScreen2 extends Component{
                 
           });
 
+
+          axios.post('http://13.124.141.28:3000/otherAllowance',
+          {  headers:{
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+          })
+            .then(res => {
+              console.log('********************과세비과세',res.date)
+                // for(let i=0 ; i<res.data.length ; i++){
+                //   this.setState({
+                //     NationalPensionPercentage:res.data[i].NationalPensionPercentage,
+                //     HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
+                //     RegularCarePercentage:res.data[i].RegularCarePercentage,
+                //     EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
+                //   })
+                // }
+                
+          });
+
           axios.post('http://13.124.141.28:3000/selectWorker', {
             business : this.state.bangCode
           },
