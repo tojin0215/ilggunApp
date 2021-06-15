@@ -49,7 +49,7 @@ class WExpenseScreen1 extends Component{
                   'Accept': 'application/json'}
                 })
                   .then(res => {
-                      for(let i=0 ; i<res.data.length ; i++){
+                    for(let i=(res.data.length-1) ; i>=(res.data.length-1) ; i--){
                         this.setState({
                           NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                           HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,

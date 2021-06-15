@@ -19,10 +19,6 @@ import * as Sharing from "expo-sharing";
 //정규) SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
 //알바) TaxDeduction:3.3세금공제
 
-// 알바:시급/시간/식대/추가근로      정규:기본급/식대/추가근로
-const name = [['김수정','알바','8590','80','10000','40000'],['권소령','정규직','3000000','20000','50000'],
-            ['전세웅','정규직','1000000','20000','60000'],['정민지','정규직','2000000','0','100000']]
-
 class WorkerStatementScreen extends Component{
 // 급여대장
     constructor(props) {
@@ -288,8 +284,13 @@ class WorkerStatementScreen extends Component{
               'Accept': 'application/json'}
             })
               .then(res => {
-                  console.log('a__________________________제발좀',res.data);
-                  for(let i=0 ; i<res.data.length ; i++){
+                for(let i=0 ; i<res.data.length ; i++){
+                  console.log('*************************************************DB년도',res.data[i].date)
+                  if(res.data[i].date === this.state.itemAA.split('년')[0]){
+                    console.log('국민연금',res.data[i].NationalPensionPercentage)
+                    console.log('건강보험',res.data[i].HealthInsurancePercentage)
+                    console.log('건강보험(장기)',res.data[i].RegularCarePercentage)
+                    console.log('고용보험',res.data[i].EmploymentInsurancePercentage)
                     this.setState({
                       NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                       HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
@@ -297,6 +298,7 @@ class WorkerStatementScreen extends Component{
                       EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
                     })
                   }
+                }
                   
             });
             
@@ -775,12 +777,12 @@ class WorkerStatementScreen extends Component{
           <View style={styles.dropDownArea}>
                 <DropDownPicker
                     items={[
-                        {label: '2016년', value: '2016년'},
-                        {label: '2017년', value: '2017년'},
-                        {label: '2018년', value: '2018년'},
-                        {label: '2019년', value: '2019년'},
-                        {label: '2020년', value: '2020년'},
-                        {label: '2021년', value: '2021년'},
+                      {label: '2020년', value: '2020년'},
+                      {label: '2021년', value: '2021년'},
+                      {label: '2022년', value: '2022년'},
+                      {label: '2023년', value: '2023년'},
+                      {label: '2024년', value: '2024년'},
+                      {label: '2025년', value: '2025년'},
                     ]}
                     defaultValue={this.state.itemAA}
                     containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('3%')}}

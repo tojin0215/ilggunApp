@@ -21,9 +21,6 @@ import * as Sharing from "expo-sharing";
 //정규) SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
 //알바) TaxDeduction:3.3세금공제
 
-// 알바:시급/시간/식대/추가근로      정규:기본급/식대/추가근로
-const name = [['김수정','알바','8590','80','10000','40000'],['권소령','정규직','3000000','20000','50000'],
-            ['전세웅','정규직','1000000','20000','60000'],['정민지','정규직','2000000','0','100000']]
 
 class StatementScreen2 extends Component{
 // 급여대장
@@ -89,7 +86,13 @@ class StatementScreen2 extends Component{
             'Accept': 'application/json'}
           })
             .then(res => {
-                for(let i=0 ; i<res.data.length ; i++){
+              for(let i=0 ; i<res.data.length ; i++){
+                console.log('*************************************************DB년도',res.data[i].date)
+                if(res.data[i].date === this.state.itemAA.split('년')[0]){
+                  console.log('국민연금',res.data[i].NationalPensionPercentage)
+                  console.log('건강보험',res.data[i].HealthInsurancePercentage)
+                  console.log('건강보험(장기)',res.data[i].RegularCarePercentage)
+                  console.log('고용보험',res.data[i].EmploymentInsurancePercentage)
                   this.setState({
                     NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                     HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
@@ -97,25 +100,25 @@ class StatementScreen2 extends Component{
                     EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
                   })
                 }
+              }
                 
           });
 
-
-          axios.post('http://13.124.141.28:3000/otherAllowance',
+//여기
+          axios.post('http://13.124.141.28:3000/otherAllowance', {
+            id: this.state.id,
+            year : this.state.itemAA.split('년')[0]*1,
+            month : this.state.itemBB.split('월')[0]*1,
+          },
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
             .then(res => {
-              console.log('********************과세비과세',res.date)
-                // for(let i=0 ; i<res.data.length ; i++){
-                //   this.setState({
-                //     NationalPensionPercentage:res.data[i].NationalPensionPercentage,
-                //     HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
-                //     RegularCarePercentage:res.data[i].RegularCarePercentage,
-                //     EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
-                //   })
-                // }
+              console.log('_______________!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+              for(let i=0 ; i<res.data.length ; i++){
+                console.log(res.data[i])
+              }
                 
           });
 
@@ -273,6 +276,7 @@ class StatementScreen2 extends Component{
                   console.log(">>>");
                   console.log(res.data);
                   console.log(">>>");
+ //변경해야함                 
                   rowall.push([res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/)]);
                   t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
                 }
@@ -461,6 +465,9 @@ class StatementScreen2 extends Component{
         //----------DB에서 불러오는 값들----------------
         // MonthlySalary:보수총액
         let MonthlySalary = '0'
+
+        
+// 변경해야함
         // 추가급여
         let ExtraWorkAllowance = '0' // 추가근로수당
         let MealCharge = '0' // 식대
@@ -468,6 +475,7 @@ class StatementScreen2 extends Component{
         // HourlyWage : 시급 / WorkingHour : 한달 일한 시간 
         let WorkingHour = '0'
         let HourlyWage = '0'
+
         // 추가급여
         let ExtraWorkAllowancePartTime = '0' // 추가근로수당
         let MealChargePartTime = '0' // 식대
@@ -492,6 +500,9 @@ class StatementScreen2 extends Component{
                 break;
             }
         }
+        
+        console.log('000000000000000000000000000000000000000000000000000000000000000')
+        console.log('이름',this.state.id);
         console.log('국민연금(%) : ', this.state.NationalPensionPercentage)
         console.log('건강보험(%) : ', this.state.HealthInsurancePercentage)
         console.log('건강보험(정기요양)(%) : ', this.state.RegularCarePercentage)
@@ -717,12 +728,12 @@ class StatementScreen2 extends Component{
               <View style={styles.dropDownArea}>
                 <DropDownPicker
                     items={[
-                        {label: '2016년', value: '2016년'},
-                        {label: '2017년', value: '2017년'},
-                        {label: '2018년', value: '2018년'},
-                        {label: '2019년', value: '2019년'},
-                        {label: '2020년', value: '2020년'},
-                        {label: '2021년', value: '2021년'},
+                      {label: '2020년', value: '2020년'},
+                      {label: '2021년', value: '2021년'},
+                      {label: '2022년', value: '2022년'},
+                      {label: '2023년', value: '2023년'},
+                      {label: '2024년', value: '2024년'},
+                      {label: '2025년', value: '2025년'},
                     ]}
                     defaultValue={this.state.itemAA}
                     containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('3%')}}

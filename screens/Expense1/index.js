@@ -45,13 +45,16 @@ class ExpenseScreen1 extends Component{
                   'Accept': 'application/json'}
                 })
                   .then(res => {
-                      for(let i=0 ; i<res.data.length ; i++){
+                    for(let i=(res.data.length-1) ; i>=(res.data.length-1) ; i--){
+
+                        console.log(i)
+                        console.log(res.data[i].HealthInsurancePercentage)
                         this.setState({
                           NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                           HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
                           RegularCarePercentage:res.data[i].RegularCarePercentage,
                           EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
-                        })
+                        })  
                       }
                       
                 });

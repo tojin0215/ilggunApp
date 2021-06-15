@@ -21,15 +21,6 @@ import * as FileSystem from 'expo-file-system';
 //알바공제) WithholdingTax:3.3세금공제
 
 
-// 정규직은 이름/근무형태/보수총액(기본월급)/추가금 //// 알바는 이름/근무형태/시급/근무시간/추가금
-/*const arrName= [['2020.09','김지은','알바','8590','70','10000'],['2020.09','서효선','알바','8590','50','20000']
-                ,['2020.09','권소령','정규직','3000000','10000'],['2020.09','전세웅','정규직','1000000','0'], 
-                ['2020.09','김수정','알바','8590','20','50000'],['2020.09','정민지','정규직','2000000','30000'],
-                ['2020.10','김지은','알바','8590','50','5000'],['2020.10','서효선','알바','8590','100','20000']
-                ,['2020.10','권소령','정규직','2000000','30000'],['2020.10','전세웅','정규직','2000000','10000'], 
-                ['2020.10','김수정','알바','8590','30','10000'],['2020.10','정민지','정규직','3000000','0']]
-*/
-
 class StatementScreen1 extends React.Component {
 // 급여대장
     constructor(props) {
@@ -112,13 +103,22 @@ class StatementScreen1 extends React.Component {
                   'Accept': 'application/json'}
                 })
                   .then(res => {
+                      console.log('_________________________________________몇년',this.state.itemA.split('년')[0])
                       for(let i=0 ; i<res.data.length ; i++){
-                        this.setState({
-                          NationalPensionPercentage:res.data[i].NationalPensionPercentage,
-                          HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
-                          RegularCarePercentage:res.data[i].RegularCarePercentage,
-                          EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
-                        })
+                        console.log('DB년도',res.data[i].date)
+
+                        if(res.data[i].date === this.state.itemA.split('년')[0]){
+                          console.log('국민연금',res.data[i].NationalPensionPercentage)
+                          console.log('건강보험',res.data[i].HealthInsurancePercentage)
+                          console.log('건강보험(장기)',res.data[i].RegularCarePercentage)
+                          console.log('고용보험',res.data[i].EmploymentInsurancePercentage)
+                          this.setState({
+                            NationalPensionPercentage:res.data[i].NationalPensionPercentage,
+                            HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
+                            RegularCarePercentage:res.data[i].RegularCarePercentage,
+                            EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
+                          })
+                        }
                       }
                       
                 });
@@ -646,12 +646,13 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
               <View style={styles.dropDownArea}>
                 <DropDownPicker
                     items={[
-                        {label: '2016년', value: '2016년'},
-                        {label: '2017년', value: '2017년'},
-                        {label: '2018년', value: '2018년'},
-                        {label: '2019년', value: '2019년'},
                         {label: '2020년', value: '2020년'},
                         {label: '2021년', value: '2021년'},
+                        {label: '2022년', value: '2022년'},
+                        {label: '2023년', value: '2023년'},
+                        {label: '2024년', value: '2024년'},
+                        {label: '2025년', value: '2025년'},
+                      
                     ]}
                     defaultValue={this.state.itemA}
                     containerStyle={{height: hp('6%'), width:wp('35%')}}
