@@ -29,7 +29,7 @@ class StatementScreen2 extends Component{
       this.state = {
           itemA: null , isVisibleA: false, itemB: null, isVisibleB: false,itemAA: String(new Date().getFullYear())+'년' , isVisibleAA: false, itemBB: String(new Date().getMonth()+1)+'월', isVisibleBB: false,
           PaymentSum:'-', DeductionSum:'-', Difference:'-', Name:'-', WorkingType:'-',
-          tableTitle:['기본급','추가근로수당','식대','국민연금','건강보험료','장기요양보험료','고용보험료','소득세','주민세'],
+          tableTitle:['기본급','기타수당(과세)','기타수당(비과세)','국민연금','건강보험료','장기요양보험료','고용보험료','소득세','주민세'],
           tableData: [
               ['-','-','-','-','-','-','-','-','-'],
           ],
@@ -104,7 +104,7 @@ class StatementScreen2 extends Component{
                 
           });
 
-//여기
+//여기 과세/비과세 추가되는 값들
           axios.post('http://13.124.141.28:3000/otherAllowance', {
             id: this.state.id,
             year : this.state.itemAA.split('년')[0]*1,
@@ -115,9 +115,10 @@ class StatementScreen2 extends Component{
             'Accept': 'application/json'}
           })
             .then(res => {
-              console.log('_______________!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+              console.log(this.state.id,'_',this.state.itemAA.split('년')[0]*1, '_', this.state.itemBB.split('월')[0]*1)
               for(let i=0 ; i<res.data.length ; i++){
-                console.log(res.data[i])
+                console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!_______________!여기_',res.data[i])
+                
               }
                 
           });
@@ -291,6 +292,8 @@ class StatementScreen2 extends Component{
                 }
               }
             }
+
+
             this.setState({nname: rowall, type1:t1, type2:t2})
             console.log(this.state.nname, this.state.type1, this.state.type2);
             if(flag==1){
@@ -302,6 +305,8 @@ class StatementScreen2 extends Component{
           console.error(e);
         }
     }
+
+
     clickHandler = async() => {
       try {
         let t = this.state.tableData[0];
@@ -364,8 +369,8 @@ class StatementScreen2 extends Component{
                   <table>
                     <th>내역</th><th>금액</th>
                     <tr><td>(+) 기본급</td><td>${String(t[0])}</td></tr>
-                    <tr><td>(+) 추가근로수당</td><td>${String(t[1])}</td></tr>
-                    <tr><td>(+) 식대</td><td>${String(t[2])}</td></tr>
+                    <tr><td>(+) 기타수당(과세)</td><td>${String(t[1])}</td></tr>
+                    <tr><td>(+) 기타수당(비과세)</td><td>${String(t[2])}</td></tr>
                     <tr><td>(-) 국민연금</td><td>${String(t[3])}</td></tr>
                     <tr><td>(-) 건강보험료</td><td>${String(t[4])}</td></tr>
                     <tr><td>(-) 장기요양보험료</td><td>${String(t[5])}</td></tr>
@@ -502,7 +507,7 @@ class StatementScreen2 extends Component{
         }
         
         console.log('000000000000000000000000000000000000000000000000000000000000000')
-        console.log('이름',this.state.id);
+        console.log('이름',this.state.Name);
         console.log('국민연금(%) : ', this.state.NationalPensionPercentage)
         console.log('건강보험(%) : ', this.state.HealthInsurancePercentage)
         console.log('건강보험(정기요양)(%) : ', this.state.RegularCarePercentage)

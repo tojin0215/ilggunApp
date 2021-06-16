@@ -27,7 +27,7 @@ class StatementScreen1 extends React.Component {
       super(props);
       this.state = {
           itemA: String(new Date().getFullYear())+'년', isVisibleA: false, itemB: String(new Date().getMonth()+1)+'월', isVisibleB: false,
-          tableHead: ['이름', '분류', '보수총액\n(신고금액)','추가금','공제','실지금액'],
+          tableHead: ['이름', '분류', '보수총액\n(신고금액)','기타수당','공제','실지금액'],
           tableTitle: [],
           tableData: [],
           arrName: [],
@@ -96,6 +96,24 @@ class StatementScreen1 extends React.Component {
                   
 
                 });
+
+                // axios.post('http://13.124.141.28:3000/otherAllowance', {
+                //   //id: this.state.id,
+                //   year : this.state.itemAA.split('년')[0]*1,
+                //   month : this.state.itemBB.split('월')[0]*1,
+                // },
+                // {  headers:{
+                //   'Content-Type': 'application/json',
+                //   'Accept': 'application/json'}
+                // })
+                //   .then(res => {
+                //     console.log(this.state.id,'_',this.state.itemAA.split('년')[0]*1, '_', this.state.itemBB.split('월')[0]*1)
+                //     for(let i=0 ; i<res.data.length ; i++){
+                //       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!_______________!여기_',res.data[i])
+                      
+                //     }
+                      
+                // });
 
                 axios.post('http://13.124.141.28:3000/insurancePercentage',
                 {  headers:{
@@ -333,7 +351,7 @@ class StatementScreen1 extends React.Component {
                   <h1>[${this.state.bangcode}] 월별 급여대장</h1>
                   <h3>${yymm.split('.')[0]}년 ${yymm.split('.')[1]}월</h3>
                   <table>
-                    <th>이름</th><th>분류</th><th>보수총액(신고금액)</th><th>추가금</th><th>공제</th><th>실지금액</th>
+                    <th>이름</th><th>분류</th><th>보수총액(신고금액)</th><th>기타수당</th><th>공제</th><th>실지금액</th>
                     ${trs}
                   </table><span>${signOrStamp}</span>
                 </body>

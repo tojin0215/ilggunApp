@@ -28,7 +28,7 @@ class WorkerStatementScreen extends Component{
         itemAA: String(new Date().getFullYear())+'년' , isVisibleAA: false, itemBB: String(new Date().getMonth()+1)+'월', isVisibleBB: false,
           itemA: null , isVisibleA: false, itemB: null, isVisibleB: false,itemC: null, isVisibleC: false,
           PaymentSum:'-', DeductionSum:'-', Difference:'-', Name:'-', WorkingType:'-',
-          tableTitle:['기본급','추가근로수당','식대','국민연금','건강보험료','장기요양보험료','고용보험료','소득세','주민세'],
+          tableTitle:['기본급','기타수당(과세)','기타수당(비과세)','국민연금','건강보험료','장기요양보험료','고용보험료','소득세','주민세'],
           tableData: [
               ['-','-','-','-','-','-','-','-','-'],
           ],
@@ -90,8 +90,8 @@ class WorkerStatementScreen extends Component{
                           <table>
                             <th>내역</th><th>금액</th>
                             <tr><td>(+) 기본급</td><td>${String(t[0])}</td></tr>
-                            <tr><td>(+) 추가근로수당</td><td>${String(t[1])}</td></tr>
-                            <tr><td>(+) 식대</td><td>${String(t[2])}</td></tr>
+                            <tr><td>(+) 기타수당(과세)</td><td>${String(t[1])}</td></tr>
+                            <tr><td>(+) 기타수당(비과세)</td><td>${String(t[2])}</td></tr>
                             <tr><td>(-) 국민연금</td><td>${String(t[3])}</td></tr>
                             <tr><td>(-) 건강보험료</td><td>${String(t[4])}</td></tr>
                             <tr><td>(-) 장기요양보험료</td><td>${String(t[5])}</td></tr>
@@ -928,7 +928,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     marginTop:hp('3%'),
     marginBottom:hp('0.1%'),
-    width:wp('90%'), height:hp('15%'),
+    width:wp('90%'), height:hp('20%'),
     alignItems:"flex-start", justifyContent:"flex-start",
     marginLeft:wp('5%')
   },
@@ -947,6 +947,7 @@ const styles = StyleSheet.create({
   textArea:{
     padding:wp('5%'),
     marginLeft:wp('1.5%'),
+    marginBottom:hp('5%'),
     position:"absolute",
     top:hp('11%'),
     ...Platform.select({
@@ -957,7 +958,7 @@ const styles = StyleSheet.create({
   },
   tableArea:{
     paddingLeft:wp('5%'),
-    marginTop:hp('5%'),
+    marginTop:hp('3%'),
     marginBottom:hp('2%'),
     width:wp('92%'),
   },
