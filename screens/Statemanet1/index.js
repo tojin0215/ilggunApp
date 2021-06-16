@@ -35,7 +35,8 @@ class StatementScreen1 extends React.Component {
           addtime: {},
           bangcode: '',
           id:'',
-          EmploymentInsurancePercentage:0,HealthInsurancePercentage:0,NationalPensionPercentage:0,RegularCarePercentage:0
+          EmploymentInsurancePercentage:0,HealthInsurancePercentage:0,NationalPensionPercentage:0,RegularCarePercentage:0,
+          pay11:0 //시급
           
       }
       AsyncStorage.getItem("bangCode")
@@ -130,11 +131,12 @@ class StatementScreen1 extends React.Component {
                           console.log('건강보험',res.data[i].HealthInsurancePercentage)
                           console.log('건강보험(장기)',res.data[i].RegularCarePercentage)
                           console.log('고용보험',res.data[i].EmploymentInsurancePercentage)
+                          console.log('시급',res.data[i].HourlyWage)
                           this.setState({
                             NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                             HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
                             RegularCarePercentage:res.data[i].RegularCarePercentage,
-                            EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
+                            pay11:res.data[i].HourlyWage
                           })
                         }
                       }
@@ -208,14 +210,14 @@ class StatementScreen1 extends React.Component {
                     console.log(">>>");
                     console.log(res.data);
                     console.log(">>>");
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(this.state.pay11/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
                   }
                   else{
-                    let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
+                    let pay = this.state.pay11;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
                     if(this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
-                      pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
+                      pay = Math.floor(this.state.pay11 *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
                     }
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11]);
                   }
                 }
                 
@@ -261,9 +263,9 @@ class StatementScreen1 extends React.Component {
                       sum += (eachtime[i]*1) * (week[i]-weekk[i]);
                     }
                     console.log(">>>");
-                    console.log(String(res.data[i].pay/*시급*/),">>>>>", String(sum/* 시간 */) ,">>>>>", String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/));
+                    console.log(String(this.state.pay11/*시급*/),">>>>>", String(sum/* 시간 */) ,">>>>>", String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/));
                     console.log(">>>");
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(this.state.pay11/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
                   }
                   else{
                     let date = new Date().getDate();
@@ -272,7 +274,7 @@ class StatementScreen1 extends React.Component {
                       else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
                     }
                     console.log(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate())
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(Math.floor(this.state.pay11*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11]);
                   }
                 }
               }
@@ -608,7 +610,7 @@ class StatementScreen1 extends React.Component {
               data=[];
               if(WorkingType == '알바'){
                   tableTitleArr.push(this.state.arrName[i][1])
-                  HourlyWage = this.state.arrName[i][3]
+                  HourlyWage = this.state.pay11
                   WorkingHour = this.state.arrName[i][4]
                   AddSalaryPartTime = this.state.arrName[i][5]
 

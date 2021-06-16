@@ -291,11 +291,13 @@ class WorkerStatementScreen extends Component{
                     console.log('건강보험',res.data[i].HealthInsurancePercentage)
                     console.log('건강보험(장기)',res.data[i].RegularCarePercentage)
                     console.log('고용보험',res.data[i].EmploymentInsurancePercentage)
+                    console.log('시급',res.data[i].HourlyWage)
                     this.setState({
                       NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                       HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
                       RegularCarePercentage:res.data[i].RegularCarePercentage,
-                      EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
+                      EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage,
+                      pay11:res.data[i].HourlyWage
                     })
                   }
                 }
@@ -383,17 +385,17 @@ class WorkerStatementScreen extends Component{
                 console.log(res.data);
                 console.log(">>>");
               
-                  rowall.push([res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/)]);
+                  rowall.push([res.data[i].workername2, "알바", String(this.state.pay11/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*추가근로*/)]);
                   t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
                   this.setState({itemA:res.data[i].workername2});
                   this.setState({nname: rowall, type1:t1})
                 }
                 else{
-                  let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
+                  let pay = this.state.pay11;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
                   if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
-                    pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
+                    pay = Math.floor(this.state.pay11 *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
                   }
-                  rowall.push([res.data[i].workername2, "정규직", String(pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                  rowall.push([res.data[i].workername2, "정규직", String(pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
                   t2.push({label: res.data[i].workername2, value: res.data[i].workername2})
                   this.setState({itemB:res.data[i].workername2});
                   this.setState({nname: rowall,type2:t2})
@@ -461,9 +463,9 @@ class WorkerStatementScreen extends Component{
                         sum += (eachtime[i]*1) * (week[i]-weekk[i]);
                       }
                       console.log(">>>");
-                      console.log(String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/));
+                      console.log(String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*추가근로*/));
                       console.log(">>>");
-                      rowall.push([res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/)]);
+                      rowall.push([res.data[i].workername2, "알바", String(this.state.pay11/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*추가근로*/)]);
                       t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
                       this.setState({itemA:res.data[i].workername2});
                       this.setState({nname: rowall, type1:t1})
@@ -474,7 +476,7 @@ class WorkerStatementScreen extends Component{
                         if(date <= res.data[i].startdate.split('/')[2]*1) date = 0;
                         else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
                       }
-                      rowall.push([res.data[i].workername2, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                      rowall.push([res.data[i].workername2, "정규직", String(Math.floor(this.state.pay11*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
                       t2.push({label: res.data[i].workername2, value: res.data[i].workername2});
                       this.setState({itemB:res.data[i].workername2});
                       this.setState({nname: rowall,type2:t2})
