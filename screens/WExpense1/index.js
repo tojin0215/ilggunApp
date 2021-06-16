@@ -3,19 +3,73 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput,ImageBackground, TouchableWithoutFeedback, Keyboard,Platform} from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col} from 'react-native-table-component';
 
-//=================바뀐부분A=========================================================
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 
-//=================바뀐부분A=========================================================
 
 class WExpenseScreen1 extends Component{
+
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      MonthlySalary:'0', // MonthlySalary:보수총액
+      TaxDeduction:'0', // TaxDeduction:3.3세금공제
+      NationalPension:'0', // NationalPension:국민연금 (보수총액*4.5%)
+      HealthInsurance:'0', // HealthInsurance:건강보험 (보수총액*3.3335%)
+      RegularCare:'0', // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
+      EmploymentInsurance:'0', // EmploymentInsurance : 고용보험 (보수총액*0.8%)
+      SocialInsurance:'0', // SocialInsurance:사대보험 (국민연금+건강보험+고용보험) -> 150인 이하,이상 근로자가 내는 보험료는 달라지지않음.
+      tableHead: ['구분', '보험료\n총액', '근로자\n부담', '사업주\n부담'],
+      tableTitle: ['국민연금', '건강보험', '건강보험\n(장기요양)', '고용보험','합계'],
+      tableData: [
+        ['-', '-', '-'],
+        ['-', '-' , '-'],
+        ['-', '-', '-'],
+        ['-', '-', '-'],
+        ['-', '-', '-']
+      ]
+    }
+    
+    AsyncStorage.getItem("bangCode")
+      .then((bangCode) => {
+        this.setState({bangCode: bangCode});
+        this.fetchData();
+      })
+  }
+ 
+
+  fetchData = async() => { 
+    try {
+        axios.post('http://13.124.141.28:3000/insurancePercentage',
+                {  headers:{
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'}
+                })
+                  .then(res => {
+                    for(let i=(res.data.length-1) ; i>=(res.data.length-1) ; i--){
+                        this.setState({
+                          NationalPensionPercentage:res.data[i].NationalPensionPercentage,
+                          HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
+                          RegularCarePercentage:res.data[i].RegularCarePercentage,
+                          EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
+                        })
+                      }
+                      
+                });
+    } catch (e) {
+        console.error(e);
+      }
+}
+
   updateState(){
-    const NationalPension1 = (this.state.MonthlySalary*4.5/100).toFixed(0);
-    const HealthInsurance1 = (this.state.MonthlySalary*3.335/100).toFixed(0);
-    const RegularCare1 = (HealthInsurance1*10.25/100).toFixed(0);
-    const EmploymentInsurance1 = (this.state.MonthlySalary*0.8/100).toFixed(0);//근로자_고용보험
-    const EmploymentInsurance1_1 = ((this.state.MonthlySalary*0.8/100)+(this.state.MonthlySalary*0.25/100)).toFixed(0); //사업주_고용보험
+    const NationalPension1 = Math.floor(((parseInt(this.state.MonthlySalary)*this.state.NationalPensionPercentage/100).toFixed(0))/10)*10;
+    const HealthInsurance1 =  Math.floor(((parseInt(this.state.MonthlySalary)*this.state.HealthInsurancePercentage/100).toFixed(0))/10)*10;
+    const RegularCare1 =  Math.floor(((HealthInsurance1*this.state.RegularCarePercentage/100).toFixed(0))/10)*10;
+    const EmploymentInsurance1 = Math.floor(((parseInt(this.state.MonthlySalary)*this.state.EmploymentInsurancePercentage/100).toFixed(0))/10)*10;//근로자_고용보험
+    const EmploymentInsurance1_1 = Math.floor((((parseInt(this.state.MonthlySalary)*this.state.EmploymentInsurancePercentage/100)+(this.state.MonthlySalary*0.25/100)).toFixed(0))/10)*10; //사업주_고용보험
     const SocialInsurance1 = parseInt(NationalPension1)+parseInt(HealthInsurance1)+parseInt(RegularCare1)+parseInt(EmploymentInsurance1);
 
     const SumEmploymentInsurance = parseInt(EmploymentInsurance1)+parseInt(EmploymentInsurance1_1)
@@ -53,39 +107,15 @@ class WExpenseScreen1 extends Component{
     })
   }
 
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      MonthlySalary:'0', // MonthlySalary:보수총액
-      TaxDeduction:'0', // TaxDeduction:3.3세금공제
-      NationalPension:'0', // NationalPension:국민연금 (보수총액*4.5%)
-      HealthInsurance:'0', // HealthInsurance:건강보험 (보수총액*3.3335%)
-      RegularCare:'0', // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-      EmploymentInsurance:'0', // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-      SocialInsurance:'0', // SocialInsurance:사대보험 (국민연금+건강보험+고용보험) -> 150인 이하,이상 근로자가 내는 보험료는 달라지지않음.
-      tableHead: ['구분', '보험료\n총액', '근로자\n부담', '사업주\n부담'],
-      tableTitle: ['국민연금', '건강보험', '건강보험\n(장기요양)', '고용보험','합계'],
-      tableData: [
-        ['-', '-', '-'],
-        ['-', '-' , '-'],
-        ['-', '-', '-'],
-        ['-', '-', '-'],
-        ['-', '-', '-']
-      ]
-    }
-  }
- 
+  
   render() {
     const state = this.state;
     const{MonthlySalary, SocialInsurance, NationalPension, HealthInsurance, RegularCare, EmploymentInsurance, TaxDeduction,TotalSalary} = this.state
     
     return (
       
-//=========================바뀐부분A.=========================================================
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
   <View style={styles.image}>
-  {/* //=========================바뀐부분A.========================================================= */}
       <View style={styles.container}>
         <View style={styles.titleArea}>
         <Text style={styles.textTitle}>인건비 계산하기(정규직)</Text>
@@ -118,7 +148,6 @@ class WExpenseScreen1 extends Component{
         </TouchableOpacity>
         </View>
 
-{/* //=========================바뀐부분B========================================================= */}
         <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
           <Row data={state.tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.tableTextStyle}/>
           <TableWrapper style={styles.wrapper}>
@@ -126,7 +155,6 @@ class WExpenseScreen1 extends Component{
             <Rows data={state.tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.tableTextStyle}/>
           </TableWrapper>
         </Table>
-{/* //=========================바뀐부분B========================================================= */}
 
 {/* 
         <Text></Text>
@@ -144,7 +172,6 @@ class WExpenseScreen1 extends Component{
 
 export default WExpenseScreen1;
 
-//============================================바뀐부분 스타일=============================
 const styles = StyleSheet.create({
   container: { 
     padding:wp('4.5%'), 

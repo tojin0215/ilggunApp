@@ -19,10 +19,6 @@ import * as Sharing from "expo-sharing";
 //정규) SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
 //알바) TaxDeduction:3.3세금공제
 
-// 알바:시급/시간/식대/추가근로      정규:기본급/식대/추가근로
-const name = [['김수정','알바','8590','80','10000','40000'],['권소령','정규직','3000000','20000','50000'],
-            ['전세웅','정규직','1000000','20000','60000'],['정민지','정규직','2000000','0','100000']]
-
 class WorkerStatementScreen extends Component{
 // 급여대장
     constructor(props) {
@@ -32,13 +28,14 @@ class WorkerStatementScreen extends Component{
         itemAA: String(new Date().getFullYear())+'년' , isVisibleAA: false, itemBB: String(new Date().getMonth()+1)+'월', isVisibleBB: false,
           itemA: null , isVisibleA: false, itemB: null, isVisibleB: false,itemC: null, isVisibleC: false,
           PaymentSum:'-', DeductionSum:'-', Difference:'-', Name:'-', WorkingType:'-',
-          tableTitle:['기본급','추가근로수당','식대','국민연금','건강보험료','장기요양보험료','고용보험료','소득세','주민세'],
+          tableTitle:['기본급','기타수당(과세)','기타수당(비과세)','국민연금','건강보험료','장기요양보험료','고용보험료','소득세','주민세'],
           tableData: [
               ['-','-','-','-','-','-','-','-','-'],
           ],
           addtime: {}, bangCode: '',id:'',
           nname :[], type1:[], type2:[],
-          
+          EmploymentInsurancePercentage:0,HealthInsurancePercentage:0,NationalPensionPercentage:0,RegularCarePercentage:0,
+          pay11:0
       }
       console.log(this.props);
       AsyncStorage.getItem("bangCode")
@@ -89,11 +86,12 @@ class WorkerStatementScreen extends Component{
                           <h1>[${this.state.bangCode}] 근로자 급여명세서</h1>
                           <b>날짜 : ${this.state.itemAA} ${this.state.itemBB}</b><br>
                           <b>이름 : ${this.state.Name}(${this.state.WorkingType})</b><br>
+                          <b>급여산정기간 : 1일 ~ 말일</b><br>
                           <table>
                             <th>내역</th><th>금액</th>
                             <tr><td>(+) 기본급</td><td>${String(t[0])}</td></tr>
-                            <tr><td>(+) 추가근로수당</td><td>${String(t[1])}</td></tr>
-                            <tr><td>(+) 식대</td><td>${String(t[2])}</td></tr>
+                            <tr><td>(+) 기타수당(과세)</td><td>${String(t[1])}</td></tr>
+                            <tr><td>(+) 기타수당(비과세)</td><td>${String(t[2])}</td></tr>
                             <tr><td>(-) 국민연금</td><td>${String(t[3])}</td></tr>
                             <tr><td>(-) 건강보험료</td><td>${String(t[4])}</td></tr>
                             <tr><td>(-) 장기요양보험료</td><td>${String(t[5])}</td></tr>
@@ -153,6 +151,7 @@ class WorkerStatementScreen extends Component{
                           <h1>[${this.state.bangCode}] 근로자 급여명세서</h1>
                           <b>날짜 : ${this.state.itemAA} ${this.state.itemBB}</b><br>
                           <b>이름 : ${this.state.Name}(${this.state.WorkingType})</b><br>
+                          <b>급여산정기간 : 1일 ~ 말일</b><br>
                           <table>
                             <th>내역</th><th>금액</th>
                             <tr><td>(+) 기본급</td><td>${String(t[0])}</td></tr>
@@ -279,7 +278,32 @@ class WorkerStatementScreen extends Component{
               console.log(dic);
             this.setState({addtime : dic})
             
-
+            axios.post('http://13.124.141.28:3000/insurancePercentage',
+            {  headers:{
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'}
+            })
+              .then(res => {
+                for(let i=0 ; i<res.data.length ; i++){
+                  console.log('*************************************************DB년도',res.data[i].date)
+                  if(res.data[i].date === this.state.itemAA.split('년')[0]){
+                    console.log('국민연금',res.data[i].NationalPensionPercentage)
+                    console.log('건강보험',res.data[i].HealthInsurancePercentage)
+                    console.log('건강보험(장기)',res.data[i].RegularCarePercentage)
+                    console.log('고용보험',res.data[i].EmploymentInsurancePercentage)
+                    console.log('시급',res.data[i].HourlyWage)
+                    this.setState({
+                      NationalPensionPercentage:res.data[i].NationalPensionPercentage,
+                      HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
+                      RegularCarePercentage:res.data[i].RegularCarePercentage,
+                      EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage,
+                      pay11:res.data[i].HourlyWage
+                    })
+                  }
+                }
+                  
+            });
+            
           
           console.log(bangCode);
           axios.post('http://13.124.141.28:3000/selectWorkerEach', {
@@ -361,17 +385,17 @@ class WorkerStatementScreen extends Component{
                 console.log(res.data);
                 console.log(">>>");
               
-                  rowall.push([res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/)]);
+                  rowall.push([res.data[i].workername2, "알바", String(this.state.pay11/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*추가근로*/)]);
                   t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
                   this.setState({itemA:res.data[i].workername2});
                   this.setState({nname: rowall, type1:t1})
                 }
                 else{
-                  let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
+                  let pay = this.state.pay11;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
                   if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
-                    pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
+                    pay = Math.floor(this.state.pay11 *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
                   }
-                  rowall.push([res.data[i].workername2, "정규직", String(pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                  rowall.push([res.data[i].workername2, "정규직", String(pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
                   t2.push({label: res.data[i].workername2, value: res.data[i].workername2})
                   this.setState({itemB:res.data[i].workername2});
                   this.setState({nname: rowall,type2:t2})
@@ -439,9 +463,9 @@ class WorkerStatementScreen extends Component{
                         sum += (eachtime[i]*1) * (week[i]-weekk[i]);
                       }
                       console.log(">>>");
-                      console.log(String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/));
+                      console.log(String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*추가근로*/));
                       console.log(">>>");
-                      rowall.push([res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*추가근로*/)]);
+                      rowall.push([res.data[i].workername2, "알바", String(this.state.pay11/*시급*/), String(sum/* 시간 */) , String(0),String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*추가근로*/)]);
                       t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
                       this.setState({itemA:res.data[i].workername2});
                       this.setState({nname: rowall, type1:t1})
@@ -452,7 +476,7 @@ class WorkerStatementScreen extends Component{
                         if(date <= res.data[i].startdate.split('/')[2]*1) date = 0;
                         else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
                       }
-                      rowall.push([res.data[i].workername2, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                      rowall.push([res.data[i].workername2, "정규직", String(Math.floor(this.state.pay11*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
                       t2.push({label: res.data[i].workername2, value: res.data[i].workername2});
                       this.setState({itemB:res.data[i].workername2});
                       this.setState({nname: rowall,type2:t2})
@@ -526,15 +550,19 @@ class WorkerStatementScreen extends Component{
             }
         }
 
+        console.log('국민연금(%) : ', this.state.NationalPensionPercentage)
+        console.log('건강보험(%) : ', this.state.HealthInsurancePercentage)
+        console.log('건강보험(정기요양)(%) : ', this.state.RegularCarePercentage)
+        console.log('고용보험(%) : ', this.state.EmploymentInsurancePercentage)
         //----------------------계산식---------------------------------------------
         // NationalPension:국민연금 (보수총액*4.5%)
-        let NationalPension = Math.floor(((parseInt(MonthlySalary)*4.5/100).toFixed(0))/10)*10;
+        let NationalPension = Math.floor(((parseInt(MonthlySalary)*this.state.NationalPensionPercentage/100).toFixed(0))/10)*10;
         // HealthInsurance:건강보험 (보수총액*3.3335%)
-        let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*3.335/100).toFixed(0))/10)*10;
+        let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*this.state.HealthInsurancePercentage/100).toFixed(0))/10)*10;
         // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-        let RegularCare = Math.floor(((HealthInsurance*10.25/100).toFixed(0))/10)*10;
+        let RegularCare = Math.floor(((HealthInsurance*this.state.RegularCarePercentage/100).toFixed(0))/10)*10;
         // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-        let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*0.8/100).toFixed(0))/10)*10;//근로자_고용보험
+        let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*this.state.EmploymentInsurancePercentage/100).toFixed(0))/10)*10;//근로자_고용보험
         // SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
         let SocialInsurance = (parseInt(NationalPension)+parseInt(HealthInsurance)+parseInt(RegularCare)+parseInt(EmploymentInsurance)).toFixed(0);
 
@@ -751,12 +779,12 @@ class WorkerStatementScreen extends Component{
           <View style={styles.dropDownArea}>
                 <DropDownPicker
                     items={[
-                        {label: '2016년', value: '2016년'},
-                        {label: '2017년', value: '2017년'},
-                        {label: '2018년', value: '2018년'},
-                        {label: '2019년', value: '2019년'},
-                        {label: '2020년', value: '2020년'},
-                        {label: '2021년', value: '2021년'},
+                      {label: '2020년', value: '2020년'},
+                      {label: '2021년', value: '2021년'},
+                      {label: '2022년', value: '2022년'},
+                      {label: '2023년', value: '2023년'},
+                      {label: '2024년', value: '2024년'},
+                      {label: '2025년', value: '2025년'},
                     ]}
                     defaultValue={this.state.itemAA}
                     containerStyle={{height: hp('6%'), width: wp('30%'), marginLeft:wp('3%')}}
@@ -834,13 +862,14 @@ class WorkerStatementScreen extends Component{
                 </View>
 
                 
+                <View style={styles.textArea}>
+                  <View style={{flexDirection:'row'}}>
+                    <Text style={styles.textStyle}>이름 : {Name}</Text>
+                    <Text style={styles.textStyle}>, 근무형태 : {WorkingType}</Text>
 
-
-            <View style={styles.textArea}>
-                <Text style={styles.textStyle}>이름 : {Name}</Text>
-                <Text style={styles.textStyle}>, 근무형태 : {WorkingType}</Text>
-            </View>
-          
+                  </View>
+                    <Text style={styles.textStyle}>급여산정기간 : 1일 ~ 말일</Text>
+                </View>
             <ScrollView style={{zIndex: -2000}}>
             <View style={styles.tableArea}>
             <Table style={styles.wrapper} borderStyle={{borderWidth: 1, borderColor:'white'}}>
@@ -901,7 +930,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     marginTop:hp('3%'),
     marginBottom:hp('0.1%'),
-    width:wp('90%'), height:hp('15%'),
+    width:wp('90%'), height:hp('20%'),
     alignItems:"flex-start", justifyContent:"flex-start",
     marginLeft:wp('5%')
   },
@@ -918,9 +947,9 @@ const styles = StyleSheet.create({
         })
   },
   textArea:{
-    flexDirection:"row",
     padding:wp('5%'),
     marginLeft:wp('1.5%'),
+    marginBottom:hp('5%'),
     position:"absolute",
     top:hp('11%'),
     ...Platform.select({
@@ -931,7 +960,7 @@ const styles = StyleSheet.create({
   },
   tableArea:{
     paddingLeft:wp('5%'),
-    marginTop:hp('1%'),
+    marginTop:hp('3%'),
     marginBottom:hp('2%'),
     width:wp('92%'),
   },

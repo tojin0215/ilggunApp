@@ -251,6 +251,11 @@ class WorkerContractformScreen extends Component{
                   <label>원, </label>
                   <label class="text_underline_margin_left">${this.state.Bonus4}</label>
                   <label>원 </label><br>
+                  <label class="margin_left">- 급여산정기간 :</label> 
+                  <label class="text_underline">${this.state.SalaryCalculationPeriodStart}</label>
+                  <label>일~</label>
+                  <label class="text_underline">${this.state.SalaryCalculationPeriodEnd}</label>
+                  <label>일</label><br>
                   <label class="margin_left">- 임금지급일 : 매월</label>
                   <label class="text_underline">10</label>
                   <label>일 (휴일의 경우에는 전일 지급)</label><br>
@@ -440,6 +445,11 @@ class WorkerContractformScreen extends Component{
                 <label class="margin_left">- 초과근로에 대한 가산임금률</label>
                 <label class="text_underline">${this.state.AdditionalWageRate}</label>
                 <label>%</label><br>
+                <label class="margin_left">- 급여산정기간 :</label> 
+                <label class="text_underline">${this.state.SalaryCalculationPeriodStart}</label>
+                <label>일~</label>
+                <label class="text_underline">${this.state.SalaryCalculationPeriodEnd}</label>
+                <label>일</label><br>
                 <label class="margin_left">- 임금지급일 : 매월(매주 또는 매일)</label>
                 <label class="text_underline">${this.state.SalaryDay}</label>
                 <label>일 (휴일의 경우에는 전일 지급)</label><br>
@@ -569,6 +579,7 @@ class WorkerContractformScreen extends Component{
         if(res.data[0].Bonus2 == null) res.data[0].Bonus2 = 0
         if(res.data[0].Bonus3 == null) res.data[0].Bonus3 = 0
         if(res.data[0].Bonus4 == null) res.data[0].Bonus4 = 0
+        if(res.data[0].AdditionalWageRate == null) res.data[0].AdditionalWageRate = 0
           let t4 = [0,0,0,0,0];
           console.log('dddd')
           let n = JSON.parse(res.data[0].value4);
@@ -636,6 +647,7 @@ class WorkerContractformScreen extends Component{
             if(res.data[0].Bonus2 == null) res.data[0].Bonus2 = 0
             if(res.data[0].Bonus3 == null) res.data[0].Bonus3 = 0
             if(res.data[0].Bonus4 == null) res.data[0].Bonus4 = 0
+            if(res.data[0].AdditionalWageRate == null) res.data[0].AdditionalWageRate = 0
             let t4 = [0,0,0,0,0];
             console.log('dddd')
             let n = JSON.parse(res.data[0].value4);
@@ -1102,6 +1114,13 @@ class WorkerContractformScreen extends Component{
                 <Text style={styles.textStyle}>%</Text>
             </View>
             <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-급여산정기간 : </Text>
+                <Text style={styles.textinputDayStyle}>{this.state.SalaryCalculationPeriodStart}</Text>
+                <Text style={styles.textStyle}>일 ~ </Text>
+                <Text style={styles.textinputDayStyle}>{this.state.SalaryCalculationPeriodEnd}</Text>
+                <Text style={styles.textStyle}>일</Text>
+            </View>
+            <View style={styles.rowPeriod}>
                 <Text style={styles.textStyle}>-임금지급일 : 매월(매주 또는 매일)</Text>
                 <Text style={styles.textinputDayStyle}>{this.state.SalaryDay}</Text>
                 <Text style={styles.textStyle}>일</Text>
@@ -1323,6 +1342,14 @@ class WorkerContractformScreen extends Component{
                 <Text style={styles.textStyle}>-초과근로에 대한 가산임금률 : </Text>
                 <Text style={styles.textinputDayStyle}>{this.state.AdditionalWageRate}</Text>
                 <Text style={styles.textStyle}>%</Text>
+            </View>
+            
+            <View style={styles.rowPeriod}>
+                <Text style={styles.textStyle}>-급여산정기간 : </Text>
+                <Text style={styles.textinputDayStyle}>{this.state.SalaryCalculationPeriodStart}</Text>
+                <Text style={styles.textStyle}>일 ~ </Text>
+                <Text style={styles.textinputDayStyle}>{this.state.SalaryCalculationPeriodEnd}</Text>
+                <Text style={styles.textStyle}>일</Text>
             </View>
             <View style={styles.rowPeriod}>
                 <Text style={styles.textStyle}>-임금지급일 : 매월(매주 또는 매일)</Text>

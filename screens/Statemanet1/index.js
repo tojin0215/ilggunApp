@@ -21,22 +21,13 @@ import * as FileSystem from 'expo-file-system';
 //알바공제) WithholdingTax:3.3세금공제
 
 
-// 정규직은 이름/근무형태/보수총액(기본월급)/추가금 //// 알바는 이름/근무형태/시급/근무시간/추가금
-/*const arrName= [['2020.09','김지은','알바','8590','70','10000'],['2020.09','서효선','알바','8590','50','20000']
-                ,['2020.09','권소령','정규직','3000000','10000'],['2020.09','전세웅','정규직','1000000','0'], 
-                ['2020.09','김수정','알바','8590','20','50000'],['2020.09','정민지','정규직','2000000','30000'],
-                ['2020.10','김지은','알바','8590','50','5000'],['2020.10','서효선','알바','8590','100','20000']
-                ,['2020.10','권소령','정규직','2000000','30000'],['2020.10','전세웅','정규직','2000000','10000'], 
-                ['2020.10','김수정','알바','8590','30','10000'],['2020.10','정민지','정규직','3000000','0']]
-*/
-
 class StatementScreen1 extends React.Component {
 // 급여대장
     constructor(props) {
       super(props);
       this.state = {
           itemA: String(new Date().getFullYear())+'년', isVisibleA: false, itemB: String(new Date().getMonth()+1)+'월', isVisibleB: false,
-          tableHead: ['이름', '분류', '보수총액\n(신고금액)','추가금','공제','실지금액'],
+          tableHead: ['이름', '분류', '보수총액\n(신고금액)','기타수당','공제','실지금액'],
           tableTitle: [],
           tableData: [],
           arrName: [],
@@ -44,6 +35,9 @@ class StatementScreen1 extends React.Component {
           addtime: {},
           bangcode: '',
           id:'',
+          EmploymentInsurancePercentage:0,HealthInsurancePercentage:0,NationalPensionPercentage:0,RegularCarePercentage:0,
+          pay11:0 //시급
+          
       }
       AsyncStorage.getItem("bangCode")
       .then((bangCode) => {
@@ -102,6 +96,51 @@ class StatementScreen1 extends React.Component {
                   this.setState({addtime : dic})
                   
 
+                });
+
+                // axios.post('http://13.124.141.28:3000/otherAllowance', {
+                //   //id: this.state.id,
+                //   year : this.state.itemAA.split('년')[0]*1,
+                //   month : this.state.itemBB.split('월')[0]*1,
+                // },
+                // {  headers:{
+                //   'Content-Type': 'application/json',
+                //   'Accept': 'application/json'}
+                // })
+                //   .then(res => {
+                //     console.log(this.state.id,'_',this.state.itemAA.split('년')[0]*1, '_', this.state.itemBB.split('월')[0]*1)
+                //     for(let i=0 ; i<res.data.length ; i++){
+                //       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!_______________!여기_',res.data[i])
+                      
+                //     }
+                      
+                // });
+
+                axios.post('http://13.124.141.28:3000/insurancePercentage',
+                {  headers:{
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'}
+                })
+                  .then(res => {
+                      console.log('_________________________________________몇년',this.state.itemA.split('년')[0])
+                      for(let i=0 ; i<res.data.length ; i++){
+                        console.log('DB년도',res.data[i].date)
+
+                        if(res.data[i].date === this.state.itemA.split('년')[0]){
+                          console.log('국민연금',res.data[i].NationalPensionPercentage)
+                          console.log('건강보험',res.data[i].HealthInsurancePercentage)
+                          console.log('건강보험(장기)',res.data[i].RegularCarePercentage)
+                          console.log('고용보험',res.data[i].EmploymentInsurancePercentage)
+                          console.log('시급',res.data[i].HourlyWage)
+                          this.setState({
+                            NationalPensionPercentage:res.data[i].NationalPensionPercentage,
+                            HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
+                            RegularCarePercentage:res.data[i].RegularCarePercentage,
+                            pay11:res.data[i].HourlyWage
+                          })
+                        }
+                      }
+                      
                 });
 
                 await axios.post('http://13.124.141.28:3000/selectWorker', {
@@ -171,14 +210,14 @@ class StatementScreen1 extends React.Component {
                     console.log(">>>");
                     console.log(res.data);
                     console.log(">>>");
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(this.state.pay11/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
                   }
                   else{
-                    let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
+                    let pay = this.state.pay11;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
                     if(this.state.itemA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
-                      pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
+                      pay = Math.floor(this.state.pay11 *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
                     }
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(pay), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11]);
                   }
                 }
                 
@@ -224,9 +263,9 @@ class StatementScreen1 extends React.Component {
                       sum += (eachtime[i]*1) * (week[i]-weekk[i]);
                     }
                     console.log(">>>");
-                    console.log(String(res.data[i].pay/*시급*/),">>>>>", String(sum/* 시간 */) ,">>>>>", String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/));
+                    console.log(String(this.state.pay11/*시급*/),">>>>>", String(sum/* 시간 */) ,">>>>>", String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/));
                     console.log(">>>");
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(res.data[i].pay/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "알바", String(this.state.pay11/*시급*/), String(sum/* 시간 */) , String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
                   }
                   else{
                     let date = new Date().getDate();
@@ -235,7 +274,7 @@ class StatementScreen1 extends React.Component {
                       else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
                     }
                     console.log(new Date().getDate()/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate())
-                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720]);
+                    rowall.push([this.state.itemA.split('년')[0]+'.'+this.state.itemB.split('월')[0], res.data[i].workername2, "정규직", String(Math.floor(this.state.pay11*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), String(this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11]);
                   }
                 }
               }
@@ -314,7 +353,7 @@ class StatementScreen1 extends React.Component {
                   <h1>[${this.state.bangcode}] 월별 급여대장</h1>
                   <h3>${yymm.split('.')[0]}년 ${yymm.split('.')[1]}월</h3>
                   <table>
-                    <th>이름</th><th>분류</th><th>보수총액(신고금액)</th><th>추가금</th><th>공제</th><th>실지금액</th>
+                    <th>이름</th><th>분류</th><th>보수총액(신고금액)</th><th>기타수당</th><th>공제</th><th>실지금액</th>
                     ${trs}
                   </table><span>${signOrStamp}</span>
                 </body>
@@ -401,15 +440,20 @@ class StatementScreen1 extends React.Component {
                   tableTitleArr.push(this.state.arrName[i][1])
                   MonthlySalary = this.state.arrName[i][3]
                   AddSalary = this.state.arrName[i][4]
+
+                  console.log('국민연금(%) : ', this.state.NationalPensionPercentage)
+                  console.log('건강보험(%) : ', this.state.HealthInsurancePercentage)
+                  console.log('건강보험(정기요양)(%) : ', this.state.RegularCarePercentage)
+                  console.log('고용보험(%) : ', this.state.EmploymentInsurancePercentage)
       
                   // NationalPension:국민연금 (보수총액*4.5%)
-                  let NationalPension = Math.floor(((parseInt(MonthlySalary)*4.5/100).toFixed(0))/10)*10;
+                  let NationalPension = Math.floor(((parseInt(MonthlySalary)*this.state.NationalPensionPercentage/100).toFixed(0))/10)*10;
                   // HealthInsurance:건강보험 (보수총액*3.3335%)
-                  let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*3.335/100).toFixed(0))/10)*10;
+                  let HealthInsurance = Math.floor(((parseInt(MonthlySalary)*this.state.HealthInsurancePercentage/100).toFixed(0))/10)*10;
                   // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-                  let RegularCare = Math.floor(((HealthInsurance*10.25/100).toFixed(0))/10)*10;
+                  let RegularCare = Math.floor(((HealthInsurance*this.state.RegularCarePercentage/100).toFixed(0))/10)*10;
                   // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-                  let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*0.8/100).toFixed(0))/10)*10;//근로자_고용보험
+                  let EmploymentInsurance = Math.floor(((parseInt(MonthlySalary)*this.state.EmploymentInsurancePercentage/100).toFixed(0))/10)*10;//근로자_고용보험
                   // SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
                   let SocialInsurance = (parseInt(NationalPension)+parseInt(HealthInsurance)+parseInt(RegularCare)+parseInt(EmploymentInsurance)).toFixed(0);
                   
@@ -545,7 +589,7 @@ class StatementScreen1 extends React.Component {
                     console.log('--------------------------------'+parseInt(SocialInsurance) , parseInt(IncomeTax) , parseInt(InhabitantsTax))
                     // TotalDeduction:공제총액(사대보험+갑근세+주민세)
                   let TotalDeduction = parseInt(SocialInsurance) + parseInt(IncomeTax) + parseInt(InhabitantsTax)
-      
+                  
       
                   // 실지급액(보수총액+추가급여-공제총액)
                   let ActualSalary = parseInt(MonthlySalary) + parseInt(AddSalary) - parseInt(TotalDeduction);
@@ -566,7 +610,7 @@ class StatementScreen1 extends React.Component {
               data=[];
               if(WorkingType == '알바'){
                   tableTitleArr.push(this.state.arrName[i][1])
-                  HourlyWage = this.state.arrName[i][3]
+                  HourlyWage = this.state.pay11
                   WorkingHour = this.state.arrName[i][4]
                   AddSalaryPartTime = this.state.arrName[i][5]
 
@@ -622,12 +666,13 @@ let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTi
               <View style={styles.dropDownArea}>
                 <DropDownPicker
                     items={[
-                        {label: '2016년', value: '2016년'},
-                        {label: '2017년', value: '2017년'},
-                        {label: '2018년', value: '2018년'},
-                        {label: '2019년', value: '2019년'},
                         {label: '2020년', value: '2020년'},
                         {label: '2021년', value: '2021년'},
+                        {label: '2022년', value: '2022년'},
+                        {label: '2023년', value: '2023년'},
+                        {label: '2024년', value: '2024년'},
+                        {label: '2025년', value: '2025년'},
+                      
                     ]}
                     defaultValue={this.state.itemA}
                     containerStyle={{height: hp('6%'), width:wp('35%')}}

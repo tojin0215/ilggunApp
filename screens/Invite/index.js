@@ -210,7 +210,7 @@ class InviteScreen extends Component{
                 }
                 defaultValue={this.state.item}
                 style={styles.textInputStyle}
-                placeholder={"아이디를 검색하세요."}/>  
+                placeholder={"이메일을 검색하세요."}/>  
       
             <TouchableOpacity
               style={styles.searchbutton}
