@@ -34,8 +34,8 @@ class WorkerStatementScreen extends Component{
           ],
           addtime: {}, bangCode: '',id:'',
           nname :[], type1:[], type2:[],
-          EmploymentInsurancePercentage:'',HealthInsurancePercentage:'',NationalPensionPercentage:'',RegularCarePercentage:''
-          
+          EmploymentInsurancePercentage:0,HealthInsurancePercentage:0,NationalPensionPercentage:0,RegularCarePercentage:0,
+          pay11:0
       }
       console.log(this.props);
       AsyncStorage.getItem("bangCode")

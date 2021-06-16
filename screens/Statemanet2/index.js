@@ -35,7 +35,8 @@ class StatementScreen2 extends Component{
           ],
           addtime: {},
           nname :[], type1:[], type2:[], bangCode:'' , id:'',
-          EmploymentInsurancePercentage:'',HealthInsurancePercentage:'',NationalPensionPercentage:'',RegularCarePercentage:''
+          EmploymentInsurancePercentage:'',HealthInsurancePercentage:'',NationalPensionPercentage:'',RegularCarePercentage:'',
+          pay11:0//시급
       }
     
       AsyncStorage.getItem("bangCode")
