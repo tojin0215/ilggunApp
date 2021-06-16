@@ -22,6 +22,7 @@ import * as Sharing from "expo-sharing";
 //알바) TaxDeduction:3.3세금공제
 
 
+
 class StatementScreen2 extends Component{
 // 급여대장
     constructor(props) {
