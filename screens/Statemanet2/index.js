@@ -94,19 +94,23 @@ class StatementScreen2 extends Component{
         let t2=[];
         let rowall = []
         
-        if(this.state.itemAA.split('년')[0]*1!=new Date().getFullYear() || this.state.itemBB.split('월')[0] != new Date().getMonth()+1){
+
+        const year = parseInt(this.state.itemAA.split('년')[0])
+        const month = parseInt(this.state.itemBB.split('월')[0])
+
+        if(year!=new Date().getFullYear() || month != new Date().getMonth()+1){
           console.log(":::::::::::::::::::::::")
-        // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
-          let nalsu = new Date(this.state.itemAA.split('년')[0], this.state.itemBB.split('월')[0], 0).getDate();
+          // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
+          let nalsu = new Date(year, month, 0).getDate();
           let namugi = nalsu%7;
-          let it = new Date(this.state.itemAA.split('년')[0], this.state.itemBB.split('월')[0], 0).getDay();
-          console.log(nalsu, namugi, it, this.state.itemAA.split('년')[0], this.state.itemBB.split('월')[0]);
+          let it = new Date(year, month, 0).getDay();
+          console.log(nalsu, namugi, it, year, month);
           for(let i=0 ; i<namugi ; i++){
             week[(it-i)%7]++;
           }
         for (let i = 0; i < res.data.length; i++) {
-          if(this.state.itemAA.split('년')[0]*1>new Date().getFullYear() || 
-          (this.state.itemAA.split('년')[0]*1==new Date().getFullYear() && this.state.itemBB.split('월')[0]*1>new Date().getMonth()+1)){
+          if(year>new Date().getFullYear() || 
+          (year==new Date().getFullYear() && month>new Date().getMonth()+1)){
             if(res.data[i].type==1){
               rowall.push([res.data[i].workername2, "알바", '0', '0' , '0', '0']);
               t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
@@ -123,7 +127,7 @@ class StatementScreen2 extends Component{
             })
           }
           else{
-          if(this.state.itemAA.split('년')[0]*1 < res.data[i].startdate.split('/')[0]*1 || ( (this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1) && (this.state.itemBB.split('월')[0]*1 < res.data[i].startdate.split('/')[1]*1))){
+          if(year < res.data[i].startdate.split('/')[0]*1 || ( (year == res.data[i].startdate.split('/')[0]*1) && (month < res.data[i].startdate.split('/')[1]*1))){
             if(res.data[i].type==1){
               rowall.push([res.data[i].workername2, "알바", '0', '0' , '0', '0']);
               t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
@@ -141,7 +145,7 @@ class StatementScreen2 extends Component{
           }else{
           if(res.data[i].type==1){
             let weekk=[0,0,0,0,0,0,0];
-            if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0] && this.state.itemBB.split('월')[0]== res.data[i].startdate.split('/')[1]){
+            if(year == res.data[i].startdate.split('/')[0] && month== res.data[i].startdate.split('/')[1]){
               let nn = Math.floor((res.data[i].startdate.split('/')[2]-1)/7);
               weekk=[nn,nn,nn,nn,nn,nn,nn];
               console.log(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1], res.data[i].startdate.split('/')[2]);
@@ -167,7 +171,7 @@ class StatementScreen2 extends Component{
               }
               else{
                 let pay = res.data[i].pay;//(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
-                if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                if(year == res.data[i].startdate.split('/')[0]*1 && month== res.data[i].startdate.split('/')[1]*1){
                   pay = Math.floor(res.data[i].pay *( (new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate() - res.data[i].startdate.split('/')[2]*1+1)/new Date(res.data[i].startdate.split('/')[0]*1, res.data[i].startdate.split('/')[1]*1, 0).getDate()));
                 }
                 rowall.push([res.data[i].workername2, "정규직", String(pay), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
@@ -191,8 +195,8 @@ class StatementScreen2 extends Component{
 
               for (let i = 0; i < res.data.length; i++) {
                 console.log('======================================================///////===========================')
-                console.log('><><><><'+this.state.itemAA.split('년')[0]*1 , res.data[i].startdate.split('/')[0]*1 , this.state.itemBB.split('월')[0]*1 , res.data[i].startdate.split('/')[1]*1)
-                if(this.state.itemAA.split('년')[0]*1 < res.data[i].startdate.split('/')[0]*1 || ( (this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1) && (this.state.itemBB.split('월')[0]*1 < res.data[i].startdate.split('/')[1]*1))){ 
+                console.log('><><><><'+year , res.data[i].startdate.split('/')[0]*1 , month , res.data[i].startdate.split('/')[1]*1)
+                if(year < res.data[i].startdate.split('/')[0]*1 || ( (year == res.data[i].startdate.split('/')[0]*1) && (month < res.data[i].startdate.split('/')[1]*1))){ 
                   if(res.data[i].type==1){
                     rowall.push([res.data[i].workername2, "알바", '0', '0' , '0', '0']);
                     t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
@@ -212,7 +216,7 @@ class StatementScreen2 extends Component{
                 if(res.data[i].type==1){
                   
                   let weekk=[0,0,0,0,0,0,0];
-                  if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                  if(year == res.data[i].startdate.split('/')[0]*1 && month== res.data[i].startdate.split('/')[1]*1){
                     let nn = Math.floor((res.data[i].startdate.split('/')[2]-1)/7);
                     weekk=[nn,nn,nn,nn,nn,nn,nn];
                     console.log(res.data[i].startdate.split('/')[0], res.data[i].startdate.split('/')[1], res.data[i].startdate.split('/')[2]);
@@ -240,7 +244,7 @@ class StatementScreen2 extends Component{
                 }
                 else{
                   let date = new Date().getDate();
-                    if(this.state.itemAA.split('년')[0]*1 == res.data[i].startdate.split('/')[0]*1 && this.state.itemBB.split('월')[0]*1== res.data[i].startdate.split('/')[1]*1){
+                    if(year == res.data[i].startdate.split('/')[0]*1 && month== res.data[i].startdate.split('/')[1]*1){
                       if(date <= res.data[i].startdate.split('/')[2]*1) date = 0;
                       else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
                     }
