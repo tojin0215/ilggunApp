@@ -36,7 +36,7 @@ class StatementScreen1 extends React.Component {
           bangcode: '',
           id:'',
           EmploymentInsurancePercentage:0,HealthInsurancePercentage:0,NationalPensionPercentage:0,RegularCarePercentage:0,
-          pay11:0 //시급
+          pay11:0, bangCode : null
           
       }
       AsyncStorage.getItem("bangCode")
@@ -116,7 +116,9 @@ class StatementScreen1 extends React.Component {
                       
                 // });
 
-                axios.post('http://13.124.141.28:3000/insurancePercentage',
+                axios.post('http://13.124.141.28:3000/insurancePercentage',{
+                  bang : bangCode
+                },
                 {  headers:{
                   'Content-Type': 'application/json',
                   'Accept': 'application/json'}
@@ -136,6 +138,7 @@ class StatementScreen1 extends React.Component {
                             NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                             HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
                             RegularCarePercentage:res.data[i].RegularCarePercentage,
+                            EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage,
                             pay11:res.data[i].HourlyWage
                           })
                         }
@@ -589,7 +592,7 @@ class StatementScreen1 extends React.Component {
                     console.log('--------------------------------'+parseInt(SocialInsurance) , parseInt(IncomeTax) , parseInt(InhabitantsTax))
                     // TotalDeduction:공제총액(사대보험+갑근세+주민세)
                   let TotalDeduction = parseInt(SocialInsurance) + parseInt(IncomeTax) + parseInt(InhabitantsTax)
-                  
+                  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!공제액', TotalDeduction)
       
                   // 실지급액(보수총액+추가급여-공제총액)
                   let ActualSalary = parseInt(MonthlySalary) + parseInt(AddSalary) - parseInt(TotalDeduction);

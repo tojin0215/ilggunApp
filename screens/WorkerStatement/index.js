@@ -35,7 +35,7 @@ class WorkerStatementScreen extends Component{
           addtime: {}, bangCode: '',id:'',
           nname :[], type1:[], type2:[],
           EmploymentInsurancePercentage:0,HealthInsurancePercentage:0,NationalPensionPercentage:0,RegularCarePercentage:0,
-          pay11:0
+          pay11:0,  bangCode : null
       }
       console.log(this.props);
       AsyncStorage.getItem("bangCode")
@@ -278,7 +278,9 @@ class WorkerStatementScreen extends Component{
               console.log(dic);
             this.setState({addtime : dic})
             
-            axios.post('http://13.124.141.28:3000/insurancePercentage',
+            axios.post('http://13.124.141.28:3000/insurancePercentage',{
+              bang : bangCode
+            },
             {  headers:{
               'Content-Type': 'application/json',
               'Accept': 'application/json'}

@@ -13,6 +13,7 @@ class ExpenseScreen1 extends Component{
   constructor(props) {
     super(props);
     this.state = {
+      bangCode : null,
       MonthlySalary:'0', // MonthlySalary:보수총액
       TaxDeduction:'0', // TaxDeduction:3.3세금공제
       NationalPension:'0', // NationalPension:국민연금 (보수총액*4.5%)
@@ -36,33 +37,34 @@ class ExpenseScreen1 extends Component{
         this.fetchData();
       })
   }
-
   fetchData = async() => { 
     try {
-        axios.post('http://13.124.141.28:3000/insurancePercentage',
+      console.log('bangCode',this.state.bangCode);
+        axios.post('http://13.124.141.28:3000/insurancePercentage', {
+          bang : this.state.bangCode
+        },
                 {  headers:{
                   'Content-Type': 'application/json',
                   'Accept': 'application/json'}
                 })
                   .then(res => {
+                    console.log('들어오니')
+                    
                     for(let i=(res.data.length-1) ; i>=(res.data.length-1) ; i--){
-
-                        console.log(i)
-                        console.log(res.data[i].HealthInsurancePercentage)
                         this.setState({
                           NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                           HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
                           RegularCarePercentage:res.data[i].RegularCarePercentage,
                           EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
-                        })  
+                        })
                       }
                       
                 });
     } catch (e) {
         console.error(e);
       }
-}
-
+  }
+  
   updateState(){
 
     console.log('국민연금(%) : ', this.state.NationalPensionPercentage)

@@ -16,7 +16,6 @@ import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 
 
-//data 순서 : 입사일/월급(보수총액)->DB/추가금액->DB/공제액->계산/실지금액->계산
 
 //정규) SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
 //알바) TaxDeduction:3.3세금공제
@@ -37,7 +36,7 @@ class StatementScreen2 extends Component{
           addtime: {},
           nname :[], type1:[], type2:[], bangCode:'' , id:'',
           EmploymentInsurancePercentage:'',HealthInsurancePercentage:'',NationalPensionPercentage:'',RegularCarePercentage:'',
-          pay11:0//시급
+          pay11:0, bangCode : null
       }
     
       AsyncStorage.getItem("bangCode")
@@ -82,7 +81,9 @@ class StatementScreen2 extends Component{
 
           });
 
-          axios.post('http://13.124.141.28:3000/insurancePercentage',
+          axios.post('http://13.124.141.28:3000/insurancePercentage',{
+            bang : this.state.bangCode
+          },
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
@@ -673,7 +674,7 @@ class StatementScreen2 extends Component{
         // 실지급액(지급총액-공제총액)
         let ActualSalary = parseInt(TotalPayment) - parseInt(TotalDeduction)
 
-
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!공제액', TotalDeduction)
         // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ알바계산ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
         //MonthlySalaryPartTime : 한달보수총액
         let MonthlySalaryPartTime = parseInt(WorkingHour) * parseInt(HourlyWage);
