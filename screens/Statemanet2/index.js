@@ -95,10 +95,13 @@ class StatementScreen2 extends Component{
         let rowall = []
         
 
-        const year = parseInt(this.state.itemAA.split('년')[0])
-        const month = parseInt(this.state.itemBB.split('월')[0])
+        const year = parseInt(this.state.itemAA.split('년')[0]);
+        const month = parseInt(this.state.itemBB.split('월')[0]);
 
-        if(year!=new Date().getFullYear() || month != new Date().getMonth()+1){
+        const now_year = new Date().getFullYear();
+        const now_month = new Date().getMonth() + 1; // 컴퓨터는 0부터 세는데, 달은 1월부터 있으니까 +1;
+
+        if(year!=now_year || month != now_month){
           console.log(":::::::::::::::::::::::")
           // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
           let nalsu = new Date(year, month, 0).getDate();
@@ -109,8 +112,8 @@ class StatementScreen2 extends Component{
             week[(it-i)%7]++;
           }
         for (let i = 0; i < res.data.length; i++) {
-          if(year>new Date().getFullYear() || 
-          (year==new Date().getFullYear() && month>new Date().getMonth()+1)){
+          if(year>now_year || 
+          (year==now_year && month>now_month)){
             if(res.data[i].type==1){
               rowall.push([res.data[i].workername2, "알바", '0', '0' , '0', '0']);
               t1.push({label: res.data[i].workername2, value: res.data[i].workername2})
@@ -185,8 +188,8 @@ class StatementScreen2 extends Component{
           let n = Math.floor(new Date().getDate()/7);
               let week=[n,n,n,n,n,n,n];
               console.log(week)
-              console.log(new Date().getFullYear(), new Date().getMonth(), 1);
-              let d = new Date(new Date().getFullYear(), new Date().getMonth(), 1).getDay();
+              console.log(now_year, new Date().getMonth(), 1);
+              let d = new Date(now_year, new Date().getMonth(), 1).getDay();
               console.log("오늘 날짜까지 끊자!"+d);
               for(let i=0; i<(new Date().getDate()%7) ; i++){
                 week[d]++;
@@ -248,7 +251,7 @@ class StatementScreen2 extends Component{
                       if(date <= res.data[i].startdate.split('/')[2]*1) date = 0;
                       else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
                     }
-                  rowall.push([res.data[i].workername2, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
+                  rowall.push([res.data[i].workername2, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(now_year, now_month, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
                   t2.push({label: res.data[i].workername2, value: res.data[i].workername2});
                 }
               }
