@@ -1,7 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { AsyncStorage } from 'react-native';
 import { View, Text, Button, StyleSheet, TouchableOpacity,ImageBackground } from 'react-native';
-// ======================바뀐부분A==================================================================
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
 import axios from 'axios';

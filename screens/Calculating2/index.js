@@ -167,10 +167,8 @@ class CalculatingScreen2 extends Component{
     const{JoinYear, JoinMonth, JoinDay, LeaveYear, LeaveMonth, LeaveDay, AnnualBonus, AnnualAllowance, SeverancePay, AverageDailyWage} = this.state
     
     return(
-//===================================================바뀐부분A========================================
       <View style={styles.image}>
-{/* //===================================================바뀐부분A======================================== */}
-      <View style={styles.container}>
+     <View style={styles.container}>
      
         <ScrollView>
           <View style={styles.titleArea}>
@@ -262,8 +260,7 @@ class CalculatingScreen2 extends Component{
             <Text style={styles.textStyle1}>재직일수 : {this.state.NumberOfWorkingDays}일</Text>
           </View>
 
-{/* //===================================================바뀐부분B======================================== */}
-          <View style={styles.tableArea}>
+         <View style={styles.tableArea}>
           <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
             <Row data={state.tableHead} flexArr={[0.8, 1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
             <TableWrapper style={styles.wrapper}>
@@ -272,8 +269,6 @@ class CalculatingScreen2 extends Component{
             </TableWrapper>
           </Table>
           </View>
-
-{/* //===================================================바뀐부분B======================================== */}
 
           <View style={styles.textArea}>
             <Text style={styles.textStyle1}>*연간상여금과 연차수당 없으면 0으로 입력해주세요. </Text>
@@ -345,8 +340,6 @@ class CalculatingScreen2 extends Component{
 }
   
   export default CalculatingScreen2;
-
-//===========================================바뀐부분 스타일 전체===========================================
   const styles = StyleSheet.create({
     container: {
       padding:wp('5%'), 

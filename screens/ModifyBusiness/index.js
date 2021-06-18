@@ -10,14 +10,12 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-//========================================바뀐부분A========================================
 import * as Font from 'expo-font';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import axios from 'axios';
 import { WebView } from 'react-native-webview'
 
 const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
-  //=============================================바뀐부분B========================================
   const [workplace, setWorkplace] = useState('');
   const [businessRegistrationNumber, setBusinessRegistrationNumber] = useState('');
   const [businessOwner, setBusinessOwner] = useState('');
@@ -28,7 +26,6 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
   const [introduction, setIntroduction] = useState('');
   const [radioValue, setRadioValue] = useState('');
   const [radioIndex, setRadioIndex] = useState(-1);
-  //=============================================바뀐부분B========================================
   const [id, setId] = useState('');
   const [selectedFile, setSelectedFile] =useState(null);
   const [result, setResult] = useState(null);
@@ -138,7 +135,6 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
       setSelectedFile(result.uri);
     }
   };
-  //=============================================바뀐부분C========================================
   var radio_props = [
     {label: '5인 이하', value: 0 },
     {label: '5인 이상', value: 1 }
@@ -148,7 +144,6 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
     {label: '기존 서명 사용', value: 0 },
     {label: '도장', value: 1 }
   ];
-  //=============================================바뀐부분C========================================
 
     const delB = async(bc) => {
         Alert.alert(

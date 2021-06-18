@@ -8,6 +8,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 
+
 class ExpenseScreen1 extends Component{
 
   constructor(props) {
@@ -48,9 +49,11 @@ class ExpenseScreen1 extends Component{
                   'Accept': 'application/json'}
                 })
                   .then(res => {
-                    console.log('들어오니')
                     
-                    for(let i=(res.data.length-1) ; i>=(res.data.length-1) ; i--){
+                    let year = new Date().getFullYear();
+                    for(let i=0 ; i<res.data.length ; i++){
+                      console.log('날짜',res.data[i].date, '__year',year)
+                      if(res.data[i].date == year){
                         this.setState({
                           NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                           HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
@@ -58,6 +61,7 @@ class ExpenseScreen1 extends Component{
                           EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
                         })
                       }
+                    }
                       
                 });
     } catch (e) {
@@ -124,8 +128,7 @@ class ExpenseScreen1 extends Component{
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
   <View style={styles.image}>     
-     {/* //============================바뀐부분A================================================================ */}
-      <View style={styles.container}>
+     <View style={styles.container}>
         <View style={styles.titleArea}>
         <Text style={styles.textTitle}>인건비 계산하기(정규직)</Text>
         </View>
@@ -155,16 +158,14 @@ class ExpenseScreen1 extends Component{
            <Text style={styles.buttonResetTitle}>초기화</Text>       
         </TouchableOpacity>
         </View>
-{/* //============================바뀐부분B================================================================ */}
-        <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
+       <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
           <Row data={state.tableHead} flexArr={[1, 1, 1, 1]} style={styles.head} textStyle={styles.tableTextStyle}/>
           <TableWrapper style={styles.wrapper}>
             <Col data={state.tableTitle} style={styles.title} heightArr={[hp('6%'),hp('6%'),hp('6%'),hp('6%') ]} textStyle={styles.tableTextStyle}/>
             <Rows data={state.tableData} flexArr={[1, 1, 1]} style={styles.row} textStyle={styles.tableTextStyle}/>
           </TableWrapper>
         </Table>
-{/* //============================바뀐부분B================================================================         */}
-      </View>
+     </View>
       </View>
       </TouchableWithoutFeedback>
     )
@@ -173,7 +174,6 @@ class ExpenseScreen1 extends Component{
 
 export default ExpenseScreen1;
 
-//============================바뀐부분 스타일전체================================================================   
 const styles = StyleSheet.create({
   container: { 
     padding:wp('4.5%'), 

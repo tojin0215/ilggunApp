@@ -181,7 +181,6 @@ class VacationRequestScreen extends Component{
     
     return (
       <View style={styles.container}>
-{/* =====================================================바뀐부분A====================================== */}
 <ScrollView>
         <View style={styles.textForm}>
           <View style={styles.textArea}>
@@ -208,7 +207,6 @@ class VacationRequestScreen extends Component{
         <View style={styles.textArea}>
           <Text style={styles.textStyle}>날짜를 선택해주세요.</Text>
         </View>
-{/* =====================================================바뀐부분A====================================== */}
           <View style={styles.pickerArea}>
           <DropDownPicker
                 items={[
@@ -380,13 +378,11 @@ class VacationRequestScreen extends Component{
                   this.setState({clicked : true}, () => this.fetchData())
                 }                
               }}>
-{/* =====================================================바뀐부분J====================================== */}
                 <Text style={styles.buttonTitle}>완료</Text>
 
             </TouchableOpacity>
           </View>
           </ScrollView>
-{/* =====================================================바뀐부분J====================================== */}
       </View>
         
     )

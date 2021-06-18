@@ -8,7 +8,6 @@ import CalendarPicker from 'react-native-calendar-picker';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
-// ----------------------바뀐부분A-------------------------------------
 const styles = StyleSheet.create({
   container: {
     paddingRight:wp('10%'),

@@ -122,10 +122,8 @@ class ExpenseScreen2 extends Component {
             HourlyWage, WithholdingTax, Salary, RealSalary} = this.state
 
         return (
-//============================================바뀐부분A==============================================
         <View style={styles.image}>
-    {/* //============================================바뀐부분A============================================== */}
-            <View style={styles.container}>
+           <View style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
                     <Text style={styles.textTitle}>인건비 계산하기(단기/일용직)</Text>
@@ -133,31 +131,24 @@ class ExpenseScreen2 extends Component {
                 <View style={styles.textArea}>
                     <View style={styles.rowView}>
                         <Text style={styles.textStyle}>*시급을 입력해주세요.</Text>
-{/* //============================================바뀐부분B============================================== */}
-                        <Text style={styles.textStyle2}>(2021년 법정 최저 시급 : 8,720원)</Text>
-{/* //============================================바뀐부분B============================================== */}
                     </View>
                     <View style={styles.rowView}>
                         <TextInput
                             value={this.state.HourlyWage}
                             onChangeText={(HourlyWage) => this.setState({HourlyWage})}
                             autoFocus={true}
-//============================================바뀐부분C=============================================
                             placeholder={'8720'}
                             keyboardType={"number-pad"}
-//============================================바뀐부분C=============================================
                             style={styles.textinputStyle}
                             />
                         <Text style={styles.textStyle}>원</Text>
                     </View>
                 </View>
 
-{/* //============================================바뀐부분D============================================== */}
                 <View style={{marginTop:hp('2%')}}>
                     <Text style={styles.textStyle}>시간 선택하기</Text>
                 </View>
-{/* //============================================바뀐부분D============================================== */}
-                <View style={styles.timeSelectArea}>
+               <View style={styles.timeSelectArea}>
                 <ScrollView>
             
                 <FlatList  
@@ -212,9 +203,6 @@ class ExpenseScreen2 extends Component {
                                     this.handleChange('offWork', item.key, hours, minutes)
                                 } 
                             />
-{/* //============================================바뀐부분F====================================== */}
-{/* 여기 있던 <Text>ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</Text> 없어짐 */}
-{/* //============================================바뀐부분F====================================== */}
                         </View>
                         }  
                     ItemSeparatorComponent={this.renderSeparator}  

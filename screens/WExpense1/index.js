@@ -51,7 +51,9 @@ class WExpenseScreen1 extends Component{
                   'Accept': 'application/json'}
                 })
                   .then(res => {
-                    for(let i=(res.data.length-1) ; i>=(res.data.length-1) ; i--){
+                    let year = new Date().getFullYear();
+                    for(let i=0 ; i<res.data.length ; i++){
+                      if(res.data[i].date == year){
                         this.setState({
                           NationalPensionPercentage:res.data[i].NationalPensionPercentage,
                           HealthInsurancePercentage:res.data[i].HealthInsurancePercentage,
@@ -59,6 +61,7 @@ class WExpenseScreen1 extends Component{
                           EmploymentInsurancePercentage:res.data[i].EmploymentInsurancePercentage
                         })
                       }
+                    }
                       
                 });
     } catch (e) {

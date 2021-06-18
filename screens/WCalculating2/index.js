@@ -181,10 +181,8 @@ class WCalculatingScreen2 extends Component{
     const{JoinYear, JoinMonth, JoinDay, LeaveYear, LeaveMonth, LeaveDay, AnnualBonus, AnnualAllowance, SeverancePay, AverageDailyWage} = this.state
     
     return(
-  //=================================================바뀐부분A========================================
   <View style={styles.image}>
 
-  {/* //=================================================바뀐부분A==================================== */}
       <View style={styles.container}>
      
         <ScrollView>
@@ -277,7 +275,6 @@ class WCalculatingScreen2 extends Component{
             <Text style={styles.textStyle1}>재직일수 : {this.state.NumberOfWorkingDays}일</Text>
           </View>
 
-  {/* //=================================================바뀐부분B==================================== */}
           <View style={styles.tableArea}>
             <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
               <Row data={state.tableHead} flexArr={[0.8, 1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
@@ -287,7 +284,6 @@ class WCalculatingScreen2 extends Component{
               </TableWrapper>
             </Table>
           </View>
-  {/* //=================================================바뀐부분B==================================== */}
 
           <View style={styles.textArea}>
             <Text style={styles.textStyle1}>*연간상여금과 연차수당 없으면 0으로 입력해주세요. </Text>
@@ -359,7 +355,6 @@ class WCalculatingScreen2 extends Component{
   
   export default WCalculatingScreen2;
   
-  //=====================================바뀐부분 스타일========================================
   const styles = StyleSheet.create({
     container: {
       padding:wp('5%'), 

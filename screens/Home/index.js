@@ -97,7 +97,6 @@ const HomeScreen = ({ navigation, props }) => {
   },[])
 
   
-//-----------------------------------바뀐부분B-----------------------
 const [clicked, setClicked] = useState(-1);
 const [clicked2, setClicked2] = useState(-1);
 const [clicked3, setClicked3] = useState(-1);
@@ -154,7 +153,6 @@ const [clicked4, setClicked4] = useState(-1);
   //   setstatementSelected(statementI.statementImgChecked)
   // }
 
-//-----------------------------------바뀐부분B-----------------------
 
 
   return (
@@ -175,12 +173,10 @@ const [clicked4, setClicked4] = useState(-1);
           setTimeout(() => {setClicked(-1)},500);
         }}>
 
-{/*  --------------------------------바뀐부분C----------------------- */}
         <Image style={styles.buttonImg} source={clicked==0? require('../../img/workManagement_clicked.png'): require('../../img/workManagement.png')}/>
-{/*  --------------------------------바뀐부분C----------------------- */}
+
       </TouchableOpacity>
       
-{/*  --------------------------------바뀐부분D----------------------- */}
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {

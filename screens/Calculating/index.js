@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Button,TouchableOpacity, ImageBackground,Image } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-//==========================스타일도 바꿔주세용==============================================
 const styles = StyleSheet.create({
   container: {
     width:'100%', height:'100%',
@@ -45,12 +44,10 @@ const styles = StyleSheet.create({
   }
 });
 
-//==========================스타일도 바꿔주세용==============================================
 
 
 const CalculatingScreen = ({navigation}) => {
   return (
-//================================바뀐부분A============================================
   <View style={styles.image}>
   <View style={styles.container}>
     <View style={styles.buttonArea}>

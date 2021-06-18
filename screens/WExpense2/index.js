@@ -122,9 +122,7 @@ class WExpenseScreen2 extends Component {
             HourlyWage, WithholdingTax, Salary, RealSalary} = this.state
 
         return (
-//======================================바뀐부분A=========================================
     <View style={styles.image}>
-    {/* //======================================바뀐부분A========================================= */}
             <View style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
@@ -133,31 +131,24 @@ class WExpenseScreen2 extends Component {
                 <View style={styles.textArea}>
                     <View style={styles.rowView}>
                         <Text style={styles.textStyle}>*시급을 입력해주세요.</Text>
-{/* //======================================바뀐부분B========================================= */}
-                        <Text style={styles.textStyle2}>(2021년 법정 최저 시급 : 8,720원)</Text>
-{/* //======================================바뀐부분B========================================= */}
                     </View>
                     <View style={styles.rowView}>
                         <TextInput
                             value={this.state.HourlyWage}
                             onChangeText={(HourlyWage) => this.setState({HourlyWage})}
                             autoFocus={true}
-//======================================바뀐부분C========================================= 
                             placeholder={'8720'}
                             keyboardType={"number-pad"}
-//======================================바뀐부분C========================================= 
                             style={styles.textinputStyle}
                             />
                         <Text style={styles.textStyle}>원</Text>
                     </View>
                 </View>
 
-{/* //======================================바뀐부분D========================================= */}
                 <View style={{marginTop:hp('2%')}}>
                     <Text style={styles.textStyle}>시간 선택하기</Text>
                 </View>
 
-{/* //======================================바뀐부분D========================================= */}
                 <View style={styles.timeSelectArea}>
                 <ScrollView>
             
@@ -179,13 +170,11 @@ class WExpenseScreen2 extends Component {
                                     value: 1, // selected value for item, if selected, what value should be sent?
                                     },
                                 ]}
-//=====================================================바뀐부분E=======================================
                                 labelStyle={{
                                     color: '#040525',
                                     marginTop:hp('1%'),
                                     marginLeft:hp('1.5%'),
                                 }}
-//=====================================================바뀐부분E=======================================
                                 rowStyle={{
                                     flexDirection: 'row'
                                 }}
@@ -213,9 +202,6 @@ class WExpenseScreen2 extends Component {
                                     this.handleChange('offWork', item.key, hours, minutes)
                                 }
                             />
-{/* //============================================바뀐부분F====================================== */}
-{/* 여기 있던 <Text>ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</Text> 없어짐 */}
-{/* //============================================바뀐부분F====================================== */}
                         </View>
                         }  
                     ItemSeparatorComponent={this.renderSeparator}  
@@ -266,7 +252,6 @@ class WExpenseScreen2 extends Component {
 
 export default WExpenseScreen2;
 
-//========================================바뀐부분 스타일===================================
 
 const styles = StyleSheet.create({
     container: { 

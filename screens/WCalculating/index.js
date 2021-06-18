@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Button,TouchableOpacity, ImageBackground, Image } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-//====================================바뀐부분A======================================
 const styles = StyleSheet.create({
   container: {    
     width: "100%", height: "100%",
@@ -45,35 +44,26 @@ const styles = StyleSheet.create({
   }
 });
 
-//====================================바뀐부분A====================================== 
  
 const WCalculatingScreen = ({navigation}) => {
   return (
-//====================================바뀐부분B======================================
   <View style={styles.image}>
   <View style={styles.container}>
-  {/* //====================================바뀐부분B====================================== */}
             <View style={styles.buttonArea}>
               <TouchableOpacity 
                 style={styles.button}
                 onPress={() => navigation.navigate('WCalculating1')}>
-{/* //====================================바뀐부분C====================================== */}
-                <Image style={styles.buttonImg} source={require('../../img/calculating1_purple.png')}/>  
-{/* //====================================바뀐부분C====================================== */}          
+                <Image style={styles.buttonImg} source={require('../../img/calculating1_purple.png')}/>       
               </TouchableOpacity>
               <TouchableOpacity 
                 style={styles.button}
                 onPress={() => navigation.navigate('WCalculating2')}>
-{/* //====================================바뀐부분D====================================== */}
                 <Image style={styles.buttonImg} source={require('../../img/calculating2_purple.png')}/>
-{/* //====================================바뀐부분D====================================== */}
               </TouchableOpacity>
               <TouchableOpacity 
                 style={styles.button}
                 onPress={() => navigation.navigate('WCalculating3')}>
-{/* //====================================바뀐부분E====================================== */}
                 <Image style={styles.buttonImg} source={require('../../img/calculating3_purple.png')}/>
-{/* //====================================바뀐부분E====================================== */}
               </TouchableOpacity>
               </View>
             </View>

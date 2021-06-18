@@ -191,9 +191,7 @@ const WorkerManageScreen = ({navigation, route}) => {
         <TouchableOpacity 
           style={styles.button}
           onPress={() => navigation.navigate(('Invite'),{type:2})}>
-{/* ==============================바뀐부분D============================================================   */}
             <Image style={styles.imgStyle} source={require('../../img/invite.png')}></Image>
-{/* ==============================바뀐부분D============================================================   */}
         </TouchableOpacity>
       </View>
 
