@@ -34,6 +34,11 @@ const styles = StyleSheet.create({
       fontSize:wp('4.8%'),
       fontFamily:"NanumSquareB",
   },
+  textTitle2:{
+    color: '#040525',
+    fontSize:wp('3.5%'),
+    fontFamily:"NanumSquare",
+  },
   ContbuttonArea: {
     position:"absolute",
     top:hp('0.5%'),right:wp('22%'),
@@ -52,6 +57,12 @@ const styles = StyleSheet.create({
   },
   deleteTitle:{
     color: '#040525',
+    fontSize:wp('4.8%'),
+    fontFamily:"NanumSquare",
+    justifyContent: 'center', alignItems:"center",
+  },
+  deleteTitle2:{
+    color: 'red',
     fontSize:wp('4.8%'),
     fontFamily:"NanumSquare",
     justifyContent: 'center', alignItems:"center",
@@ -92,6 +103,8 @@ const styles = StyleSheet.create({
 
 });
 
+
+
 const WorkerManageScreen2 = ({navigation}) => {
     const [business, setBusiness] = useState([]);
     const [idid, setIdid] = useState('');
@@ -114,7 +127,7 @@ const WorkerManageScreen2 = ({navigation}) => {
     try {
       Alert.alert(
         "근로자 삭제하기",
-        "근로자에 대한 모든 정보가 삭제됩니다. 진행하시겠습니까?",
+        "근로자가 삭제됩니다. 진행하시겠습니까?",
         [
           {
             text: "아니오",
@@ -187,8 +200,7 @@ const WorkerManageScreen2 = ({navigation}) => {
           business.map((b, id) => (
             <View style={styles.worker} key={id}>
               <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
-              <Text style={styles.textTitle}>{b.workername2}({b.workername})</Text>
-              
+              <Text style={styles.textTitle}>{b.workername2}</Text><Text style={styles.textTitle2}>({b.workername.substr(0,4)}{b.workername.length>4?'**':''})</Text>
                 <View style={styles.ContbuttonArea}>
                 <TouchableOpacity
                   style={styles.Contbutton}
@@ -204,12 +216,15 @@ const WorkerManageScreen2 = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.deleteArea}>
+                {b.workState == 0?
                 <TouchableOpacity
                   style={styles.Contbutton}
                   onPress={() => deleteWorker(b.workername)} //근로자삭제
                   >
-                  <Text style={styles.deleteTitle}>삭제</Text>
+                      <Text style={styles.deleteTitle}>삭제</Text>
                 </TouchableOpacity>
+                : <Text style={styles.deleteTitle2}>퇴사</Text>
+                }
               </View>
             </View>
           ))

@@ -2,7 +2,6 @@ import React, { useEffect, useState} from 'react';
 import { View, Button, Text, StyleSheet, TouchableOpacity, ImageBackground, Image} from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-//import { WebView } from 'react-native-webview';
 import * as WebBrowser from 'expo-web-browser';
 
 const styles = StyleSheet.create({

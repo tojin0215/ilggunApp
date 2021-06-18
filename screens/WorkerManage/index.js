@@ -89,6 +89,12 @@ const styles = StyleSheet.create({
     fontFamily:"NanumSquare",
     justifyContent: 'center', alignItems:"center",
   },
+  deleteTitle2:{
+    color: 'red',
+    fontSize:wp('4.8%'),
+    fontFamily:"NanumSquare",
+    justifyContent: 'center', alignItems:"center",
+  },
   deleteTitlex:{
     color: '#040525',
     fontSize:wp('4.8%'),
@@ -217,12 +223,16 @@ const WorkerManageScreen = ({navigation, route}) => {
               </TouchableOpacity>
             </View>
             <View style={styles.deleteArea}>
-              <TouchableOpacity
+              {b.workState == 0?
+                <TouchableOpacity
                 style={styles.Contbutton}
                  onPress={() => deleteWorker(b.workername)} //근로자삭제
                 >
                 <Text style={styles.deleteTitle}>삭제</Text>
               </TouchableOpacity>
+                : <Text style={styles.deleteTitle2}>퇴사</Text>
+                }
+              
             </View>
               
           </View>

@@ -171,7 +171,8 @@ class InviteScreen extends Component{
                 workername : name,
                 workername2 : res.data[0].name,
                 type : this.props.route.params.type,
-                state: 0
+                state: 0,
+                workState:0,
               },
               {  headers:{
                 'Content-Type': 'application/json',
