@@ -299,11 +299,7 @@ class StatementScreen2 extends Component{
                       if(date <= res.data[i].startdate.split('/')[2]*1) date = 0;
                       else{ date = date - res.data[i].startdate.split('/')[2]*1 } 
                     }
-<<<<<<< HEAD
                   rowall.push([res.data[i].workername2, "정규직", String(Math.floor(this.state.pay11*(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*this.state.pay11/*시급*/)]);
-=======
-                  rowall.push([res.data[i].workername2, "정규직", String(Math.floor(res.data[i].pay*(date/new Date(now_year, now_month, 0).getDate()))), '0', String((this.state.addtime[res.data[i].workername]?this.state.addtime[res.data[i].workername]:0)*8720/*시급*/)]);
->>>>>>> 174b255b7e5156f039488726cea02a157f553c2a
                   t2.push({label: res.data[i].workername2, value: res.data[i].workername2});
                 }
               }
