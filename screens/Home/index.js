@@ -2,7 +2,8 @@ import React, { useEffect, useState} from 'react';
 import { View, Button, Text, StyleSheet, TouchableOpacity, ImageBackground, Image} from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
+//import { WebView } from 'react-native-webview';
+import * as WebBrowser from 'expo-web-browser';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
   buttonArea3: {
     flexDirection:"column",
     alignItems: 'flex-end',
-    justifyContent: 'flex-end', marginTop:hp('25%'),marginLeft:hp('30%')
+    justifyContent: 'flex-end', marginTop:hp('13%'),marginLeft:hp('30%')
   },
   button: {
     width: wp('40%'),
@@ -69,6 +70,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily:"NanumSquare",
     fontSize: wp('4.8%'),
+  }, 
+  button2: {
+    marginTop:hp('2%'),
+    width: wp('40%'),
+    height: wp('11%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addbuttonImg:{
+    width: wp('80%'),
+    height: hp('7.2%')
   },
 });
 
@@ -96,64 +108,24 @@ const HomeScreen = ({ navigation, props }) => {
     
   },[])
 
-  
+
+const [show1,setShow1] = useState(null);
+const [show2,setShow2] = useState(null);
 const [clicked, setClicked] = useState(-1);
 const [clicked2, setClicked2] = useState(-1);
 const [clicked3, setClicked3] = useState(-1);
 const [clicked4, setClicked4] = useState(-1);
-  // //근무관리
-  // const workManageImg = require('../../img/workManagement.png')
-  // const workManageImgChecked = require('../../img/workManagement_clicked.png')
-  // const workManageI = {workManageImg, workManageImgChecked}
-  // const [workManageImgSelected, setworkManageSelected] = useState(workManageI.workManageImg)
-  
-  // const workManagechangeImg =()=>{
-  //   setworkManageSelected(workManageI.workManageImgChecked)
-  //   setworkerManageSelected(workerManageI.workerManageImg)
-  //   setcalculatingSelected(calculatingI.calculatingImg)
-  //   setstatementSelected(statementI.statementImg)
-  // }
 
-  // //근로자관리
-  // const workerManageImg = require('../../img/workerManagement.png')
-  // const workerManageImgChecked = require('../../img/workerManagement_clicked.png')
-  // const workerManageI = {workerManageImg, workerManageImgChecked}
-  // const [workerManageImgSelected, setworkerManageSelected] = useState(workerManageI.workerManageImg)
-  
-  // const workerManagechangeImg =()=>{
-  //   setworkManageSelected(workManageI.workManageImg)
-  //   setworkerManageSelected(workerManageI.workerManageImgChecked)
-  //   setcalculatingSelected(calculatingI.calculatingImg)
-  //   setstatementSelected(statementI.statementImg)
-  // }
-  
-  // //계산하기
-  // const calculatingImg = require('../../img/calculating.png')
-  // const calculatingImgChecked = require('../../img/calculating_clicked.png')
-  // const calculatingI = {calculatingImg, calculatingImgChecked}
-  // const [calculatingImgSelected, setcalculatingSelected] = useState(calculatingI.calculatingImg)
-  
-  // const calculatingchangeImg =()=>{
-  //   setworkManageSelected(workManageI.workManageImg)
-  //   setworkerManageSelected(workerManageI.workerManageImg)
-  //   setcalculatingSelected(calculatingI.calculatingImgChecked)
-  //   setstatementSelected(statementI.statementImg)
-  // }
-
-  // //명세서조회
-  // const statementImg = require('../../img/statement.png')
-  // const statementImgChecked = require('../../img/statement_clicked.png')
-  // const statementI = {statementImg, statementImgChecked}
-  // const [statementgImgSelected, setstatementSelected] = useState(statementI.statementImg)
-  
-  // const statementchangeImg =()=>{
-  //   setworkManageSelected(workManageI.workManageImg)
-  //   setworkerManageSelected(workerManageI.workerManageImg)
-  //   setcalculatingSelected(calculatingI.calculatingImg)
-  //   setstatementSelected(statementI.statementImgChecked)
-  // }
+const _handlePressButtonAsync1 = async () => {
+  let show1 = await WebBrowser.openBrowserAsync('http://13.124.141.28:9090/');
+  setShow1(show1);
+};
 
 
+const _handlePressButtonAsync2 = async () => {
+  let show2 = await WebBrowser.openBrowserAsync('https://www.naver.com');
+  setShow2(show2);
+};
 
   return (
     <View style={styles.image}>
@@ -205,6 +177,18 @@ const [clicked4, setClicked4] = useState(-1);
         <Image style={styles.buttonImg} source={clicked4==0? require('../../img/statement_clicked.png'): require('../../img/statement.png')}/>
       </TouchableOpacity>
       </View>
+
+      <TouchableOpacity 
+       style={styles.button2}
+       onPress={_handlePressButtonAsync1}>
+       <Image style={styles.addbuttonImg} source={require('../../img/addBtn1.png')}/>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+       style={styles.button2}
+       onPress={_handlePressButtonAsync2}>
+       <Image style={styles.addbuttonImg} source={require('../../img/addBtn2.png')}/>
+      </TouchableOpacity>     
 
       <View style={styles.buttonArea3}>
         <TouchableOpacity

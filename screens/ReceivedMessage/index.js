@@ -235,7 +235,12 @@ function setModalVisibility(visible, msg ,t, index, r) {
                 console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
 
 
-
+                let oris=''
+                if (t == 1) {
+                  oris = -ori[new Date(d).getDay()]
+                }else{
+                  oris = 0
+                }
                 axios.post('http://13.124.141.28:3000/addWork', {
                   business : busi,
                   workername : work,
@@ -244,7 +249,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   day : dayOfWeek,
                   year : dd[0]*1,
                   time : 0,
-                  subt : -ori[new Date(d).getDay()]
+                  subt : oris
                   },
                   {  headers:{
                     'Content-Type': 'application/json',
