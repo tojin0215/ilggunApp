@@ -300,9 +300,7 @@ class UnemploymentScreen2 extends Component{
         const{DateOfBirth,Period, Age, OneDayUnemploymentBenefitAmount,UnemploymentBenefitAmount, PaymentDays} = this.state
         return (
             
-//====================================바뀐부분A=====================================
     <View style={styles.image}>
-    {/* //====================================바뀐부분A===================================== */}
             <View  style={styles.container}>
             <ScrollView>
                 <View style={styles.titleArea}>
@@ -414,7 +412,6 @@ class UnemploymentScreen2 extends Component{
                     <Text style={styles.textStyle}>고용보험 총 가입기간 : {Period}개월</Text>
                 </View>
 
- {/* //====================================바뀐부분B===================================== */}
                 <View  style={styles.tableArea}>
                     <Text style={styles.textLineStyle}>* 계산기간 : 퇴직일 이전 4개월 중 최종 1개월을 제외한 3개월</Text>
                     <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
@@ -425,7 +422,6 @@ class UnemploymentScreen2 extends Component{
                         </TableWrapper>
                     </Table>
                 </View>
- {/* //====================================바뀐부분B===================================== */}
  
                 <View style={styles.buttonArea}>
                     <TouchableOpacity
@@ -471,7 +467,6 @@ class UnemploymentScreen2 extends Component{
 
 export default UnemploymentScreen2;
 
-//====================================바뀐부분 여기 아래=====================================
 const styles = StyleSheet.create({
     container: { 
         padding:wp('3%'), 

@@ -346,10 +346,8 @@ class UnemploymentScreen1 extends Component{
     
         return (
 
-//====================================================바뀐부분A======================================
         <View style={styles.image}>
-    {/* //====================================================바뀐부분A====================================== */}
-            <View  style={styles.container}>
+           <View  style={styles.container}>
             <ScrollView>
                 
                 <View style={styles.titleArea}>
@@ -482,8 +480,6 @@ class UnemploymentScreen1 extends Component{
                     <Text style={styles.textStyle}>퇴사당시 만 나이 : 만 {Age}세</Text>
                     <Text style={styles.textStyle}>가입기간일수 :  {Period} 일</Text>
                 </View>
-
-{/* //====================================================바뀐부분B====================================== */}
                 <View  style={styles.tableArea}>
                     <Table borderStyle={{borderWidth: 1, borderColor:'white'}}>
                         <Row data={state.tableHead} flexArr={[1, 1, 1]} style={styles.head} textStyle={styles.tableText}/>
@@ -493,8 +489,6 @@ class UnemploymentScreen1 extends Component{
                         </TableWrapper>
                     </Table>
                 </View>
-{/* //====================================================바뀐부분B====================================== */}
-
                 <View style={styles.buttonArea}>
                     <TouchableOpacity
                         style={styles.button}
@@ -539,7 +533,6 @@ class UnemploymentScreen1 extends Component{
 
 export default UnemploymentScreen1;
 
-//===================================바뀐부분 스타일 전체======================================
 const styles = StyleSheet.create({
     container: { 
         padding:wp('3%'), 
