@@ -398,8 +398,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
 
         
     //출근퇴근
-    const commuteImg = require('../../img/workManagement_purple.png')
-    const commuteImgChecked = require('../../img/workManagement_purple_clicked.png')
+    const commuteImg = require('../../img/workManagement_purple_clicked.png')
+    const commuteImgChecked = require('../../img/workManagement_purple.png')
     const commuteI = {commuteImg, commuteImgChecked}
     const [commuteImgSelected, setCommuteImgSelected] = useState(commuteI.commuteImg)
 
