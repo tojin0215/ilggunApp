@@ -29,15 +29,17 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
                 Alert.alert('sign을 채워주세요.');
             }
             else{
+                console.log('11여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기')
                 await axios.post('http://13.124.141.28:3000/changeApple', { 
                     a_id: a_id,
                     sign: savePath,
-                    id : email
+                    email : email
                 },{
                 headers:{
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'}
                 }).then((res)=>{
+                    console.log('22여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기')
                     Alert.alert("이메일과 서명 등록이 완료되었습니다. 다시 로그인해주세요.")
                     navigation.navigate('Sign In')   
                 })
@@ -78,6 +80,7 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
                     <View style={{flexDirection:'row'}}>
                     <Text style={styles.titleStyle}>EMAIL</Text>
                 </View>
+                <Text>{a_id}</Text>
                     <TextInput 
                         onChangeText={email =>setEmail(email)}
                         defaultValue={email}

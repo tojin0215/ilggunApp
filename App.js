@@ -13,6 +13,7 @@ import * as Font from 'expo-font';
 import SignInScreen from './screens/SignIn';
 import SignUpScreen from './screens/SignUp';
 import SignUpGoogleScreen from './screens/SignUpGoogle';
+import SignUpAppleScreen from './screens/SignUpApple';
 import SelectScreen from './screens/Select'
 import PasswordForgetScreen from './screens/PasswordForget';
 import PasswordChangeScreen from './screens/PasswordChange';
