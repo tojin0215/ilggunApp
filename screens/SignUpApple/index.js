@@ -12,7 +12,7 @@ import axios from 'axios';
 
 const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
   const [email, setEmail] = useState(route.params.email);
-  const [a_id, setA_id] = useState(route.params.a_id);
+  //const [a_id, setA_id] = useState(route.params.a_id);
   const [name, setName] = useState(route.params.name);
   const [password, setPassword] = useState(route.params.password);
   const [path, setPath] = useState('');
@@ -31,7 +31,7 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
             else{
                 console.log('11여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기')
                 await axios.post('http://13.124.141.28:3000/changeApple', { 
-                    a_id: a_id,
+                    id: id,
                     sign: savePath,
                     email : email
                 },{
@@ -80,7 +80,6 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
                     <View style={{flexDirection:'row'}}>
                     <Text style={styles.titleStyle}>EMAIL</Text>
                 </View>
-                <Text>{a_id}</Text>
                     <TextInput 
                         onChangeText={email =>setEmail(email)}
                         defaultValue={email}

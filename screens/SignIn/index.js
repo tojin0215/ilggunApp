@@ -240,7 +240,6 @@ const SignInScreen = ({ onSignIn, navigation }) => {
                       console.log('aaaa-------------------------------------------------');
                       axios.post('http://13.124.141.28:3000/signupByCode', { 
                           id:credential.email,
-                          a_id: credential.email,
                           email:'',
                           name: credential.fullName.givenName,
                           password: credential.user,
@@ -258,17 +257,17 @@ const SignInScreen = ({ onSignIn, navigation }) => {
                           console.log('-------------------------------------------------');
                           console.log('AppleLoginGo!!')
                           Alert.alert('회원가입이 완료되었습니다. 이메일과 서명을 등록해주세요.')   
-                          navigation.navigate('Sign Up Apple',{a_id:credential.email}); 
+                          navigation.navigate('Sign Up Apple',{id:credential.email}); 
                           
                         }
                       });      
 
                       
                     }else{
-                      storeToken({a_id:responseData.data[0].a_id, name:responseData.data[0].name});
+                      storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
                       getToken();
                   
-                      if(responseData.data[0].a_id){
+                      if(responseData.data[0].id){
                         onSignIn();
                         navigation.navigate('Select Page');
                       }
