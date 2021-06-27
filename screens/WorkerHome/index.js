@@ -175,6 +175,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     .then(res => {
       setState(res.data[0].state);
     });
+    fetchData(business, id)
   },[]);
   }, [navigation]);
     //fetchData();
@@ -210,7 +211,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
-          })//.then(res => res.json())
+          })// .then(res => res.json())
         .then(res => {
             let dic = JSON.parse(res.data[0].bang);
             //console.log(res.data[0].bang+" "+bangCode+ " " +dic[String(bangCode)]+"???");
@@ -234,6 +235,30 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               else if(d==4) day = 'thu';
               else if(d==5) day = 'fri';
               else if(d==6) day = 'sat';
+              axios.post('http://13.124.141.28:3000/selectTimelogAsWorker', {
+                        bang: route.params.bname,
+                        year : new Date().getFullYear(),
+                        month: new Date().getMonth() + 1,
+                        date: new Date().getDate(),
+                        day: day,
+                        workername: route.params.id,
+                    },
+                    {  headers:{
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json'}
+                    })
+                  .then(async(res) => 
+                    {
+                      let dic={}
+                      for(let i=0 ; i<res.data.length ; i++){
+                        dic[res.data[i].workername] = (res.data[i].goto==null?'':res.data[i].goto)+(res.data[i].leavee==null?'':res.data[i].leavee);
+                      }
+                      console.log("-------------------------------------")
+                      console.log("selectTimelogAsWorker")
+                      console.log(dic);
+                        setTimelog(dic[route.params.id]);
+                        console.log("-------------------------------------")
+                    });
 
               //console.log(d);
               await axios.post('http://13.124.141.28:3000/selectWorkerAsDayAsWorker', {
@@ -426,8 +451,26 @@ const WorkerHomeScreen = ({ navigation, route }) => {
         <Text style={styles.textTitle1}>근무 시간   {time==undefined?<Text style={styles.text1}>-- : --  -  -- : --</Text>:<Text style={styles.text1}>{time.substring(0,2)}:{time.substring(2,4)} - {time.substring(4,6)}:{time.substring(6,8)}</Text>}</Text>
         <Text style={styles.textTitle2}>출근/퇴근  {timelog==undefined||time==undefined ?<Text style={styles.text2}>-- : --  -  -- : --</Text>:<Text style={styles.text2}>{timelog.substring(0,2)}:{timelog.substring(2,4)} - {timelog.substring(4,6)}:{timelog.substring(6,8)}</Text>}</Text>
       </View>
-      <View style={styles.buttonArea1}>    
+      <View style={styles.buttonArea1}>
       <TouchableOpacity 
+       style={styles.button}
+       onPress={() => {
+        if(state==2){
+          navigation.navigate('QrAuth', {
+            bname: route.params.bname,
+            userId: route.params.id,
+            commute: commute,
+            setCommute: setCommute
+          });
+        }
+        else{
+          Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
+        }
+          
+      }}>
+      <Image style={styles.buttonImg} source={commute=='출근'&&worktodo==1?require('../../img/workManagement_purple.png'):require('../../img/workManagement_purple_clicked.png')}/>
+      </TouchableOpacity>
+      {/* <TouchableOpacity 
         style={styles.button}
         onPress={() => { 
           
@@ -463,9 +506,9 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
           }
         }}>
-          <Image style={styles.buttonImg} source={commuteImgSelected}/>
+          <Image style={styles.buttonImg} source={commuteImgSelected}/> */}
         {/* <Text style={styles.buttonTitle}>{commute}</Text> */}
-      </TouchableOpacity>
+      {/* </TouchableOpacity> */}
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {

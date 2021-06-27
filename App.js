@@ -65,6 +65,7 @@ import AddWorkTodoScreen from './screens/AddWorkTodo'
 import WorkTodoScreen from './screens/WorkTodo'
 import SplashScreen from './screens/Splash';
 import SvgComponent from './screens/Svg'
+import QrAuthScreen from './screens/QrAuthScreen'
 import { color } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as GoogleSignIn from 'expo-google-sign-in';
@@ -683,6 +684,7 @@ const App = () => {
           <RootStack.Screen 
             name="Worker Home" 
             component={WorkerHomeScreen}//HomeDrawer} 
+            // component={QrAuthScreen}//HomeDrawer} 
             options={({ route, navigation }) => ({
               headerStyle:{backgroundColor:'#7085DF', shadowOpacity: 0, elevation: 0,},
               headerTitle : "",
@@ -921,6 +923,15 @@ const App = () => {
               headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
             }}
             name='WorkTodo' component={WorkTodoScreen}
+          />
+          <RootStack.Screen 
+            options={{
+              title:"출퇴근인증",
+              headerTintColor: 'white', // 폰트색
+              headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+            }}
+            name="QrAuth" component={QrAuthScreen}
           />
         </>
         ) : (

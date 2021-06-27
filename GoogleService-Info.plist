@@ -30,5 +30,9 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:567366538740:ios:eb46bd30a2aa188e4895a1</string>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME)에서 카메라를 사용하도록 허용 </string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$ (PRODUCT_NAME)에서 마이크를 사용하도록 허용</string>
 </dict>
 </plist>
