@@ -12,7 +12,7 @@ import axios from 'axios';
 
 const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
   const [email, setEmail] = useState(route.params.email);
-  //const [a_id, setA_id] = useState(route.params.a_id);
+  const [id, setId] = useState(route.params.id);
   const [name, setName] = useState(route.params.name);
   const [password, setPassword] = useState(route.params.password);
   const [path, setPath] = useState('');
