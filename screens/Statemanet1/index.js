@@ -462,7 +462,7 @@ class StatementScreen1 extends React.Component {
                   
                   // WithholdingTax:원천과세(IncomeTax+InhabitantsTax)
                   var IncomeTax =0; 
-                  
+
                   if(parseInt(MonthlySalary)<1060000){
                     IncomeTax = 0
                   }
@@ -620,14 +620,14 @@ class StatementScreen1 extends React.Component {
                   // MonthlySalaryPartTime : 한달보수총액
                   let MonthlySalaryPartTime = parseInt(WorkingHour) * parseInt(HourlyWage);
 
-// IncomeTax : 갑근세(소득세) : 보수총액*3.0%
-let IncomeTaxPartTime = Math.floor(((parseInt(MonthlySalaryPartTime)*0.03).toFixed(0))/10)*10;
+                  // IncomeTax : 갑근세(소득세) : 보수총액*3.0%
+                  let IncomeTaxPartTime = Math.floor(((parseInt(MonthlySalaryPartTime)*0.03).toFixed(0))/10)*10;
 
-// InhabitantsTax : 주민세 (갑근세의 10%)  : 보수총액*0.3%
-let InhabitantsTaxPartTime = Math.floor(((parseInt(IncomeTaxPartTime)*0.1).toFixed(0))/10)*10
+                  // InhabitantsTax : 주민세 (갑근세의 10%)  : 보수총액*0.3%
+                  let InhabitantsTaxPartTime = Math.floor(((parseInt(IncomeTaxPartTime)*0.1).toFixed(0))/10)*10
 
-// WithholdingTax:원천과세(IncomeTax+InhabitantsTax) : 3.3 세금공제
-let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTime)
+                  // WithholdingTax:원천과세(IncomeTax+InhabitantsTax) : 3.3 세금공제
+                  let WithholdingTax = parseInt(IncomeTaxPartTime) + parseInt(InhabitantsTaxPartTime)
                   let ActualSalaryPartTime = parseInt(MonthlySalaryPartTime) + parseInt(AddSalaryPartTime) - parseInt(WithholdingTax) 
 
                   data = [WorkingType,MonthlySalaryPartTime.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
