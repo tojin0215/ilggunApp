@@ -217,7 +217,7 @@ class VacationRequestScreen extends Component{
                     {label: '2025', value: '2025'},
                 ]}
                 defaultValue={this.state.itemA}
-                containerStyle={{height:hp('7%'), width:wp('22%'),}}
+                containerStyle={{height:hp('7%'), width:wp('25%'),}}
                 style={{
                   borderTopWidth:hp('0.3%'), borderBottomWidth:hp('0.3%'),
                   borderTopLeftRadius:0, borderTopRightRadius:0, borderBottomLeftRadius:0, borderBottomRightRadius:0,

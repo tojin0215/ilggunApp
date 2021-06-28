@@ -12,7 +12,7 @@ import axios from 'axios';
 
 const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
   const [email, setEmail] = useState(route.params.email);
-  const [a_id, setA_id] = useState(route.params.a_id);
+  const [id, setId] = useState(route.params.id);
   const [name, setName] = useState(route.params.name);
   const [password, setPassword] = useState(route.params.password);
   const [path, setPath] = useState('');
@@ -29,15 +29,17 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
                 Alert.alert('sign을 채워주세요.');
             }
             else{
+                console.log('11여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기')
                 await axios.post('http://13.124.141.28:3000/changeApple', { 
-                    a_id: a_id,
+                    id: id,
                     sign: savePath,
-                    id : email
+                    email : email
                 },{
                 headers:{
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'}
                 }).then((res)=>{
+                    console.log('22여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기')
                     Alert.alert("이메일과 서명 등록이 완료되었습니다. 다시 로그인해주세요.")
                     navigation.navigate('Sign In')   
                 })
