@@ -257,7 +257,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   })
                   });
               
-                  if (t == 1) {
+                  if (t == 2) {
                     try {
                       axios.post('http://13.124.141.28:3000/sendMessage', {
                         f: id,
@@ -274,7 +274,8 @@ function setModalVisibility(visible, msg ,t, index, r) {
                     })} catch (e) {
                       console.error(e);
                     }
-                  } else {
+                    
+                  } else if(t == 3){
                     try {
                       axios.post('http://13.124.141.28:3000/sendMessage', {
                         f: id,
@@ -536,9 +537,8 @@ function setModalVisibility(visible, msg ,t, index, r) {
                 <Text
                   style={styles.modalBtn2}
                   onPress={() => {
-                    setModalVisibility(!visibility2,'',2)
-                    savedData();
-                    savedData(1);
+                    setModalVisibility(!visibility2,'',2)                    
+                    savedData(2);
                     alterRead();
 
                   }}
@@ -547,7 +547,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                     style={styles.modalBtn2}
                     onPress={() => {
                       setModalVisibility(!visibility2,'',2)
-                      savedData(2);
+                      savedData(3);
                       alterRead();
   
                     }}
