@@ -136,8 +136,6 @@ class StatementScreen2 extends Component {
       axios
         .post(url + "/selectOvertimework", data_selectOvertimework, config)
         .then((res) => {
-          console.log("selectOvertimework: " + year + "년/" + month + "월");
-          console.log(res.data);
           let dic = {};
           for (let i = 0; i < res.data.length; i++) {
             if (!dic[res.data[i].workername]) {
@@ -146,8 +144,6 @@ class StatementScreen2 extends Component {
               dic[res.data[i].workername] += res.data[i].subt; //this.setState({addtime :{...this.state.addtime, n : s}});
             }
           }
-          console.log("???");
-          console.log(dic);
           this.setState({ addtime: dic });
         });
     } catch (e) {
@@ -164,10 +160,10 @@ class StatementScreen2 extends Component {
         .post(url + "/insurancePercentage", data_insurancePercentage, config)
         .then((res) => {
           for (let i = 0; i < res.data.length; i++) {
-            console.log(
-              "*************************************************DB년도",
-              res.data[i].date
-            );
+            // console.log(
+            //   "*************************************************DB년도",
+            //   res.data[i].date
+            // );
             if (res.data[i].date === this.state.itemAA.split("년")[0]) {
               console.log("국민연금", res.data[i].NationalPensionPercentage);
               console.log("건강보험", res.data[i].HealthInsurancePercentage);
@@ -201,6 +197,7 @@ class StatementScreen2 extends Component {
     const month = this.state.itemBB.split("월")[0] * 1;
     const data_otherAllowance = {
       id: this.state.id,
+      bang: this.state.bangCode,
       year: year,
       month: month,
     };
@@ -210,6 +207,7 @@ class StatementScreen2 extends Component {
         .then((res) => {
           console.log("otherAllowance: ");
           console.log(this.state.id, "_", year, "_", month);
+          console.log(res.data);
           for (let i = 0; i < res.data.length; i++) {
             console.log(
               "!!!!!!!!!!!!!!!!!!!!!!!!!!!!_______________!여기_",
@@ -218,7 +216,7 @@ class StatementScreen2 extends Component {
           }
         });
     } catch (e) {
-      console.error("--- fetchInsurancePercentage ---");
+      console.error("--- fetchOtherAllowance ---");
       console.error(e);
     }
   };
@@ -447,6 +445,7 @@ class StatementScreen2 extends Component {
               }
               console.log(res.data);
               if (res.data[i].type == 1) {
+                const user_name = res.data[i].workername2;
                 let weekk = [0, 0, 0, 0, 0, 0, 0];
                 if (
                   year == res.data[i].startdate.split("/")[0] * 1 &&
@@ -504,6 +503,7 @@ class StatementScreen2 extends Component {
                 ]);
                 t1.push({ label: user_name, value: user_name });
               } else {
+                const user_name = res.data[i].workername2;
                 let date = new Date().getDate();
                 if (
                   year == res.data[i].startdate.split("/")[0] * 1 &&
@@ -754,10 +754,12 @@ class StatementScreen2 extends Component {
     let WorkingType = "정규직";
     console.log("여기여기요~~");
     console.log(this.state.nname);
+    let user_name_let = ''
     for (let i = 0; i < this.state.nname.length; i++) {
       const item_A = this.state.itemA;
       const item_B = this.state.itemB;
       const user_name = this.state.nname[i][0];
+      user_name_let = user_name
 
       if (item_A == user_name || item_B == user_name) {
         WorkingType = this.state.nname[i][1];
@@ -868,9 +870,10 @@ class StatementScreen2 extends Component {
       parseInt(TotalPaymentPartTime) - parseInt(WithholdingTax);
 
     if (WorkingType == "정규직") {
+      console.log("MonthlySalaryPartTime: " + MonthlySalaryPartTime)
       // -------정규------
       this.setState({
-        Name: this.state.itemA,
+        Name: user_name_let,
         WorkingType: "정규직",
         tableData: [
           [
@@ -904,7 +907,7 @@ class StatementScreen2 extends Component {
     } else {
       // ------알바-------
       this.setState({
-        Name: this.state.itemB,
+        Name: user_name_let,
         WorkingType: "알바",
         tableData: [
           [

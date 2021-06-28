@@ -445,8 +445,13 @@ const WorkerHomeScreen = ({ navigation, route }) => {
                     style: "cancel"
                   },
                   { text: "네", onPress: () => {
-                    setCommute(commute=='출근'?'퇴근':'출근');
-                    commuteData(route.params.id);
+                    navigation.navigate('QrAuth',{
+                      bname:route.params.bname,
+                      userId:route.params.id,
+                      commute:commute
+                    });
+                    // setCommute(commute=='출근'?'퇴근':'출근');
+                    // commuteData(route.params.id);
                     commuteChangeImg(commute=='출근'?'퇴근':'출근');
                   }}
                 ],
@@ -454,8 +459,13 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               );
             }
             else{
-              setCommute(commute=='출근'?'퇴근':'출근');
-              commuteData(route.params.id);
+              navigation.navigate('QrAuth',{
+                bname:route.params.bname,
+                userId:route.params.id,
+                commute:commute
+              });
+              // setCommute(commute=='출근'?'퇴근':'출근');
+              // commuteData(route.params.id);
               commuteChangeImg(commute=='출근'?'퇴근':'출근');
             }
           }
