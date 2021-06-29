@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 
 
+
 const styles = StyleSheet.create({
   container: {
     width:'100%', height:'100%',
@@ -102,6 +103,7 @@ class VacationRequestScreen extends Component{
       owner:'',
       clicked: false
     }
+    
 
     AsyncStorage.getItem("bangCode")
       .then((bangCode) => {
@@ -109,6 +111,9 @@ class VacationRequestScreen extends Component{
         
       })
   }
+
+
+  
   fetchData = async() => { 
     try {
       let today = new Date();
@@ -151,15 +156,18 @@ class VacationRequestScreen extends Component{
             this.setState({workernames: rowall})
             Alert.alert("휴가 신청이 완료되었습니다.")
             this.props.navigation.navigate('Worker Home');
+            
           });
         }
-        else{
+        
+        else{         
           Alert.alert("휴가신청 사유를 입력해주세요.")
         }
       }
-    else{  
+    else{
       Alert.alert("날짜가 제대로 입력되었는지 확인해주세요.")
     }
+
     } catch (e) {
       Alert.alert("휴가 신청이 완료되었습니다.")
         console.error(e);
@@ -184,7 +192,7 @@ class VacationRequestScreen extends Component{
 <ScrollView>
         <View style={styles.textForm}>
           <View style={styles.textArea}>
-          <Text style={styles.textStyle}>휴가 신청 이유</Text>
+          <Text style={styles.textStyle}>휴가 신청 사유</Text>
         </View>
         <View style={styles.textinputArea}>
         <TextInput 
@@ -374,12 +382,13 @@ class VacationRequestScreen extends Component{
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                if(!this.state.clicked){
-                  this.setState({clicked : true}, () => this.fetchData())
-                }                
+                // if(!this.state.clicked){
+                //   this.setState({clicked : true}, () => this.fetchData())
+                // }         
+                this.setState({clicked : true}, () => this.fetchData())
               }}>
                 <Text style={styles.buttonTitle}>완료</Text>
-
+  
             </TouchableOpacity>
           </View>
           </ScrollView>
