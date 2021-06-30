@@ -211,61 +211,65 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderTopRightRadius:wp('13%'),
         borderTopLeftRadius:wp('13%'),    
-    },
+    },//상단 바를 제외한 하얀색 전체 컨텐츠 컨테이너입니다.
     image:{
         width: "100%", height: "100%",
         backgroundColor:'#67C8BA'    
-    },
+    },//배경이미지입니다.
     formArea: {
         width: '100%', height:'95%',
+        maxWidth: wp('100rem'),
         paddingTop:hp('2%'),
-        paddingLeft:wp('6%'),
-        paddingRight:wp('6%'),
-    },
+        marginLeft: "auto",
+        marginRight: "auto",
+        paddingLeft:wp('6rem'),
+        paddingRight:wp('6rem'),
+    },//상단 바, 하단 푸터를 제외한 입력폼 공간입니다.
     textArea:{
-        marginTop:hp('3%'),
-        borderBottomColor:'#D3D6E2', borderBottomWidth:hp('0.2%')
-    },
+        marginTop:hp('3rem'),
+        borderBottomColor:'#D3D6E2', borderBottomWidth:hp('0.2%'),
+    },//이름, EMAIL, 비밀번호, 비밀번호 확인의 라벨,텍스트 입력 포함한 폼 박스입니다.
     titleStyle: {
-        fontSize: wp('4.3%'),
-        fontFamily:"NanumSquareB"
-    },
-    textStyle:{
-        fontSize: wp('4%'),
-        fontFamily:"NanumSquare"
-    },
-    titleSignStyle:{
-        fontSize: wp('4.3%'),
+        fontSize: wp('5rem'),
         fontFamily:"NanumSquareB",
-        marginTop:hp('1%')
-    },
+    },//텍스트 입력 폼의 타이틀 라벨입니다.
+    textStyle:{
+        fontSize: wp('4.5rem'),
+        fontFamily:"NanumSquare",
+        marginTop: wp("1.6rem"),
+    },//텍스트 입력 박스입니다.
+    titleSignStyle:{
+        fontSize: wp('5rem'),
+        fontFamily:"NanumSquareB",
+        marginTop:hp('1.0%'),
+    },//서명 타이틀 라벨입니다.
     textArea2:{
-        marginTop:hp('1.5%'),
-    },
+        marginTop:hp('2.5%'),
+    },//서명 타이틀 라벨 공간입니다.
     sign : { 
-        height:hp('30%'), 
-        width:"100%" , 
-        backgroundColor: '#E4E5EA' 
-    },
+        height: hp('28rem'),
+        width: '100%',
+        backgroundColor: '#E4E5EA',
+    },//서명 입력 폼입니다.
     signBtnArea:{
-        height:hp('4%'),
-        flexDirection:"row"
-    },
+        height:hp('5%'),
+        flexDirection:"row",
+    },//서명 지우기 버튼 전체 폼의 공간 입니다.
     signBtnArea2:{
         position:"absolute", top:0,right:0,
-        width:wp('15%'),height:hp('4%'),
-        flexDirection:"row"
-    },
+        width:wp('20rem'), height:hp('5rem'),
+        flexDirection:"row",
+    },//서명 지우기 버튼 클릭 공간입니다.
     signTextStyle:{
-        width:wp('15%'), height:hp('4%'),
+        width:wp('20rem'), height:hp('5rem'),
         backgroundColor:'#040525',
         color:'white',
-        fontSize: wp('3.8%'),
+        fontSize: wp('4rem'),
+        lineHeight: hp('5rem'),
         fontFamily:"NanumSquare",
         textAlign:"center",
-        paddingTop:hp('1.3%'),
-        borderRadius:wp('1.5%')
-    },
+        borderRadius: 50,
+    },//서명 지우기 버튼의 검은색 배경 이미지가 되는 내부 공간입니다.
   
     buttonArea: {
         width: '100%',

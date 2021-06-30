@@ -324,8 +324,8 @@ const styles = StyleSheet.create({
   container: {
       width: "100%", height: "100%",
       backgroundColor: 'white',
-      paddingLeft: wp('10%'),
-      paddingRight: wp('10%'),
+      paddingLeft: wp('10rem'),
+      paddingRight: wp('10rem'),
       paddingBottom: wp('15%'),
       justifyContent: 'center',
   },
