@@ -135,6 +135,23 @@ const WorkerManageScreen2 = ({navigation}) => {
             style: "cancel"
           },
           { text: "네", onPress: () => {
+            let today = new Date();
+            axios.post('http://13.124.141.28:3000/sendMessage', {              
+              type: 3,
+              system: 1,
+              f: idid,
+              t: name,
+              message : bangCode + '에서 ' + today.getFullYear() +'년 '+ today.getMonth() +'월 '+ today.getDay() +'일 자로 퇴사하셨습니다.',              
+              time: today.getDate(),
+              r:0   
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+            })
+            .then(res => {
+              fetchData(bangCode)              
+            });
             axios.post('http://13.124.141.28:3000/deleteWorker', {
               business:bangCode,  
               workername : name,
