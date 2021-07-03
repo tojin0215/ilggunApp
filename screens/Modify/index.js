@@ -58,10 +58,11 @@ const styles = StyleSheet.create({
 
 const ModifyScreen = ({navigation}) => {
   const [id, setId] = useState('');
+  const [name, setName] = useState('');
   React.useEffect(() => {
     AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).id);
-
+      setName(name => JSON.parse(userData).name);
 
     });
   }, []);
@@ -70,9 +71,9 @@ const ModifyScreen = ({navigation}) => {
   <View style={styles.container}>
     <View style={styles.buttonArea}>
       <View style={styles.texts}>
-        <Text style={styles.text1}>id : "{id}"</Text>
+        <Text style={styles.text1}>이름 : "{name}"</Text>
         <Text  style={styles.text2}>사업장에 초대받으려면</Text>
-        <Text  style={styles.text2}>먼저, id를 사업주에게 알려주세요.</Text>
+        <Text  style={styles.text2}>먼저, 이름과 이메일을 사업주에게 알려주세요.</Text>
       </View>
       <TouchableOpacity 
         style={styles.button}
