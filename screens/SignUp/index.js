@@ -108,7 +108,9 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
     <View style={styles.image}>
         <View style={styles.container}>
                 <View style={styles.formArea}>
-                <ScrollView>
+                <ScrollView
+                scrollEnabled={false}
+                >
                 <View style={styles.textArea}>
                     <Text style={styles.titleStyle}>이름</Text>
                     <TextInput 
