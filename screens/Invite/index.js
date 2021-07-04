@@ -81,7 +81,7 @@ class InviteScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        bangCode : null, id:'',
+        bangCode : null, id:'', name:'',
         workerList: [], item:'', clicked:false, press : false
     }
 
@@ -91,13 +91,14 @@ class InviteScreen extends Component{
         this.fetchData();
       })
       AsyncStorage.getItem("userData").then((userData) =>{
-        this.setState({id:JSON.parse(userData).id});
+        this.setState({name:JSON.parse(userData).name});
       });
   }
   fetchData = async(name) => { 
     try {
+      console.log('__________________name:', name)
       if(name!=''){
-      axios.post('http://13.124.141.28:3000/searchId', {id : name},
+      axios.post('http://13.124.141.28:3000/searchId', {name : name},
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
@@ -108,7 +109,7 @@ class InviteScreen extends Component{
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
+          body: JSON.stringify({`
             id : name
           }),
         }).then(res => res.json())*/
@@ -211,7 +212,7 @@ class InviteScreen extends Component{
                 }
                 defaultValue={this.state.item}
                 style={styles.textInputStyle}
-                placeholder={"이메일을 검색하세요."}/>  
+                placeholder={"이름을 검색하세요."}/>  
       
             <TouchableOpacity
               style={styles.searchbutton}

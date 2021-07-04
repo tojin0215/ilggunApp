@@ -368,8 +368,8 @@ class WCalculatingScreen2 extends Component{
     rowView: { flexDirection: 'row' },
     marginTop : {marginTop: hp('1.3%')},
     wrapper: { flexDirection: 'row' },
-    head: {  height: hp('6%'),  backgroundColor: '#E2F2EF', borderTopRightRadius:wp('4%'), borderTopLeftRadius:wp('4%') },
-    title: { flex: 0.8, backgroundColor: '#E2F2EF',  borderBottomLeftRadius:wp('4%')},
+    head: {  height: hp('6%'),  backgroundColor: '#D3DDFF', borderTopRightRadius:wp('4%'), borderTopLeftRadius:wp('4%') },
+    title: { flex: 0.8, backgroundColor: '#D3DDFF',  borderBottomLeftRadius:wp('4%')},
     row: {  height:hp('6%') },
     titleArea:{
       alignItems:"center"
@@ -390,7 +390,7 @@ class WCalculatingScreen2 extends Component{
     image:{ 
       alignItems: 'center', justifyContent:"center",
       width: "100%", height: "100%",     
-      backgroundColor:'#67C8BA'
+      backgroundColor:'#7085DF'
     },
     textTitle:{
       fontSize: wp('5.55%'),
@@ -450,7 +450,7 @@ class WCalculatingScreen2 extends Component{
       marginBottom:hp('2%'),
     },
     button: {
-        backgroundColor: "#67C8BA",
+        backgroundColor: "#7085DF",
         width:wp('90%'), height: hp('5.5%'),
         justifyContent: 'center', alignItems:"center",
         borderRadius:wp('6%'),

@@ -33,7 +33,8 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
                 await axios.post('http://13.124.141.28:3000/changeApple', { 
                     id: id,
                     sign: savePath,
-                    email : email
+                    email : email,
+                    name : name
                 },{
                 headers:{
                         'Content-Type': 'application/json',
@@ -78,13 +79,23 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
                 <ScrollView>
                 <View style={styles.textArea}>
                     <View style={{flexDirection:'row'}}>
-                    <Text style={styles.titleStyle}>EMAIL</Text>
+                    <Text style={styles.titleStyle}>이메일</Text>
                 </View>
                     <TextInput 
                         onChangeText={email =>setEmail(email)}
                         defaultValue={email}
                         style={styles.textStyle} 
                         placeholder={"이메일을 입력하세요."}/>
+                </View>
+                <View style={styles.textArea}>
+                    <View style={{flexDirection:'row'}}>
+                    <Text style={styles.titleStyle}>이름</Text>
+                </View>
+                    <TextInput 
+                        onChangeText={name =>setName(name)}
+                        defaultValue={name}
+                        style={styles.textStyle} 
+                        placeholder={"이름을 입력하세요."}/>
                 </View>
                 <View style={styles.textArea}>
                     <Text style={styles.titleSignStyle}>서명</Text>

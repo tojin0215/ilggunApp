@@ -87,7 +87,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
             defaultValue={id}
             autoFocus={true}
             style={styles.textStyle} 
-            placeholder={'ID를 입력하세요.'}/>
+            placeholder={'이메일 입력하세요.'}/>
           </View>
           </View> 
           {afterClick==false && id.length>0 && <View style={styles.searchInputArea}>

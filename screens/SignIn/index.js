@@ -400,11 +400,12 @@ const styles = StyleSheet.create({
     width:wp('7%'), height:wp('7%')
   },
   button2: {
-      backgroundColor: "white",
-      width: "100%",
+      marginLeft:wp('35%'),
+      width: wp('45%'),
       height: hp('6%'),
       justifyContent: 'center',
       alignItems:'flex-end' ,
+      paddingLeft: wp('15%'),
       paddingRight: wp('5%')
   },
   buttonLoginTitle:{

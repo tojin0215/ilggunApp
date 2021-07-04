@@ -137,17 +137,34 @@ const WorkerManageScreen = ({navigation, route}) => {
             style: "cancel"
           },
           { text: "네", onPress: () => {
+            let today = new Date();
+            axios.post('http://13.124.141.28:3000/sendMessage', {              
+              type: 3,
+              system: 1,
+              f: idid,
+              t: name,
+              message : bangCode + '에서 ' + today.getFullYear() +'년 '+ today.getMonth() +'월 '+ today.getDay() +'일 자로 퇴사하셨습니다.',              
+              time: today.getDate(),
+              r:0   
+            },
+            {  headers:{
+              'Content-Type': 'application/json',
+            'Accept': 'application/json'}
+            })
+            .then(res => {
+              fetchData(bangCode)              
+            });
             axios.post('http://13.124.141.28:3000/deleteWorker', {
-              business:bangCode,  
+              business: bangCode,  
               workername : name,
             },
             {  headers:{
               'Content-Type': 'application/json',
               'Accept': 'application/json'}
             })
-            .then(res => {
-                fetchData(bangCode);
-            });
+            .then(res => { 
+              fetchData(bangCode)
+            });            
           }}
         ],
         { cancelable: false }
@@ -155,13 +172,16 @@ const WorkerManageScreen = ({navigation, route}) => {
       
     } catch (e) {
         console.error(e);
+        Alert.alert("퇴사자에게 메세지를 보냈습니다.")
       }
   }
+
+
   async function fetchData(bangCode) { 
         try {
           await axios.post('http://13.124.141.28:3000/selectWorkerByType', {
             business : bangCode,
-                type : 2
+            type : 2
           },
           {  headers:{
             'Content-Type': 'application/json',
@@ -177,13 +197,12 @@ const WorkerManageScreen = ({navigation, route}) => {
                 business : bangCode,
                 type : 2
               }),
-            }).then(res => res.json())*/
+            }).then(res => res.json())*/            
             .then(res => {
               setBusiness(res.data)
               console.log(res.data)
               console.log(business)
-            }
-            );
+            });
         } catch (e) {
             console.error(e);
           }
@@ -200,9 +219,8 @@ const WorkerManageScreen = ({navigation, route}) => {
             <Image style={styles.imgStyle} source={require('../../img/invite.png')}></Image>
         </TouchableOpacity>
       </View>
-
-        <View style={{marginTop:hp('3%')}}>
-      <ScrollView>
+      
+      <ScrollView>        
       {
           business.map((b, id) => (
           <View style={styles.worker} key={id}>
@@ -242,7 +260,7 @@ const WorkerManageScreen = ({navigation, route}) => {
       </View>
       
     </View>
-    </View>
+    
     );
 };
 export default WorkerManageScreen;
