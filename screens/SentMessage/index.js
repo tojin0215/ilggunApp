@@ -263,7 +263,7 @@ const sentMessageScreen = ({ navigation }) => {
               >
                   <View style={styles.titleArea}>
                     <Image style={styles.userImage} source={require('../../img/mm.png')}/>
-                    <Text key={id} style={styles.textNameStyle}>{String(b.t)}</Text>
+                    <Text key={id} style={styles.textNameStyle}>{String(b.t_name)}</Text>
                   </View>
                 <Text 
                   key={id} 

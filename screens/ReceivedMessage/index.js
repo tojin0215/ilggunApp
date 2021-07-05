@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
  
 const ReceivedMessageScreen = ({ navigation, route }) => {
   const [id, setId] = useState('');
+  const [name, setName] = useState('');
   //setId('dddd');
   //console.log(id);
   React.useEffect(() => {
@@ -124,6 +125,7 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
       navigation.addListener('focus', () => {
         AsyncStorage.getItem("userData").then((userData) =>{
           setId(id => JSON.parse(userData).id);
+          setName(name => JSON.parse(userData).name);
           fetchData(JSON.parse(userData).id);
         });
       });
@@ -138,6 +140,7 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   const [message, setMessage] = useState('');
   const [index, setIndex] = useState(-1);
   const [to, setTo] = useState('');
+  const [to_name, setTo_name] = useState('');
   async function fetchData(idid) { 
       try {
         await axios.post('http://13.124.141.28:3000/selectReceivedMessage', {
@@ -158,9 +161,9 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
           }).then(res => res.json())*/
           .then(res => 
             {
-              console.log(res.data);
+              //console.log(res.data);
               setBusiness(res.data.reverse());
-              console.log("dddd" +business);
+              //console.log("dddd" +business);
             });
       } catch (e) {
           console.error(e);
@@ -203,9 +206,9 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   busi = message.split('(')[1].split(')')[0];
                   let d = message.split(')님이 ')[1].split('에')[0];
                   let dayOfWeek = week[new Date(d).getDay()];
-                  console.log(dayOfWeek);
+                  //console.log(dayOfWeek);
                   let dd = d.split('-');
-                  console.log(work+"/"+busi+"/"+d+"/"+dayOfWeek+"/"+dd)
+                  //console.log(work+"/"+busi+"/"+d+"/"+dayOfWeek+"/"+dd)
                   let ori = 0;
                   axios.post('http://13.124.141.28:3000/selectWorkerEach', {
                     business: busi,
@@ -227,12 +230,12 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   }),
                 }).then(res => res.json())*/
                 .then(res => {
-                  console.log(res)
+                 // console.log(res)
                   ori = res.data[0].eachtime.split('/');
-                  console.log("오리"+ori);
-                console.log(d)
-                console.log(new Date(d).getDay());
-                console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
+                 // console.log("오리"+ori);
+               // console.log(d)
+              //  console.log(new Date(d).getDay());
+              //  console.log("<<<<<<<<<<<<<<<<<<<<<<<"+-ori[new Date(d).getDay()]);
 
 
                 let oris=''
@@ -259,10 +262,13 @@ function setModalVisibility(visible, msg ,t, index, r) {
               
                   if (t == 2) {
                     try {
+                      console.log('id: ',id,'f_name: ',f_name,'t: ',to,'t_name: ',to_name)
                       axios.post('http://13.124.141.28:3000/sendMessage', {
                         f: id,
-                        message :"<"+busi+">에서 "+to+"님의 무급 휴가 신청("+d+")을 승인하였습니다.",
+                        f_name:name,
+                        message :"<"+busi+">에서 "+name+"님의 무급 휴가 신청("+d+")을 승인하였습니다.",
                         t: to,
+                        t_name:to_name,
                         r:0,
                         system:1,
                         type:3
@@ -279,8 +285,10 @@ function setModalVisibility(visible, msg ,t, index, r) {
                     try {
                       axios.post('http://13.124.141.28:3000/sendMessage', {
                         f: id,
-                        message :"<"+busi+">에서 "+to+"님의 유급 휴가 신청("+d+")을 승인하였습니다.",
+                        f_name:name,
+                        message :"<"+busi+">에서 "+name+"님의 유급 휴가 신청("+d+")을 승인하였습니다.",
                         t: to,
+                        t_name:to_name,
                         r:0,
                         system:1,
                         type:3
@@ -371,8 +379,10 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   try {
                     axios.post('http://13.124.141.28:3000/sendMessage', {
                       f: id,
-                      message :"<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다. 근로계약서를 작성해주세요.",
+                      f_name:name,
+                      message :"<"+busi+"> 근로자 '"+name+"'가 초대에 응했습니다. 근로계약서를 작성해주세요.",
                       t: res.data[0].id,
+                      t_name:res.data[0].name,
                       r:0,
                       system:1,
                       type:3
@@ -399,8 +409,10 @@ function setModalVisibility(visible, msg ,t, index, r) {
         try {
           axios.post('http://13.124.141.28:3000/sendMessage', {
             f: id,
-            message :"<"+busi+">에서 "+to+"님의 휴가 신청이 거절되었습니다.",
+            f_name:name,
+            message :"<"+busi+">에서 "+to_name+"님의 휴가 신청이 거절되었습니다.",
             t: to,
+            t_name:to_name,
             r:0,
             system:1,
             type:3
@@ -425,8 +437,10 @@ function setModalVisibility(visible, msg ,t, index, r) {
             try {
               axios.post('http://13.124.141.28:3000/sendMessage', {
                 f: id,
-                message :"<"+busi+"> 근로자 '"+id+"'님이 초대를 거절했습니다.",
+                f_name:name,
+                message :"<"+busi+"> 근로자 '"+name+"'님이 초대를 거절했습니다.",
                 t: res.data[0].id,
+                t_name: res.data[0].name,
                 r:0,
                 system:1,
                 type:3
@@ -490,6 +504,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                 onPress={() => {
                     setModalVisibility(true, b.message, b.type, b.ind, b.r)
                     setTo(b.t);
+                    setTo_name(b.t_name)
                   }
                 } 
               >
@@ -498,7 +513,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   style={styles.modaltextStyle}
                   numberOfLines={1}
                   ellipsizeMode='tail'
-                >{String(b.f+" : "+ b.message)}</Text>
+                >{String(b.f_name+" : "+ b.message)}</Text>
               </TouchableOpacity>
             </View>
           ))
@@ -517,7 +532,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   }} 
                   style={styles.modalBtn}>닫기</Text>
                 <Text onPress={async() => {
-                  console.log("indexxxxxxxxx : " +index)
+                  //console.log("indexxxxxxxxx : " +index)
                     await delMessage(index)
                   }} 
                   style={styles.modalBtn}>메세지 삭제</Text>

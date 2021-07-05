@@ -13,14 +13,17 @@ import SearchBar from 'react-native-elements/dist/searchbar/SearchBar-ios';
 
 const SendMessageScreen = ({ onSignUp, navigation }) => {
   const [id, setId] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [press, setPress] = useState(false);
   const [items, setItem] = useState([]);
   const [idid, setIdid] = useState('');
+  const [namename, setNamename] = useState('');
   const [afterClick, setAfterClick] = useState(false);
   React.useEffect(() => {
       AsyncStorage.getItem("userData").then((userData) =>{
           setIdid(id => JSON.parse(userData).id);
+          setNamename(name => JSON.parse(userData).name);
       })
   }, []);
 
@@ -29,8 +32,10 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
       console.log("!!!!!!!!!!!!!!!!!!!")
       axios.post('http://13.124.141.28:3000/sendMessage', {
           f: idid,
+          f_name:namename,
           message : password,
           t: id,
+          t_name:name,
           r:0,
         },
         {  headers:{
@@ -56,9 +61,9 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
       console.error(e);
     }
   }
-  const search = async(search_id) => {
+  const search = async(search_name) => {
     setAfterClick(false)
-    axios.post('http://13.124.141.28:3000/searchId', {id : search_id},
+    axios.post('http://13.124.141.28:3000/searchId', {name : search_name},
     {  headers:{
       'Content-Type': 'application/json',
       'Accept': 'application/json'}
@@ -83,20 +88,20 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
           </View>
           <View style={styles.textInputArea}>
           <TextInput 
-            onChangeText={id => {setId(id); search(id);} }
-            defaultValue={id}
+            onChangeText={name => {setName(name); search(name);} }
+            defaultValue={name}
             autoFocus={true}
             style={styles.textStyle} 
-            placeholder={'이메일 입력하세요.'}/>
+            placeholder={'이름 입력하세요.'}/>
           </View>
           </View> 
-          {afterClick==false && id.length>0 && <View style={styles.searchInputArea}>
+          {afterClick==false && name.length>0 && <View style={styles.searchInputArea}>
             <View style={styles.searchStyle} >
             {//keywords.map(({ id, text }) => {
               //return (
               <ScrollView>
-                {items.map((i, id) => (
-                  <Text style={styles.searchItemStyle} onPress={()=>{setId(i.id); setAfterClick(true)}}>{i.id}({i.name})</Text>
+                {items.map((i, name) => (
+                  <Text style={styles.searchItemStyle} onPress={()=>{setName(i.name); setId(i.id); setAfterClick(true)}}>{i.name}({i.id})</Text>
                 ))}
               </ScrollView>
             //)
@@ -170,7 +175,8 @@ const styles = StyleSheet.create({
     fontSize: wp('4.2%'),
     fontFamily:"NanumSquare",
     color:'#040525',
-    width:wp('40%'),
+    width:wp('50%'),
+    
   },
   searchItemStyle: {
     marginTop:hp('0.4%'),
@@ -237,10 +243,10 @@ const styles = StyleSheet.create({
     borderColor:'#DAE9F7',
     borderWidth:wp('0.3%'),
     borderRadius:wp('2.5%'),
-    width:wp('47%'),
+    width:wp('55%'),
     height:hp('10%'),
     justifyContent:"center", alignItems:'center',
-    paddingLeft:wp('3%'), marginLeft:hp('21%'),marginTop:hp('10%'),
+    paddingLeft:wp('1%'), marginLeft:hp('19%'),marginTop:hp('10%'),
     zIndex: 2,position: 'absolute',
     backgroundColor:'#ffffff'
    }

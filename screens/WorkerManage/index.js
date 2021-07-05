@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
 const WorkerManageScreen = ({navigation, route}) => {
     const [business, setBusiness] = useState([]);
     const [idid, setIdid] = useState('');
+    const [namename, setNamename] = useState('');
     const [bangCode, setBangCode] = useState('');
     React.useEffect(() => {
       const unsubscribe =
@@ -118,6 +119,7 @@ const WorkerManageScreen = ({navigation, route}) => {
               setBangCode(bangCode);
               AsyncStorage.getItem("userData").then((userData) => {
                 setIdid(JSON.parse(userData).id)
+                setNamename(JSON.parse(userData).name)
                 fetchData(bangCode)
               });
             })
@@ -125,7 +127,9 @@ const WorkerManageScreen = ({navigation, route}) => {
     return unsubscribe;
   }, []);
 
-  async function deleteWorker(name){
+  async function deleteWorker(names){
+    let name = names.split('_')[0]
+    let t_name = names.split('_')[1]
     try {
       Alert.alert(
         "근로자 삭제하기",
@@ -142,7 +146,9 @@ const WorkerManageScreen = ({navigation, route}) => {
               type: 3,
               system: 1,
               f: idid,
+              f_name: namename,
               t: name,
+              t_name:t_name,
               message : bangCode + '에서 ' + today.getFullYear() +'년 '+ today.getMonth() +'월 '+ today.getDay() +'일 자로 퇴사하셨습니다.',              
               time: today.getDate(),
               r:0   
@@ -231,7 +237,7 @@ const WorkerManageScreen = ({navigation, route}) => {
                 style={styles.Contbutton}
                 onPress={() => {
                   if(b.state!=0){
-                    navigation.navigate(('Contract FormA'),{workername: b.workername, bid:idid })
+                    navigation.navigate(('Contract FormA'),{workername: b.workername, workername2:b.workername2, bid:idid })
                   }
                 }}>
                   {b.state==0?
@@ -244,7 +250,7 @@ const WorkerManageScreen = ({navigation, route}) => {
               {b.workState == 0?
                 <TouchableOpacity
                 style={styles.Contbutton}
-                 onPress={() => deleteWorker(b.workername)} //근로자삭제
+                 onPress={() => deleteWorker(b.workername+'_'+b.workername2)} //근로자삭제
                 >
                 <Text style={styles.deleteTitle}>삭제</Text>
               </TouchableOpacity>

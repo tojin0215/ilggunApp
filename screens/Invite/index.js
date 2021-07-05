@@ -81,7 +81,7 @@ class InviteScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        bangCode : null, id:'', name:'',
+        bangCode : null, id:'', name:'', f_name:'',t_name:'',
         workerList: [], item:'', clicked:false, press : false
     }
 
@@ -91,7 +91,8 @@ class InviteScreen extends Component{
         this.fetchData();
       })
       AsyncStorage.getItem("userData").then((userData) =>{
-        this.setState({name:JSON.parse(userData).name});
+        this.setState({id:JSON.parse(userData).id});
+        this.setState({f_name:JSON.parse(userData).name});
       });
   }
   fetchData = async(name) => { 
@@ -129,7 +130,9 @@ class InviteScreen extends Component{
         console.error(e);
       }
     }
-    sendInviteMessage = async(name) => { 
+    sendInviteMessage = async(names) => { 
+      let name = names.split('_')[0]
+      let t_name = names.split('_')[1]
       try {
         await axios.post('http://13.124.141.28:3000/selectWorkerEach', {
           business: this.state.bangCode,
@@ -140,14 +143,17 @@ class InviteScreen extends Component{
         'Accept': 'application/json'}
         })
         .then(res => {
+          console.log('211111111111111111111111111111111111111111')
           console.log(JSON.stringify(res.data))
           if(res.data[0]==undefined){
             axios.post('http://13.124.141.28:3000/sendMessage', {
               type: 1,
               system:1,
                 f: this.state.id,
+                f_name:this.state.f_name,
                 t : name,
-                message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?",
+                t_name:t_name,
+                message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+t_name+"님을 초대합니다.\n승낙하시겠습니까?",
                 r:0
             },
             {  headers:{
@@ -241,7 +247,7 @@ class InviteScreen extends Component{
                   style={styles.button}
                   onPress={()=>{
                     if(this.state.clicked==false){
-                      this.setState({clicked:true},() => this.sendInviteMessage(item.id))
+                      this.setState({clicked:true},() => this.sendInviteMessage(item.id+'_'+item.name))
                     }
                   }}
                 >

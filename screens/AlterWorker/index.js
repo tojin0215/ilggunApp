@@ -92,6 +92,7 @@ class AlterWorkerScreen extends Component{
     console.log(this.props.route.params["date"].split(' '));
     this.state = {
       id : '' ,
+      f_name : '' ,
         dayy: this.props.route.params["date"].split(' ')[0],
         monthh: this.props.route.params["date"].split(' ')[1]*1,
         datee: this.props.route.params["date"].split(' ')[2]*1,
@@ -123,6 +124,7 @@ class AlterWorkerScreen extends Component{
       })
     AsyncStorage.getItem("userData").then((userData) =>{
         this.setState({id:JSON.parse(userData).id});
+        this.setState({f_name:JSON.parse(userData).name});
       });
   }
   fetchData = async(bangCode) => { 
@@ -150,7 +152,7 @@ class AlterWorkerScreen extends Component{
         .then(res => {
           let rowall = []
           for (let i = 0; i < res.data.length; i++) {
-            rowall.push({label: res.data[i].workername, value: res.data[i]});
+            rowall.push({label: res.data[i].workername2+'('+res.data[i].workername+')', value: res.data[i]});
           }
           this.setState({workernames: rowall})
         });
@@ -158,7 +160,7 @@ class AlterWorkerScreen extends Component{
         console.error(e);
       }
 }
-savedData = async(bangCode, worker, month, date, day, year, time) => { 
+savedData = async(bangCode, t, month, date, day, year, time) => { 
     try {
       if(this.state.itemC){
         console.log(bangCode, this.state.originalTime, time);
@@ -178,7 +180,9 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
         let em2 = (s2[6]+s2[7])*1;
         let subTime2 = (((et2-st2)*60) + (em2-sm2));
         let subt = (subTime2-subTime)/60;
-        console.log("subttttt "+subt);
+
+        let worker = t.split('(')[1]
+        console.log("saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaworker "+t);
         axios.post('http://13.124.141.28:3000/addWork', {
             business : bangCode,
             workername : worker,
@@ -193,13 +197,18 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         }).then(res => {
+          
+          let worker = t.split('(')[1]
+          let t_name = t.split('(')[0]
           axios.post('http://13.124.141.28:3000/sendMessage', {
             f: this.state.id,
-            message :"<"+bangCode+">에서 "+worker+"님의 ["+year+"년 "+month+"월 "+date+"일]의 근로시간을 "
+            f_name:this.state.f_name,
+            message :"<"+bangCode+">에서 "+f_name+"님의 ["+year+"년 "+month+"월 "+date+"일]의 근로시간을 "
             + time.substring(0,2) +":"+ time.substring(2,4) +"-"
             + time.substring(4,6) +":"+ time.substring(6,8) 
             +"으로 변경하였습니다.",
             t: worker,
+            t_name:t_name,
             r:0,
             system:1,
             type:3
@@ -297,10 +306,10 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
                 })}
                 onChangeItem={item => {
                     console.log("==================================")
-                    console.log(item.value)
+                    console.log('ccccccccccccccccccccccccccccc',item.value)
                     console.log(item.value[this.props.route.params["date"].split(' ')[0].toLowerCase()]);
                     this.setState({
-                        itemC: item.value.workername,
+                        itemC: item.value.workername2+'('+item.value.workername,
                         originalTime: item.value[this.props.route.params["date"].split(' ')[0].toLowerCase()]
                     })
                 }}
