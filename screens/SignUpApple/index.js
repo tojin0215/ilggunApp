@@ -5,10 +5,9 @@ import {
   Text, Button,ScrollView,
   TextInput,
   TouchableOpacity,ImageBackground,Image,Alert,
-  StyleSheet
 } from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import axios from 'axios';
+import styles from './style';
 
 const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
   const [email, setEmail] = useState(route.params.email);
@@ -155,95 +154,5 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
     </View>
   );
 };
-
-
-const styles = StyleSheet.create({
-    container: {
-        width: "100%", height: "100%",
-        backgroundColor: 'white',
-        borderTopRightRadius:wp('13%'),
-        borderTopLeftRadius:wp('13%'),    
-    },
-    image:{
-        width: "100%", height: "100%",
-        backgroundColor:'#67C8BA'    
-    },
-    formArea: {
-        width: '100%', height:'95%',
-        paddingTop:hp('2%'),
-        paddingLeft:wp('6%'),
-        paddingRight:wp('6%'),
-    },
-    textArea:{
-        marginTop:hp('3%'),
-        borderBottomColor:'#D3D6E2', borderBottomWidth:hp('0.2%')
-    },
-    titleStyle: {
-        fontSize: wp('4.3%'),
-        fontFamily:"NanumSquareB"
-    },
-    textStyle:{
-        fontSize: wp('4%'),
-        fontFamily:"NanumSquare"
-    },
-    titleSignStyle:{
-        fontSize: wp('4.3%'),
-        fontFamily:"NanumSquareB",
-        marginBottom:hp('1%')
-    },
-    sign : { 
-        height:hp('40%'), 
-        width:"100%" , 
-        backgroundColor: '#E4E5EA' 
-    },
-    signBtnArea:{
-        backgroundColor:'#E4E5EA',
-        height:hp('6%'),
-        justifyContent:"center", alignItems:"center"
-    },
-    signTextStyle:{
-        position:"absolute",
-        bottom:hp('0.8%'),right:hp('0.8%'),
-        width:wp('15%'), height:hp('5%'),
-        backgroundColor:'#040525',
-        color:'white',
-        fontSize: wp('3.8%'),
-        fontFamily:"NanumSquare",
-        textAlign:"center",
-        paddingTop:hp('1.3%'),
-        borderRadius:wp('1.5%')
-    },
-    buttonArea: {
-        width: '100%',
-        height: hp('5.5%'),
-        marginTop:hp('3%')
-    },
-    button: {
-        backgroundColor: "#46c3ad",
-        width: "100%",
-        height: "100%",
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius:wp('5%')
-    },
-    buttonTitle: {
-        color: 'white',
-        fontFamily:"NanumSquare",
-        fontSize: wp('4.3%'),
-    },
-
-    buttonlogoArea: {
-        justifyContent:'flex-end',
-        alignItems:"center",
-        bottom: hp('3%'),
-        width: "100%",
-        height: hp('5%'),
-    },
-    logobottom:{
-        width:wp('22%'), height:wp('3%'), 
-        justifyContent:"flex-end",
-        alignItems:"center",
-    },
-  })
  
 export default SignUpAppleScreen;

@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     alignItems:"center"
   },
   titleStyle: {
-    fontSize: wp('4.3%'),
+    fontSize: wp('5rem'),
     fontFamily:"NanumSquareB"
   },
   textStyle:{
@@ -419,6 +419,8 @@ const styles = StyleSheet.create({
   },
   formArea: {
       width: '100%', height:hp('67%'),
+      maxWidth: wp('100rem'),
+      marginHorizontal: "auto",
       borderTopRightRadius:wp('13%'),
       borderTopLeftRadius:wp('13%'),
       backgroundColor:'white',
