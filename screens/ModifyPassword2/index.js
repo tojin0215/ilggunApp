@@ -106,7 +106,9 @@ const styles = StyleSheet.create({
         backgroundColor:'#67C8BA'    
     },
     formArea: {
-        width: '100%', height:'95%',
+        width: '100%', height:hp('95%'),
+        maxWidth: wp('100rem'),
+        marginHorizontal: "auto",
         paddingTop:hp('2%'),
         paddingLeft:wp('6%'),
         paddingRight:wp('6%'),
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
         borderBottomColor:'#D3D6E2', borderBottomWidth:hp('0.2%')
     },
     titleStyle: {
-        fontSize: wp('4.3%'),
+        fontSize: wp('5rem'),
         fontFamily:"NanumSquareB"
     },
     textStyle:{

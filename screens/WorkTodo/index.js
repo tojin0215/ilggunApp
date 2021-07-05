@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     flexShrink:1,
   },
   titleStyle:{
-    fontSize: wp('4.8%'),
+    fontSize: wp('5rem'),
     fontFamily:"NanumSquareB",
     color:'#040525',
     marginBottom:hp('3%'),

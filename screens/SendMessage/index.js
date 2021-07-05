@@ -147,7 +147,9 @@ const styles = StyleSheet.create({
 
   },
   formArea: {
-    width: wp('90%'),height:hp('70%'),
+    width: '100%', height:hp('70%'),
+    maxWidth: wp('100rem'),
+    marginHorizontal: "auto",
     paddingLeft:wp('5%'),
     paddingRight:wp('5%'),
     paddingBottom: hp('2.5%'),
