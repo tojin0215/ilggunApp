@@ -97,14 +97,14 @@ class StatementScreen2 extends Component {
       type2: [],
       bangCode: "",
       id: "",
-      EmploymentInsurancePercentage: "",
-      HealthInsurancePercentage: "",
-      NationalPensionPercentage: "",
-      RegularCarePercentage: "",
-      pay11: 0,
+      EmploymentInsurancePercentage: 0.8,
+      HealthInsurancePercentage: 3.43,
+      NationalPensionPercentage: 4.5,
+      RegularCarePercentage: 11.25,
+      pay11: 8720,
       bangCode: null,
 
-      HourlyWage: 0,
+      HourlyWage: 8720,
       WorkingHour: 0,
       MonthlySalary: 0,
       userAdditionalAllowance: {
@@ -165,24 +165,27 @@ class StatementScreen2 extends Component {
             //   res.data[i].date
             // );
             if (res.data[i].date === this.state.itemAA.split("년")[0]) {
-              console.log("국민연금", res.data[i].NationalPensionPercentage);
-              console.log("건강보험", res.data[i].HealthInsurancePercentage);
-              console.log("건강보험(장기)", res.data[i].RegularCarePercentage);
+              const NationalPensionPercentage = res.data[i].NationalPensionPercentage ? res.data[i].NationalPensionPercentage : 4.5;
+              const HealthInsurancePercentage = res.data[i].HealthInsurancePercentage ? res.data[i].HealthInsurancePercentage : 3.43;
+              const RegularCarePercentage = res.data[i].RegularCarePercentage ? res.data[i].RegularCarePercentage : 11.25;
+              const EmploymentInsurancePercentage = res.data[i].EmploymentInsurancePercentage ? res.data[i].EmploymentInsurancePercentage : 0.8;
+              const pay11 = res.data[i].HourlyWage ? res.data[i].HourlyWage : 8720;
+              const HourlyWage = res.data[i].HourlyWage ? res.data[i].HourlyWage : 8720;
+              console.log("국민연금", NationalPensionPercentage);
+              console.log("건강보험", HealthInsurancePercentage);
+              console.log("건강보험(장기)", RegularCarePercentage);
               console.log(
                 "고용보험",
-                res.data[i].EmploymentInsurancePercentage
+                EmploymentInsurancePercentage
               );
-              console.log("시급", res.data[i].HourlyWage);
+              console.log("시급", HourlyWage);
               this.setState({
-                NationalPensionPercentage:
-                  res.data[i].NationalPensionPercentage,
-                HealthInsurancePercentage:
-                  res.data[i].HealthInsurancePercentage,
-                RegularCarePercentage: res.data[i].RegularCarePercentage,
-                EmploymentInsurancePercentage:
-                  res.data[i].EmploymentInsurancePercentage,
-                pay11: res.data[i].HourlyWage,
-                HourlyWage: res.data[i].HourlyWage,
+                NationalPensionPercentage: NationalPensionPercentage,
+                HealthInsurancePercentage: HealthInsurancePercentage,
+                RegularCarePercentage: RegularCarePercentage,
+                EmploymentInsurancePercentage: EmploymentInsurancePercentage,
+                pay11: pay11,
+                HourlyWage: HourlyWage,
               });
             }
           }
@@ -192,6 +195,7 @@ class StatementScreen2 extends Component {
       console.error(e);
     }
   };
+
   fetchOtherAllowance = async () => {
     const year = this.state.itemAA.split("년")[0] * 1;
     const month = this.state.itemBB.split("월")[0] * 1;
@@ -761,22 +765,24 @@ class StatementScreen2 extends Component {
       const user_name = this.state.nname[i][0];
       user_name_let = user_name
 
-      if (item_A == user_name || item_B == user_name) {
-        WorkingType = this.state.nname[i][1];
-        if (this.state.nname[i][1] == "정규직") {
-          MonthlySalary = this.state.nname[i][2];
-          MealCharge = this.state.nname[i][3];
-          ExtraWorkAllowance = this.state.nname[i][4];
-        } else {
-          WorkingHour = this.state.nname[i][3];
-          HourlyWage = this.state.nname[i][2];
-          MealChargePartTime = this.state.nname[i][4];
-          ExtraWorkAllowancePartTime = this.state.nname[i][5];
-        }
-        break;
+      // if (item_A == user_name || item_B == user_name) {
+      WorkingType = this.state.nname[i][1];
+      if (this.state.nname[i][1] === "정규직") {
+        MonthlySalary = this.state.nname[i][2]*1;
+        MealCharge = this.state.nname[i][3];
+        ExtraWorkAllowance = this.state.nname[i][4];
+      } else {
+        WorkingHour = this.state.nname[i][3];
+        HourlyWage = this.state.nname[i][2];
+        MealChargePartTime = this.state.nname[i][4];
+        ExtraWorkAllowancePartTime = this.state.nname[i][5];
       }
+      break;
+      // }
     }
-
+    console.log(this.state.itemA);
+    console.log(this.state.itemB);
+    console.log(MonthlySalary);
     console.log(
       "000000000000000000000000000000000000000000000000000000000000000"
     );
@@ -792,6 +798,7 @@ class StatementScreen2 extends Component {
       MonthlySalary,
       this.state.NationalPensionPercentage
     );
+    console.log('NationalPension:'+MonthlySalary);
 
     // HealthInsurance:건강보험 (보수총액*3.3335%)
     const HealthInsurance = getHealthInsurance(

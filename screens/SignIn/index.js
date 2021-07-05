@@ -6,12 +6,9 @@ import {
   View,
   Text, Button, Image, TextInput, 
   TouchableOpacity,
-  StyleSheet,
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native';
-
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import axios from 'axios';
 import { Alert } from 'react-native';
@@ -20,6 +17,8 @@ import { Alert } from 'react-native';
 import * as GoogleSignIn from 'expo-google-sign-in';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from "expo-crypto";
+
+import styles from './styles';
 
 const SignInScreen = ({ onSignIn, navigation }) => {
   const [id, setId] = useState('');
@@ -312,161 +311,5 @@ const SignInScreen = ({ onSignIn, navigation }) => {
 
   );
 };
-
-const styles = StyleSheet.create({
-  image:{
-    //flex: 1,
-    //resizeMode: "cover",
-    justifyContent: "flex-start",
-    width: "100%", height: "100%",
-    //paddingLeft: wp('10%'),
-    //paddingRight: wp('10%'),
-  },  
-  logo:{
-    justifyContent: "center",alignItems:"center",
-    width: wp('30%'), height: wp('30%'),
-    marginTop:hp('20%')
-  }, 
-  container: {
-      width: "100%", height: "100%",
-      backgroundColor: 'white',
-      paddingLeft: wp('10%'),
-      paddingRight: wp('10%'),
-      paddingBottom: wp('15%'),
-      justifyContent: 'center',
-  },
-  titleArea: {
-      width: '100%',
-      padding: wp('5%'),
-      marginBottom: wp('13%'),
-      alignItems: 'center',
-  },
-  formArea: {
-      width: '100%',
-      paddingBottom: wp('7%'),
-      marginTop:hp('1.8%'),
-      marginBottom:  hp('0.5%'),
-  },
-  textArea:{
-    flexDirection:"row",
-    borderBottomWidth: wp('0.3%'),
-    borderBottomColor:'#67C8BA',
-  },
-  idImg:{
-    width:wp('16%'), height:wp('5%'),
-    marginLeft:wp('1.3%'), marginTop:hp('3.5%'), marginRight:wp('8%'),
-  },
-  
-  pwdImg:{
-    width:wp('18%'), height:wp('4.3%'),
-    marginLeft:wp('1.2%'), marginTop:hp('3.9%'), marginRight:wp('6%'),
-  },
-  textForm: {
-      width: '60%',
-      height: hp('6%'),
-      paddingLeft: wp('1.2%'),
-      paddingRight: wp('1.2%'),
-      marginTop:  hp('2%'),
-      fontSize: wp('4%'), fontFamily:"NanumSquare",
-      color:'#040525',
-  },
-  buttonArea: {
-      width: '100%',
-      height: hp('17%'),
-      marginBottom: hp('15%'),
-      backgroundColor:'white'
-  },
-  button: {
-      backgroundColor: "#67C8BA",
-      width: "100%",
-      height: hp('6%'),
-      marginBottom:wp('3%'),
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: wp('6%'),
-  },
-  button1: {
-    flexDirection:'row',
-    backgroundColor: "#f4f4f4",
-    width: "100%",
-    height: hp('6%'),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: wp('6%'),
-    marginBottom:wp('3%')
-  },
-  googleImg:{
-    position:"absolute", top:hp('1%'), left:wp('5%'),
-    width:wp('7%'), height:wp('7%')
-  },
-  button2: {
-      marginLeft:wp('35%'),
-      width: wp('45%'),
-      height: hp('6%'),
-      justifyContent: 'center',
-      alignItems:'flex-end' ,
-      paddingLeft: wp('15%'),
-      paddingRight: wp('5%')
-  },
-  buttonLoginTitle:{
-    color: 'white', fontSize: wp('4.8%'),
-    fontFamily:"NanumSquare",
-  },
-  buttonGoogleTitle: {
-      color: '#040525', fontSize: wp('4.5%'),
-      fontFamily:"NanumSquare",
-  },
-  buttonTitle: {
-      color: '#040525', fontSize: wp('4.2%'),
-      fontFamily:"NanumSquare",
-  },
-  buttonlogoArea: {
-    justifyContent:'flex-end',
-    alignItems:"center",
-    bottom: hp('2%'),
-    width: "100%",
-    height: hp('5%'),
-  },
-  logobottom:{
-    width:wp('22%'), height:wp('3%'), 
-    justifyContent:"flex-end",
-    alignItems:"center",
-  },
-  containerL: {
-    backgroundColor:"#67C8BA",
-    width: "100%", height: "100%",
-    paddingLeft: wp('10%'),
-    paddingRight: wp('10%'),
-    paddingBottom: wp('15%'),
-    justifyContent: 'center',
-  },
-  titleAreaL: {
-      width: '100%',
-      padding: wp('10%'),
-      marginBottom: wp('5%'),
-      alignItems: 'center',
-  },
-  textAreaL:{
-    marginLeft:wp('5%'),
-    marginBottom:wp('30%')
-  },
-  text1L:{
-    color: 'white', fontSize: wp('7%'),
-    fontFamily:"NanumSquare",
-    marginBottom:wp('2%')
-  },
-  text2L:{
-    color: 'white', fontSize: wp('5.7%'),
-    fontFamily:"NanumSquare"
-  },
-  logoL:{
-    justifyContent: "center",
-    width: wp('32%'), height: wp('30%'),
-  }, 
-  buttonlogoAreaL:{
-    position:'absolute',
-    bottom:hp('3%'), left:0, right:0, justifyContent:"center", alignItems:"center"
-  }
-})
 
 export default SignInScreen;
