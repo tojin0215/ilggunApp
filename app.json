@@ -25,16 +25,16 @@
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {
-            "certificateHash": "DC:63:1A:19:FD:BC:71:E2:EC:C4:20:4E:14:7E:CB:EC:01:B8:64:28"
+            "certificateHash": "3D:03:FA:2B:3D:0B:54:77:16:E6:94:14:7C:AF:14:8E:F0:8D:80:67"
         }
       },
-      "versionCode": 3,
-      "package": "com.tojin.ilggun",
+      "versionCode": 1,
+      "package": "com.tojin.ilggun2",
       "icon" : "./img/logo.png"
     },
     "ios": {
-      "bundleIdentifier": "com.tojin.ilggun",
-      "buildNumber":"1.0.4",
+      "bundleIdentifier": "com.tojin.ilggun2",
+      "buildNumber":"1.0.0",
       "icon" : "./img/logo_ios.png",
       "supportsTablet": false,
       "usesAppleSignIn": true,
