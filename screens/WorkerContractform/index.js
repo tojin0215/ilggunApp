@@ -113,10 +113,14 @@ class WorkerContractformScreen extends Component{
       .then((bangCode) => {
         this.setState({bangCode:bangCode});
         AsyncStorage.getItem("userData").then((userData) => {
+          console.log('________________id',JSON.parse(userData).id)
+          console.log('_________________name',JSON.parse(userData).name)
           this.setState({idid:JSON.parse(userData).id})
+          this.setState({namename:JSON.parse(userData).name})
           this.fetchHtml(bangCode,JSON.parse(userData).id);
         });
       })
+
     /*AsyncStorage.getItem("bangCode")
       .then((bangCode) => {
         this.setState({bangcode:bangCode});
@@ -736,6 +740,7 @@ class WorkerContractformScreen extends Component{
           type:2,
           bang: this.state.bang,
           id:this.state.id,
+          //name:this.state.name,
           pay: this.state.Salary,
           mon: time,
           tue:time,
@@ -768,8 +773,10 @@ class WorkerContractformScreen extends Component{
             try {
               axios.post('http://13.124.141.28:3000/sendMessage', {
                 t: res.data[0].id,
-                message :"<"+this.state.bang+"> 근로자 '"+this.state.id+"'가 계약서를 최종 완료했습니다. 이제부터 근로자를 관리할 수 있습니다.",
+                t_name:res.data[0].name,
+                message :"<"+this.state.bang+"> 근로자 '"+this.state.namename+"'가 계약서를 최종 완료했습니다. 이제부터 근로자를 관리할 수 있습니다.",
                 f: this.state.id,
+                f_name:this.state.namename,
                 r:0,
                 system:1,
                 type:3
@@ -925,8 +932,10 @@ class WorkerContractformScreen extends Component{
             try {
               axios.post('http://13.124.141.28:3000/sendMessage', {
                 t: res.data[0].id,
-                message :"<"+this.state.bang+"> 근로자 '"+this.state.id+"'가 계약서를 최종 완료했습니다. 이제부터 근로자를 관리할 수 있습니다.",
+                t_name:res.data[0].name,
+                message :"<"+this.state.bang+"> 근로자 '"+this.state.namename+"'가 계약서를 최종 완료했습니다. 이제부터 근로자를 관리할 수 있습니다.",
                 f: this.state.id,
+                f_name:this.state.namename,
                 r:0,
                 system:1,
                 type:3

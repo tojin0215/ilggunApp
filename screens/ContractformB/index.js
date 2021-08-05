@@ -109,7 +109,7 @@ class ContractformBScreen extends Component{
             <TextInput value={this.state.End77} onChangeText={(End77) => this.setState({End77})} placeholder='00' keyboardType={"number-pad"} ref={(input) => { this.Tabledata33 = input; }} onSubmitEditing={() => { this.Tabledata34.focus(); }} blurOnSubmit={false} style={styles.tableTextStyle1} />
         </View>, 
         <TextInput value={this.state.time7} onChangeText={(time7) => this.setState({time7})} placeholder='5' keyboardType={"number-pad"} ref={(input) => { this.Tabledata34 = input; }} blurOnSubmit={false} style={styles.tableTextStyle1} />]
-    ], id:this.props.route.params.workername, bang:''//, types4:[0,0,0,0,0]
+    ], id:this.props.route.params.workername,t_name:this.props.route.params.workername2, bang:''//, types4:[0,0,0,0,0]
     };
     
     AsyncStorage.getItem("bangCode")
@@ -525,8 +525,10 @@ fetchHtml = async(a) => {
               try {
                 axios.post('http://13.124.141.28:3000/sendMessage', {
                   t: this.state.id,
-                  message :"<"+this.state.bang+">사업주가 "+this.state.id+"님의 계약서를 작성했습니다. [문서함>계약서]를 확인해주세요.",
+                  t_name:this.state.t_name,
+                  message :"<"+this.state.bang+">사업주가 "+this.state.t_name+"님의 계약서를 작성했습니다. [문서함>계약서]를 확인해주세요.",
                   f: res.data[0].id,
+                  f_name:res.data[0].name,
                   r:0,
                   system:1,
                   type:3

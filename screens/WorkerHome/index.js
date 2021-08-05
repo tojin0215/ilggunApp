@@ -99,6 +99,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [onlyOne, setOnlyOne] = useState(0);
   const [business, setBusiness] = useState([]);
   const [id,setId] = useState('');
+  const [name,setName] = useState('');
   const [time, setTime] = useState('')
   const [timelog, setTimelog] = useState('')
 
@@ -119,11 +120,12 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     });
     setBusiness(route.params.bname);
     setId(route.params.id);
+    setName(route.params.name);
     let isMounted = true;
 
     function f(){
       if(isMounted){
-          fetchData(route.params.bname, route.params.id);
+          fetchData(route.params.bname, route.params.id, route.params.name);
       }
     }
     f();
@@ -194,7 +196,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       }, []);
     }*/
       
-  async function fetchData(bangCode,idid) { 
+  async function fetchData(bangCode,idid,name) { 
     try {
         /*let res = await fetch('http://13.124.141.28:3000/selectBusinessByWorker', {
           method: 'POST',
@@ -479,7 +481,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       <TouchableOpacity 
         style={styles.button}
         onPress={() => {
-          console.log(route.params.state);
+          console.log('_______________________________________________________ㄴ여깅',route.params.state);
           if(state==2 || route.params.state==2){
             setClicked(0);
             var week = ["Sun",'Mon','Tue',"Wed","Thu","Fri","Sat"]
@@ -489,7 +491,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             var year = new Date().getFullYear(); //To get the Current Year
             let dt = week[day]+" "+ month+" " +date+" "+ year;
             console.log(dt);
-            navigation.navigate('Vacation Request',{date:dt,id:route.params.id}); 
+            navigation.navigate('Vacation Request',{date:dt, id:route.params.id, name:route.params.name}); 
+            console.log('_______________________________________________________ㄴ여깅',route.params.name);
             setTimeout(() => {setClicked(-1)},500);
           }else{
             Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")

@@ -372,8 +372,10 @@ class ContractformAScreen extends React.Component{
               try {
                 axios.post('http://13.124.141.28:3000/sendMessage', {
                   t: this.state.id,
-                  message :"<"+this.state.bang+">사업주가 "+this.state.id+"님의 계약서를 작성했습니다. [문서함>계약서]를 확인해주세요.",
+                  t_name:this.props.route.params.workername2,
+                  message :"<"+this.state.bang+">사업주가 "+this.state.t_name+"님의 계약서를 작성했습니다. [문서함>계약서]를 확인해주세요.",
                   f: res.data[0].id,
+                  f_name:res.data[0].name,
                   r:0,
                   system:1,
                   type:3

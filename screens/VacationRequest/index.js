@@ -101,6 +101,7 @@ class VacationRequestScreen extends Component{
       comment: '',
 
       owner:'',
+      owner_name:'',
       clicked: false
     }
     
@@ -131,13 +132,16 @@ class VacationRequestScreen extends Component{
             'Accept': 'application/json'}
           })
           .then(res => {
-            this.setState({owner : res.data[0].id});
+            this.setState({owner : res.data[0].id, owner_name : res.data[0].name});
           });
+          console.log('111111111111111111111111111111111111111111111111111111',this.props.route.params.name)
           await axios.post('http://13.124.141.28:3000/sendMessage', {
               type: 2,
               system:1,
               f: this.props.route.params.id,
+              f_name:this.props.route.params.name,
               t : this.state.owner,
+              t_name:this.state.owner_name,
               message : '('+this.state.bangCode + ')님이 '+ this.state.itemA+"-"+(this.state.itemB.length==1?'0'+this.state.itemB:this.state.itemB)+"-"+(this.state.itemAA.length==1?'0'+this.state.itemAA:this.state.itemAA)+'에 휴가를 요청합니다.\n"'+ this.state.comment+'"\n승인하시겠습니까?"',
               time : this.state.itemA+"-"+this.state.itemB+"-"+this.state.itemAA,
               r:0
@@ -151,7 +155,7 @@ class VacationRequestScreen extends Component{
             console.log(res.data);
             let rowall = []
             for (let i = 0; i < res.data.length; i++) {
-              rowall.push({label: res.data[i].workername, value: res.data[i]});
+              rowall.push({label: res.data[i].workername2, value: res.data[i]});
             }
             this.setState({workernames: rowall})
             Alert.alert("휴가 신청이 완료되었습니다.")
