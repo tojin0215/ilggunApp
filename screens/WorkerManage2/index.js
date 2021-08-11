@@ -31,12 +31,12 @@ const styles = StyleSheet.create({
   },
   textTitle:{
       color: '#040525',
-      fontSize:wp('4.8%'),
+      fontSize:wp('4.8rem'),
       fontFamily:"NanumSquareB",
   },
   textTitle2:{
     color: '#040525',
-    fontSize:wp('3.5%'),
+    fontSize:wp('3.5rem'),
     fontFamily:"NanumSquare",
   },
   ContbuttonArea: {
@@ -57,13 +57,13 @@ const styles = StyleSheet.create({
   },
   deleteTitle:{
     color: '#040525',
-    fontSize:wp('4.8%'),
+    fontSize:wp('4.8rem'),
     fontFamily:"NanumSquare",
     justifyContent: 'center', alignItems:"center",
   },
   deleteTitle2:{
     color: 'red',
-    fontSize:wp('4.8%'),
+    fontSize:wp('4.8rem'),
     fontFamily:"NanumSquare",
     justifyContent: 'center', alignItems:"center",
   },
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },  
   deleteTitlex:{
     color: '#040525',
-    fontSize:wp('4.8%'),
+    fontSize:wp('4.8rem'),
     fontFamily:"NanumSquare",
     justifyContent: 'center', alignItems:"center",
     marginTop:hp('3.4%'),

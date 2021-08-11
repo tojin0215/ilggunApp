@@ -365,10 +365,10 @@ class CalculatingScreen2 extends Component{
       color: '#040525',
       ...Platform.select({
         ios:{
-          fontSize: wp('3.2%'),
+          fontSize: wp('3.2rem'),
         },
         android:{
-          fontSize: wp('3.8%'),
+          fontSize: wp('3.8rem'),
         }
       })
     },
@@ -378,14 +378,14 @@ class CalculatingScreen2 extends Component{
       backgroundColor:'#67C8BA'
     },
     textTitle:{
-      fontSize: wp('5.55%'),
+      fontSize: wp('5.55rem'),
       fontFamily:"NanumSquareB",
       color: '#040525',
       marginBottom:hp('2%'),
       marginTop:hp('2%')
     },
     textStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       color: '#040525',
       marginLeft:wp('1.5%'),
@@ -394,7 +394,7 @@ class CalculatingScreen2 extends Component{
       marginRight:wp('2%'),
     },
     textStyle1:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       color: '#040525',
       marginLeft:wp('1.5%'),
@@ -403,7 +403,7 @@ class CalculatingScreen2 extends Component{
       marginRight:wp('2%'),
     },
     textResultStyle:{
-      fontSize: wp('5.05%'),
+      fontSize: wp('5.05rem'),
       fontFamily:"NanumSquareB",
       color: '#040525',
       marginLeft:wp('3%'),
@@ -412,19 +412,19 @@ class CalculatingScreen2 extends Component{
       marginRight:wp('2%'),
     },
     textinputStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       marginLeft:wp('1.5%'),
       width:wp('30%')
     },
     textinputYearStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       marginLeft:wp('1.5%'),
       width:wp('11%')
     },
     textinputDayStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       marginLeft:wp('2%'),
       width:wp('7%'),
@@ -451,12 +451,12 @@ class CalculatingScreen2 extends Component{
     buttonTitle: {
         color: 'white',
         fontFamily:"NanumSquare",
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
     },
     buttonResetTitle: {
         color: 'white',
         fontFamily:"NanumSquare",
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
     },
     tableArea:{
       marginTop:hp('2%'), marginBottom:hp('3%')

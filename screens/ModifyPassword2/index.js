@@ -122,11 +122,11 @@ const styles = StyleSheet.create({
         fontFamily:"NanumSquareB"
     },
     textStyle:{
-        fontSize: wp('4%'),
+        fontSize: wp('4rem'),
         fontFamily:"NanumSquare"
     },
     titleSignStyle:{
-        fontSize: wp('4.3%'),
+        fontSize: wp('4.3rem'),
         fontFamily:"NanumSquareB",
         marginTop:hp('1%')
     },
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         width:wp('15%'), height:hp('4%'),
         backgroundColor:'#040525',
         color:'white',
-        fontSize: wp('3.8%'),
+        fontSize: wp('3.8rem'),
         fontFamily:"NanumSquare",
         textAlign:"center",
         paddingTop:hp('1.3%'),
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     buttonTitle: {
         color: 'white',
         fontFamily:"NanumSquare",
-        fontSize: wp('4.3%'),
+        fontSize: wp('4.3rem'),
     },
 
     buttonlogoArea: {

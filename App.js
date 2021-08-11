@@ -177,7 +177,7 @@ const WorkerTabs = () => {
         activeTintColor: '#67C8BA',
         inactiveTintColor :'#D3D6E2',
         labelStyle: {
-          fontSize: wp('4.8%'),
+          fontSize: wp('4.8rem'),
           fontFamily:"NanumSquare"
         },
         tabStyle:{
@@ -212,7 +212,7 @@ const ExpenseTabs = () => {
         activeTintColor: '#67C8BA',
         inactiveTintColor :'#D3D6E2',
         labelStyle: {
-          fontSize: wp('4.8%'),
+          fontSize: wp('4.8rem'),
           //fontFamily:"NanumSquare"
         },
         tabStyle:{
@@ -247,7 +247,7 @@ const UnemploymentTabs = () => {
         activeTintColor: '#67C8BA',
         inactiveTintColor :'#D3D6E2',
       labelStyle: {
-        fontSize: wp('4.8%'),
+        fontSize: wp('4.8rem'),
         //fontFamily:"NanumSquare"
       },
       tabStyle:{
@@ -282,7 +282,7 @@ const WExpenseTabs = () => {
         activeTintColor: '#7085DF',
         inactiveTintColor :'#D3D6E2',
         labelStyle: {
-          fontSize: wp('4.8%'),
+          fontSize: wp('4.8rem'),
           //fontFamily:"NanumSquare"
         },
         tabStyle:{
@@ -318,7 +318,7 @@ const WUnemploymentTabs = () => {
         activeTintColor: '#7085DF',
         inactiveTintColor :'#D3D6E2',
       labelStyle: {
-        fontSize: wp('4.8%'),
+        fontSize: wp('4.8rem'),
         //fontFamily:"NanumSquare"
       },
       tabStyle:{
@@ -353,7 +353,7 @@ const StatementTabs = () => {
         activeTintColor: '#67C8BA',
       inactiveTintColor :'#D3D6E2',
       labelStyle: {
-        fontSize: wp('4.8%'),
+        fontSize: wp('4.8rem'),
         fontFamily:"NanumSquare"
       },
       tabStyle:{
@@ -388,7 +388,7 @@ const DocumentTabs = () => {
         activeTintColor: '#7085DF',
       inactiveTintColor :'#D3D6E2',
         labelStyle: {
-          fontSize: wp('4.8%'),
+          fontSize: wp('4.8rem'),
           //fontFamily:"NanumSquare"
         },
         tabStyle:{
@@ -423,7 +423,7 @@ const MessageTabs = () => {
         activeTintColor: '#92B9E4',
       inactiveTintColor :'#D3D6E2',
         labelStyle: {
-          fontSize: wp('4.8%'),
+          fontSize: wp('4.8rem'),
           //fontFamily:"NanumSquare"
         },
         tabStyle:{
@@ -565,7 +565,7 @@ const App = () => {
       screenOptions={{
         headerTintColor: 'white', // 폰트색
         headerStyle: { backgroundColor: '#67C8BA', shadowOpacity: 0, elevation: 0,}, //배경
-        headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}}}
+        headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}}}
       >
        {isAuthenticated ? (
         <>
@@ -823,7 +823,7 @@ const App = () => {
               title:"계산하기",
               headerTintColor: 'white', // 폰트색
               headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name="WCalculating" component={WCalculatingScreen}
           />
@@ -832,7 +832,7 @@ const App = () => {
               title:"인건비 계산",
               headerTintColor: 'white', // 폰트색
               headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name="WCalculating1" component={WExpenseTabs}
           />
@@ -841,7 +841,7 @@ const App = () => {
               title:"퇴직금 계산",
               headerTintColor: 'white', // 폰트색
               headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name="WCalculating2" component={WCalculatingScreen2}
           />
@@ -850,7 +850,7 @@ const App = () => {
               title:"실업급여 계산",
               headerTintColor: 'white', // 폰트색
               headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name="WCalculating3" component={WUnemploymentTabs}
           />
@@ -859,7 +859,7 @@ const App = () => {
               title:"휴가 요청",
               headerTintColor: '#7085DF', // 폰트색
               headerStyle: { backgroundColor: 'white', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name="Vacation Request" component={VacationRequestScreen}
           />
@@ -881,7 +881,7 @@ const App = () => {
               title:"문서함",
               headerTintColor: 'white', // 폰트색
               headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name='Worker Document' component={DocumentTabs}
           />
@@ -896,7 +896,7 @@ const App = () => {
               title:"메세지 목록",
               headerTintColor: '#92B9E4', // 폰트색
               headerStyle: { backgroundColor: '#DAE9F7', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name='Message List' component={MessageTabs}
           />
@@ -905,7 +905,7 @@ const App = () => {
               title:"메세지 보내기",
               headerTintColor: '#92B9E4', // 폰트색
               headerStyle: { backgroundColor: '#DAE9F7', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name='Send Message' component={SendMessageScreen}
           />
@@ -921,7 +921,7 @@ const App = () => {
               title:"할 일",
               headerTintColor: 'white', // 폰트색
               headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name='WorkTodo' component={WorkTodoScreen}
           />
@@ -930,7 +930,7 @@ const App = () => {
               title:"출퇴근인증",
               headerTintColor: 'white', // 폰트색
               headerStyle: { backgroundColor: '#7085DF', shadowOpacity: 0, elevation: 0,}, //배경
-              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5%')}
+              headerTitleStyle:{fontFamily:"NanumSquare",fontSize:wp('5.5rem')}
             }}
             name="QrAuth" component={QrAuthScreen}
           />

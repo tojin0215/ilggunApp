@@ -35,16 +35,16 @@ const styles = StyleSheet.create({
     justifyContent:"center",alignItems:"center",
     marginTop:hp('0.5%'),
     fontFamily:"NanumSquareB",
-    fontSize:wp('5%'),
+    fontSize:wp('5rem'),
   },
   text1:{
     
-    fontSize:wp('6%'), 
+    fontSize:wp('6rem'), 
     fontFamily:"NanumSquareB",
     marginBottom:hp('1%'),
   },
   text2:{
-    fontSize:wp('4%'), 
+    fontSize:wp('4rem'), 
     fontFamily:"NanumSquare",
   },
   texts:{

@@ -14,12 +14,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   textPlusStyle:{
-    fontSize: wp('10%'),
+    fontSize: wp('10rem'),
     fontFamily:"NanumSquareB",
     color:'white',
   },
   textStyle:{
-    fontSize: wp('4.5%'),
+    fontSize: wp('4.5rem'),
     fontFamily:"NanumSquare",
     color:'white',
   },
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent:"center", alignItems:"center",
   },
   deleteTextStyle:{
-    fontSize: wp('5%'),
+    fontSize: wp('5rem'),
     fontFamily:"NanumSquare",
     color:'#67C8BA',
   },
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     width:wp('63%'),
     paddingLeft:wp('3%'),
     paddingRight:wp('2%'),
-    fontSize: wp('4.2%'),
+    fontSize: wp('4.2rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     lineHeight:wp('6.5%'),
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   textNameStyle2:{
     width:wp('11%'),
-    fontSize: wp('3.8%'),
+    fontSize: wp('3.8rem'),
     fontFamily:"NanumSquare",
     color:'#67C8BA',
   }

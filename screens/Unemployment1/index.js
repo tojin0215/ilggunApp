@@ -382,7 +382,7 @@ class UnemploymentScreen1 extends Component{
                         labelHorizontal={true}
                         buttonColor={'#67C8BA'}
                         selectedButtonColor={'#67C8BA'}
-                        labelStyle={{fontSize: wp('4.2%'), color: '#040525', marginRight:wp('3%'), fontFamily:"NanumSquare"}}
+                        labelStyle={{fontSize: wp('4.2rem'), color: '#040525', marginRight:wp('3%'), fontFamily:"NanumSquare"}}
                         animation={true}
                         onPress={(value, index) => {
                             this.setState({
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
         alignItems:"center"
     },
     textTitle:{
-        fontSize:wp('5.55%'),
+        fontSize:wp('5.55rem'),
         fontFamily:"NanumSquareB",
         color: '#040525',
         marginBottom:hp('2%'),
@@ -591,7 +591,7 @@ const styles = StyleSheet.create({
         marginLeft:wp('1.5%')
     },
     textLineStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         color: '#040525',
         marginTop:wp('1%'),
@@ -600,7 +600,7 @@ const styles = StyleSheet.create({
         lineHeight:wp('6.5%')
     },
     textStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         color: '#040525',
         marginTop:hp('1%'),
@@ -610,11 +610,11 @@ const styles = StyleSheet.create({
     tableTextStyle:{
         textAlign:"center",
         color: '#040525',
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
     },
     textStyle1:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       color: '#040525',
       marginLeft:wp('1.5%'),
@@ -624,26 +624,26 @@ const styles = StyleSheet.create({
       lineHeight:wp('6.5%')
     },
     textinputStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('3%'),
         width:wp('35%'),
     },
     textinputYearStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         width:wp('11%')
     },
     textinputDayStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('2%'),
         width:wp('7%'),
     },
     
     textResultStyle:{
-        fontSize:wp('5.05%'),
+        fontSize:wp('5.05rem'),
         fontFamily:"NanumSquareB",
         color: '#040525',
         marginLeft:wp('3%'),
@@ -679,12 +679,12 @@ const styles = StyleSheet.create({
     buttonTitle: {
           color: 'white',
           fontFamily:"NanumSquare",
-          fontSize:wp('4.8%'),
+          fontSize:wp('4.8rem'),
     },
     buttonResetTitle: {
           color: 'white',
           fontFamily:"NanumSquare",
-          fontSize:wp('4.8%'),
+          fontSize:wp('4.8rem'),
     },
     tableArea:{
         marginTop:hp('2%'), marginBottom:hp('3%'),
@@ -695,10 +695,10 @@ const styles = StyleSheet.create({
         color: '#040525',
         ...Platform.select({
             ios:{
-            fontSize: wp('3.2%'),
+            fontSize: wp('3.2rem'),
             },
             android:{
-            fontSize: wp('3.8%'),
+            fontSize: wp('3.8rem'),
             }
         })
     },

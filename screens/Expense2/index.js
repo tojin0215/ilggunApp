@@ -282,15 +282,15 @@ const styles = StyleSheet.create({
     buttonTitle: {
         color: 'white',
         fontFamily:"NanumSquare",
-        fontSize: wp('4.8%'),
+        fontSize: wp('4.8rem'),
     },  
     buttonResetTitle: {
         color: 'white',
         fontFamily:"NanumSquare",
-        fontSize: wp('4.8%'),
+        fontSize: wp('4.8rem'),
     },  
     textTitle:{
-        fontSize: wp('5.55%'),
+        fontSize: wp('5.55rem'),
         fontFamily:"NanumSquareB",
         marginBottom:hp('2%'),
         marginTop:hp('2%'),
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
         marginLeft:wp('1.5%')
     },
     textStyle:{
-        fontSize: wp('4.2%'),
+        fontSize: wp('4.2rem'),
         fontFamily:"NanumSquare",
         color:'#040525',
         marginTop:wp('1%'),
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
         marginRight:wp('2%'),
     },  
     textStyle2:{
-        fontSize:wp('3.35%'),
+        fontSize:wp('3.35rem'),
         fontFamily:"NanumSquare",
         marginTop:wp('1.5%'),
         marginBottom:wp('1.5%'),
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
         color:'#040525',
     },  
     textinputStyle:{
-      fontSize: wp('4.2%'),
+      fontSize: wp('4.2rem'),
       fontFamily:"NanumSquare",
       marginLeft:wp('3%'),
       width:wp('35%'), height:hp('4.5%'), textAlign:"center", justifyContent:"center",
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
         borderBottomWidth:hp('0.1%')
     },
     textResultStyle:{
-      fontSize:wp('5.05%'),
+      fontSize:wp('5.05rem'),
       fontFamily:"NanumSquareB",
       marginLeft:wp('3%'),
       marginTop:wp('1%'),
@@ -350,13 +350,13 @@ const styles = StyleSheet.create({
         marginBottom:hp('5%')
     },
     listText1:{
-        fontSize:wp('3.6%'),
+        fontSize:wp('3.6rem'),
         fontFamily:"NanumSquare",
         marginTop:hp('0.5%'),
         color:'#040525',
     },  
     listText:{
-        fontSize:wp('3.6%'),
+        fontSize:wp('3.6rem'),
         fontFamily:"NanumSquare",
         color:'#040525',
     },  

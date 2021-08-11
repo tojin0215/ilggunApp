@@ -686,7 +686,7 @@ class StatementScreen1 extends React.Component {
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
-                      fontSize: wp('4.2%'),
+                      fontSize: wp('4.2rem'),
                       marginTop:hp('1%')
                     }}
                     isVisible={this.state.isVisibleA}
@@ -729,7 +729,7 @@ class StatementScreen1 extends React.Component {
                       textAlign: 'center',
                       color:'#040525',
                       fontFamily:"NanumSquare",
-                      fontSize: wp('4.2%'),
+                      fontSize: wp('4.2rem'),
                       marginTop:hp('1%')
                     }}
                     isVisible={this.state.isVisibleB}
@@ -815,7 +815,7 @@ const styles = StyleSheet.create({
     alignItems:"center"
   },
   textTitle:{
-      fontSize:wp('5.5%'),
+      fontSize:wp('5.5rem'),
       color: '#040525',
       fontFamily:"NanumSquareB",
       marginBottom:hp('1%'),
@@ -838,7 +838,7 @@ const styles = StyleSheet.create({
   buttonTitle: {
     color: 'white',
     fontFamily:"NanumSquare",
-    fontSize: wp('4.8%'),
+    fontSize: wp('4.8rem'),
   },
   tableArea:{
     marginBottom:hp('3%'),
@@ -856,7 +856,7 @@ const styles = StyleSheet.create({
     })
   },
   textStyle:{
-    fontSize:wp('4.5%'),
+    fontSize:wp('4.5rem'),
     fontFamily:"NanumSquare",
     color: '#040525',
     marginTop:wp('1%'),
@@ -880,12 +880,12 @@ const styles = StyleSheet.create({
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
       color: '#040525',
-      fontSize: wp('3.35%') },
+      fontSize: wp('3.35rem'), },
   tableTitleText: { 
       textAlign: 'center', 
       color: '#040525',
       fontFamily:"NanumSquare", 
-      fontSize: wp('3.6%') 
+      fontSize: wp('3.6rem'), 
   },
   buttonArea: {
     height:hp('8%'),

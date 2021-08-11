@@ -30,7 +30,7 @@ const customDayHeaderStylesCallback = dayOfWeek => {
     return {
       textStyle: {
         color: 'blue',
-        fontSize:wp('5%'),
+        fontSize:wp('5rem'),
         fontFamily:"NanumSquare"
       }
     };
@@ -38,7 +38,7 @@ const customDayHeaderStylesCallback = dayOfWeek => {
     return {
       textStyle: {
         color: 'red',
-        fontSize:wp('5%'),
+        fontSize:wp('5rem'),
         fontFamily:"NanumSquare"
       }
     };
@@ -50,7 +50,7 @@ const customDayHeaderStylesCallback = dayOfWeek => {
       },
       textStyle: {
       color: '#040525',
-      fontSize:wp('5%'),
+      fontSize:wp('5rem'),
       fontFamily:"NanumSquare"
     }
   };
@@ -63,7 +63,7 @@ const customDatesStylesCallback = date => {
     return {
       textStyle: {
         color: 'blue',
-        fontSize:wp('5%'),
+        fontSize:wp('5rem'),
         fontFamily:"NanumSquare"
       }
     };
@@ -71,7 +71,7 @@ const customDatesStylesCallback = date => {
     return {
       textStyle: {
         color: 'red',
-        fontSize:wp('5%'),
+        fontSize:wp('5rem'),
         fontFamily:"NanumSquare"
       }
     };
@@ -79,7 +79,7 @@ const customDatesStylesCallback = date => {
     return {
     textStyle: {
       color: '#040525',
-      fontSize:wp('5%'),
+      fontSize:wp('5rem'),
       fontFamily:"NanumSquare"
     }
   };
@@ -119,12 +119,12 @@ const CalendarScreen = ({navigation, route}) => {
         todayBackgroundColor={'#67C8BA'}
 
         monthYearHeaderWrapperStyle={{marginBottom:hp('3%')}}
-        previousTitleStyle={{marginBottom:hp('3%'), marginLeft:wp('3%'),fontSize:wp('6%'),fontFamily:"NanumSquare"}}
-        nextTitleStyle={{marginBottom:hp('3%'), marginRight:wp('3%'),fontSize:wp('6%'),fontFamily:"NanumSquare"}}
+        previousTitleStyle={{marginBottom:hp('3%'), marginLeft:wp('3%'),fontSize:wp('6rem'),fontFamily:"NanumSquare"}}
+        nextTitleStyle={{marginBottom:hp('3%'), marginRight:wp('3%'),fontSize:wp('6rem'),fontFamily:"NanumSquare"}}
         textStyle={{
           fontFamily:"NanumSquareB",
           color:'#040525',
-          fontSize:wp('8%')
+          fontSize:wp('8rem')
         }}
 
         customDayHeaderStyles={customDayHeaderStylesCallback}

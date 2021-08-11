@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   buttonTitle: {
       color: 'white',
       fontFamily:"NanumSquare",
-      fontSize: wp('4.3%'),
+      fontSize: wp('4.3rem'),
   },//완료 버튼 폰트입니다.
   buttonlogoArea: {
       justifyContent:'flex-end',

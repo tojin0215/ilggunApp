@@ -1528,14 +1528,14 @@ const styles = StyleSheet.create({
       backgroundColor:'#7085DF'
   },
   textTitle:{
-      fontSize:wp('5.55%'),
+      fontSize:wp('5.55rem'),
       fontFamily:"NanumSquareB",
       marginTop:hp('2%'),
       marginBottom:hp('2%'),
       textAlign:"center"
   },
   textTitleStyle_1:{
-      fontSize:wp('4.8%'),
+      fontSize:wp('4.8rem'),
       fontFamily:"NanumSquareB",
       marginTop:hp('1%'),
       marginBottom:hp('1%'),
@@ -1550,21 +1550,21 @@ const styles = StyleSheet.create({
       flexDirection:'row'
   },
   textStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       marginTop:wp('1.7%'),
       marginBottom:wp('1.5%'),
       marginRight:wp('2%'),
   },  
   textTitleStyle:{
-      fontSize:wp('4.8%'),
+      fontSize:wp('4.8rem'),
       fontFamily:"NanumSquareB",
       marginTop:wp('2%'),
       marginBottom:wp('1.5%'),
       marginRight:wp('2%'),
   },
   textLineStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       marginTop:wp('1.7%'),
       marginBottom:wp('1.5%'),
@@ -1572,7 +1572,7 @@ const styles = StyleSheet.create({
       marginLeft:wp('5%')
   },
   textinputStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       marginLeft:wp('1.5%'),
       width:wp('25%'),
@@ -1581,7 +1581,7 @@ const styles = StyleSheet.create({
       borderBottomWidth:wp('0.5%')
   },
   textinputStyle1:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       marginLeft:wp('1.5%'),
       marginTop:hp('1%'),
@@ -1593,21 +1593,21 @@ const styles = StyleSheet.create({
       marginBottom:hp('2%'),
   },
   textinputYearStyle:{
-    fontSize:wp('4.2%'),
+    fontSize:wp('4.2rem'),
     fontFamily:"NanumSquare",
     marginLeft:wp('1.5%'),
     marginTop:wp('1.7%'),
     width:wp('11%')
   },
   textinputDayStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       marginTop:wp('1.7%'),
       fontFamily:"NanumSquare",
       marginLeft:wp('2%'),
       width:wp('7%'),
   },
   textinputName:{
-    fontSize:wp('4.2%'),
+    fontSize:wp('4.2rem'),
     fontFamily:"NanumSquare",
     marginLeft:wp('1.5%'),
     marginTop:wp('1.7%'),
@@ -1616,7 +1616,7 @@ const styles = StyleSheet.create({
   },
   textinputName1:{
       width:wp('25%'),
-      fontSize:wp('4.8%'),
+      fontSize:wp('4.8rem'),
       fontFamily:"NanumSquareB",
       marginTop:hp('1%'),
       marginBottom:wp('1.5%'),
@@ -1651,7 +1651,7 @@ const styles = StyleSheet.create({
   buttonTitle: {
         color: 'white',
         fontFamily:"NanumSquare",
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
   },
   
   tableArea:{
@@ -1673,11 +1673,11 @@ const styles = StyleSheet.create({
       borderTopLeftRadius: wp('4%')
   },
   colTextStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
   },
   tableTextStyle:{
-      fontSize:wp('4.2%'),
+      fontSize:wp('4.2rem'),
       fontFamily:"NanumSquare",
       textAlign:"center",
   },

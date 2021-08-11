@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
     marginBottom:hp('2%'),
     marginLeft:wp('0.5%'),
     marginRight:wp('1%'),
-    fontSize:wp('4.5%'),
+    fontSize:wp('4.5rem'),
     fontFamily:"NanumSquareB",
     color: '#040525',
   },  
   textStyle:{
-    fontSize:wp('4.5%'),
+    fontSize:wp('4.5rem'),
     fontFamily:"NanumSquareB",
     color: '#040525',
     marginTop:wp('1%'),
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     marginLeft:wp('2%'),
   },  
   textInputStyle:{
-    fontSize:wp('4.5%'),
+    fontSize:wp('4.5rem'),
     fontFamily:"NanumSquare",
     color: '#040525',
     paddingBottom:hp('1%'), paddingLeft:wp('2%'),
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     borderRadius:wp('6%')
   },
   buttonTitle:{
-    fontSize:wp('4.5%'),
+    fontSize:wp('4.5rem'),
     fontFamily:"NanumSquare",
     color: 'white',
   }
@@ -246,7 +246,7 @@ class VacationRequestScreen extends Component{
                   color:'#040525',
                   fontFamily:"NanumSquare",
                   marginTop:hp('1%'),
-                  fontSize: wp('4.8%'),
+                  fontSize: wp('4.8rem'),
                 }}
                 isVisible={this.state.isVisibleA}
                 onOpen={() => this.changeVisibility({
@@ -297,7 +297,7 @@ class VacationRequestScreen extends Component{
                   color:'#040525',
                   fontFamily:"NanumSquare",
                   marginTop:hp('1%'),
-                  fontSize: wp('4.8%'),
+                  fontSize: wp('4.8rem'),
                 }}
                 isVisible={this.state.isVisibleB}
                 onOpen={() => this.changeVisibility({
@@ -363,7 +363,7 @@ class VacationRequestScreen extends Component{
                   color:'#040525',
                   fontFamily:"NanumSquare",
                   marginTop:hp('1%'),
-                  fontSize: wp('4.8%'),
+                  fontSize: wp('4.8rem'),
                 }}
                 isVisible={this.state.isVisibleAA}
                 onOpen={() => this.changeVisibility({

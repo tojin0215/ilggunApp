@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     paddingLeft:wp('3%'),
   },
   textStyle:{
-    fontSize: wp('4.5%'),
+    fontSize: wp('4.5rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     paddingRight:wp('2%'),
@@ -168,7 +168,7 @@ savedData = async(td) => {
                           labelStyle={{
                             color: '#333',
                             fontFamily:"NanumSquare",
-                            fontSize:wp('3.6%'),
+                            fontSize:wp('3.6rem'),
                             marginRight:wp('2%'),
                             marginLeft:wp('0.5%'),
                             marginTop:hp('1.5%')

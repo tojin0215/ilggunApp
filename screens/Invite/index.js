@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   textInputStyle:{
     width:wp('60%'), height:hp('6%'),
-    fontSize: wp('4.7%'),
+    fontSize: wp('4.7rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     paddingLeft:wp('5%'),
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     paddingTop:hp('2%'),
     marginLeft:wp('5%'),
     width:wp('38%'), height:hp('6%'),
-    fontSize: wp('4.6%'),
+    fontSize: wp('4.6rem'),
     fontFamily:"NanumSquareB",
     color:'#040525',
   },

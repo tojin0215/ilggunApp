@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
       paddingLeft: wp('1.2%'),
       paddingRight: wp('1.2%'),
       marginTop:  hp('2%'),
-      fontSize: wp('4%'), fontFamily:"NanumSquare",
+      fontSize: wp('4rem'), fontFamily:"NanumSquare",
       color:'#040525',
   },//아이디 패스워드 입력 폼의 텍스트 입력 부분입니다.
   buttonArea: {
@@ -97,15 +97,15 @@ const styles = StyleSheet.create({
       paddingRight: wp('5%'),
   }, //회원가입 텍스트 공간입니다.
   buttonLoginTitle:{
-    color: 'white', fontSize: wp('4.8%'),
+    color: 'white', fontSize: wp('4.8rem'),
     fontFamily:"NanumSquare",
   },//첫번째 로그인의 텍스트 부분입니다.
   buttonGoogleTitle: {
-    color: '#040525', fontSize: wp('4.5%'),
+    color: '#040525', fontSize: wp('4.5rem'),
     fontFamily:"NanumSquare",
   },//두번째 로그인 버튼의 구글 로그인 텍스트 부분입니다.
   buttonTitle: {
-    color: '#040525', fontSize: wp('4.2%'),
+    color: '#040525', fontSize: wp('4.2rem'),
     fontFamily:"NanumSquare",
   },//회원가입 버튼의 텍스트 부분입니다.
   buttonlogoArea: {
@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
     marginBottom:wp('30%')
   },
   text1L:{
-    color: 'white', fontSize: wp('7%'),
+    color: 'white', fontSize: wp('7rem'),
     fontFamily:"NanumSquare",
     marginBottom:wp('2%')
   },
   text2L:{
-    color: 'white', fontSize: wp('5.7%'),
+    color: 'white', fontSize: wp('5.7rem'),
     fontFamily:"NanumSquare"
   },
   logoL:{

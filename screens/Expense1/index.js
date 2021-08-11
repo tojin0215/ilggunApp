@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#67C8BA'
   },
   textTitle:{
-    fontSize:wp('5.55%'),
+    fontSize:wp('5.55rem'),
     fontFamily:"NanumSquareB",
     marginBottom:hp('2%'),
     marginTop:hp('2%'),
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     marginLeft:wp('1.5%')
   },
   textStyle:{
-    fontSize:wp('4.2%'),
+    fontSize:wp('4.2rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     marginTop:wp('1%'),
@@ -230,15 +230,15 @@ const styles = StyleSheet.create({
     color:'#040525',
     ...Platform.select({
       ios:{
-        fontSize: wp('3.6%') 
+        fontSize: wp('3.6rem'), 
       },
       android:{
-        fontSize: wp('4.2%') 
+        fontSize: wp('4.2rem'), 
       }
     })
   },
   textinputStyle:{
-    fontSize:wp('4.2%'),
+    fontSize:wp('4.2rem'),
     fontFamily:"NanumSquare",
     marginLeft:wp('3%'),
     width:wp('35%'), height:hp('4.5%'), textAlign:"center", justifyContent:"center",
@@ -267,12 +267,12 @@ const styles = StyleSheet.create({
   buttonTitle: {
       color: 'white',
       fontFamily:"NanumSquare",
-      fontSize: wp('4.8%'),
+      fontSize: wp('4.8rem'),
   },
   buttonResetTitle: {
       color: 'white',
       fontFamily:"NanumSquare",
-      fontSize: wp('4.8%'),
+      fontSize: wp('4.8rem'),
   },
   tableArea:{
     marginTop:hp('2%'), marginBottom:hp('3%')

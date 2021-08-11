@@ -1146,7 +1146,7 @@ class ContractformAScreen extends React.Component{
                 labelHorizontal={true}
                 buttonColor={'#67C8BA'}
                 selectedButtonColor={'#67C8BA'}
-                labelStyle={{fontSize: wp('4.2%'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
+                labelStyle={{fontSize: wp('4.2rem'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
                 animation={true}
                 onPress={(value, index) => {
                     this.setState({
@@ -1180,7 +1180,7 @@ class ContractformAScreen extends React.Component{
                 labelHorizontal={true}
                 buttonColor={'#67C8BA'}
                 selectedButtonColor={'#67C8BA'}
-                labelStyle={{fontSize: wp('4.2%'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
+                labelStyle={{fontSize: wp('4.2rem'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
                 animation={true}
                 onPress={(value, index) => {
                     this.setState({
@@ -1289,7 +1289,7 @@ class ContractformAScreen extends React.Component{
                 labelHorizontal={true}
                 buttonColor={'#67C8BA'}
                 selectedButtonColor={'#67C8BA'}
-                labelStyle={{fontSize: wp('4.2%'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
+                labelStyle={{fontSize: wp('4.2rem'), color: '#040525', marginRight:wp('2%'),fontFamily:"NanumSquare"}}
                 animation={true}
                 onPress={(value, index) => {
                     this.setState({
@@ -1339,7 +1339,7 @@ class ContractformAScreen extends React.Component{
               labelStyle={{
                 color: '#333',
                 fontFamily:"NanumSquare",
-                fontSize:wp('3.6%'),
+                fontSize:wp('3.6rem'),
                 marginRight:wp('2%'),
                 marginLeft:wp('0.5%'),
                 marginTop:hp('1.5%')
@@ -1494,7 +1494,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#67C8BA'
     },
     textTitle:{
-        fontSize:wp('5.55%'),
+        fontSize:wp('5.55rem'),
         fontFamily:"NanumSquareB",
         marginTop:hp('2%'),
         marginBottom:hp('2%'),
@@ -1509,14 +1509,14 @@ const styles = StyleSheet.create({
         flexDirection:'row'
     },
     textStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginTop:hp('1%'),
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
     },  
     textTitleStyle11:{
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
         fontFamily:"NanumSquareB",
         marginTop:wp('1%'),
         marginBottom:wp('1.5%'),
@@ -1527,21 +1527,21 @@ const styles = StyleSheet.create({
         textAlign:'center'
     },
     textTitleStyle:{
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
         fontFamily:"NanumSquareB",
         marginTop:hp('1%'),
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
     },
     textTitleStyle_1:{
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
         fontFamily:"NanumSquareB",
         marginTop:hp('1%'),
         marginBottom:hp('1%'),
         textAlign:'center'
     },
     textLineStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginTop:wp('1.7%'),
         marginBottom:wp('1.5%'),
@@ -1549,7 +1549,7 @@ const styles = StyleSheet.create({
         marginLeft:wp('5%')
     },
     textinputYearStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         textAlign:"center",
@@ -1559,7 +1559,7 @@ const styles = StyleSheet.create({
         borderBottomWidth:wp('0.5%')
     },
     textinputDayStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('2%'),
         width:wp('6%'),
@@ -1569,14 +1569,14 @@ const styles = StyleSheet.create({
         borderBottomWidth:wp('0.5%')
     },
     textinputYearStyle1:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         marginTop:wp('1.7%'),
         width:wp('11%')
       },
       textinputDayStyle1:{
-          fontSize:wp('4.2%'),
+          fontSize:wp('4.2rem'),
           marginTop:wp('1.7%'),
           fontFamily:"NanumSquare",
           marginLeft:wp('2%'),
@@ -1584,14 +1584,14 @@ const styles = StyleSheet.create({
       },
     textinputName:{
         width:wp('25%'),
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
         fontFamily:"NanumSquareB",
         marginTop:wp('1%'),
         marginBottom:wp('1.5%'),
     },
     textinputName1_1:{
         width:wp('25%'),
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
         fontFamily:"NanumSquareB",
         marginBottom:wp('1.5%'),
         marginRight:wp('2%'),
@@ -1599,7 +1599,7 @@ const styles = StyleSheet.create({
         borderBottomWidth:wp('0.5%')
     },
     textinputStyle:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         width:wp('40%'),
@@ -1608,20 +1608,20 @@ const styles = StyleSheet.create({
         borderBottomWidth:wp('0.5%')
     },
     textinputStyle1:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         width:wp('25%'),
     },
     textinputStyle2:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         marginTop:hp('0.9%'),
         width:wp('60%'),
     },
     textinputName1:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         marginTop:wp('1.7%'),
@@ -1629,7 +1629,7 @@ const styles = StyleSheet.create({
         textAlign:"center"
     },
     textinputName2:{
-        fontSize:wp('4.2%'),
+        fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         textAlign:"center",
@@ -1682,6 +1682,6 @@ const styles = StyleSheet.create({
     buttonTitle: {
             color: 'white',
             fontFamily:"NanumSquare",
-            fontSize:wp('4.8%'),
+            fontSize:wp('4.8rem'),
     },
 });

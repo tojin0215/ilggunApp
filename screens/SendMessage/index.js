@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
     height:hp('55%'),zIndex: 0,
   },
   textStyle: {
-    fontSize: wp('4.2%'),
+    fontSize: wp('4.2rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     width:wp('40%'),
   },
   searchStyle: {
-    fontSize: wp('4.2%'),
+    fontSize: wp('4.2rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     width:wp('50%'),
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     marginBottom:hp('0.4%')
   },
   textLineStyle:{
-    fontSize: wp('4.2%'),
+    fontSize: wp('4.2rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     lineHeight:wp('6.5%'),

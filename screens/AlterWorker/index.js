@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     })
   }, 
   timeText:{
-    fontSize:wp('5.05%'),
+    fontSize:wp('5.05rem'),
     fontFamily:"NanumSquareB",
   },
   dropdown : {
@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
   buttonTitle: {
       color: 'white',
       fontFamily:"NanumSquare",
-      fontSize:wp('4.8%'),
+      fontSize:wp('4.8rem'),
   },
   dropText:{
-    fontSize:wp('8.5%'),
+    fontSize:wp('8.5rem'),
     fontFamily:"NanumSquare",
     color: '#040525',
     justifyContent:"center", alignItems:"center",
@@ -286,14 +286,14 @@ savedData = async(bangCode, t, month, date, day, year, time) => {
                   textAlign: 'center',
                   color:'black',
                   fontFamily:"NanumSquare",
-                  fontSize: wp('5.3%'),
+                  fontSize: wp('5.3rem'),
                   paddingTop:hp('0.3%'),
                   ...Platform.select({
                     ios:{
-                      fontSize: wp('4.7%'),
+                      fontSize: wp('4.7rem'),
                     },
                     android:{
-                      fontSize: wp('5.3%'),
+                      fontSize: wp('5.3rem'),
                     }
                   })
                 }}
@@ -364,7 +364,7 @@ savedData = async(bangCode, t, month, date, day, year, time) => {
 
                 labelStyle={{
                   height:hp('3%'),
-                  fontSize: wp('4.8%'),
+                  fontSize: wp('4.8rem'),
                   fontFamily:"NanumSquare",
                 }}
                 isVisible={this.state.isVisibleA}
@@ -414,7 +414,7 @@ savedData = async(bangCode, t, month, date, day, year, time) => {
 
                 labelStyle={{
                   height:hp('3%'),
-                  fontSize: wp('4.8%'),
+                  fontSize: wp('4.8rem'),
                   fontFamily:"NanumSquare",
                 }}
                 onOpen={() => this.changeVisibility({
@@ -472,7 +472,7 @@ savedData = async(bangCode, t, month, date, day, year, time) => {
 
                 labelStyle={{
                   height:hp('3%'),
-                  fontSize: wp('4.8%'),
+                  fontSize: wp('4.8rem'),
                   fontFamily:"NanumSquare",
                 }}
 
@@ -523,7 +523,7 @@ savedData = async(bangCode, t, month, date, day, year, time) => {
                 
                 labelStyle={{
                   height:hp('3%'),
-                  fontSize: wp('4.8%'),
+                  fontSize: wp('4.8rem'),
                   fontFamily:"NanumSquare",
                 }}
 

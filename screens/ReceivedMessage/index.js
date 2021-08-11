@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     marginLeft:wp('1%'),
   },
   textStyle: {
-    fontSize: wp('4.5%'),
+    fontSize: wp('4.5rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     paddingRight: wp('10%'),
   },
   modaltextStyle:{
-    fontSize: wp('4.5%'),
+    fontSize: wp('4.5rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     paddingLeft:wp('3%'),
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   modalBtn:{
     width:wp('80%'), height:hp('5.5%'),
     textAlign:"center",
-    fontSize: wp('4.5%'),
+    fontSize: wp('4.5rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     backgroundColor:'#DAE9F7',
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   modalBtn2:{
     width:wp('29%'), height:hp('5.5%'),
     textAlign:"center",
-    fontSize: wp('4.5%'),
+    fontSize: wp('4.5rem'),
     fontFamily:"NanumSquare",
     color:'#040525',
     backgroundColor:'#DAE9F7',

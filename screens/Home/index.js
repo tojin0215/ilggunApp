@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   settingButtonTitle: {
     color: 'white',
     fontFamily:"NanumSquare",
-    fontSize: wp('4.8%'),
+    fontSize: wp('4.8rem'),
   }, 
   button2: {
     marginTop:hp('2%'),

@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         fontFamily:"NanumSquareB"
     },
     textStyle:{
-        fontSize: wp('4%'),
+        fontSize: wp('4rem'),
         fontFamily:"NanumSquare"
     },
   
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     buttonTitle: {
         color: 'white',
         fontFamily:"NanumSquare",
-        fontSize: wp('4.3%'),
+        fontSize: wp('4.3rem'),
     },
 
     buttonlogoArea: {

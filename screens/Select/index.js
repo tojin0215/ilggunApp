@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
     marginTop:hp('10%')
   }, 
   text1:{
-    fontSize:wp('6%'), 
+    fontSize:wp('6rem'), 
     fontFamily:"NanumSquareB", 
   },
   text2:{
-    fontSize:wp('6%'), 
+    fontSize:wp('6rem'), 
     fontFamily:"NanumSquare",
   },
   buttonArea: {

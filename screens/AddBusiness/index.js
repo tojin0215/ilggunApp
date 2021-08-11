@@ -228,7 +228,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
               labelHorizontal={true}
               buttonColor={'#67C8BA'}
               selectedButtonColor={'#67C8BA'}
-              labelStyle={{fontSize: wp('4%'), color: '#040525', marginRight:wp('7%'),fontFamily:"NanumSquare"}}
+              labelStyle={{fontSize: wp('4rem'), color: '#040525', marginRight:wp('7%'),fontFamily:"NanumSquare"}}
               animation={true}
               onPress={(index, value) => {
                 setRadioIndex(index),
@@ -318,7 +318,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
               labelHorizontal={true}
               buttonColor={'#67C8BA'}
               selectedButtonColor={'#67C8BA'}
-              labelStyle={{fontSize: wp('4%'), color: '#040525', marginRight:wp('7%'),fontFamily:"NanumSquare"}}
+              labelStyle={{fontSize: wp('4rem'), color: '#040525', marginRight:wp('7%'),fontFamily:"NanumSquare"}}
               animation={true}
               initial={0}
               onPress={(value) => {setR(value), ()=> console.log(r)}}
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
     fontFamily:"NanumSquareB"
   },
   textStyle:{
-      fontSize: wp('4%'),
+      fontSize: wp('4rem'),
       fontFamily:"NanumSquare"
   },
   formArea: {
@@ -485,7 +485,7 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
       color: 'white',
-      fontSize: wp('4.3%'),
+      fontSize: wp('4.3rem'),
       fontFamily:"NanumSquareB"
   },
   buttonlogoArea: {

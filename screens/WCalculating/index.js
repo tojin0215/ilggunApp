@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
       color: '#040525',
-      fontSize:wp('5.9%'),
+      fontSize:wp('5.9rem'),
       fontFamily:"NanumSquare",
   },
   image:{

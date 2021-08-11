@@ -39,7 +39,7 @@ const styles = StyleSheet.create(
     buttonTitle: {
         color: 'white',
         fontFamily:"NanumSquare",
-        fontSize:wp('4.8%'),
+        fontSize:wp('4.8rem'),
     },
     calenderArea:{
       backgroundColor:'#E2F2EF',
@@ -65,7 +65,7 @@ const styles = StyleSheet.create(
       justifyContent:"center",alignItems:"center",
       marginTop:hp('0.5%'),
       fontFamily:"NanumSquareB",
-      fontSize:wp('5%'),
+      fontSize:wp('5rem'),
     },
     rightImg:{
       //justifyContent: 'center', alignItems: 'flex-end',
@@ -95,17 +95,17 @@ const styles = StyleSheet.create(
       fontFamily:"NanumSquare",
       color:'#67C8BA',
       position:"absolute",left:wp('11%'),top:hp('3.5%'),
-      fontSize: wp('4.8%'), marginRight:wp('4%')
+      fontSize: wp('4.8rem'), marginRight:wp('4%')
     },
     werkerTextName2:{
       fontFamily:"NanumSquare",
       color:'white',
-      fontSize: wp('4.2%'),
+      fontSize: wp('4.2rem'),
     },
     werkerTextTime:{
       fontFamily:"NanumSquare",
       color:'#040525',
-      fontSize:wp('3.6%'), marginRight:wp('1%')
+      fontSize:wp('3.6rem'), marginRight:wp('1%')
     },
     listStyle:{
       position:"absolute",
@@ -118,7 +118,7 @@ const styles = StyleSheet.create(
     buttonStyle:{
       backgroundColor:'#67C8BA',
       fontFamily:"NanumSquare",
-      color:'#040525', fontSize:wp('3.6%'),
+      color:'#040525', fontSize:wp('3.6rem'),
       width:wp('18%'), height:hp('6%'), borderRadius:wp('4%'),
       justifyContent:"center", alignItems:"center"
     },

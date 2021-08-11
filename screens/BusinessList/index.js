@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#67C8BA'
   },
   text: {
-    fontSize: wp('15%'),
+    fontSize: wp('15rem'),
     textAlign: 'center',
     color: 'white',
     fontFamily:"NanumSquare",
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
       color: '#040525',
-      fontSize:wp('5%'),
+      fontSize:wp('5rem'),
       fontFamily:"NanumSquare",
   },
   AddbtnArea:{

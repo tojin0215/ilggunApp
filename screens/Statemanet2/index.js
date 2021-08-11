@@ -1002,7 +1002,7 @@ class StatementScreen2 extends Component {
                   textAlign: "center",
                   color: "#040525",
                   fontFamily: "NanumSquare",
-                  fontSize: wp("4%"),
+                  fontSize: wp('4rem'),
                   marginTop: hp("1%"),
                 }}
                 isVisible={this.state.isVisibleAA}
@@ -1055,7 +1055,7 @@ class StatementScreen2 extends Component {
                   textAlign: "center",
                   color: "#040525",
                   fontFamily: "NanumSquare",
-                  fontSize: wp("4%"),
+                  fontSize: wp("4rem"),
                   marginTop: hp("1%"),
                 }}
                 isVisible={this.state.isVisibleBB}
@@ -1099,14 +1099,14 @@ class StatementScreen2 extends Component {
                   textAlign: "center",
                   color: "#040525",
                   fontFamily: "NanumSquare",
-                  fontSize: wp("3.8%"),
+                  fontSize: wp("3.8rem"),
                   marginTop: hp("1%"),
                   ...Platform.select({
                     ios: {
-                      fontSize: wp("3.3%"),
+                      fontSize: wp("3.3rem"),
                     },
                     android: {
-                      fontSize: wp("3.8%"),
+                      fontSize: wp("3.8rem"),
                     },
                   }),
                 }}
@@ -1149,14 +1149,14 @@ class StatementScreen2 extends Component {
                   textAlign: "center",
                   color: "#040525",
                   fontFamily: "NanumSquare",
-                  fontSize: wp("3.8%"),
+                  fontSize: wp("3.8rem"),
                   marginTop: hp("1%"),
                   ...Platform.select({
                     ios: {
-                      fontSize: wp("3.3%"),
+                      fontSize: wp("3.3rem"),
                     },
                     android: {
-                      fontSize: wp("3.8%"),
+                      fontSize: wp("3.8rem"),
                     },
                   }),
                 }}
@@ -1338,7 +1338,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textTitle: {
-    fontSize: wp("5.55%"),
+    fontSize: wp("5.55rem"),
     fontFamily: "NanumSquareB",
     color: "#040525",
     marginBottom: hp("1%"),
@@ -1381,7 +1381,7 @@ const styles = StyleSheet.create({
   buttonTitle: {
     color: "white",
     fontFamily: "NanumSquare",
-    fontSize: wp("4.5%"),
+    fontSize: wp("4.5rem"),
   },
   tableArea: {
     marginBottom: hp("5%"),
@@ -1402,7 +1402,7 @@ const styles = StyleSheet.create({
     }),
   },
   textStyle: {
-    fontSize: wp("4.2%"),
+    fontSize: wp("4.2rem"),
     fontFamily: "NanumSquare",
     color: "#040525",
     marginTop: wp("1%"),
@@ -1445,7 +1445,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "NanumSquare",
     color: "#040525",
-    fontSize: wp("3.35%"),
+    fontSize: wp("3.35rem"),
   },
   tableTitleText: {
     textAlign: "center",
@@ -1453,10 +1453,10 @@ const styles = StyleSheet.create({
     color: "#040525",
     ...Platform.select({
       ios: {
-        fontSize: wp("3.2%"),
+        fontSize: wp("3.2rem"),
       },
       android: {
-        fontSize: wp("3.8%"),
+        fontSize: wp("3.8rem"),
       },
     }),
   },
@@ -1464,7 +1464,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "NanumSquare",
     color: "white",
-    fontSize: wp("3.8%"),
+    fontSize: wp("3.8rem"),
   },
   buttonArea: {
     position: "absolute",

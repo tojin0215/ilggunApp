@@ -19,19 +19,19 @@ const styles = StyleSheet.create({
     width: "100%", height: "100%",
   },
   text: {
-    fontSize: wp('15%'),
+    fontSize: wp('15rem'),
     textAlign: 'center',
     color: 'white',
     fontFamily:"NanumSquare",
   },
   textStyle:{
     fontFamily:"NanumSquare",
-    fontSize: wp('6%'),
+    fontSize: wp('6rem'),
     color: '#040525',
     marginTop:hp('10%')
   },
   buttonArea: {
-    marginTop:hp('7%'),
+    marginTop:hp('7rem'),
     width: '100%',
     height: hp('6%'),
     alignItems: 'center',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
       color: '#040525',
-      fontSize:wp('5%'),
+      fontSize:wp('5rem'),
       fontFamily:"NanumSquare",
   },
   addbutton: {
