@@ -602,7 +602,7 @@ class StatementScreen2 extends Component {
                       style="fill:none;stroke:black;stroke-width:3" />
               </svg>`;
           }
-          html = `
+          let html = `
               <!DOCTYPE html>
               <html>
                 <head>
@@ -1080,7 +1080,7 @@ class StatementScreen2 extends Component {
             <View style={styles.dropDownArea2}>
               <DropDownPicker
                 items={this.state.type2}
-                placeholder="정규직/계약직"
+                placeholder="근로자"
                 defaultValue={this.state.itemA}
                 containerStyle={{
                   height: hp("6%"),

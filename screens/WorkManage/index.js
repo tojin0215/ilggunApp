@@ -65,7 +65,7 @@ const styles = StyleSheet.create(
       justifyContent:"center",alignItems:"center",
       marginTop:hp('0.5%'),
       fontFamily:"NanumSquareB",
-      fontSize:wp('5rem'),
+      fontSize:wp('4rem'),
     },
     rightImg:{
       //justifyContent: 'center', alignItems: 'flex-end',
@@ -95,12 +95,12 @@ const styles = StyleSheet.create(
       fontFamily:"NanumSquare",
       color:'#67C8BA',
       position:"absolute",left:wp('11%'),top:hp('3.5%'),
-      fontSize: wp('4.8rem'), marginRight:wp('4%')
+      fontSize: wp('3.6rem'), marginRight:wp('4%')
     },
     werkerTextName2:{
       fontFamily:"NanumSquare",
       color:'white',
-      fontSize: wp('4.2rem'),
+      fontSize: wp('3rem'),
     },
     werkerTextTime:{
       fontFamily:"NanumSquare",

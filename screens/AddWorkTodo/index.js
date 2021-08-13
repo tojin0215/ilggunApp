@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     flexShrink:1,
   },
   textNameStyle2:{
-    width:wp('11%'),
+    width:wp('20%'),
     fontSize: wp('3.8rem'),
     fontFamily:"NanumSquare",
     color:'#67C8BA',

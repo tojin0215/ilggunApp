@@ -331,7 +331,7 @@ class StatementScreen1 extends React.Component {
                       style="fill:none;stroke:black;stroke-width:3" />
               </svg>`
             }
-            html =`
+            let html =`
               <!DOCTYPE html>
               <html>
                 <head>
@@ -880,12 +880,12 @@ const styles = StyleSheet.create({
       textAlign: 'center', 
       fontFamily:"NanumSquare", 
       color: '#040525',
-      fontSize: wp('3.35rem'), },
+      fontSize: wp('2.6rem'), },
   tableTitleText: { 
       textAlign: 'center', 
       color: '#040525',
       fontFamily:"NanumSquare", 
-      fontSize: wp('3.6rem'), 
+      fontSize: wp('3rem'), 
   },
   buttonArea: {
     height:hp('8%'),
