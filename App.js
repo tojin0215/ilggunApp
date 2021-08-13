@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   logoutText:{
     color:'white',
     fontSize:15,
-    maxWidth:wp('45%'),
+    maxWidth:wp('23%'),
     fontFamily:"NanumSquare",
     marginTop:hp('1%')
   },

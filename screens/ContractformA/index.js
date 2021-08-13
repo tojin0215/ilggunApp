@@ -1625,7 +1625,7 @@ const styles = StyleSheet.create({
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         marginTop:wp('1.7%'),
-        width:wp('18%'),
+        width:wp('25%'),
         textAlign:"center"
     },
     textinputName2:{

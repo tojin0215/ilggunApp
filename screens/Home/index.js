@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   titleText:{
     color:'white',
     fontSize:18,
+    width:wp('25%'),
     fontFamily:"NanumSquare",
     marginTop:hp('1.7%')
   },
@@ -99,7 +100,7 @@ const HomeScreen = ({ navigation, props }) => {
                   require('../../img/logo.png')
                 }
               />
-              <Text style={styles.titleText}>{bangCode}</Text>
+              <Text style={styles.titleText} numberOfLines={1} ellipsizeMode='tail'>{bangCode}</Text>
             </View>
           ),
         });
