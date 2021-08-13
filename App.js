@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
   logoutText:{
     color:'white',
     fontSize:15,
+    maxWidth:wp('45%'),
     fontFamily:"NanumSquare",
     marginTop:hp('1%')
   },
@@ -578,7 +579,7 @@ const App = () => {
             headerRight: () => (
               <View style={styles.rowArea}>
               <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
-                <Text style={styles.logoutText}>{id} </Text>
+                <Text style={styles.logoutText} numberOfLines={1} ellipsizeMode='tail'>{id} </Text>
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
@@ -599,7 +600,7 @@ const App = () => {
             headerRight: () => (
               <View style={styles.rowArea}>
               <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
-                <Text style={styles.logoutText}>{id} </Text>
+                <Text style={styles.logoutText} numberOfLines={1} ellipsizeMode='tail'>{id} </Text>
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
@@ -621,7 +622,7 @@ const App = () => {
             headerRight: () => (
               <View style={styles.rowArea}>
                 <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
-                  <Text style={styles.logoutText}>{id} </Text>
+                  <Text style={styles.logoutText} numberOfLines={1} ellipsizeMode='tail'>{id} </Text>
                   <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
@@ -669,7 +670,7 @@ const App = () => {
               headerRight: () => (
                 <View style={styles.rowArea}>
                 <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
-                <Text style={styles.logoutText}>{id} </Text>
+                <Text style={styles.logoutText} numberOfLines={1} ellipsizeMode='tail'>{id} </Text>
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
               </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.logoutBtn}>
@@ -707,7 +708,7 @@ const App = () => {
               headerRight: () => (
                 <View style={styles.rowArea}>
                 <TouchableOpacity onPress={() => navigation.navigate('Modify')} style={styles.userArea}>
-                <Text style={styles.logoutText}>{id} </Text>
+                <Text style={styles.logoutText} numberOfLines={1} ellipsizeMode='tail'>{id} </Text>
                 <Image style={styles.userImage} source={require('./img/user1.png')}></Image>
               </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Message List')} style={styles.worker}>

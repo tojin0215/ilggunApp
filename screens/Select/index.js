@@ -58,7 +58,7 @@ const SelectScreen = ({ onSignIn, navigation }) => {
   return ( 
     <View style={styles.image}>
     <View style={styles.container}>
-            <View style={styles.textArea}>
+      <View style={styles.textArea}>
       <Text>"</Text>
       <Text style={styles.text1} numberOfLines={1} ellipsizeMode='tail'>{id}</Text>
       <Text>"</Text>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   }, 
   text1:{
     fontSize:wp('6rem'),
-    width:wp('50%'),
+    maxWidth:wp('50%'),
     fontFamily:"NanumSquareB", 
   },
   text2:{

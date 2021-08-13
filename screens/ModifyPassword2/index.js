@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         marginTop:hp('1.5%'),
     },
     sign : { 
-        height:hp('30%'), 
+        height:hp('20rem'), 
         width:"100%" , 
         backgroundColor: '#E4E5EA' 
     },

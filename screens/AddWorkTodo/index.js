@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   },
   inputStyle:{
     paddingLeft:wp('5%'),
+    paddingBottom:hp('1px'),
     width:wp('65%'),
     height:hp('10%'),
     maxHeight: hp('10%'),
@@ -95,7 +96,8 @@ const styles = StyleSheet.create({
     flexShrink:1,
   },
   textNameStyle2:{
-    width:wp('20%'),
+    width:wp('15%'),
+    textAlign:'center',
     fontSize: wp('3.8rem'),
     fontFamily:"NanumSquare",
     color:'#67C8BA',
@@ -290,7 +292,7 @@ savedData = async() => {
             <FlatList data={Object.keys(this.state.todo)} 
                 renderItem={({ item }) => 
                     <View style={styles.listViewStyle}>
-                    <Text style={styles.textNameStyle}>{item}</Text>
+                    <Text style={styles.textNameStyle} numberOfLines={2} ellipsizeMode='tail'>{item}</Text>
                     <Text style={styles.textNameStyle2}>{this.state.todo[item]==0?'미완료':'완료'}</Text>
                     <TouchableOpacity
                       style={styles.deleteStyle}

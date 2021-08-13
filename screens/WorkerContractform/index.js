@@ -1597,7 +1597,7 @@ const styles = StyleSheet.create({
     fontFamily:"NanumSquare",
     marginLeft:wp('1.5%'),
     marginTop:wp('1.7%'),
-    width:wp('11%')
+    width:wp('15%')
   },
   textinputDayStyle:{
       fontSize:wp('4.2rem'),

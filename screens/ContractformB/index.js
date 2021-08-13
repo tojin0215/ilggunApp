@@ -1583,19 +1583,19 @@ const styles = StyleSheet.create({
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         marginTop:hp('0.8%'),
-        width:wp('11%')
+        width:wp('15%')
     },
     textinputYearStyle1:{
         fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
-        width:wp('11%')
+        width:wp('15%')
     },
     textinputYearStyle2:{
         fontSize:wp('4.2rem'),
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
-        width:wp('11%'),
+        width:wp('15%'),
         marginRight:wp('1%'),
         borderBottomColor:'#D3D6E2',
         borderBottomWidth:wp('0.5%')

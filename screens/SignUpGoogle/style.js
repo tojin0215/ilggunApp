@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         marginTop:hp('1.0%'),
     },//서명 타이틀 라벨입니다.
     sign : { 
-        height: hp('28rem'),
+        height: hp('20rem'),
         width: '100%',
         backgroundColor: '#E4E5EA',
     },//서명 입력 폼입니다.

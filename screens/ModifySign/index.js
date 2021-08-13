@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         marginBottom:hp('1%')
     },
     sign : { 
-        height:hp('40%'), 
+        height:hp('20rem'), 
         width:"100%" , 
         backgroundColor: '#E4E5EA' 
     },

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   buttonArea3: {
     flexDirection:"column",
     alignItems: 'flex-end',
-    justifyContent: 'flex-end', marginTop:hp('13%'),marginLeft:hp('30%')
+    justifyContent: 'flex-end', marginTop:hp('3%'),marginLeft:hp('30%')
   },
   button: {
     width: wp('40%'),

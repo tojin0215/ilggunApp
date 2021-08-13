@@ -1553,7 +1553,7 @@ const styles = StyleSheet.create({
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         textAlign:"center",
-        width:wp('13%'),
+        width:wp('15%'),
         marginRight:wp('1%'),
         borderBottomColor:'#D3D6E2',
         borderBottomWidth:wp('0.5%')
@@ -1573,7 +1573,7 @@ const styles = StyleSheet.create({
         fontFamily:"NanumSquare",
         marginLeft:wp('1.5%'),
         marginTop:wp('1.7%'),
-        width:wp('11%')
+        width:wp('15%')
       },
       textinputDayStyle1:{
           fontSize:wp('4.2rem'),

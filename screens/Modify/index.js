@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     fontSize:wp('5rem'),
   },
   text1:{
-    width:wp('70%'),
+    maxWidth:wp('70%'),
     fontSize:wp('6rem'), 
     fontFamily:"NanumSquareB",
     marginBottom:hp('1%'),
