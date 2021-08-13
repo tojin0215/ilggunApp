@@ -183,7 +183,7 @@ class WExpenseScreen2 extends Component {
                                 <Text style={styles.item} 
                                     onPress={this.getListViewItem.bind(this, item)}>{item.week}</Text> 
                             </View>*/}
-                            <Text style={styles.listText}>출근시간) {item.goToWorkHour}시간 : {item.goToWorkMin}분</Text>
+                            <Text style={styles.listText}>출근시간) {item.goToWorkHour}시 : {item.goToWorkMin}분</Text>
                             <TimePicker
                                 key={item.key}
                                 selectedHoursGoToWork={selectedHoursGoToWork} //initial Hourse value
@@ -193,7 +193,7 @@ class WExpenseScreen2 extends Component {
                                     this.handleChange('goToWork', item.key, hours, minutes)
                                 }
                             />
-                            <Text style={styles.listText}>퇴근시간) {item.offWorkHour}시간 : {item.offWorkMin}분</Text>
+                            <Text style={styles.listText}>퇴근시간) {item.offWorkHour}시 : {item.offWorkMin}분</Text>
                             <TimePicker
                                 selectedHoursOffWork={selectedHoursOffWork} //initial Hourse value
                                 selectedMinutesOffWork={selectedMinutesOffWork} //initial Minutes value
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
         padding:wp('2%')
     },  
     pickerArea:{
-        padding:wp('2%'), 
+        padding:wp('2%'),
         borderBottomColor:'#7085DF', 
         borderBottomWidth:hp('0.1%')
     },
@@ -367,7 +367,8 @@ const styles = StyleSheet.create({
         color:'#040525',
     },  
     listText:{
-        fontSize:wp('3.6rem'),
+        fontSize:wp('4.6rem'),
+        lineHeight:wp('6.6rem'),
         fontFamily:"NanumSquare",
         color:'#040525',
     },  

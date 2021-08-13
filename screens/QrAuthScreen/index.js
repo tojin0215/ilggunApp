@@ -121,12 +121,13 @@ function QrAuthScreen({ navigation, route }) {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     try {
-      const jwtData = JWT.decode(data, key);
-      if (jwtData.id !== "aa") Alert.alert("본인이 아닙니다.")
-      else {
+
+      // const jwtData = JWT.decode(data, key);
+      // if (jwtData.id !== "aa") Alert.alert("본인이 아닙니다.")
+      // else {
         setCommute(commuted == "출근" ? "퇴근" : "출근");
         commuteData(userId);
-      }
+      // }
       // Alert.alert(`${commuted}합니다`)
     } catch (e) {
       Alert.alert("올바른 QR이 아닙니다.")

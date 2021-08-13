@@ -182,7 +182,7 @@ class ExpenseScreen2 extends Component {
                                 <Text style={styles.item} 
                                     onPress={this.getListViewItem.bind(this, item)}>{item.week}</Text> 
                             </View>*/}
-                            <Text style={styles.listText}>출근시간) {item.goToWorkHour}시간 : {item.goToWorkMin}분</Text>
+                            <Text style={styles.listText}>출근시간) {item.goToWorkHour}시 : {item.goToWorkMin}분</Text>
                             <TimePicker
                                 key={item.key}
                                 selectedHoursGoToWork={selectedHoursGoToWork} //initial Hourse value
@@ -191,17 +191,16 @@ class ExpenseScreen2 extends Component {
                                     //this.setState({ selectedHoursGoToWork: hours, selectedMinutesGoToWork: minutes })}
                                     this.handleChange('goToWork', item.key, hours, minutes)
                                 }
-
-                                
                             />
-                            <Text style={styles.listText}>퇴근시간) {item.offWorkHour}시간 : {item.offWorkMin}분</Text>
+                            <Text style={styles.listText}>퇴근시간) {item.offWorkHour}시 : {item.offWorkMin}분</Text>
                             <TimePicker
                                 selectedHoursOffWork={selectedHoursOffWork} //initial Hourse value
                                 selectedMinutesOffWork={selectedMinutesOffWork} //initial Minutes value
                                 onChange={(hours, minutes) =>
                                     //this.setState({ selectedHoursOffWork: hours, selectedMinutesOffWork: minutes })}
                                     this.handleChange('offWork', item.key, hours, minutes)
-                                } 
+                                }
+
                             />
                         </View>
                         }  
@@ -356,7 +355,8 @@ const styles = StyleSheet.create({
         color:'#040525',
     },  
     listText:{
-        fontSize:wp('3.6rem'),
+        fontSize:wp('4.6rem'),
+        lineHeight:wp('6.6rem'),
         fontFamily:"NanumSquare",
         color:'#040525',
     },  

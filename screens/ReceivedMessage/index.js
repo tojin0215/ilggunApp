@@ -134,9 +134,9 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
 
 //===================================================
   const [business, setBusiness] = useState([]);
-  const [visibility, setVisibility] = useState([]);
-  const [visibility2, setVisibility2] = useState([]);
-  const [visibility3, setVisibility3] = useState([]);
+  const [visibility, setVisibility] = useState(false);
+  const [visibility2, setVisibility2] = useState(false);
+  const [visibility3, setVisibility3] = useState(false);
   const [message, setMessage] = useState('');
   const [index, setIndex] = useState(-1);
   const [to, setTo] = useState('');
@@ -262,7 +262,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
               
                   if (t == 2) {
                     try {
-                      console.log('id: ',id,'f_name: ',f_name,'t: ',to,'t_name: ',to_name)
+                      console.log('id: ',id,'f_name: ',name,'t: ',to,'t_name: ',to_name)
                       axios.post('http://13.124.141.28:3000/sendMessage', {
                         f: id,
                         f_name:name,
@@ -503,7 +503,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                 style={styles.touchArea}
                 onPress={() => {
                     setModalVisibility(true, b.message, b.type, b.ind, b.r)
-                    setTo(b.t);
+                    setTo(b.f);
                     setTo_name(b.t_name)
                   }
                 } 

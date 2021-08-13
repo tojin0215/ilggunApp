@@ -121,10 +121,10 @@ const _handlePressButtonAsync1 = async () => {
 };
 
 
-const _handlePressButtonAsync2 = async () => {
-  let show2 = await WebBrowser.openBrowserAsync('https://www.naver.com');
-  setShow2(show2);
-};
+// const _handlePressButtonAsync2 = async () => {
+//   let show2 = await WebBrowser.openBrowserAsync('https://www.naver.com');
+//   setShow2(show2);
+// };{/**지원금 알아보기 주석처리 */}
 
   return (
     <View style={styles.image}>
@@ -183,11 +183,11 @@ const _handlePressButtonAsync2 = async () => {
        <Image style={styles.addbuttonImg} source={require('../../img/addBtn1.png')}/>
       </TouchableOpacity>
 
-      <TouchableOpacity 
+      {/* <TouchableOpacity 
        style={styles.button2}
        onPress={_handlePressButtonAsync2}>
        <Image style={styles.addbuttonImg} source={require('../../img/addBtn2.png')}/>
-      </TouchableOpacity>     
+      </TouchableOpacity>      */}{/**지원금 알아보기 버튼 비활성화(링크 페이지 없음) */}
 
       <View style={styles.buttonArea3}>
         <TouchableOpacity

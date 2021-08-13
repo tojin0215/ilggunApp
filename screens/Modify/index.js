@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     fontSize:wp('5rem'),
   },
   text1:{
-    
+    width:wp('70%'),
     fontSize:wp('6rem'), 
     fontFamily:"NanumSquareB",
     marginBottom:hp('1%'),
@@ -71,7 +71,7 @@ const ModifyScreen = ({navigation}) => {
   <View style={styles.container}>
     <View style={styles.buttonArea}>
       <View style={styles.texts}>
-        <Text style={styles.text1}>이름 : "{name}"</Text>
+        <Text style={styles.text1} numberOfLines={1} ellipsizeMode='tail'>이름 : {name}</Text>
         <Text  style={styles.text2}>사업장에 초대받으려면</Text>
         <Text  style={styles.text2}>먼저, 이름과 이메일을 사업주에게 알려주세요.</Text>
       </View>

@@ -383,7 +383,7 @@ class WCalculatingScreen2 extends Component{
           fontSize: wp('3.2rem'),
         },
         android:{
-          fontSize: wp('3.8rem'),
+          fontSize: wp('2.6rem'),
         }
       })
     },

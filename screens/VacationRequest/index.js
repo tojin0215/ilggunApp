@@ -135,6 +135,11 @@ class VacationRequestScreen extends Component{
             this.setState({owner : res.data[0].id, owner_name : res.data[0].name});
           });
           console.log('111111111111111111111111111111111111111111111111111111',this.props.route.params.name)
+          console.log(this.props.route.params)
+          console.log(this.state)
+          // console.log("t", id)
+          // console.log("t_name", name)
+          // console.log("message", password)
           await axios.post('http://13.124.141.28:3000/sendMessage', {
               type: 2,
               system:1,

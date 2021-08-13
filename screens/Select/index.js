@@ -59,8 +59,10 @@ const SelectScreen = ({ onSignIn, navigation }) => {
     <View style={styles.image}>
     <View style={styles.container}>
             <View style={styles.textArea}>
-      <Text style={styles.text1}>"{id}"</Text>
-        <Text  style={styles.text2}>님 안녕하세요.</Text>
+      <Text>"</Text>
+      <Text style={styles.text1} numberOfLines={1} ellipsizeMode='tail'>{id}</Text>
+      <Text>"</Text>
+        <Text  style={styles.text2}> 님 안녕하세요.</Text>
       </View>
       <View style={styles.buttonArea}>
         <TouchableHighlight
@@ -103,7 +105,8 @@ const styles = StyleSheet.create({
     marginTop:hp('10%')
   }, 
   text1:{
-    fontSize:wp('6rem'), 
+    fontSize:wp('6rem'),
+    width:wp('50%'),
     fontFamily:"NanumSquareB", 
   },
   text2:{

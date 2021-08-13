@@ -30,6 +30,12 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
   const SignPost = async() => {
     try {
       console.log("!!!!!!!!!!!!!!!!!!!")
+      console.log("f", idid)
+      console.log("f_name", namename)
+      console.log("t", id)
+      console.log("t_name", name)
+      console.log("message", password)
+      
       axios.post('http://13.124.141.28:3000/sendMessage', {
           f: idid,
           f_name:namename,

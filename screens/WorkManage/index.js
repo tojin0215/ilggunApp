@@ -347,7 +347,12 @@ const WorkManageScreen = ({navigation, route}) => {
             business.map((b, id) => (
               <View style={styles.workerAera}>
                 <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
-                    <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
+                    <Text 
+                      key={id} 
+                      style={styles.werkerTextName}
+                      numberOfLines={1}
+                      ellipsizeMode='tail'
+                    >{b.workername} </Text>
                     
                 <View style={styles.colStyle}>
                   <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
