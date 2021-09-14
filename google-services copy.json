@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "73979704952",
+    "project_id": "ilggun-10af5",
+    "storage_bucket": "ilggun-10af5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73979704952:android:cdd6af74c0261a4eb6df8d",
+        "android_client_info": {
+          "package_name": "com.tojin.ilggun2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73979704952-2bbghf5g9fqgqbj0p5gka40j2k1edv0n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tojin.ilggun2",
+            "certificate_hash": "3d03fa2b3d0b547716e694147caf148ef08d8067"
+          }
+        },
+        {
+          "client_id": "73979704952-8fafkgl0jo6quq0jg6r20rkkn4vdd11q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsJtKQT_dzXf2NvTqHMI8lPentGkvDmC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73979704952-8fafkgl0jo6quq0jg6r20rkkn4vdd11q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
