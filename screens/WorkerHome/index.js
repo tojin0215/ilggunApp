@@ -164,7 +164,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
            setWorktodo(td);
          }
     });
-    axios.post('http://13.124.141.28:3000/selectWorkerEach', {
+    
+    axios.post('http://13.124.141.28:3000/businessWorker', {
       business:route.params.bname,
       workername:route.params.id,
     },
@@ -173,6 +174,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       'Accept': 'application/json'}
     })
     .then(res => {
+      console.log("WorkerHome::businessWorker")
+      console.log(res.data)
       setState(res.data[0].state);
     });
   },[]);
@@ -319,14 +322,13 @@ const WorkerHomeScreen = ({ navigation, route }) => {
                       'Content-Type': 'application/json',
                       'Accept': 'application/json'}
                     })
-                  .then(async(res) => 
-                    {
-                      let dic={}
-                      for(let i=0 ; i<res.data.length ; i++){
-                        dic[res.data[i].workername] = (res.data[i].goto==null?'':res.data[i].goto)+(res.data[i].leavee==null?'':res.data[i].leavee);
-                      }
+                  .then(async(res) => {
+                      setTimelog(
+                        ((res.data[0].goto)? res.data[0].goto : '----')
+                        + ((res.data[0].leavee)? res.data[0].leavee : '----')
+                      )
                       console.log("-------------------------------------")
-                      setTimelog(dic[idid]);
+                      // setTimelog(dic[idid]);
                     
                     });
 
@@ -338,7 +340,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     async function commuteData(idid) { 
       let err;  
       try {
-          await axios.post('http://13.124.141.28:3000/updateCommute', {bang : route.params.bname, id:idid},
+          await axios.post('http://13.124.141.28:3000/updateCommute',
+          {bang : route.params.bname, id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
@@ -366,6 +369,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               else if(d==4) day = 'thu';
               else if(d==5) day = 'fri';
               else if(d==6) day = 'sat';
+
               axios.post('http://13.124.141.28:3000/selectTimelogAsWorker', {
                         bang: route.params.bname,
                         year : new Date().getFullYear(),
@@ -380,12 +384,16 @@ const WorkerHomeScreen = ({ navigation, route }) => {
                     })
                   .then(async(res) => 
                     {
-                      let dic={}
-                      for(let i=0 ; i<res.data.length ; i++){
-                        dic[res.data[i].workername] = (res.data[i].goto==null?'':res.data[i].goto)+(res.data[i].leavee==null?'':res.data[i].leavee);
-                      }
-                      console.log("-------------------------------------")
-                        setTimelog(dic[idid]);
+                      setTimelog(
+                        ((res.data[0].goto)? res.data[0].goto : '----')
+                        + ((res.data[0].leavee)? res.data[0].leavee : '----')
+                      )
+                      // let dic={}
+                      // for(let i=0 ; i<res.data.length ; i++){
+                      //   dic[res.data[i].workername] = (res.data[i].goto==null?'':res.data[i].goto)+(res.data[i].leavee==null?'':res.data[i].leavee);
+                      // }
+                      // console.log("-------------------------------------")
+                      //   setTimelog(dic[idid]);
                     
                     });
             })
@@ -424,7 +432,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       <View style={styles.container}>
       <View style={styles.timeText}>
         <Text style={styles.textTitle1}>근무 시간   {time==undefined?<Text style={styles.text1}>-- : --  -  -- : --</Text>:<Text style={styles.text1}>{time.substring(0,2)}:{time.substring(2,4)} - {time.substring(4,6)}:{time.substring(6,8)}</Text>}</Text>
-        <Text style={styles.textTitle2}>출근/퇴근  {timelog==undefined||time==undefined ?<Text style={styles.text2}>-- : --  -  -- : --</Text>:<Text style={styles.text2}>{timelog.substring(0,2)}:{timelog.substring(2,4)} - {timelog.substring(4,6)}:{timelog.substring(6,8)}</Text>}</Text>
+        <Text style={styles.textTitle2}>출근/퇴근  {timelog==undefined ?<Text style={styles.text2}>-- : --  -  -- : --</Text>:<Text style={styles.text2}>{timelog.substring(0,2)}:{timelog.substring(2,4)} - {timelog.substring(4,6)}:{timelog.substring(6,8)}</Text>}</Text>
       </View>
       <View style={styles.buttonArea1}>    
       <TouchableOpacity 
@@ -433,7 +441,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
           
           //출근/퇴근기록
           console.log("state???"+route.params.state)
-          if(state==2){
+          if (state === 2) {
             if(commute=='출근' && worktodo==1){
               Alert.alert(
                 "퇴근하기",

@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "73979704952",
-    "project_id": "ilggun-10af5",
-    "storage_bucket": "ilggun-10af5.appspot.com"
+    "project_number": "567366538740",
+    "project_id": "tojin-4e2dd",
+    "storage_bucket": "tojin-4e2dd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:73979704952:android:cdd6af74c0261a4eb6df8d",
+        "mobilesdk_app_id": "1:567366538740:android:7c0196a5cc238d474895a1",
         "android_client_info": {
-          "package_name": "com.tojin.ilggun2"
+          "package_name": "com.tojin.ilggun"
         }
       },
       "oauth_client": [
         {
-          "client_id": "73979704952-2bbghf5g9fqgqbj0p5gka40j2k1edv0n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.tojin.ilggun2",
-            "certificate_hash": "3d03fa2b3d0b547716e694147caf148ef08d8067"
-          }
-        },
-        {
-          "client_id": "73979704952-8fafkgl0jo6quq0jg6r20rkkn4vdd11q.apps.googleusercontent.com",
+          "client_id": "567366538740-iae1ke6197l02d7e5mbskvm1m3steabi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCsJtKQT_dzXf2NvTqHMI8lPentGkvDmC0"
+          "current_key": "AIzaSyC4X306DmZr9yWUJ00lomAf27LOfW0nwBY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "73979704952-8fafkgl0jo6quq0jg6r20rkkn4vdd11q.apps.googleusercontent.com",
+              "client_id": "567366538740-iae1ke6197l02d7e5mbskvm1m3steabi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

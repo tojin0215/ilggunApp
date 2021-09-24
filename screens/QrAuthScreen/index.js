@@ -4,7 +4,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import axios from "axios";
 import JWT from "expo-jwt";
 
-function QrAuthScreen({ navigation, route }) {
+const QrAuthScreen = ({ navigation, route }) => {
   const { bname, userId } = route.params;
   let { commute } = route.params;
   //   const { setCommute } = route.params;
@@ -73,14 +73,18 @@ function QrAuthScreen({ navigation, route }) {
               }
             )
             .then(async (res) => {
-              let dic = {};
-              for (let i = 0; i < res.data.length; i++) {
-                dic[res.data[i].workername] =
-                  (res.data[i].goto == null ? "" : res.data[i].goto) +
-                  (res.data[i].leavee == null ? "" : res.data[i].leavee);
-              }
-              console.log("-------------------------------------");
-              setTimelog(dic[idid]);
+              setTimelog(
+                ((res.data[0].goto)? res.data[0].goto : '----')
+                + ((res.data[0].leavee)? res.data[0].leavee : '----')
+              )
+              // let dic = {};
+              // for (let i = 0; i < res.data.length; i++) {
+              //   dic[res.data[i].workername] =
+              //     (res.data[i].goto == null ? "" : res.data[i].goto) +
+              //     (res.data[i].leavee == null ? "" : res.data[i].leavee);
+              // }
+              // console.log("-------------------------------------");
+              // setTimelog(dic[idid]);
             });
         });
     } catch (e) {
@@ -120,9 +124,10 @@ function QrAuthScreen({ navigation, route }) {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
+    console.log(data);
     try {
-      const jwtData = JWT.decode(data, key);
-      if (jwtData.id !== "aa") Alert.alert("본인이 아닙니다.")
+      console.log(userId)
+      if (data !== userId)Alert.alert("본인이 아닙니다.")
       else {
         setCommute(commuted == "출근" ? "퇴근" : "출근");
         commuteData(userId);

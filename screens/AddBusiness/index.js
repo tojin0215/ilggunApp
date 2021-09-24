@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Alert, AsyncStorage } from 'react-native';
 import {
   View, Input,
@@ -44,7 +44,9 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       setZipCode(route.params.zipCode);
     }
   });
-  React.useEffect(() => {
+
+
+  useEffect(() => {
     AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).id);
       axios.post('http://13.124.141.28:3000/selectSign', { 
@@ -58,16 +60,20 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
             setSign(res.data[0].sign)        
         })
     });
+
     (async () => {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!');
+          alert('죄송합니다. 이 작업을 수행하려면 카메라 롤 권한이 필요합니다! ');
         }
       }
     })();
-  }, []);
+  }, []
+  );
+
   const pickImage = async () => {
+    console.log(`AddBusiness::pickImage`)
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -75,6 +81,7 @@ const AddBusinessScreen = ({ onSignUp, navigation, route }) => {
       quality: 1,
       base64: true,
     });
+
     setResult(result);
     let localUri1 = result.uri;
     let filename1 = localUri1.split('/').pop();

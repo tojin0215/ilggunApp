@@ -18,6 +18,9 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
   const [repassword, setrePassword] = useState('');
   const [path, setPath] = useState('');
   const [savePath, setSavePath] = useState('');
+  const [touchOut, setTouchOut] = useState(false);
+  const [locationX, setLocationX] = useState(0);
+  const [locationY, setLocationY] = useState(0);
   
   const SignPost = async(str) => {
     try {
@@ -157,6 +160,10 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                         <TouchableOpacity
                             style={styles.signBtnArea2}
                             onPress={async()=>{
+                              
+                                setTouchOut(false)
+                                setLocationX(0);
+                                setLocationY(0);
                                 setPath('');
                                 setSavePath('')
                             }}>
@@ -164,19 +171,53 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
                         </TouchableOpacity> 
                     </View>
                     <View style={styles.sign} onTouchMove={(e) => {
-                    setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
-                    setPath(path+' L'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
-                    console.log(savePath)
+                      console.log(Math.abs(locationX - e.nativeEvent.locationX) > 200);
+                      console.log(Math.abs(locationY - e.nativeEvent.locationY) > 200);
+                      if (touchOut) return
+                      else if (
+                        Math.abs(locationX - e.nativeEvent.locationX) > 300 || Math.abs(locationY - e.nativeEvent.locationY) > 200) {
+
+                        setTouchOut(true)
+                        setLocationX(0);
+                        setLocationY(0);
+                        setSavePath(savePath);
+                        setPath(path+' Z');
+                      }
+                      else {
+                        setTouchOut(false)
+                        
+                        setLocationX(e.nativeEvent.locationX);
+                        setLocationY(e.nativeEvent.locationY);
+                        setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
+                        setPath(path+' L'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
+                      }
+                    
+                    // console.log(e.nativeEvent.)
+                    // console.log(savePath)
+                        // console.log(e.nativeEvent);
                     }}
                     ontouchend={(e) => {
+                      if (touchOut) setTouchOut(false)
+                      else {
+                        setTouchOut(false);
+                      setLocationX(0);
+                      setLocationY(0);
                         setSavePath(savePath)
                         setPath(path+' Z')
-                        console.log(savePath)
+                      }
+
+                      
+                        // console.log(e.nativeEvent);
+                        // console.log(savePath)
                     }}
                     onTouchStart={(e) => {
+                      setTouchOut(false);
+                      setLocationX(e.nativeEvent.locationX);
+                      setLocationY(e.nativeEvent.locationY);
                         setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
                         setPath(path+' M'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
-                        console.log(savePath)
+                        // console.log(savePath)
+                        // console.log(e.nativeEvent);
                     }}
                 >
                 <Svg>

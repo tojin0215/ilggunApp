@@ -92,13 +92,16 @@ const SignInScreen = ({ onSignIn, navigation }) => {
   };
 
   const _syncUserWithStateAsync = async () => {
+    
     const user = await GoogleSignIn.signInSilentlyAsync();
     try {
-      await axios.post('http://13.124.141.28:3000/signinByCode', { code: user.uid,
+      const axios_config = { 
+        code: user.uid,
         headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
-      })
+      }
+      await axios.post('http://13.124.141.28:3000/signinByCode', axios_config)
       .then((responseData) => {
         
         if(responseData.data[0] == undefined || responseData.data[0] == ''){
@@ -148,7 +151,12 @@ const SignInScreen = ({ onSignIn, navigation }) => {
   const signInAsync = async () => {
     try {
       await GoogleSignIn.askForPlayServicesAsync();
+
       const { type, user } = await GoogleSignIn.signInAsync();
+      alert('login: type:' + type);
+      alert('login: user:' + user);
+
+
       if (type === 'success') {
         _syncUserWithStateAsync();
       }

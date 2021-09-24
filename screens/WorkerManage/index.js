@@ -215,7 +215,7 @@ const WorkerManageScreen = ({navigation, route}) => {
       <View style={styles.buttonArea}>
         <TouchableOpacity 
           style={styles.button}
-          onPress={() => navigation.navigate(('Invite'),{type:2})}>
+          onPress={() => navigation.navigate(('Invite'),{type:2, user_id: idid})}>
             <Image style={styles.imgStyle} source={require('../../img/invite.png')}></Image>
         </TouchableOpacity>
       </View>

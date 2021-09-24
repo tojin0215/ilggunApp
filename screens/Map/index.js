@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { View } from 'react-native';
-import Postcode from 'react-native-daum-postcode';
+import Postcode from 'react-daum-postcode';
 
 
 

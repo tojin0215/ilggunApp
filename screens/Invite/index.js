@@ -81,7 +81,9 @@ class InviteScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        bangCode : null, id:'', name:'',
+        bangCode : null,
+        id: (props.route.params.user_id)?props.route.params.user_id : '',
+        name:'',
         workerList: [], item:'', clicked:false, press : false
     }
 
@@ -114,7 +116,7 @@ class InviteScreen extends Component{
           }),
         }).then(res => res.json())*/
         .then(res => {
-          console.log(res)
+          // console.log(res)
           let arr=[]
           for(let i=0; i<res.data.length ;i++){
             arr.push({id: res.data[i].id, name: res.data[i].name});
@@ -133,7 +135,7 @@ class InviteScreen extends Component{
       try {
         await axios.post('http://13.124.141.28:3000/selectWorkerEach', {
           business: this.state.bangCode,
-          workername:name,
+          workername: name,
         },
         {  headers:{
           'Content-Type': 'application/json',
@@ -141,24 +143,62 @@ class InviteScreen extends Component{
         })
         .then(res => {
           console.log(JSON.stringify(res.data))
+
+          console.log(`InviteScreen::sendMessage::data`)
+          const message = `(${this.state.bangCode})님이 ${this.state.bangCode} 사업장에 ${name}님을 초대합니다. 승낙하시겠습니까?`
+          const data = {
+            type: 1,
+            system:1,
+            f: this.state.id,
+            t : name,
+            message : message,
+            r:0
+          }
+          console.log(data)
           if(res.data[0]==undefined){
-            axios.post('http://13.124.141.28:3000/sendMessage', {
-              type: 1,
-              system:1,
-                f: this.state.id,
-                t : name,
-                message : '('+this.state.bangCode + ')님이 '+ this.state.bangCode+' 사업장에 '+name+"님을 초대합니다.\n승낙하시겠습니까?",
-                r:0
-            },
-            {  headers:{
-              'Content-Type': 'application/json',
-            'Accept': 'application/json'}
+            console.log(`InviteScreen::sendMessage::`)
+            const message = `(${this.state.bangCode})님이 ${this.state.bangCode} 사업장에 ${name}님을 초대합니다.\n승낙하시겠습니까?`
+            // axios.post('https://xn--zv0bj46b.kr/api/sendMessage', {
+              axios.post('http://13.124.141.28:3000/sendMessage',
+              data,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              }
             })
             .then(res => {
+              console.log(`InviteScreen::sendMessage::${JSON.stringify(res)}`)
               console.log("선택 :???"+this.state.clicked)
 
+            }).catch(error => {
+              console.error('InviteScreen::sendMessage')
+              console.error(error);
+              
+              if (error.response) {
+                // 요청이 이루어졌으며 서버가 2xx의 범위를 벗어나는 상태 코드로 응답했습니다.
+              console.error('InviteScreen::sendMessage::response')
+                console.error(error.response.data);
+                console.error(error.response.status);
+                console.error(error.response.headers);
+                console.error(error.request);
+              }
+              else if (error.request) {
+                // 요청이 이루어 졌으나 응답을 받지 못했습니다.
+                // `error.request`는 브라우저의 XMLHttpRequest 인스턴스 또는
+                // Node.js의 http.ClientRequest 인스턴스입니다.
+              console.error('InviteScreen::sendMessage::request')
+                console.error(error.request);
+              }
+              else {
+                // 오류를 발생시킨 요청을 설정하는 중에 문제가 발생했습니다.
+              console.error('InviteScreen::sendMessage::message')
+                console.error('Error', error.message);
+              }
+              console.log(error.config);
             });
             
+            console.log(`InviteScreen::selectUsername::${name}`)
             axios.post('http://13.124.141.28:3000/selectUsername', {
               id : name
             },
@@ -182,7 +222,15 @@ class InviteScreen extends Component{
               .then(res => {
                 console.log("선택 :??"+this.state.clicked)
                 this.props.navigation.navigate('Worker Management')
+              })
+              .catch(err => {
+                console.error('InviteScreen::addWorker')
+                console.error(err);
               });
+            })
+            .catch(err => {
+              console.error('InviteScreen::selectUsername')
+              console.error(err);
             });
 
             
@@ -190,6 +238,9 @@ class InviteScreen extends Component{
             Alert.alert("이미 근무하고 있는 근로자입니다.")
           }
 
+        })
+        .catch(err => {
+          console.error(err);
         });
         /**/
       } catch (e) {
