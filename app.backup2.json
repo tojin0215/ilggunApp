@@ -2,7 +2,7 @@
   "expo": {
     "name": "일꾼",
     "slug": "pro1",
-    "version": "1.0.2",
+    "version": "1.0.10",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
@@ -21,20 +21,20 @@
       "android"
     ],
     "android": {
-      "permissions":["CAMERA", "MEDIA_LIBRARY"],
+        "permissions":["CAMERA", "MEDIA_LIBRARY"],
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {
-            "certificateHash": "3D03FA2B3D0B547716E694147CAF148EF08D8067"
+            "certificateHash": "DC:63:1A:19:FD:BC:71:E2:EC:C4:20:4E:14:7E:CB:EC:01:B8:64:28"
         }
       },
-      "versionCode": 1,
+      "versionCode": 10,
       "package": "com.tojin.ilggun2",
       "icon" : "./img/logo.png"
     },
     "ios": {
       "bundleIdentifier": "com.tojin.ilggun",
-      "buildNumber":"1.0.0",
+      "buildNumber":"1.0.10",
       "icon" : "./img/logo_ios.png",
       "supportsTablet": false,
       "usesAppleSignIn": true,
