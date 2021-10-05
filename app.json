@@ -2,7 +2,7 @@
   "expo": {
     "name": "일꾼",
     "slug": "pro1",
-    "version": "1.0.12",
+    "version": "1.0.15",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
@@ -21,20 +21,20 @@
       "android"
     ],
     "android": {
-      "permissions":["CAMERA", "MEDIA_LIBRARY"],
+      "permissions":["CAMERA", "MEDIA_LIBRARY", "CAMERA_ROLL"],
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {
             "certificateHash": "3d:03:fa:2b:3d:0b:54:77:16:e6:94:14:7c:af:14:8e:f0:8d:80:67"
         }
       },
-      "versionCode": 12,
+      "versionCode": 16,
       "package": "com.tojin.ilggun2",
       "icon" : "./img/logo.png"
     },
     "ios": {
       "bundleIdentifier": "com.tojin.ilggun",
-      "buildNumber":"1.0.12",
+      "buildNumber":"1.0.16",
       "icon" : "./img/logo_ios.png",
       "supportsTablet": false,
       "usesAppleSignIn": true,
@@ -45,6 +45,9 @@
       },
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan the QR of your employee ID.",
+        "NSMicrophoneUsageDescription": "앱 정상작동을 위해 필요합니다.",
+        "NSPhotoLibraryUsageDescription": "도장 이미지를 가져옵니다.",
         "NSAppTransportSecurity": {
           "NSExceptionDomains": {
             "http://13.124.141.28:3000": {

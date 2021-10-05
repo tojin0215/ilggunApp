@@ -85,10 +85,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
 
 
   const initAsync = async () => {
-    await GoogleSignIn.initAsync({
-      // You may ommit the clientId when the firebase `googleServicesFile` is configured
-      //clientId: '<YOUR_IOS_CLIENT_ID>',
-    });
+    await GoogleSignIn.initAsync({});
   };
 
   const _syncUserWithStateAsync = async () => {

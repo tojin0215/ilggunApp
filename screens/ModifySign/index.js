@@ -10,6 +10,7 @@ import {
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import axios from 'axios';
 import { WebView } from 'react-native-webview'
+import SigniturePadComponent from '../../components/SigniturePad';
 
 const ModifySignScreen = ({ onSignUp, navigation, route }) => {
   const [id, setId] = useState('');
@@ -80,7 +81,13 @@ const ModifySignScreen = ({ onSignUp, navigation, route }) => {
                         }}
                     />
                     </View>
-                    <Text style={styles.titleSignStyle}>서명</Text>
+                    <SigniturePadComponent 
+                    path={path}
+                    setPath={setPath}
+                    savePath={savePath}
+                    setSavePath={setSavePath}
+                    />
+                    {/* <Text style={styles.titleSignStyle}>서명</Text>
                     <View style={styles.sign} onTouchMove={(e) => {
                     console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
                     setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
@@ -108,7 +115,7 @@ const ModifySignScreen = ({ onSignUp, navigation, route }) => {
                 />
                 </Svg>
 
-                </View>
+                </View> */}
 
                 <TouchableOpacity
                     style={styles.signBtnArea}

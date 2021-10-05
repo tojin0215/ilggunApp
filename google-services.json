@@ -1,48 +1,48 @@
 {
   "project_info": {
-    "project_number": "567366538740",
-    "project_id": "tojin-4e2dd",
-    "storage_bucket": "tojin-4e2dd.appspot.com"
+    "project_number": "193721987512",
+    "project_id": "ilggun",
+    "storage_bucket": "ilggun.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:567366538740:android:7c0196a5cc238d474895a1",
+        "mobilesdk_app_id": "1:193721987512:android:8dccb9be412a043ba9df4d",
         "android_client_info": {
-          "package_name": "com.tojin.ilggun"
+          "package_name": "com.tojin.ilggun2"
         }
       },
       "oauth_client": [
         {
-          "client_id": "567366538740-4ohqdllhudv6bnf5r4f8e2d0grbrse2m.apps.googleusercontent.com",
+          "client_id": "193721987512-ta2fsh3bj5ssdp2vfmqt2qeeufsr8iel.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.tojin.ilggun",
-            "certificate_hash": "91f7c58b5cbad5bcf412e2fe387ca28d9793fb1c"
+            "package_name": "com.tojin.ilggun2",
+            "certificate_hash": "3d03fa2b3d0b547716e694147caf148ef08d8067"
           }
         },
         {
-          "client_id": "567366538740-iae1ke6197l02d7e5mbskvm1m3steabi.apps.googleusercontent.com",
+          "client_id": "193721987512-aaqa76kvg5kju3qls8bb9vs99f5kngk2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC4X306DmZr9yWUJ00lomAf27LOfW0nwBY"
+          "current_key": "AIzaSyBXfftbVmBdfknNzWzufJl6LV2byUaypmM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "567366538740-iae1ke6197l02d7e5mbskvm1m3steabi.apps.googleusercontent.com",
+              "client_id": "193721987512-aaqa76kvg5kju3qls8bb9vs99f5kngk2.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "567366538740-kb7dd4hcclbjsovh2tmdcdedhmov2jqk.apps.googleusercontent.com",
+              "client_id": "193721987512-qb62deqfn1dti9uapv4udj4rt0netcji.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.tojin.ilggun"
+                "bundle_id": "com.toojin.illgun"
               }
             }
           ]
@@ -51,34 +51,50 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:567366538740:android:bc032aa4fde41cb84895a1",
+        "mobilesdk_app_id": "1:193721987512:android:0bdd8c418463c674a9df4d",
         "android_client_info": {
-          "package_name": "com.tojin.ilggun2"
+          "package_name": "com.toojin.illgun"
         }
       },
       "oauth_client": [
         {
-          "client_id": "567366538740-iae1ke6197l02d7e5mbskvm1m3steabi.apps.googleusercontent.com",
+          "client_id": "193721987512-hdm7l783r4iuhkhd2me04bfvct5a7n5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.toojin.illgun",
+            "certificate_hash": "64d1e7d03af4658744842965616b416c445dc8a8"
+          }
+        },
+        {
+          "client_id": "193721987512-kk2etotuu5cj32vs04p8qpagmp9v29mp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.toojin.illgun",
+            "certificate_hash": "dc631a19fdbc71e2ecc4204e147ecbec01b86428"
+          }
+        },
+        {
+          "client_id": "193721987512-aaqa76kvg5kju3qls8bb9vs99f5kngk2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC4X306DmZr9yWUJ00lomAf27LOfW0nwBY"
+          "current_key": "AIzaSyBXfftbVmBdfknNzWzufJl6LV2byUaypmM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "567366538740-iae1ke6197l02d7e5mbskvm1m3steabi.apps.googleusercontent.com",
+              "client_id": "193721987512-aaqa76kvg5kju3qls8bb9vs99f5kngk2.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "567366538740-kb7dd4hcclbjsovh2tmdcdedhmov2jqk.apps.googleusercontent.com",
+              "client_id": "193721987512-qb62deqfn1dti9uapv4udj4rt0netcji.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.tojin.ilggun"
+                "bundle_id": "com.toojin.illgun"
               }
             }
           ]

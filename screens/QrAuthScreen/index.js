@@ -2,7 +2,7 @@ import React, { useState, useEffect, Component } from "react";
 import { Text, View, StyleSheet, Button, Alert } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import axios from "axios";
-import JWT from "expo-jwt";
+import { Camera } from 'expo-camera';
 
 const QrAuthScreen = ({ navigation, route }) => {
   const { bname, userId } = route.params;
@@ -16,6 +16,7 @@ const QrAuthScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     (async () => {
+      const { status_not } = await Camera.requestPermissionsAsync();
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();

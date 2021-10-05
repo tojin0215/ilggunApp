@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import styles from './style';
+import SigniturePadComponent from "../../components/SigniturePad";
 
 const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
   const [email, setEmail] = useState(route.params.email);
@@ -65,7 +66,13 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
         <View style={styles.container}>
                 <View style={styles.formArea}>
                 <ScrollView>
-                <View style={styles.textArea}>
+            <SigniturePadComponent 
+            path={path}
+            setPath={setPath}
+            savePath={savePath}
+            setSavePath={setSavePath}
+            />
+                {/* <View style={styles.textArea}>
                     <Text style={styles.titleSignStyle}>서명</Text>
                     <View style={styles.sign} onTouchMove={(e) => {
                     console.log('touchMove',e.nativeEvent.locationX, e.nativeEvent.locationY) 
@@ -104,7 +111,7 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
                     }}>
                     <Text style={styles.signTextStyle}>지우기</Text>
                     </TouchableOpacity> 
-                </View> 
+                </View>  */}
                 
                 <View style={styles.buttonArea}>
                     <TouchableOpacity 

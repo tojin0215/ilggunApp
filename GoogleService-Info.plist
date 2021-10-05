@@ -31,8 +31,10 @@
 	<key>GOOGLE_APP_ID</key>
 	<string>1:567366538740:ios:eb46bd30a2aa188e4895a1</string>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME)에서 카메라를 사용하도록 허용 </string>
+	<string>이 앱은 카메라를 사용하여 사원증의 QR을 스캔합니다.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$ (PRODUCT_NAME)에서 마이크를 사용하도록 허용</string>
+	<string>앱 정상작동을 위해 필요합니다.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>도장 이미지를 가져옵니다.</string>
 </dict>
 </plist>

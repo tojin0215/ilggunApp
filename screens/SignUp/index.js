@@ -1,57 +1,78 @@
-import React, {useState} from 'react';
-import Svg, { Circle, Rect, Path } from 'react-native-svg';
+import React, { useState } from "react";
+import Svg, { Circle, Rect, Path } from "react-native-svg";
 import {
   View,
-  Text, Button,ScrollView,
+  Text,
+  Button,
+  ScrollView,
   TextInput,
-  TouchableOpacity,ImageBackground,Image,Alert
-} from 'react-native';
-import axios from 'axios';
+  TouchableOpacity,
+  ImageBackground,
+  Image,
+  Alert,
+} from "react-native";
+import axios from "axios";
 
-import styles from './styles';
+import SigniturePadComponent from "../../components/SigniturePad";
+
+import styles from "./styles";
 
 const SignUpScreen = ({ onSignUp, navigation }) => {
-  const [id, setId] = useState('');
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [repassword, setrePassword] = useState('');
-  const [path, setPath] = useState('');
-  const [savePath, setSavePath] = useState('');
+  const [id, setId] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [repassword, setrePassword] = useState("");
+  const [path, setPath] = useState("");
+  const [savePath, setSavePath] = useState("");
   const [touchOut, setTouchOut] = useState(false);
   const [locationX, setLocationX] = useState(0);
   const [locationY, setLocationY] = useState(0);
-  
-  const SignPost = async(str) => {
+
+  const SignPost = async (str) => {
     try {
-        let regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-        let reg = /^[0-9a-zA-Z]{2,15}$/;
-        if(!regEmail.test(email)){
-            Alert.alert('이메일 주소가 맞는지 확인해주세요.')
-        }
-        else if(!reg.test(password)){
-            Alert.alert('비밀번호가 영어대소문자, 숫자로만 이루어져있는지 확인해주세요.')
-        }
-        else if(name=='' || email=='' || password=='' ||repassword==''|| path==''){
-            Alert.alert('빈 칸을 채워주세요.');
-        }
-        else if(password != repassword){
-            Alert.alert('비밀번호와 재확인 비밀번호가 다릅니다.\n 다시 확인해주세요.')  
-        }
-        else{
-        await axios.post('http://13.124.141.28:3000/signup', { 
-            id:email,
-            email:email,
-            name:name,
-            password: password,
-            sign:savePath,
-            code:null,
-        },{
-        headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'}
-        }).then((res)=>{
-      /*let res = await fetch('http://13.124.141.28:3000/signup', {
+      let regEmail =
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+      let reg = /^[0-9a-zA-Z]{2,15}$/;
+      if (!regEmail.test(email)) {
+        Alert.alert("이메일 주소가 맞는지 확인해주세요.");
+      } else if (!reg.test(password)) {
+        Alert.alert(
+          "비밀번호가 영어대소문자, 숫자로만 이루어져있는지 확인해주세요."
+        );
+      } else if (
+        name == "" ||
+        email == "" ||
+        password == "" ||
+        repassword == "" ||
+        path == ""
+      ) {
+        Alert.alert("빈 칸을 채워주세요.");
+      } else if (password != repassword) {
+        Alert.alert(
+          "비밀번호와 재확인 비밀번호가 다릅니다.\n 다시 확인해주세요."
+        );
+      } else {
+        await axios
+          .post(
+            "http://13.124.141.28:3000/signup",
+            {
+              id: email,
+              email: email,
+              name: name,
+              password: password,
+              sign: savePath,
+              code: null,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+            }
+          )
+          .then((res) => {
+            /*let res = await fetch('http://13.124.141.28:3000/signup', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -64,21 +85,20 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
           sign:savePath
         }),
       }); */
-      //res = await res;
-      
-      if(res.data.err!=null){
-        Alert.alert('이미 존재하는 ID입니다. \n변경해주세요.')  
-      }else{
-        navigation.navigate('Sign In')
-        Alert.alert('회원가입이 완료되었습니다.')    
-      }        
-        })
-    }
+            //res = await res;
+
+            if (res.data.err != null) {
+              Alert.alert("이미 존재하는 ID입니다. \n변경해주세요.");
+            } else {
+              navigation.navigate("Sign In");
+              Alert.alert("회원가입이 완료되었습니다.");
+            }
+          });
+      }
     } catch (e) {
       console.error(e);
     }
-    
-}
+  };
   // emailCheck = (email) =>{
   //   let check = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
   //   return check.test(email) ? true : false ;
@@ -103,149 +123,176 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
   //               })
   //           }
   //           }
-            
+
   //       }
   // }
 
   return (
     <View style={styles.image}>
-        <View style={styles.container}>
-                <View style={styles.formArea}>
-                <ScrollView
-                scrollEnabled={false}
+      <View style={styles.container}>
+        <View style={styles.formArea}>
+          <ScrollView scrollEnabled={false}>
+            <View style={styles.textArea}>
+              <Text style={styles.titleStyle}>이름</Text>
+              <TextInput
+                onChangeText={(name) => setName(name)}
+                defaultValue={name}
+                style={styles.textStyle}
+                placeholder={"이름을 입력하세요."}
+              />
+            </View>
+
+            <View style={styles.textArea}>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.titleStyle}>EMAIL</Text>
+              </View>
+              <TextInput
+                onChangeText={(email) => setEmail(email)}
+                defaultValue={email}
+                style={styles.textStyle}
+                placeholder={"이메일을 입력하세요."}
+              />
+            </View>
+
+            <View style={styles.textArea}>
+              <Text style={styles.titleStyle}>비밀번호</Text>
+              <TextInput
+                onChangeText={(password) => setPassword(password)}
+                defaultValue={password}
+                style={styles.textStyle}
+                secureTextEntry={true}
+                placeholder={"비밀번호를 입력하세요."}
+              />
+            </View>
+
+            <View style={styles.textArea}>
+              <Text style={styles.titleStyle}>비밀번호 확인</Text>
+              <TextInput
+                onChangeText={(repassword) => setrePassword(repassword)}
+                defaultValue={repassword}
+                style={styles.textStyle}
+                secureTextEntry={true}
+                placeholder={"비밀번호를 한번 더 입력하세요."}
+              />
+            </View>
+            <SigniturePadComponent 
+            path={path}
+            setPath={setPath}
+            savePath={savePath}
+            setSavePath={setSavePath}
+            />
+            {/* <View style={styles.textArea2}>
+              <View style={styles.signBtnArea}>
+                <Text style={styles.titleSignStyle}>서명</Text>
+                <TouchableOpacity
+                  style={styles.signBtnArea2}
+                  onPress={async () => {
+                    setTouchOut(false);
+                    setLocationX(0);
+                    setLocationY(0);
+                    setPath("");
+                    setSavePath("");
+                  }}
                 >
-                <View style={styles.textArea}>
-                    <Text style={styles.titleStyle}>이름</Text>
-                    <TextInput 
-                        onChangeText={name =>setName(name)}
-                        defaultValue={name}
-                        style={styles.textStyle} 
-                        placeholder={"이름을 입력하세요."}/>
-                </View>   
+                  <Text style={styles.signTextStyle}>지우기</Text>
+                </TouchableOpacity>
+              </View>
+              <SigniturePadComponent 
+                path={path}
+                savePath={savePath}
 
-                <View style={styles.textArea}>
-                    <View style={{flexDirection:'row'}}>
-                    <Text style={styles.titleStyle}>EMAIL</Text>
-                    </View>
-                    <TextInput 
-                        onChangeText={email =>setEmail(email)}
-                        defaultValue={email}
-                        style={styles.textStyle} 
-                        placeholder={"이메일을 입력하세요."}/>
-                </View>
-                
-                
-                <View style={styles.textArea}>
-                    <Text style={styles.titleStyle}>비밀번호</Text>
-                    <TextInput 
-                        onChangeText={password => setPassword(password)}
-                        defaultValue={password}
-                        style={styles.textStyle}
-                        secureTextEntry={true}
-                        placeholder={"비밀번호를 입력하세요."}/>
-                </View>    
+                setSavePath={setSavePath}
+                setPath={setPath}
+              />
+              <View
+                style={styles.sign}
+                onTouchMove={(e) => {
+                  if (touchOut) return;
+                  else if (
+                    Math.abs(locationX - e.nativeEvent.locationX) > 300 ||
+                    Math.abs(locationY - e.nativeEvent.locationY) > 200
+                  ) {
+                    setTouchOut(true);
+                    setLocationX(0);
+                    setLocationY(0);
+                  } else {
+                    setTouchOut(false);
 
-                 <View style={styles.textArea}>
-                    <Text style={styles.titleStyle}>비밀번호 확인</Text>
-                    <TextInput 
-                        onChangeText={repassword => setrePassword(repassword)}
-                        defaultValue={repassword}
-                        style={styles.textStyle} 
-                        secureTextEntry={true}
-                        placeholder={"비밀번호를 한번 더 입력하세요."}/>
-                </View>    
-                <View style={styles.textArea2}>
-                    <View style={styles.signBtnArea}>
-                    <Text style={styles.titleSignStyle}>서명</Text>
-                        <TouchableOpacity
-                            style={styles.signBtnArea2}
-                            onPress={async()=>{
-                              
-                                setTouchOut(false)
-                                setLocationX(0);
-                                setLocationY(0);
-                                setPath('');
-                                setSavePath('')
-                            }}>
-                            <Text style={styles.signTextStyle}>지우기</Text>
-                        </TouchableOpacity> 
-                    </View>
-                    <View style={styles.sign} onTouchMove={(e) => {
-                      console.log(Math.abs(locationX - e.nativeEvent.locationX) > 200);
-                      console.log(Math.abs(locationY - e.nativeEvent.locationY) > 200);
-                      if (touchOut) return
-                      else if (
-                        Math.abs(locationX - e.nativeEvent.locationX) > 300 || Math.abs(locationY - e.nativeEvent.locationY) > 200) {
+                    setLocationX(e.nativeEvent.locationX);
+                    setLocationY(e.nativeEvent.locationY);
+                    setSavePath(
+                      savePath +
+                        " " +
+                        e.nativeEvent.locationX +
+                        "," +
+                        e.nativeEvent.locationY
+                    );
+                    setPath(
+                      path +
+                        " L" +
+                        e.nativeEvent.locationX +
+                        " " +
+                        e.nativeEvent.locationY
+                    );
+                  }
+                }}
+                ontouchend={(e) => {
+                  // 호출안됨
+                  if (touchOut) setTouchOut(false);
+                  else {
+                    setTouchOut(false);
+                    setLocationX(0);
+                    setLocationY(0);
+                    setSavePath(savePath);
+                    setPath(path + " Z");
+                  }
 
-                        setTouchOut(true)
-                        setLocationX(0);
-                        setLocationY(0);
-                        setSavePath(savePath);
-                        setPath(path+' Z');
-                      }
-                      else {
-                        setTouchOut(false)
-                        
-                        setLocationX(e.nativeEvent.locationX);
-                        setLocationY(e.nativeEvent.locationY);
-                        setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
-                        setPath(path+' L'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
-                      }
-                    
-                    // console.log(e.nativeEvent.)
-                    // console.log(savePath)
-                        // console.log(e.nativeEvent);
-                    }}
-                    ontouchend={(e) => {
-                      if (touchOut) setTouchOut(false)
-                      else {
-                        setTouchOut(false);
-                      setLocationX(0);
-                      setLocationY(0);
-                        setSavePath(savePath)
-                        setPath(path+' Z')
-                      }
-
-                      
-                        // console.log(e.nativeEvent);
-                        // console.log(savePath)
-                    }}
-                    onTouchStart={(e) => {
-                      setTouchOut(false);
-                      setLocationX(e.nativeEvent.locationX);
-                      setLocationY(e.nativeEvent.locationY);
-                        setSavePath(savePath+' '+e.nativeEvent.locationX+','+e.nativeEvent.locationY)
-                        setPath(path+' M'+e.nativeEvent.locationX+' '+e.nativeEvent.locationY)
-                        // console.log(savePath)
-                        // console.log(e.nativeEvent);
-                    }}
-                >
+                }}
+                onTouchStart={(e) => {
+                  setTouchOut(false);
+                  setLocationX(e.nativeEvent.locationX);
+                  setLocationY(e.nativeEvent.locationY);
+                  setSavePath(
+                    savePath +
+                      " " +
+                      e.nativeEvent.locationX +
+                      "," +
+                      e.nativeEvent.locationY
+                  );
+                  setPath(
+                    path +
+                      " M" +
+                      e.nativeEvent.locationX +
+                      " " +
+                      e.nativeEvent.locationY
+                  );
+                }}
+              >
                 <Svg>
-                <Path
-                    d={path}
-                    fill="none"
-                    stroke="black"
-                />
+                  <Path d={path} fill="none" stroke="black" />
                 </Svg>
-                </View>
-                </View>
-                
-                <View style={styles.buttonArea}>
-                    <TouchableOpacity 
-                        style={styles.button}
-                        onPress={()=>SignPost()}>
-                        <Text style={styles.buttonTitle}>완료</Text>
-                    </TouchableOpacity>
-                </View>
-                </ScrollView>
-                </View> 
-                <View style={styles.buttonlogoArea}>
-                    <Image style={styles.logobottom} source={require('../../img/logo_bottom.png') }/> 
-                </View> 
+              </View>
+            </View> */}
+
+            <View style={styles.buttonArea}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => SignPost()}
+              >
+                <Text style={styles.buttonTitle}>완료</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
-    
+        <View style={styles.buttonlogoArea}>
+          <Image
+            style={styles.logobottom}
+            source={require("../../img/logo_bottom.png")}
+          />
+        </View>
+      </View>
     </View>
   );
 };
- 
+
 export default SignUpScreen;
