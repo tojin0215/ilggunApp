@@ -21,7 +21,7 @@
       "android"
     ],
     "android": {
-        "permissions":["CAMERA", "MEDIA_LIBRARY"],
+        "permissions":["CAMERA", "MEDIA_LIBRARY", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {

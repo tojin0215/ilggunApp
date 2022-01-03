@@ -150,8 +150,8 @@ const SignInScreen = ({ onSignIn, navigation }) => {
       await GoogleSignIn.askForPlayServicesAsync();
 
       const { type, user } = await GoogleSignIn.signInAsync();
-      alert('login: type:' + type);
-      alert('login: user:' + user);
+      // alert('login: type:' + type);
+      // alert('login: user:' + user);
 
 
       if (type === 'success') {

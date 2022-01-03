@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 })
 
 
-const SigniturePadComponent = ({path, setPath, savePath, setSavePath}) => {
+const SigniturePadComponent = ({path, setPath, savePath, setSavePath, is_erase = true}) => {
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
     const [is_out, setIsOut] = useState(false);
@@ -92,7 +92,7 @@ const SigniturePadComponent = ({path, setPath, savePath, setSavePath}) => {
         <View style={styles.textArea2}>
               <View style={styles.signBtnArea}>
                 <Text style={styles.titleSignStyle}>서명</Text>
-                <TouchableOpacity
+                {is_erase && <TouchableOpacity
                   style={styles.signBtnArea2}
                   onPress={async () => {
                     setIsOut(false);
@@ -103,7 +103,7 @@ const SigniturePadComponent = ({path, setPath, savePath, setSavePath}) => {
                   }}
                 >
                   <Text style={styles.signTextStyle}>지우기</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>}
               </View>
               <View
                 style={styles.sign}

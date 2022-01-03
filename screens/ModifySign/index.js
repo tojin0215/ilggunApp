@@ -117,14 +117,14 @@ const ModifySignScreen = ({ onSignUp, navigation, route }) => {
 
                 </View> */}
 
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={styles.signBtnArea}
                     onPress={async()=>{
                         setPath('');
                         setSavePath('')
                     }}>
                     <Text style={styles.signTextStyle}>지우기</Text>
-                    </TouchableOpacity> 
+                    </TouchableOpacity>  */}
                 </View> 
                 
                 <View style={styles.buttonArea}>

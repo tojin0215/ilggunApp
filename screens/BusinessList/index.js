@@ -99,8 +99,9 @@ const BusinessListScreen = ({navigation}) => {
             'Accept': 'application/json'}
           })
             .then(res => {
+              console.log("BusinessListScreen::useEffect");
               setBusiness(res.data)
-              console.log("여기용222");
+              
             });
         } catch (e) {
             console.error(e);
@@ -119,7 +120,7 @@ const BusinessListScreen = ({navigation}) => {
             business.map((b, id) => (
               <>
                 <TouchableOpacity 
-                  key = {id}
+                  key={id}
                   style={{
                     backgroundColor: clicked==id?"#67C8BA":"#E2F2EF",
                     width: "75%",

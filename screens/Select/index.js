@@ -139,7 +139,6 @@ logobottom:{
   width:wp('22%'), height:wp('3%'),
   justifyContent:"center",
   alignItems:"center",
-  fontFamily:"NanumSquare",
 },
 })
 

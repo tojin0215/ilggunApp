@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@actbase/react-daum-postcode": "^1.0.1",
     "@react-native-community/async-storage": "~1.12.0",
     "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "0.1.10",
@@ -48,7 +49,6 @@
     "react-native-calendar-picker": "^7.0.1",
     "react-native-calendars": "^1.403.0",
     "react-native-checkbox-group": "^1.0.3",
-    "react-native-daum-postcode": "^1.0.9",
     "react-native-dropdown-picker": "^3.7.0",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-fetch-blob": "^0.10.8",
@@ -63,8 +63,9 @@
     "react-native-svg": "12.1.0",
     "react-native-table-component": "^1.2.1",
     "react-native-web": "~0.13.12",
-    "react-native-webview": "11.0.0",
+    "react-native-webview": "^11.15.0",
     "react-navigation": "^4.4.2",
+    "tslib": "^2.3.1",
     "xlsx": "^0.16.8"
   },
   "devDependencies": {
