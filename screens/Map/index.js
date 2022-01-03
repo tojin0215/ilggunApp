@@ -6,8 +6,9 @@ import Postcode from '@actbase/react-daum-postcode';
 
 const MapScreen = ({ navigation, props }) => {
   return <Postcode
-    style={{ width: 320, height: 320 }}
-    jsOptions={{ animation: true }}
+    // style={{ width: 320, height: 320 }}
+    // jsOptions={{ animation: true }}
+    onComplete={data => alert(JSON.stringify(data))}
     onSelected={data => alert(JSON.stringify(data))}
 />
   return (
