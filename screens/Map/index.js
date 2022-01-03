@@ -5,6 +5,11 @@ import Postcode from 'react-native-daum-postcode';
 
 
 const MapScreen = ({ navigation, props }) => {
+  return <Postcode
+    style={{ width: 320, height: 320 }}
+    jsOptions={{ animation: false }}
+    onSelected={data => alert(JSON.stringify(data))}
+/>
   return (
     <View style={{ width: "100%", height: "100%" }}>
         <Postcode
