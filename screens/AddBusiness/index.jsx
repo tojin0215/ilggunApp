@@ -236,7 +236,7 @@ const AddBusinessScreen = ({navigation, route}) => {
 
                         <TouchableOpacity 
                             style={styles.searchArea}
-                            onPress={()=>{ navigation.navigate('Map') }}>
+                            onPress={()=>{ navigation.navigate('Map', {backref: "Add Business"}); }}>
                             <Text style={styles.textStyle}>우편번호 찾기</Text>
                         </TouchableOpacity>
                     </View>

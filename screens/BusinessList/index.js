@@ -116,11 +116,11 @@ const BusinessListScreen = ({navigation}) => {
       <View style={styles.btnArea}>
       <ScrollView>
         {
-          <View style={styles.buttonArea}>{
+          <View style={styles.buttonArea} key={1}>{
             business.map((b, id) => (
               <>
                 <TouchableOpacity 
-                  key={id}
+                  // key={id}
                   style={{
                     backgroundColor: clicked==id?"#67C8BA":"#E2F2EF",
                     width: "75%",

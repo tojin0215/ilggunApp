@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import { View, Text, StyleSheet, ScrollView, Button, TextInput, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
 import { AsyncStorage } from 'react-native';
-import * as Font from 'expo-font';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-import { abs } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 

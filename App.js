@@ -65,9 +65,7 @@ import SendMessageScreen from './screens/SendMessage';
 import AddWorkTodoScreen from './screens/AddWorkTodo'
 import WorkTodoScreen from './screens/WorkTodo'
 import SplashScreen from './screens/Splash';
-import SvgComponent from './screens/Svg'
 import QrAuthScreen from './screens/QrAuthScreen'
-import { color } from 'react-native-reanimated';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as GoogleSignIn from 'expo-google-sign-in';
 

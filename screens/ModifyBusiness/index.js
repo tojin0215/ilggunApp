@@ -356,7 +356,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
 
             <TouchableOpacity 
               style={styles.searchArea}
-              onPress={()=>{ navigation.navigate('Map2') }}>
+              onPress={()=>{ navigation.navigate('Map', {backref: "Modify Business"}) }}>
               <Text style={styles.textStyle}>우편번호 찾기</Text>
             </TouchableOpacity> 
           </View>
