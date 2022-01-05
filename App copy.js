@@ -241,7 +241,7 @@ const WorkerTabs = () => {
 				name='WorkerManage2'
 				component={WorkerManageScreen2}
 				options={{
-					tabBarLabel: '알바',
+					tabBarLabel: '일용근로자',
 				}}
 			/>
 		</Tab.Navigator>
@@ -284,7 +284,7 @@ const ExpenseTabs = () => {
 				name='Expense2'
 				component={ExpenseScreen2}
 				options={{
-					tabBarLabel: '알바',
+					tabBarLabel: '일용근로자',
 				}}
 			/>
 		</Tab.Navigator>
@@ -370,7 +370,7 @@ const WExpenseTabs = () => {
 				name='WExpense2'
 				component={WExpenseScreen2}
 				options={{
-					tabBarLabel: '알바',
+					tabBarLabel: '일용근로자',
 				}}
 			/>
 		</Tab.Navigator>
