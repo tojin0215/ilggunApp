@@ -7,14 +7,16 @@ import { StatusBar } from 'expo-status-bar';
 // Import
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-import React, {useState, useRef, useEffect, Component} from 'react';
+import React, { useState, useRef, useEffect, Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { View, Button, Alert, Image, StyleSheet, Text } from 'react-native';
-import { NavigationContainer, DrawerActions,
-          getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import {
+  NavigationContainer, DrawerActions,
+  getFocusedRouteNameFromRoute
+} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import axios from 'axios';
 import * as Font from 'expo-font';
 
@@ -87,14 +89,14 @@ import * as GoogleSignIn from 'expo-google-sign-in';
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-const storeToken = async(user) => {
+const storeToken = async (user) => {
   try {
-     await AsyncStorage.setItem("userData", JSON.stringify(user));
+    await AsyncStorage.setItem("userData", JSON.stringify(user));
   } catch (error) {
     console.log("Something went wrong", error);
   }
 }
-const getToken = async() => {
+const getToken = async () => {
   try {
     let userData = await AsyncStorage.getItem("userData");
     let data = JSON.parse(userData);
@@ -141,81 +143,81 @@ const getToken = async() => {
 const styles = StyleSheet.create({
   tinyLogo: {
     width: wp('11%'),
-    height:  wp('11%'),
-    marginLeft:wp('4%')
+    height: wp('11%'),
+    marginLeft: wp('4%')
   },
   logo: {
     width: wp('13.5%'),
     height: wp('13.5%'),
   },
-  rowArea:{
-    flexDirection:'row',
-    marginRight:wp('5%')
+  rowArea: {
+    flexDirection: 'row',
+    marginRight: wp('5%')
   },
-  userArea:{
-    flexDirection:'row', marginRight:wp('2%')
+  userArea: {
+    flexDirection: 'row', marginRight: wp('2%')
   },
-  userImage:{
-    marginTop:hp('0.6%'),
+  userImage: {
+    marginTop: hp('0.6%'),
     ...Platform.select({
-      ios:{
-        width:wp('4.8%'), 
-        height:hp('3.3')
+      ios: {
+        width: wp('4.8%'),
+        height: hp('3.3')
       },
-      android:{
-        width:wp('5.2%'), 
-        height:hp('3.3')
+      android: {
+        width: wp('5.2%'),
+        height: hp('3.3')
       }
     })
   },
-  logoutBtnArea:{
-    backgroundColor:'#67C8BA', 
-    marginLeft:wp('1%'),
-    marginRight:wp('1.5%'),
-    flexDirection:'row'
+  logoutBtnArea: {
+    backgroundColor: '#67C8BA',
+    marginLeft: wp('1%'),
+    marginRight: wp('1.5%'),
+    flexDirection: 'row'
   },
-  workerlogoutBtnArea:{
-    backgroundColor:'#7085DF', 
-    marginLeft:wp('1%'),
-    marginRight:wp('1.5%'),
-    flexDirection:'row'
+  workerlogoutBtnArea: {
+    backgroundColor: '#7085DF',
+    marginLeft: wp('1%'),
+    marginRight: wp('1.5%'),
+    flexDirection: 'row'
 
   },
-  logoutText:{
-    color:'white',
-    fontSize:15,
-    fontFamily:"NanumSquare",
-    marginTop:hp('1%')
+  logoutText: {
+    color: 'white',
+    fontSize: 15,
+    fontFamily: "NanumSquare",
+    marginTop: hp('1%')
   },
-  logoutImage:{
-    marginTop:hp('0.7%'), marginLeft:wp('4%'),
+  logoutImage: {
+    marginTop: hp('0.7%'), marginLeft: wp('4%'),
     ...Platform.select({
-      ios:{
-        width:wp('5.1%'),
-        height:hp('3.1%')
+      ios: {
+        width: wp('5.1%'),
+        height: hp('3.1%')
       },
-      android:{
-        width:wp('5.5%'),
-        height:hp('3.1%')
+      android: {
+        width: wp('5.5%'),
+        height: hp('3.1%')
       }
     })
   },
-  msgImage:{
-    marginTop:hp('0.9%'), marginLeft:wp('3%'),
+  msgImage: {
+    marginTop: hp('0.9%'), marginLeft: wp('3%'),
     ...Platform.select({
-      ios:{
-        width:wp('7.5%'), 
-        height:hp('3.0%')
+      ios: {
+        width: wp('7.5%'),
+        height: hp('3.0%')
       },
-      android:{
-        width:wp('8%'), 
-        height:hp('3.0%')
+      android: {
+        width: wp('8%'),
+        height: hp('3.0%')
       }
     })
   },
-  wokrListLeft:{
-    backgroundColor:'#67C8BA',
-    
+  wokrListLeft: {
+    backgroundColor: '#67C8BA',
+
   }
 });
 
@@ -227,38 +229,38 @@ const styles = StyleSheet.create({
 // ----------------------------------------------------------------------------
 
 const Tab = createBottomTabNavigator();
- 
+
 const WorkerTabs = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#67C8BA',
-        inactiveTintColor :'#D3D6E2',
+        inactiveTintColor: '#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
-          fontFamily:"NanumSquare"
+          fontFamily: "NanumSquare"
         },
-        tabStyle:{
-          marginTop:hp('1%'),
-          marginBottom:hp('1%'),
-          height:hp('5%'),
-          justifyContent:"center", 
-          borderLeftWidth:wp('0.7%'),
-          borderLeftColor:'#E2F2EF',
+        tabStyle: {
+          marginTop: hp('1%'),
+          marginBottom: hp('1%'),
+          height: hp('5%'),
+          justifyContent: "center",
+          borderLeftWidth: wp('0.7%'),
+          borderLeftColor: '#E2F2EF',
         },
-        style:{
-          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        style: {
+          shadowOpacity: 0, elevation: 0, borderTopColor: 'white',
         }
-    }}
+      }}
     >
       <Tab.Screen name="WorkerManage" component={WorkerManageScreen}
-      options={{
-        tabBarLabel: '정규직',
-      }}  /> 
-      <Tab.Screen name="WorkerManage2" component={WorkerManageScreen2} 
-      options={{
-        tabBarLabel: '알바',
-      }}  /> 
+        options={{
+          tabBarLabel: '정규직',
+        }} />
+      <Tab.Screen name="WorkerManage2" component={WorkerManageScreen2}
+        options={{
+          tabBarLabel: '일용근로자',
+        }} />
     </Tab.Navigator>
   );
 };
@@ -268,31 +270,31 @@ const ExpenseTabs = () => {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#67C8BA',
-        inactiveTintColor :'#D3D6E2',
+        inactiveTintColor: '#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
           //fontFamily:"NanumSquare"
         },
-        tabStyle:{
-          marginTop:hp('1%'),
-          marginBottom:hp('1%'),
-          height:hp('5%'),
-          justifyContent:"center", 
-          borderLeftWidth:wp('0.7%'),
-          borderLeftColor:'#E2F2EF',
+        tabStyle: {
+          marginTop: hp('1%'),
+          marginBottom: hp('1%'),
+          height: hp('5%'),
+          justifyContent: "center",
+          borderLeftWidth: wp('0.7%'),
+          borderLeftColor: '#E2F2EF',
         },
-        style:{
-          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        style: {
+          shadowOpacity: 0, elevation: 0, borderTopColor: 'white',
         }
-    }}>
-      <Tab.Screen name="Expense1" component={ExpenseScreen1} 
-      options={{
+      }}>
+      <Tab.Screen name="Expense1" component={ExpenseScreen1}
+        options={{
           tabBarLabel: '정규직',
-        }}  /> 
-      <Tab.Screen name="Expense2" component={ExpenseScreen2} 
-      options={{
-        tabBarLabel: '알바',
-      }}  
+        }} />
+      <Tab.Screen name="Expense2" component={ExpenseScreen2}
+        options={{
+          tabBarLabel: '일용근로자',
+        }}
       />
     </Tab.Navigator>
   );
@@ -303,31 +305,31 @@ const UnemploymentTabs = () => {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#67C8BA',
-        inactiveTintColor :'#D3D6E2',
-      labelStyle: {
-        fontSize: wp('4.8%'),
-        //fontFamily:"NanumSquare"
-      },
-      tabStyle:{
-        marginTop:hp('1%'),
-        marginBottom:hp('1%'),
-        height:hp('5%'),
-        justifyContent:"center", 
-        borderLeftWidth:wp('0.7%'),
-        borderLeftColor:'#E2F2EF',
-      },
-      style:{
-        shadowOpacity: 0, elevation: 0, borderTopColor:'white',
-      }
-    }}>
-      <Tab.Screen name="Unemployment1" component={UnemploymentScreen1} 
-      options={{
+        inactiveTintColor: '#D3D6E2',
+        labelStyle: {
+          fontSize: wp('4.8%'),
+          //fontFamily:"NanumSquare"
+        },
+        tabStyle: {
+          marginTop: hp('1%'),
+          marginBottom: hp('1%'),
+          height: hp('5%'),
+          justifyContent: "center",
+          borderLeftWidth: wp('0.7%'),
+          borderLeftColor: '#E2F2EF',
+        },
+        style: {
+          shadowOpacity: 0, elevation: 0, borderTopColor: 'white',
+        }
+      }}>
+      <Tab.Screen name="Unemployment1" component={UnemploymentScreen1}
+        options={{
           tabBarLabel: '실업급여일반',
-        }}  /> 
-      <Tab.Screen name="Unemployment2" component={UnemploymentScreen2} 
-      options={{
-        tabBarLabel: '일용근로자',
-      }}  
+        }} />
+      <Tab.Screen name="Unemployment2" component={UnemploymentScreen2}
+        options={{
+          tabBarLabel: '일용근로자',
+        }}
       />
     </Tab.Navigator>
   );
@@ -338,32 +340,32 @@ const WExpenseTabs = () => {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#7085DF',
-        inactiveTintColor :'#D3D6E2',
+        inactiveTintColor: '#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
           //fontFamily:"NanumSquare"
         },
-        tabStyle:{
-          marginTop:hp('1%'),
-          marginBottom:hp('1%'),
-          height:hp('5%'),
-          justifyContent:"center", 
-          borderLeftWidth:wp('0.7%'),
-          borderLeftColor:'#E3E6EE',
+        tabStyle: {
+          marginTop: hp('1%'),
+          marginBottom: hp('1%'),
+          height: hp('5%'),
+          justifyContent: "center",
+          borderLeftWidth: wp('0.7%'),
+          borderLeftColor: '#E3E6EE',
         },
-        style:{
-          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        style: {
+          shadowOpacity: 0, elevation: 0, borderTopColor: 'white',
         }
       }}
-      >
-      <Tab.Screen name="WExpense1" component={WExpenseScreen1} 
-      options={{
+    >
+      <Tab.Screen name="WExpense1" component={WExpenseScreen1}
+        options={{
           tabBarLabel: '정규직',
-        }}  /> 
-      <Tab.Screen name="WExpense2" component={WExpenseScreen2} 
-      options={{
-        tabBarLabel: '알바',
-      }}  
+        }} />
+      <Tab.Screen name="WExpense2" component={WExpenseScreen2}
+        options={{
+          tabBarLabel: '일용근로자',
+        }}
       />
     </Tab.Navigator>
   );
@@ -374,31 +376,31 @@ const WUnemploymentTabs = () => {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#7085DF',
-        inactiveTintColor :'#D3D6E2',
-      labelStyle: {
-        fontSize: wp('4.8%'),
-        //fontFamily:"NanumSquare"
-      },
-      tabStyle:{
-        marginTop:hp('1%'),
-        marginBottom:hp('1%'),
-        height:hp('5%'),
-        justifyContent:"center", 
-        borderLeftWidth:wp('0.7%'),
-        borderLeftColor:'#E3E6EE',
-      },
-      style:{
-        shadowOpacity: 0, elevation: 0, borderTopColor:'white',
-      }
+        inactiveTintColor: '#D3D6E2',
+        labelStyle: {
+          fontSize: wp('4.8%'),
+          //fontFamily:"NanumSquare"
+        },
+        tabStyle: {
+          marginTop: hp('1%'),
+          marginBottom: hp('1%'),
+          height: hp('5%'),
+          justifyContent: "center",
+          borderLeftWidth: wp('0.7%'),
+          borderLeftColor: '#E3E6EE',
+        },
+        style: {
+          shadowOpacity: 0, elevation: 0, borderTopColor: 'white',
+        }
       }}>
-      <Tab.Screen name="WUnemployment1" component={WUnemploymentScreen1} 
-      options={{
+      <Tab.Screen name="WUnemployment1" component={WUnemploymentScreen1}
+        options={{
           tabBarLabel: '실업급여일반',
-        }}  /> 
-      <Tab.Screen name="WUnemployment2" component={WUnemploymentScreen2} 
-      options={{
-        tabBarLabel: '일용근로자',
-      }}  
+        }} />
+      <Tab.Screen name="WUnemployment2" component={WUnemploymentScreen2}
+        options={{
+          tabBarLabel: '일용근로자',
+        }}
       />
     </Tab.Navigator>
   );
@@ -409,31 +411,31 @@ const StatementTabs = () => {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#67C8BA',
-      inactiveTintColor :'#D3D6E2',
-      labelStyle: {
-        fontSize: wp('4.8%'),
-        fontFamily:"NanumSquare"
-      },
-      tabStyle:{
-        marginTop:hp('1%'),
-        marginBottom:hp('1%'),
-        height:hp('5%'),
-        justifyContent:"center", 
-        borderLeftWidth:wp('0.7%'),
-        borderLeftColor:'#E2F2EF',
-      },
-      style:{
-        shadowOpacity: 0, elevation: 0, borderTopColor:'white',
-      }
-    }}>
-      <Tab.Screen name="Statement1" component={StatementScreen1} 
-      options={{
+        inactiveTintColor: '#D3D6E2',
+        labelStyle: {
+          fontSize: wp('4.8%'),
+          fontFamily: "NanumSquare"
+        },
+        tabStyle: {
+          marginTop: hp('1%'),
+          marginBottom: hp('1%'),
+          height: hp('5%'),
+          justifyContent: "center",
+          borderLeftWidth: wp('0.7%'),
+          borderLeftColor: '#E2F2EF',
+        },
+        style: {
+          shadowOpacity: 0, elevation: 0, borderTopColor: 'white',
+        }
+      }}>
+      <Tab.Screen name="Statement1" component={StatementScreen1}
+        options={{
           tabBarLabel: '월별',
-        }}  /> 
-      <Tab.Screen name="Statement2" component={StatementScreen2} 
-      options={{
-        tabBarLabel: '근로자별',
-      }}  
+        }} />
+      <Tab.Screen name="Statement2" component={StatementScreen2}
+        options={{
+          tabBarLabel: '근로자별',
+        }}
       />
     </Tab.Navigator>
   );
@@ -444,31 +446,31 @@ const DocumentTabs = () => {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#7085DF',
-      inactiveTintColor :'#D3D6E2',
+        inactiveTintColor: '#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
           //fontFamily:"NanumSquare"
         },
-        tabStyle:{
-          marginTop:hp('1%'),
-          marginBottom:hp('1%'),
-          height:hp('5%'),
-          justifyContent:"center", 
-          borderLeftWidth:wp('0.7%'),
-          borderLeftColor:'#E3E6EE',
+        tabStyle: {
+          marginTop: hp('1%'),
+          marginBottom: hp('1%'),
+          height: hp('5%'),
+          justifyContent: "center",
+          borderLeftWidth: wp('0.7%'),
+          borderLeftColor: '#E3E6EE',
         },
-        style:{
-          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        style: {
+          shadowOpacity: 0, elevation: 0, borderTopColor: 'white',
         }
-    }}>
-      <Tab.Screen name="WorkerStatement" component={WorkerStatementScreen} 
-      options={{
+      }}>
+      <Tab.Screen name="WorkerStatement" component={WorkerStatementScreen}
+        options={{
           tabBarLabel: '명세서',
-        }}  /> 
-      <Tab.Screen name="WorkerContractform" component={WorkerContractformScreen} 
-      options={{
-        tabBarLabel: '계약서',
-      }}  
+        }} />
+      <Tab.Screen name="WorkerContractform" component={WorkerContractformScreen}
+        options={{
+          tabBarLabel: '계약서',
+        }}
       />
     </Tab.Navigator>
   );
@@ -479,32 +481,32 @@ const MessageTabs = () => {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: '#92B9E4',
-      inactiveTintColor :'#D3D6E2',
+        inactiveTintColor: '#D3D6E2',
         labelStyle: {
           fontSize: wp('4.8%'),
           //fontFamily:"NanumSquare"
         },
-        tabStyle:{
-          marginTop:hp('1%'),
-          marginBottom:hp('1%'),
-          height:hp('5%'),
-          justifyContent:"center", 
-          borderLeftWidth:wp('0.7%'),
-          borderLeftColor:'#DAE9F7',
+        tabStyle: {
+          marginTop: hp('1%'),
+          marginBottom: hp('1%'),
+          height: hp('5%'),
+          justifyContent: "center",
+          borderLeftWidth: wp('0.7%'),
+          borderLeftColor: '#DAE9F7',
         },
-        style:{
-          shadowOpacity: 0, elevation: 0, borderTopColor:'white',
+        style: {
+          shadowOpacity: 0, elevation: 0, borderTopColor: 'white',
         }
       }}>
-      <Tab.Screen name="Received Message" component={ReceivedMessageScreen} 
+      <Tab.Screen name="Received Message" component={ReceivedMessageScreen}
         options={{
           tabBarLabel: '받은 메세지',
-        }}  
+        }}
       />
-      <Tab.Screen name="Sent Message" component={SentMessageScreen} 
+      <Tab.Screen name="Sent Message" component={SentMessageScreen}
         options={{
           tabBarLabel: '보낸 메세지',
-        }}  /> 
+        }} />
     </Tab.Navigator>
   );
 };
