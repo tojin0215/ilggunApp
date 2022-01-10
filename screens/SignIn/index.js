@@ -19,6 +19,8 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Crypto from "expo-crypto";
 
 import styles from './styles';
+import { postSignIn, postSignInByCode, postSignUpByCode } from '../../api/Api2';
+import { putUserData } from '../../utils/storage';
 
 const SignInScreen = ({ onSignIn, navigation }) => {
   const [id, setId] = useState('');
@@ -48,35 +50,23 @@ const SignInScreen = ({ onSignIn, navigation }) => {
 
   const SignPost = async(str) => {
     try {
-      await axios.post('http://13.124.141.28:3000/signin', { 
-        id: id,
-        password: password, 
-        headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-      })
-      .then((responseData) => {
-        console.log(responseData);
-        if(responseData.data[0] == undefined || responseData.data[0] == ''){
-          Alert.alert("아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요.")
-        }else{
-          storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
-          getToken();
-      
-          if(responseData.data[0].id){
+      postSignIn(id, password)
+      .then(user_data => {
+        if (user_data === null) {Alert.alert("아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요.")}
+        else {
+          putUserData(user_data);
+          if (user_data.id) {
             onSignIn();
             navigation.navigate('Select Page');
           }
         }
       })
-      .catch(function(error) {
-        Alert.alert("아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요.")
-
+      .catch(e => {
+        Alert.alert("아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요.");
         if (!error.response) {
-          // network error
-          console.log('hh'+error)
+          console.log(`SignInScreen::SignPost::${error}`)
         }
-      });
+      })
     } catch (e) {
       console.error(e);
     } 
@@ -92,49 +82,71 @@ const SignInScreen = ({ onSignIn, navigation }) => {
     
     const user = await GoogleSignIn.signInSilentlyAsync();
     try {
-      const axios_config = { 
-        code: user.uid,
-        headers:{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'}
-      }
-      await axios.post('http://13.124.141.28:3000/signinByCode', axios_config)
-      .then((responseData) => {
-        
-        if(responseData.data[0] == undefined || responseData.data[0] == ''){
-          axios.post('http://13.124.141.28:3000/signupByCode', { 
-            id: user.email,
-            email:user.email,
-            name: user.displayName,
-            password: user.uid,
-            sign: '',
-            code: user.uid,
-          },{
-          headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+      postSignInByCode(user.uid)
+      .then(user_data => {
+        if (user_data !== null) {
+          putUserData(user_data);
+          if(user_data.id){
+            onSignIn();
+            navigation.navigate('Select Page');
           }
-          }).then((res)=>{
-            if(res.data.err!=null){
+        }
+        else {
+          postSignUpByCode(user.email, user.email, user.displayName, user.uid, '', user.uid)
+          .then(result => {
+            if(result.data.err !== null){
               Alert.alert('다른 방식으로 동일한 이메일이 가입되어있습니다.')  
             }else{
               navigation.navigate('Sign Up Google',{email:user.email});
               Alert.alert('회원가입이 완료되었습니다. 서명을 등록해주세요.')    
             }
-          }); 
-          
-        }else{
-          storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
-          getToken();
-      
-          if(responseData.data[0].id){
-            onSignIn();
-            navigation.navigate('Select Page');
-          }
+          })
         }
       })
+      
+      // const axios_config = { 
+      //   code: user.uid,
+      //   headers:{
+      //     'Content-Type': 'application/json',
+      //     'Accept': 'application/json'}
+      // }
+      // await axios.post('http://13.124.141.28:3000/signinByCode', axios_config)
+      // .then((responseData) => {
+        
+      //   if(responseData.data[0] == undefined || responseData.data[0] == ''){
+      //     axios.post('http://13.124.141.28:3000/signupByCode', { 
+      //       id: user.email,
+      //       email:user.email,
+      //       name: user.displayName,
+      //       password: user.uid,
+      //       sign: '',
+      //       code: user.uid,
+      //     },{
+      //     headers:{
+      //       'Content-Type': 'application/json',
+      //       'Accept': 'application/json'
+      //     }
+      //     }).then((res)=>{
+      //       if(res.data.err!=null){
+      //         Alert.alert('다른 방식으로 동일한 이메일이 가입되어있습니다.')  
+      //       }else{
+      //         navigation.navigate('Sign Up Google',{email:user.email});
+      //         Alert.alert('회원가입이 완료되었습니다. 서명을 등록해주세요.')    
+      //       }
+      //     }); 
+          
+      //   }else{
+      //     storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
+      //     getToken();
+      
+      //     if(responseData.data[0].id){
+      //       onSignIn();
+      //       navigation.navigate('Select Page');
+      //     }
+      //   }
+      // })
       .catch(function(error) {
-          Alert.alert('hh'+error)
+        console.log(`SignInScreen::_syncUserWithStateAsync::postSignInByCode::${error}`)
       });
     } catch (e) {
       Alert.alert(e);
@@ -172,6 +184,92 @@ const SignInScreen = ({ onSignIn, navigation }) => {
   //setIsReady(true);
   initAsync();
 
+
+  const handleOnPressAppleAuthentication = async () => {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+      console.log(credential);
+      try {
+        postSignInByCode(credential.user)
+        .then(user_data => {
+          if (user_data !== null) {
+            putUserData(user_data);
+            if(user_data.id){
+              onSignIn();
+              navigation.navigate('Select Page');
+            }
+          }
+          else {
+            const c = credential;
+            postSignUpByCode(c.email, '', c.fullName.givenName, c.user, '', c.user)
+            if(res.data.err!=null){
+                Alert.alert('다른 방식으로 동일한 이메일이 가입되어있습니다.')  
+            }else{
+              console.log('-------------------------------------------------');
+              console.log('AppleLoginGo!!')
+              Alert.alert('회원가입이 완료되었습니다. 이메일과 서명을 등록해주세요.')   
+              navigation.navigate('Sign Up Apple',{id:credential.email}); 
+            }
+          }
+        })
+        // .then((responseData) => {
+        //   if(responseData.data[0] == undefined || responseData.data[0] == ''){
+        //     console.log('aaaa-------------------------------------------------');
+        //     axios.post('http://13.124.141.28:3000/signupByCode', { 
+        //         id:credential.email,
+        //         email:'',
+        //         name: credential.fullName.givenName,
+        //         password: credential.user,
+        //         sign: '',
+        //         code: credential.user,
+        //     },{
+        //         headers:{
+        //           'Content-Type': 'application/json',
+        //           'Accept': 'application/json'
+        //         }
+        //     }).then((res)=>{
+        //       if(res.data.err!=null){
+        //           Alert.alert('다른 방식으로 동일한 이메일이 가입되어있습니다.')  
+        //       }else{
+        //         console.log('-------------------------------------------------');
+        //         console.log('AppleLoginGo!!')
+        //         Alert.alert('회원가입이 완료되었습니다. 이메일과 서명을 등록해주세요.')   
+        //         navigation.navigate('Sign Up Apple',{id:credential.email}); 
+                
+        //       }
+        //     });      
+
+            
+        //   }else{
+        //     storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
+        //     getToken();
+        
+        //     if(responseData.data[0].id){
+        //       onSignIn();
+        //       navigation.navigate('Select Page');
+        //     }
+        //   }
+        // })
+        .catch(function(error) {
+            Alert.alert('hh'+error)
+        });
+      } catch (e) {
+        Alert.alert(e);
+      } 
+      // signed in
+    } catch (e) {
+      if (e.code === 'ERR_CANCELED') {
+        // handle that the user canceled the sign-in flow
+      } else {
+        // handle other errors
+      }
+    }
+  }
 
 
   return (
@@ -222,76 +320,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
             buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
             cornerRadius={5}
             style={styles.button1}
-            onPress={async () => {
-              try {
-                const credential = await AppleAuthentication.signInAsync({
-                  requestedScopes: [
-                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                  ],
-                });
-                console.log(credential);
-                try {
-                  await axios.post('http://13.124.141.28:3000/signinByCode', { code: credential.user,
-                    headers:{
-                      'Content-Type': 'application/json',
-                      'Accept': 'application/json'}
-                  })
-                  .then((responseData) => {
-                    console.log(credential);
-                    console.log('aaaaaaaaaaaaaaaaaaaaaa',responseData.data[0])
-                    if(responseData.data[0] == undefined || responseData.data[0] == ''){
-                      console.log('aaaa-------------------------------------------------');
-                      axios.post('http://13.124.141.28:3000/signupByCode', { 
-                          id:credential.email,
-                          email:'',
-                          name: credential.fullName.givenName,
-                          password: credential.user,
-                          sign: '',
-                          code: credential.user,
-                      },{
-                          headers:{
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                          }
-                      }).then((res)=>{
-                        if(res.data.err!=null){
-                            Alert.alert('다른 방식으로 동일한 이메일이 가입되어있습니다.')  
-                        }else{
-                          console.log('-------------------------------------------------');
-                          console.log('AppleLoginGo!!')
-                          Alert.alert('회원가입이 완료되었습니다. 이메일과 서명을 등록해주세요.')   
-                          navigation.navigate('Sign Up Apple',{id:credential.email}); 
-                          
-                        }
-                      });      
-
-                      
-                    }else{
-                      storeToken({id:responseData.data[0].id, name:responseData.data[0].name});
-                      getToken();
-                  
-                      if(responseData.data[0].id){
-                        onSignIn();
-                        navigation.navigate('Select Page');
-                      }
-                    }
-                  })
-                  .catch(function(error) {
-                      Alert.alert('hh'+error)
-                  });
-                } catch (e) {
-                  Alert.alert(e);
-                } 
-                // signed in
-              } catch (e) {
-                if (e.code === 'ERR_CANCELED') {
-                  // handle that the user canceled the sign-in flow
-                } else {
-                  // handle other errors
-                }
-              }
-            }}
+            onPress={handleOnPressAppleAuthentication}
           /></>:null}
 
           <TouchableOpacity 

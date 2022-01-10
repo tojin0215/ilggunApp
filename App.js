@@ -70,6 +70,7 @@ import SplashScreen from './screens/Splash';
 import QrAuthScreen from './screens/QrAuthScreen'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as GoogleSignIn from 'expo-google-sign-in';
+import { getUserData, putUserData } from './utils/storage';
 
 const storeToken = async (user) => {
   try {
@@ -459,38 +460,35 @@ const App = () => {
   const [realId, setRearId] = useState('')
   const [bang, setBang] = useState('');
 
-
-  //===========================================================================
+  // load new messages ===========================================================================
   const [count, setCount] = useState(0);
   const savedCallback = useRef();
 
   function callback() {
     try {
-      axios.post('http://13.124.141.28:3000/selectReceivedNewMessage', {
-        t: realId,
-      },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
-        })
-        .then(res => {
-          console.log(res.data[0]);
-          if (res.data[0] == undefined) {
-            setCount(0);
-          } else {
-            setCount(1);
-          }
-        });
+      const SERVER_URL = 'http://13.124.141.28:3000/'
+      axios.post(
+        `${SERVER_URL}selectReceivedNewMessage`, { t: realId },
+        { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }}
+        ).then(res => setCount((res.data[0] === undefined)? 0 : 1));
     } catch (e) {
       console.error(e);
     }
   }
-  const [dataLoaded, setDataLoaded] = useState(false);
   useEffect(() => {
     savedCallback.current = callback;
   });
+
+  // load fonts ===========================================================================
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const fetchFonts = () => {
+    return Font.loadAsync({
+      'NanumSquare': require("./assets/fonts/NanumSquare_acR.ttf"),
+      'NanumSquareB': require("./assets/fonts/NanumSquare_acB.ttf")
+    }).then(() => { setDataLoaded(true); })
+  }
+
+  // load user data ===========================================================================
 
   useEffect(() => {
     fetchFonts();
@@ -500,35 +498,45 @@ const App = () => {
     }
     tick();
 
-    AsyncStorage.getItem("userData").then((userData) => {
-      if (JSON.parse(userData) != null) {
-        if (JSON.parse(userData) != "") {
-          setIsAuthenticated(true);
-          setId(id => JSON.parse(userData).name);
-          setRearId(realId => JSON.parse(userData).id)
-        }
-      }
-    }
-    );
+    getUserData()
+    .then(user_data => {
+      setId(id => user_data.name);
+      setRearId(realId => user_data.id)
+    })
+
+    getUserData()
+    .then(user_data => {
+      setIsAuthenticated(true);
+      setId(id => user_data.name);
+      setRearId(realId => user_data.id)
+    })
+
+    // AsyncStorage.getItem("userData").then((userData) => {
+    //   if (JSON.parse(userData) != null) {
+    //     if (JSON.parse(userData) != "") {
+    //       setIsAuthenticated(true);
+    //       setId(id => JSON.parse(userData).name);
+    //       setRearId(realId => JSON.parse(userData).id)
+    //     }
+    //   }
+    // }
+    // );
     let i = setInterval(tick, 4000);
     return () => clearInterval(i);
   }, []);
 
-  //============================================================================
-  /*React.useEffect(() => {
-    let a = AsyncStorage.getItem("userData").then((userData) =>{
-      setId(id => JSON.parse(userData).name);
-    });
-    return a;
-  }, []);*/
-
   const handleSignIn = () => {
     setIsAuthenticated(true);
     // TODO implement real sign in mechanism
-    AsyncStorage.getItem("userData").then((userData) => {
-      setId(id => JSON.parse(userData).name);
-      setRearId(realId => JSON.parse(userData).id)
-    });
+    getUserData()
+    .then(user_data => {
+      setId(id => user_data.name);
+      setRearId(realId => user_data.id)
+    })
+    // AsyncStorage.getItem("userData").then((userData) => {
+    //   setId(id => JSON.parse(userData).name);
+    //   setRearId(realId => JSON.parse(userData).id)
+    // });
   };
 
   const handleSignOut = () => {
@@ -550,15 +558,21 @@ const App = () => {
     //setId(getToken());
     console.log(JSON.parse(getToken()));
   };
-  const fetchFonts = () => {
-    return Font.loadAsync({
-      'NanumSquare': require("./assets/fonts/NanumSquare_acR.ttf"),
-      'NanumSquareB': require("./assets/fonts/NanumSquare_acB.ttf")
-    }).then(() => { setDataLoaded(true); })
-  }
+  //===========================================================================
+  
+
+
+  //============================================================================
+  /*React.useEffect(() => {
+    let a = AsyncStorage.getItem("userData").then((userData) =>{
+      setId(id => JSON.parse(userData).name);
+    });
+    return a;
+  }, []);*/
+
   return (
     <NavigationContainer>
-      {dataLoaded != true ?
+      {!dataLoaded ?
         <RootStack.Screen
           name="Splash" component={SplashScreen}
         />

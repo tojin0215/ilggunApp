@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 const BusinessListScreen = ({navigation}) => {
   const [business, setBusiness] = useState([]);
   const [clicked, setClicked] = useState(-1);
- 
+
   React.useEffect(() => {
     navigation.addListener('focus', () => {
       getUserData()
@@ -95,30 +95,25 @@ const BusinessListScreen = ({navigation}) => {
 
     const fetchData = async user_id => {
         getSelectBusiness(user_id)
+            .then(res => {console.log(`BusinessListScreen::fetchData::getSelectBusiness::${JSON.stringify(res.data, null, 2)}`); return res})
             .then(res => setBusiness(res.data))
             .catch(e => console.error(e))
     }
 
     
-    return (
-      <View style={styles.image}>
-    <View style={styles.container}>
-
-
-      <View style={styles.btnArea}>
-      <ScrollView><View style={styles.buttonArea}>
-          {business.map((value, index) => {
-              <TouchableOpacity 
-              // key={id}
-              style={{
-                backgroundColor: clicked==id?"#67C8BA":"#E2F2EF",
-                width: "75%",
-                height: hp('6%'),
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius:wp('5%'),
-                marginTop:hp('2.5%')
-              }}
+    return (<View style={styles.image}><View style={styles.container}><View style={styles.btnArea}><ScrollView><View style={styles.buttonArea}>
+      {business.map((value, index) => {
+        return <TouchableOpacity
+          key={index}
+          style={{
+            backgroundColor: clicked==index?"#67C8BA":"#E2F2EF",
+            width: "75%",
+            height: hp('6%'),
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius:wp('5%'),
+            marginTop:hp('2.5%')
+          }} 
               onPress={() => {
                 setClicked(id)
                 AsyncStorage.setItem("bangCode", value.bname)
