@@ -10,7 +10,7 @@ const CONFIG_JSON = {
 }
 
 export const getSelectSign = (id, id2) => {
-    return axios.post(`${SERVER_URL}/selectSign`, {id, id2}, CONFIG_JSON)
+    return axios.post(`${SERVER_URL}selectSign`, {id, id2}, CONFIG_JSON)
 }
 
 export const postAddBusiness = (
@@ -25,7 +25,7 @@ export const postAddBusiness = (
     stamp,
     fivep,
     ) => (
-    axios.post(`${SERVER_URL}/addBusiness`, {
+    axios.post(`${SERVER_URL}addBusiness`, {
             id : id,
             name : businessOwner,
             bname: workplace,
@@ -39,15 +39,19 @@ export const postAddBusiness = (
 
 export const postUploadStamp = (file, workplace) => (
     axios.post(
-        `${SERVER_URL}/uploadStamp`, {
+        `${SERVER_URL}uploadStamp`, {
             method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
+            headers: CONFIG_JSON.headers,
             body: JSON.stringify({
                 file: file.base64,
                 bname: workplace
             }),
         })
+)
+
+export const getSelectBusiness = (user_id) => (
+    axios.post(
+        `${SERVER_URL}selectBusiness`, {
+            id: user_id,
+        }, CONFIG_JSON)
 )

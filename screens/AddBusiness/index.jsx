@@ -13,7 +13,7 @@ import RadioForm from 'react-native-simple-radio-button';
 import { WebView } from 'react-native-webview'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-
+import {getUserData} from "../../utils/storage"
 import {AddBusinessScreen as Style} from "../../styles/StyleContainer";
 import {convertSignToHtml} from "../../api/Util";
 import {getSelectSign} from "../../api/Api";
@@ -45,7 +45,6 @@ const AddBusinessScreen = ({navigation, route}) => {
     const [zipCode, setZipCode] = useState('');
     const [radioIndex, setRadioIndex] = useState('');
 
-    
     const [id, setId] = useState('');
     const [selectedFile, setSelectedFile] =useState(null);
     const [result, setResult] = useState(null);
@@ -55,9 +54,9 @@ const AddBusinessScreen = ({navigation, route}) => {
 
     useEffect(() => {
         try {
-            AsyncStorage.getItem("userData").then((userData) =>{
-                const user_data = JSON.parse(userData);
-    
+            getUserData()
+            // AsyncStorage.getItem("userData")
+            .then(user_data =>{
                 setId(id => user_data.id);
     
                 getSelectSign(user_data.id, user_data.id)

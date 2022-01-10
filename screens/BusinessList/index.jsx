@@ -4,6 +4,10 @@ import { ScrollView, View, Text, Button, StyleSheet, TouchableOpacity, ImageBack
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
 import axios from 'axios';
+
+import {getUserData} from "../../utils/storage"
+import { getSelectBusiness } from '../../api/Api';
+
 const styles = StyleSheet.create({
   container: {
     width: "100%", height: "100%",
@@ -79,34 +83,22 @@ const styles = StyleSheet.create({
 const BusinessListScreen = ({navigation}) => {
   const [business, setBusiness] = useState([]);
   const [clicked, setClicked] = useState(-1);
-  const [id, setId] = useState('');
  
   React.useEffect(() => {
-    let toggle = false;
     navigation.addListener('focus', () => {
-      AsyncStorage.getItem("userData").then((userData) =>{
-        setId(JSON.parse(userData).id);
-        fetchData(JSON.parse(userData).id);
+      getUserData()
+      .then(user_data =>{
+        fetchData(user_data.id);
       });
     });
   }, []);
 
-    async function fetchData(idid) { 
-        try {
-          await axios.post('http://13.124.141.28:3000/selectBusiness', {id:idid},
-          {  headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'}
-          })
-            .then(res => {
-              console.log("BusinessListScreen::useEffect");
-              setBusiness(res.data)
-              
-            });
-        } catch (e) {
-            console.error(e);
-          }
+    const fetchData = async user_id => {
+        getSelectBusiness(user_id)
+            .then(res => setBusiness(res.data))
+            .catch(e => console.error(e))
     }
+
     
     return (
       <View style={styles.image}>
@@ -114,38 +106,31 @@ const BusinessListScreen = ({navigation}) => {
 
 
       <View style={styles.btnArea}>
-      <ScrollView>
-        {
-          <View style={styles.buttonArea} key={1}>{
-            business.map((b, id) => (
-              <>
-                <TouchableOpacity 
-                  // key={id}
-                  style={{
-                    backgroundColor: clicked==id?"#67C8BA":"#E2F2EF",
-                    width: "75%",
-                    height: hp('6%'),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius:wp('5%'),
-                    marginTop:hp('2.5%')
-                  }}
-                  onPress={() => {
-                    setClicked(id)
-                    AsyncStorage.setItem("bangCode", b.bname)
-                    .then(() =>{
-                      setClicked(-1)
-                      navigation.navigate('Home')
-                    })
-                  }}>
-                  <Text style={styles.buttonTitle}>{b.bname}</Text>
-                </TouchableOpacity>
-                
-              </>
-            ))}
-            </View>
-
-        }
+      <ScrollView><View style={styles.buttonArea}>
+          {business.map((value, index) => {
+              <TouchableOpacity 
+              // key={id}
+              style={{
+                backgroundColor: clicked==id?"#67C8BA":"#E2F2EF",
+                width: "75%",
+                height: hp('6%'),
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius:wp('5%'),
+                marginTop:hp('2.5%')
+              }}
+              onPress={() => {
+                setClicked(id)
+                AsyncStorage.setItem("bangCode", value.bname)
+                .then(() =>{
+                  setClicked(-1)
+                  navigation.navigate('Home')
+                })
+              }}>
+              <Text style={styles.buttonTitle}>{value.bname}</Text>
+            </TouchableOpacity>
+          })}
+      </View>
         </ScrollView>
       </View>
 

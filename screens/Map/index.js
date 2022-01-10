@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text } from 'react-native';
-// import Postcode from '@actbase/react-daum-postcode';
 
 import WebView from 'react-native-webview';
 import { Linking } from 'react-native';
-import { TabRouter } from 'react-navigation';
 
 const html = `
 <!DOCTYPE html>
@@ -53,68 +51,12 @@ const html = `
 </html>
 `;
 
-const Postcode = (props) => {
-  const { jsOptions, onSelected, onError, style, ...otherProps } = props;
-  const injectedJavaScript = React.useMemo(() => `initOnReady(${JSON.stringify(jsOptions)});void(0);`, [jsOptions]);
-
-  const onMessage = React.useCallback(
-    ({ nativeEvent }) => {
-      try {
-        nativeEvent.data && onSelected && onSelected(JSON.parse(nativeEvent.data));
-      } catch (e) {
-        onError(e);
-      }
-    },
-    [onSelected],
-  );
-
-  return (
-    <View style={style}>
-      <WebView
-        mixedContentMode={'always'}
-        originWhiteList={["*"]}
-        // androidLayerType="hardware"
-        // renderToHardwareTextureAndroid={true}
-        // useWebKit={true}
-        // {...otherProps}
-        source={{ html, baseUrl: 'https://postcode.map.daum.net' }}
-        onMessage={onMessage}
-        injectedJavaScript={injectedJavaScript}
-        onShouldStartLoadWithRequest={request => {
-          const isPostcode =
-            !request.url?.startsWith('https://postcode.map.daum.net/guide') &&
-            (!request.url?.startsWith('http') ||
-              request.url?.startsWith('https://postcode.map.daum.net') ||
-              request.url?.startsWith('http://postcode.map.daum.net'));
-          if (!isPostcode) {
-            Linking.openURL(request.url);
-            return false;
-          } else {
-            return true;
-          }
-        }}
-      />
-    </View>
-  );
-};
-
-Postcode.defaultProps = {
-  jsOptions: {
-    hideMapBtn: true,
-  },
-};
-
-
-
 
 const MapScreen = ({ route, navigation, props }) => {
   const jsOptions = {};
   const injectedJavaScript = React.useMemo(() => `initOnReady(${JSON.stringify(jsOptions)});void(0);`, [jsOptions]);
 
   const onSelected = data => {
-    // console.log(data);
-
-    // const backref = (route && route.params && route.params.backref) ? route.params.backref : 'Add Business'
     const backref = route.params.backref;
     navigation.navigate(
       backref,
