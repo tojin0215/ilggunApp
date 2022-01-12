@@ -1,8 +1,8 @@
 
 import axios from 'axios';
 
-const SERVER_URL = "http://13.124.141.28:3000/";
-const CONFIG_JSON = {
+export const SERVER_URL = "http://13.124.141.28:3000/";
+export const CONFIG_JSON = {
     headers:{
         'Content-Type': 'application/json',
         'Accept': 'application/json'

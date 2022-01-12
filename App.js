@@ -74,6 +74,7 @@ import SplashScreen from './screens/Splash';
 import QrAuthScreen from './screens/QrAuthScreen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as GoogleSignIn from 'expo-google-sign-in';
+import { getUserData, putUserData } from './utils/storage';
 
 const storeToken = async (user) => {
 	try {
