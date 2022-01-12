@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { View, Button, Text, StyleSheet, TouchableOpacity, ImageBackground, Image} from 'react-native';
+import { View, Button, Text, StyleSheet, TouchableOpacity, ImageBackground, Image, Alert} from 'react-native';
 import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as WebBrowser from 'expo-web-browser';
@@ -122,8 +122,9 @@ const _handlePressButtonAsync1 = async () => {
 
 
 const _handlePressButtonAsync2 = async () => {
-  let show2 = await WebBrowser.openBrowserAsync('https://www.naver.com');
-  setShow2(show2);
+  Alert.alert("준비중입니다")
+  // let show2 = await WebBrowser.openBrowserAsync('https://www.naver.com');
+  // setShow2(show2);
 };
 
   return (

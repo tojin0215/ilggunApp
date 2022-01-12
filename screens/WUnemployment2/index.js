@@ -9,6 +9,9 @@ import * as Font from 'expo-font';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+/**
+ * 일용근로자
+ */
 class WUnemploymentScreen2 extends Component{
 
     state={

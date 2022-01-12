@@ -115,7 +115,7 @@ const BusinessListScreen = ({navigation}) => {
             marginTop:hp('2.5%')
           }} 
               onPress={() => {
-                setClicked(id)
+                setClicked(index)
                 AsyncStorage.setItem("bangCode", value.bname)
                 .then(() =>{
                   setClicked(-1)

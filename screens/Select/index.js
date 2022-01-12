@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { AsyncStorage } from 'react-native';
 import {
   View,ImageBackground,
@@ -9,27 +9,17 @@ import {
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
+import { getUserData } from '../../utils/storage';
  
 const SelectScreen = ({ onSignIn, navigation }) => {
-
-  const [dataLoaded, setDataLoaded] = useState(false);
   const [id, setId] = useState('');
-    const fetchFonts = () => {
-      return Font.loadAsync({
 
-      }).then(res =>{ setDataLoaded(true); });
-    };
-
-    React.useEffect(() => {
-      navigation.addListener('focus', () => {
-      AsyncStorage.getItem("userData").then((userData) =>{
-        setId(JSON.parse(userData).name);
-      });
-        if(!dataLoaded){
-            fetchFonts();
-        }
-      });
-    }, []);
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      getUserData()
+      .then(user_data => setId(user_data.name))
+    })
+  }, [])
 
 
   const ownerImg = require('../../img/onwer.png')

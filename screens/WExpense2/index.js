@@ -6,6 +6,7 @@ import CheckboxGroup from 'react-native-checkbox-group';
 import * as Font from 'expo-font';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import {getMinimumPayPerHour} from '../../const/default-value';
 
 
 
@@ -137,7 +138,7 @@ class WExpenseScreen2 extends Component {
                             value={this.state.HourlyWage}
                             onChangeText={(HourlyWage) => this.setState({HourlyWage})}
                             autoFocus={true}
-                            placeholder={'8720'}
+                            placeholder={`${getMinimumPayPerHour()}`}
                             keyboardType={"number-pad"}
                             style={styles.textinputStyle}
                             />

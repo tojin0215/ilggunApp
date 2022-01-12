@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getMinimumPayPerHour } from '../const/default-value';
 import {SERVER_URL, CONFIG_JSON} from './Api';
 
 interface UserData {
@@ -14,6 +15,15 @@ interface PostSignInByCode {
 }
 interface PostSignUpByCode {
     (id: string, email: string, name: string, password: string, sign: string, code: string): Promise<UserData | undefined>;
+}
+interface PostInsurancePercentage {
+    (business_code: string, find_year: string): Promise<{
+        national_pension_percentage: number;
+        health_insurance_percentage: number;
+        regular_care_percentage: number;
+        employment_insurance_percentage: number;
+        hourly_wage: number;
+    } | null>
 }
 
 export const postSignIn: PostSignIn = function (
@@ -47,4 +57,23 @@ export const postSignUpByCode: PostSignUpByCode = function (
     //     if (d === undefined || d === '') return null;
     //     else return {id: d.id, name: d.name}
     // })
+}
+
+export const postInsurancePercentage: PostInsurancePercentage = function(
+    business_code: string, find_year: string
+) {
+    return axios.post(`${SERVER_URL}insurancePercentage`, {bang: business_code}, CONFIG_JSON)
+    // .then(result => {console.log(result.data); return result})
+    .then(result => result.data.filter(value => value.date === find_year))
+    .then(result => {
+        if (result.length === 0) return null
+        const data = result[0]
+        return {
+            national_pension_percentage: data.NationalPensionPercentage? data.NationalPensionPercentage : 4.5,
+            health_insurance_percentage: data.HealthInsurancePercentage? data.HealthInsurancePercentage : 3.43,
+            regular_care_percentage: data.RegularCarePercentage? data.RegularCarePercentage : 11.25,
+            employment_insurance_percentage: data.EmploymentInsurancePercentage? data.EmploymentInsurancePercentage : 0.8,
+            hourly_wage: data.HourlyWage? data.HourlyWage : getMinimumPayPerHour(0),
+        }
+    })
 }

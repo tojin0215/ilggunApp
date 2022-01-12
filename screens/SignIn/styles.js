@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },//아이디 패스워드 입력 폼의 텍스트 입력 부분입니다.
   buttonArea: {
     width: '100%',
-    height: hp('17%'),
+    // height: hp('17%'),
     marginBottom: hp('15%'),
     backgroundColor:'white',
   },//세가지 로그인 버튼 공간입니다.
@@ -82,11 +82,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: wp('6%'),
-    marginBottom:wp('3%'),
+    marginBottom: wp('3%'),
   },//로그인 두번째 버튼입니다.
   googleImg:{
-    position:"absolute", top:hp('1%'), left:wp('5%'),
-    width:wp('7%'), height:wp('7%'),
+    position:"absolute",
+    top: hp('1%'), left: wp('5%'),
+    width: wp('7%'), height: wp('7%'),
   }, //구글 로그인의 구글 아이콘 부분입니다.
   button2: {
       backgroundColor: "white",
@@ -105,7 +106,8 @@ const styles = StyleSheet.create({
     fontFamily:"NanumSquare",
   },//두번째 로그인 버튼의 구글 로그인 텍스트 부분입니다.
   buttonTitle: {
-    color: '#040525', fontSize: wp('4.2%'),
+    color: '#040525',
+    fontSize: wp('4.2%'),
     fontFamily:"NanumSquare",
   },//회원가입 버튼의 텍스트 부분입니다.
   buttonlogoArea: {

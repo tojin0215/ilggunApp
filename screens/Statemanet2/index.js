@@ -44,6 +44,9 @@ import calculate_income_tax, {
   funcTypeCheckAdd,
   calculateWeek,
 } from "../../utils/tax";
+import { getMinimumPayPerHour } from "../../const/default-value";
+import DDP_YEAR from "./component.ddp_year";
+import { postInsurancePercentage } from "../../api/Api2";
 
 //정규) SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
 //알바) TaxDeduction:3.3세금공제
@@ -60,6 +63,23 @@ const fetchHeaders = {
 const config = {
   headers: fetchHeaders,
 };
+
+
+const DDP_MONTH_ITEMS = [
+  { label: "1월", value: "1월" },
+  { label: "2월", value: "2월" },
+  { label: "3월", value: "3월" },
+  { label: "4월", value: "4월" },
+  { label: "5월", value: "5월" },
+  { label: "6월", value: "6월" },
+  { label: "7월", value: "7월" },
+  { label: "8월", value: "8월" },
+  { label: "9월", value: "9월" },
+  { label: "10월", value: "10월" },
+  { label: "11월", value: "11월" },
+  { label: "12월", value: "12월" },
+]
+
 
 class StatementScreen2 extends Component {
   // 급여대장
@@ -101,10 +121,10 @@ class StatementScreen2 extends Component {
       HealthInsurancePercentage: 3.43,
       NationalPensionPercentage: 4.5,
       RegularCarePercentage: 11.25,
-      pay11: 8720,
+      pay11: getMinimumPayPerHour(),
       bangCode: null,
 
-      HourlyWage: 8720,
+      HourlyWage: getMinimumPayPerHour(),
       WorkingHour: 0,
       MonthlySalary: 0,
       userAdditionalAllowance: {
@@ -152,44 +172,65 @@ class StatementScreen2 extends Component {
     }
   };
   fetchInsurancePercentage = async () => {
-    const data_insurancePercentage = {
-      bang: this.state.bangCode,
-    };
     try {
-      axios
-        .post(url + "/insurancePercentage", data_insurancePercentage, config)
-        .then((res) => {
-          for (let i = 0; i < res.data.length; i++) {
-            // console.log(
-            //   "*************************************************DB년도",
-            //   res.data[i].date
-            // );
-            if (res.data[i].date === this.state.itemAA.split("년")[0]) {
-              const NationalPensionPercentage = res.data[i].NationalPensionPercentage ? res.data[i].NationalPensionPercentage : 4.5;
-              const HealthInsurancePercentage = res.data[i].HealthInsurancePercentage ? res.data[i].HealthInsurancePercentage : 3.43;
-              const RegularCarePercentage = res.data[i].RegularCarePercentage ? res.data[i].RegularCarePercentage : 11.25;
-              const EmploymentInsurancePercentage = res.data[i].EmploymentInsurancePercentage ? res.data[i].EmploymentInsurancePercentage : 0.8;
-              const pay11 = res.data[i].HourlyWage ? res.data[i].HourlyWage : 8720;
-              const HourlyWage = res.data[i].HourlyWage ? res.data[i].HourlyWage : 8720;
-              console.log("국민연금", NationalPensionPercentage);
-              console.log("건강보험", HealthInsurancePercentage);
-              console.log("건강보험(장기)", RegularCarePercentage);
-              console.log(
-                "고용보험",
-                EmploymentInsurancePercentage
-              );
-              console.log("시급", HourlyWage);
-              this.setState({
-                NationalPensionPercentage: NationalPensionPercentage,
-                HealthInsurancePercentage: HealthInsurancePercentage,
-                RegularCarePercentage: RegularCarePercentage,
-                EmploymentInsurancePercentage: EmploymentInsurancePercentage,
-                pay11: pay11,
-                HourlyWage: HourlyWage,
-              });
-            }
-          }
-        });
+      postInsurancePercentage(...{
+        business_code: this.state.bangCode,
+        find_year: this.state.itemAA.split("년")[0]
+      })
+      .then(data => {
+        if (data === null) return
+
+        console.log("국민연금", data.national_pension_percentage);
+        console.log("건강보험", data.health_insurance_percentage);
+        console.log("건강보험(장기)", data.regular_care_percentage);
+        console.log(
+          "고용보험",
+          data.employment_insurance_percentage
+        );
+        console.log("시급", data.hourly_wage);
+        this.setState({
+          NationalPensionPercentage: data.national_pension_percentage,
+          HealthInsurancePercentage: data.health_insurance_percentage,
+          RegularCarePercentage: data.regular_care_percentage,
+          EmploymentInsurancePercentage: data.employment_insurance_percentage,
+          pay11: data.hourly_wage,
+          HourlyWage: data.hourly_wage,
+        })
+      })
+      // axios
+      //   .post(url + "/insurancePercentage", data_insurancePercentage, config)
+      //   .then((res) => {
+      //     for (let i = 0; i < res.data.length; i++) {
+      //       // console.log(
+      //       //   "*************************************************DB년도",
+      //       //   res.data[i].date
+      //       // );
+      //       if (res.data[i].date === this.state.itemAA.split("년")[0]) {
+      //         const NationalPensionPercentage = res.data[i].NationalPensionPercentage ? res.data[i].NationalPensionPercentage : 4.5;
+      //         const HealthInsurancePercentage = res.data[i].HealthInsurancePercentage ? res.data[i].HealthInsurancePercentage : 3.43;
+      //         const RegularCarePercentage = res.data[i].RegularCarePercentage ? res.data[i].RegularCarePercentage : 11.25;
+      //         const EmploymentInsurancePercentage = res.data[i].EmploymentInsurancePercentage ? res.data[i].EmploymentInsurancePercentage : 0.8;
+      //         const pay11 = res.data[i].HourlyWage ? res.data[i].HourlyWage : getMinimumPayPerHour();
+      //         const HourlyWage = res.data[i].HourlyWage ? res.data[i].HourlyWage : getMinimumPayPerHour();
+      //         console.log("국민연금", NationalPensionPercentage);
+      //         console.log("건강보험", HealthInsurancePercentage);
+      //         console.log("건강보험(장기)", RegularCarePercentage);
+      //         console.log(
+      //           "고용보험",
+      //           EmploymentInsurancePercentage
+      //         );
+      //         console.log("시급", HourlyWage);
+      //         this.setState({
+      //           NationalPensionPercentage: NationalPensionPercentage,
+      //           HealthInsurancePercentage: HealthInsurancePercentage,
+      //           RegularCarePercentage: RegularCarePercentage,
+      //           EmploymentInsurancePercentage: EmploymentInsurancePercentage,
+      //           pay11: pay11,
+      //           HourlyWage: HourlyWage,
+      //         });
+      //       }
+      //     }
+      //   });
     } catch (e) {
       console.error("--- fetchInsurancePercentage ---");
       console.error(e);
@@ -976,36 +1017,9 @@ class StatementScreen2 extends Component {
               <Text style={styles.textTitle}>근로자 급여명세서</Text>
             </View>
             <View style={styles.dropDownArea}>
-              <DropDownPicker
-                items={[
-                  { label: "2020년", value: "2020년" },
-                  { label: "2021년", value: "2021년" },
-                  { label: "2022년", value: "2022년" },
-                  { label: "2023년", value: "2023년" },
-                  { label: "2024년", value: "2024년" },
-                  { label: "2025년", value: "2025년" },
-                ]}
-                defaultValue={this.state.itemAA}
-                containerStyle={{
-                  height: hp("6%"),
-                  width: wp("30%"),
-                  marginLeft: wp("3%"),
-                }}
-                dropDownStyle={{
-                  backgroundColor: "white",
-                  borderBottomLeftRadius: 5,
-                  borderBottomRightRadius: 5,
-                }}
-                itemStyle={{ justifyContent: "center" }}
-                labelStyle={{
-                  height: hp("3%"),
-                  textAlign: "center",
-                  color: "#040525",
-                  fontFamily: "NanumSquare",
-                  fontSize: wp("4%"),
-                  marginTop: hp("1%"),
-                }}
-                isVisible={this.state.isVisibleAA}
+              <DDP_YEAR
+                default_year_data={this.state.itemAA}
+                is_visible={this.state.isVisibleAA}
                 onOpen={() =>
                   this.changeVisibility({
                     isVisibleAA: true,
@@ -1024,20 +1038,7 @@ class StatementScreen2 extends Component {
               />
 
               <DropDownPicker
-                items={[
-                  { label: "1월", value: "1월" },
-                  { label: "2월", value: "2월" },
-                  { label: "3월", value: "3월" },
-                  { label: "4월", value: "4월" },
-                  { label: "5월", value: "5월" },
-                  { label: "6월", value: "6월" },
-                  { label: "7월", value: "7월" },
-                  { label: "8월", value: "8월" },
-                  { label: "9월", value: "9월" },
-                  { label: "10월", value: "10월" },
-                  { label: "11월", value: "11월" },
-                  { label: "12월", value: "12월" },
-                ]}
+                items={DDP_MONTH_ITEMS}
                 defaultValue={this.state.itemBB}
                 containerStyle={{
                   height: hp("6%"),
@@ -1129,6 +1130,7 @@ class StatementScreen2 extends Component {
                 }
               />
               <DropDownPicker
+              disabled={this.state.type1 && this.state.type1.length < 1}
                 items={this.state.type1}
                 placeholder="알바/단기"
                 defaultValue={this.state.itemB}
