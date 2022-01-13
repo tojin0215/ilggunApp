@@ -352,7 +352,7 @@ class ContractformBScreen extends Component{
 
 
   initfetchHtml = async(bangCode) => {
-    axios.post('http://13.124.141.28:3000/selectContractform2', {
+    axios.post('https://일꾼.kr/api/selectContractform2', {
         bang:bangCode,
         id: this.props.route.params.workername
     },
@@ -444,7 +444,7 @@ class ContractformBScreen extends Component{
     }
 
 fetchHtml = async(a) => {
-    axios.post('http://13.124.141.28:3000/writeContractform2', {
+    axios.post('https://일꾼.kr/api/writeContractform2', {
         type: 4,
                 id: this.state.id,
                 bang: this.state.bang,
@@ -514,7 +514,7 @@ fetchHtml = async(a) => {
       .then(res => {
         this.props.navigation.goBack();
 
-        axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+        axios.post('https://일꾼.kr/api/selectBusinessByName', {
             bname : this.state.bang
             },
             {  headers:{
@@ -523,7 +523,7 @@ fetchHtml = async(a) => {
             })
             .then(res => {
               try {
-                axios.post('http://13.124.141.28:3000/sendMessage', {
+                axios.post('https://일꾼.kr/api/sendMessage', {
                   t: this.state.id,
                   message :"<"+this.state.bang+">사업주가 "+this.state.id+"님의 계약서를 작성했습니다. [문서함>계약서]를 확인해주세요.",
                   f: res.data[0].id,
@@ -550,7 +550,7 @@ fetchHtml = async(a) => {
         console.log(this.props.route.params.bid);
 
         let signOrStamp = '';
-        await axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+        await axios.post('https://일꾼.kr/api/selectBusinessByName', {
             bname : this.state.bang
             },
             {  headers:{
@@ -559,10 +559,10 @@ fetchHtml = async(a) => {
             })
             .then(res => {
                 if(res.data[0].stamp ==1){
-                    signOrStamp = `<img src="http://13.124.141.28:3000/${this.state.bang}.png" alt="도장" z-index="2" width="100" height="100"></img>`
+                    signOrStamp = `<img src="https://일꾼.kr/api/${this.state.bang}.png" alt="도장" z-index="2" width="100" height="100"></img>`
                 }
         });
-        axios.post('http://13.124.141.28:3000/selectSign', {
+        axios.post('https://일꾼.kr/api/selectSign', {
             id:this.props.route.params.workername,
             id2:this.props.route.params.bid,
         },
@@ -570,7 +570,7 @@ fetchHtml = async(a) => {
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-      /*fetch('http://13.124.141.28:3000/selectSign', {
+      /*fetch('https://일꾼.kr/api/selectSign', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

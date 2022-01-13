@@ -5,7 +5,7 @@ import axios from "axios";
 import * as AppleAuthentication from "expo-apple-authentication";
 import styles from "./styles";
 
-const SERVER_URL = "http://13.124.141.28:3000";
+const SERVER_URL = "https://일꾼.kr/api";
 
 export default AuthAppleComponent = ({ onSignIn, navigation }) => {
   const onPress = async () => {

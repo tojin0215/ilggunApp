@@ -25,7 +25,7 @@ const ModifyPasswordScreen1 = ({ onSignUp, navigation }) => {
             Alert.alert('빈 칸을 채워주세요.');
         }
         else{
-            await axios.post('http://13.124.141.28:3000/signin', { 
+            await axios.post('https://일꾼.kr/api/signin', { 
                 id: id,
                 password: password, 
                 headers:{

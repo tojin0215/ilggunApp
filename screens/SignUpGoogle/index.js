@@ -24,7 +24,7 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
             Alert.alert('sign을 채워주세요.');
         }
         else{
-            await axios.post('http://13.124.141.28:3000/changeSign', { 
+            await axios.post('https://일꾼.kr/api/changeSign', { 
                 id: email,
                 sign: savePath,
             },{
@@ -36,7 +36,7 @@ const SignUpGoogleScreen = ({ onSignUp, navigation, route }) => {
                 navigation.navigate('Sign In')   
             })
 
-            /*await axios.post('http://13.124.141.28:3000/signupByCode', { 
+            /*await axios.post('https://일꾼.kr/api/signupByCode', { 
                     id: email,
                     name: name,
                     password: password,

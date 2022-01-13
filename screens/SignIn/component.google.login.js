@@ -6,7 +6,7 @@ import axios from "axios";
 
 import styles from "./styles";
 
-const SERVER_URL = "http://13.124.141.28:3000";
+const SERVER_URL = "https://일꾼.kr/api";
 
 export default class AuthGoogleComponent extends React.Component {
   state = { user: null };

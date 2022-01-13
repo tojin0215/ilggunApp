@@ -93,7 +93,7 @@ class StatementScreen1 extends React.Component {
         console.log(bangCode);
         await axios
           .post(
-            "http://13.124.141.28:3000/selectOvertimework",
+            "https://일꾼.kr/api/selectOvertimework",
             {
               business: bangCode,
               year: this.state.itemA.split("년")[0] * 1,
@@ -106,7 +106,7 @@ class StatementScreen1 extends React.Component {
               },
             }
           )
-          /*  await fetch('http://13.124.141.28:3000/selectOvertimework', {
+          /*  await fetch('https://일꾼.kr/api/selectOvertimework', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json',
@@ -133,7 +133,7 @@ class StatementScreen1 extends React.Component {
             this.setState({ addtime: dic });
           });
 
-        // axios.post('http://13.124.141.28:3000/otherAllowance', {
+        // axios.post('https://일꾼.kr/api/otherAllowance', {
         //   //id: this.state.id,
         //   year : this.state.itemAA.split('년')[0]*1,
         //   month : this.state.itemBB.split('월')[0]*1,
@@ -153,7 +153,7 @@ class StatementScreen1 extends React.Component {
 
         axios
           .post(
-            "http://13.124.141.28:3000/insurancePercentage",
+            "https://일꾼.kr/api/insurancePercentage",
             {
               bang: bangCode,
             },
@@ -200,7 +200,7 @@ class StatementScreen1 extends React.Component {
 
         await axios
           .post(
-            "http://13.124.141.28:3000/selectWorker",
+            "https://일꾼.kr/api/selectWorker",
             {
               business: bangCode,
             },
@@ -211,7 +211,7 @@ class StatementScreen1 extends React.Component {
               },
             }
           )
-          /*let res = await fetch('http://13.124.141.28:3000/selectWorker', {
+          /*let res = await fetch('https://일꾼.kr/api/selectWorker', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -538,7 +538,7 @@ class StatementScreen1 extends React.Component {
 
       await axios
         .post(
-          "http://13.124.141.28:3000/selectBusinessByName",
+          "https://일꾼.kr/api/selectBusinessByName",
           {
             bname: this.state.bangcode,
           },
@@ -551,12 +551,12 @@ class StatementScreen1 extends React.Component {
         )
         .then((res) => {
           if (res.data[0].stamp == 1) {
-            signOrStamp = `<img src="http://13.124.141.28:3000/${this.state.bangcode}.png" alt="도장" z-index="2" width="100" height="100"></img>`;
+            signOrStamp = `<img src="https://일꾼.kr/api/${this.state.bangcode}.png" alt="도장" z-index="2" width="100" height="100"></img>`;
           }
         });
       axios
         .post(
-          "http://13.124.141.28:3000/selectSign",
+          "https://일꾼.kr/api/selectSign",
           {
             id: this.state.id,
             id2: this.state.id,

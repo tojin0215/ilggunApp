@@ -128,7 +128,7 @@ class AlterWorkerScreen extends Component{
   fetchData = async(bangCode) => { 
     try {
          console.log(bangCode);
-          axios.post('http://13.124.141.28:3000/selectWorker', {
+          axios.post('https://일꾼.kr/api/selectWorker', {
             business : bangCode,
             type : 1
           },
@@ -136,7 +136,7 @@ class AlterWorkerScreen extends Component{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-        /*let res = await fetch('http://13.124.141.28:3000selectWorker', {
+        /*let res = await fetch('https://일꾼.kr/apiselectWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -179,7 +179,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
         let subTime2 = (((et2-st2)*60) + (em2-sm2));
         let subt = (subTime2-subTime)/60;
         console.log("subttttt "+subt);
-        axios.post('http://13.124.141.28:3000/addWork', {
+        axios.post('https://일꾼.kr/api/addWork', {
             business : bangCode,
             workername : worker,
             month : month,
@@ -193,7 +193,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         }).then(res => {
-          axios.post('http://13.124.141.28:3000/sendMessage', {
+          axios.post('https://일꾼.kr/api/sendMessage', {
             f: this.state.id,
             message :"<"+bangCode+">에서 "+worker+"님의 ["+year+"년 "+month+"월 "+date+"일]의 근로시간을 "
             + time.substring(0,2) +":"+ time.substring(2,4) +"-"
@@ -212,7 +212,7 @@ savedData = async(bangCode, worker, month, date, day, year, time) => {
           })
         })
         
-        /*let res = await fetch('http://13.124.141.28:3000/addWork', {
+        /*let res = await fetch('https://일꾼.kr/api/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

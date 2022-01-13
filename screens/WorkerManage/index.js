@@ -138,7 +138,7 @@ const WorkerManageScreen = ({navigation, route}) => {
           },
           { text: "네", onPress: () => {
             let today = new Date();
-            axios.post('http://13.124.141.28:3000/sendMessage', {              
+            axios.post('https://일꾼.kr/api/sendMessage', {              
               type: 3,
               system: 1,
               f: idid,
@@ -154,7 +154,7 @@ const WorkerManageScreen = ({navigation, route}) => {
             .then(res => {
               fetchData(bangCode)              
             });
-            axios.post('http://13.124.141.28:3000/deleteWorker', {
+            axios.post('https://일꾼.kr/api/deleteWorker', {
               business: bangCode,  
               workername : name,
             },
@@ -179,7 +179,7 @@ const WorkerManageScreen = ({navigation, route}) => {
 
   async function fetchData(bangCode) { 
         try {
-          await axios.post('http://13.124.141.28:3000/selectWorkerByType', {
+          await axios.post('https://일꾼.kr/api/selectWorkerByType', {
             business : bangCode,
             type : 2
           },
@@ -187,7 +187,7 @@ const WorkerManageScreen = ({navigation, route}) => {
             'Content-Type': 'application/json',
           'Accept': 'application/json'}
           })
-            /*let res = await fetch('http://13.124.141.28:3000/selectWorkerByType', {
+            /*let res = await fetch('https://일꾼.kr/api/selectWorkerByType', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',

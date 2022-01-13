@@ -120,7 +120,7 @@ class VacationRequestScreen extends Component{
         || (today.getFullYear()==this.state.itemA*1 && today.getMonth()+1==this.state.itemB*1 && today.getDate()<this.state.itemAA*1)
         ){
         if(this.state.comment){
-          await axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+          await axios.post('https://일꾼.kr/api/selectBusinessByName', {
             bname : this.state.bangCode
           },
           {  headers:{
@@ -130,7 +130,7 @@ class VacationRequestScreen extends Component{
           .then(res => {
             this.setState({owner : res.data[0].id});
           });
-          await axios.post('http://13.124.141.28:3000/sendMessage', {
+          await axios.post('https://일꾼.kr/api/sendMessage', {
               type: 2,
               system:1,
               f: this.props.route.params.id,

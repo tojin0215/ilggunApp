@@ -187,7 +187,7 @@ class ContractformAScreen extends React.Component{
   }
   initfetchHtml = async(bangCode) => {
     
-    axios.post('http://13.124.141.28:3000/selectContractform', {
+    axios.post('https://일꾼.kr/api/selectContractform', {
         bang:bangCode,
         id: this.props.route.params.workername
     },
@@ -195,7 +195,7 @@ class ContractformAScreen extends React.Component{
         'Content-Type': 'application/json',
       'Accept': 'application/json'}
     })
-    /*await fetch('http://13.124.141.28:3000/selectContractform', {
+    /*await fetch('https://일꾼.kr/api/selectContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -263,12 +263,12 @@ class ContractformAScreen extends React.Component{
       })     
     }
   fetchHtml = async(a) => {
-    axios.post('http://13.124.141.28:3000/writeContractform', this.state,
+    axios.post('https://일꾼.kr/api/writeContractform', this.state,
     {  headers:{
         'Content-Type': 'application/json',
       'Accept': 'application/json'}
     })
-    /*await fetch('http://13.124.141.28:3000/writeContractform', {
+    /*await fetch('https://일꾼.kr/api/writeContractform', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -361,7 +361,7 @@ class ContractformAScreen extends React.Component{
       }).then(res => res.json())*/
       .then(res => {
         this.props.navigation.goBack();
-        axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+        axios.post('https://일꾼.kr/api/selectBusinessByName', {
             bname : this.state.bang
             },
             {  headers:{
@@ -370,7 +370,7 @@ class ContractformAScreen extends React.Component{
             })
             .then(res => {
               try {
-                axios.post('http://13.124.141.28:3000/sendMessage', {
+                axios.post('https://일꾼.kr/api/sendMessage', {
                   t: this.state.id,
                   message :"<"+this.state.bang+">사업주가 "+this.state.id+"님의 계약서를 작성했습니다. [문서함>계약서]를 확인해주세요.",
                   f: res.data[0].id,
@@ -398,7 +398,7 @@ class ContractformAScreen extends React.Component{
         console.log("33333333 ");
         console.log(this.props.route.params.bid);
         let signOrStamp = '';
-        await axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+        await axios.post('https://일꾼.kr/api/selectBusinessByName', {
             bname : this.state.bang
             },
             {  headers:{
@@ -407,10 +407,10 @@ class ContractformAScreen extends React.Component{
             })
             .then(res => {
                 if(res.data[0].stamp ==1){
-                    signOrStamp = `<img src="http://13.124.141.28:3000/${this.state.bang}.png" alt="도장" z-index="2" width="100" height="100"></img>`
+                    signOrStamp = `<img src="https://일꾼.kr/api/${this.state.bang}.png" alt="도장" z-index="2" width="100" height="100"></img>`
                 }
         });
-      axios.post('http://13.124.141.28:3000/selectSign', {
+      axios.post('https://일꾼.kr/api/selectSign', {
           id:this.props.route.params.workername,
           id2: this.props.route.params.bid
       },

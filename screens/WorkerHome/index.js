@@ -136,7 +136,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [worktodo, setWorktodo] = useState(0);
   useEffect(() => {
     navigation.addListener('focus', () => {
-      axios.post('http://13.124.141.28:3000/selectWorkTodo', {
+      axios.post('https://일꾼.kr/api/selectWorkTodo', {
            bang : route.params.bname,
            year : new Date().getFullYear(),
            month: new Date().getMonth() + 1,
@@ -165,7 +165,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
          }
     });
     
-    axios.post('http://13.124.141.28:3000/businessWorker', {
+    axios.post('https://일꾼.kr/api/businessWorker', {
       business:route.params.bname,
       workername:route.params.id,
     },
@@ -199,7 +199,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       
   async function fetchData(bangCode,idid) { 
     try {
-        /*let res = await fetch('http://13.124.141.28:3000/selectBusinessByWorker', {
+        /*let res = await fetch('https://일꾼.kr/api/selectBusinessByWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -209,7 +209,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
             //id : idid
           }),
         })*/
-        await axios.post('http://13.124.141.28:3000/selectBusinessByWorker', {id:idid},
+        await axios.post('https://일꾼.kr/api/selectBusinessByWorker', {id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
@@ -239,7 +239,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               else if(d==6) day = 'sat';
 
               //console.log(d);
-              await axios.post('http://13.124.141.28:3000/selectWorkerAsDayAsWorker', {
+              await axios.post('https://일꾼.kr/api/selectWorkerAsDayAsWorker', {
                   business: bangCode,
                   year : new Date().getFullYear(),
                   month: new Date().getMonth() + 1,
@@ -310,7 +310,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
                   else { setTime(undefined) }
                 });
               
-              await axios.post('http://13.124.141.28:3000/selectTimelogAsWorker', {
+              await axios.post('https://일꾼.kr/api/selectTimelogAsWorker', {
                         bang: bangCode,
                         year : new Date().getFullYear(),
                         month: new Date().getMonth() + 1,
@@ -340,7 +340,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     async function commuteData(idid) { 
       let err;  
       try {
-          await axios.post('http://13.124.141.28:3000/updateCommute',
+          await axios.post('https://일꾼.kr/api/updateCommute',
           {bang : route.params.bname, id:idid},
           {  headers:{
             'Content-Type': 'application/json',
@@ -370,7 +370,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               else if(d==5) day = 'fri';
               else if(d==6) day = 'sat';
 
-              axios.post('http://13.124.141.28:3000/selectTimelogAsWorker', {
+              axios.post('https://일꾼.kr/api/selectTimelogAsWorker', {
                         bang: route.params.bname,
                         year : new Date().getFullYear(),
                         month: new Date().getMonth() + 1,

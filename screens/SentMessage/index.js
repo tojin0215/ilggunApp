@@ -146,14 +146,14 @@ const sentMessageScreen = ({ navigation }) => {
   const [index, setIndex] = useState(-1);
   async function fetchData(ididid) { 
       try {
-        axios.post('http://13.124.141.28:3000/selectSentMessage', {
+        axios.post('https://일꾼.kr/api/selectSentMessage', {
           id:ididid
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*  let res = await fetch('http://13.124.141.28:3000/selectSentMessage', {
+        /*  let res = await fetch('https://일꾼.kr/api/selectSentMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -178,7 +178,7 @@ const sentMessageScreen = ({ navigation }) => {
         let busi = message.split('(')[1].split(')')[0];
         let d = message.split(' ')[1].split('에')[0];
         let dd = d.split('-');
-        axios.post('http://13.124.141.28:3000/addWork', {
+        axios.post('https://일꾼.kr/api/addWork', {
             business : busi,
             workername : work,
             month : dd[1]*1,
@@ -192,7 +192,7 @@ const sentMessageScreen = ({ navigation }) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('http://13.124.141.28:3000/addWork', {
+        /*let res = await fetch('https://일꾼.kr/api/addWork', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -225,7 +225,7 @@ const sentMessageScreen = ({ navigation }) => {
       [
         { text: "OK", onPress: () => {
           try {
-            axios.post('http://13.124.141.28:3000/delMessage', {
+            axios.post('https://일꾼.kr/api/delMessage', {
               ind: i
             },
             {  headers:{

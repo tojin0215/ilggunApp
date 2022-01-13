@@ -43,7 +43,7 @@ class StatementScreen extends Component{
   fetchData = async(bangCode) => { 
     try {
       console.log(bangCode);
-        axios.post('http://13.124.141.28:3000/selectWorker', {
+        axios.post('https://일꾼.kr/api/selectWorker', {
             business : bangCode,
             type : 1
         },
@@ -51,7 +51,7 @@ class StatementScreen extends Component{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('http://13.124.141.28:3000/selectWorker', {
+        /*let res = await fetch('https://일꾼.kr/api/selectWorker', {
           method: 'POST',
           headers: {
             Accept: 'application/json',

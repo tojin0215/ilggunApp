@@ -51,7 +51,7 @@ import { postInsurancePercentage } from "../../api/Api2";
 //정규) SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
 //알바) TaxDeduction:3.3세금공제
 
-const url = "http://13.124.141.28:3000";
+const url = "https://일꾼.kr/api";
 
 const TYPE_REGULAR = 0;
 const TYPE_ALBA = 1;
@@ -273,7 +273,7 @@ class StatementScreen2 extends Component {
       this.fetchOtherAllowance();
 
       // //여기 과세/비과세 추가되는 값들
-      //           axios.post('http://13.124.141.28:3000/otherAllowance', {
+      //           axios.post('https://일꾼.kr/api/otherAllowance', {
       //             id: this.state.id,
       //             year : this.state.itemAA.split('년')[0]*1,
       //             month : this.state.itemBB.split('월')[0]*1,
@@ -604,7 +604,7 @@ class StatementScreen2 extends Component {
 
       await axios
         .post(
-          "http://13.124.141.28:3000/selectBusinessByName",
+          "https://일꾼.kr/api/selectBusinessByName",
           {
             bname: this.state.bangCode,
           },
@@ -617,12 +617,12 @@ class StatementScreen2 extends Component {
         )
         .then((res) => {
           if (res.data[0].stamp == 1) {
-            signOrStamp = `<img src="http://13.124.141.28:3000/${this.state.bangCode}.png" alt="도장" z-index="2" width="100" height="100"></img>`;
+            signOrStamp = `<img src="https://일꾼.kr/api/${this.state.bangCode}.png" alt="도장" z-index="2" width="100" height="100"></img>`;
           }
         });
       axios
         .post(
-          "http://13.124.141.28:3000/selectSign",
+          "https://일꾼.kr/api/selectSign",
           {
             id: this.state.id,
             id2: this.state.id,

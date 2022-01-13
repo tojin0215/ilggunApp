@@ -140,14 +140,14 @@ const ReceivedMessageScreen = ({ navigation, route }) => {
   const [to, setTo] = useState('');
   async function fetchData(idid) { 
       try {
-        await axios.post('http://13.124.141.28:3000/selectReceivedMessage', {
+        await axios.post('https://일꾼.kr/api/selectReceivedMessage', {
           t:idid, ft:0
         },
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-          /*let res = await fetch('http://13.124.141.28:3000/selectReceivedMessage', {
+          /*let res = await fetch('https://일꾼.kr/api/selectReceivedMessage', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -183,7 +183,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
   }
   async function savedData(t) { 
     let busi = message.split('(')[1].split(')')[0];
-    axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+    axios.post('https://일꾼.kr/api/selectBusinessByName', {
             bname: busi
           },
           {  headers:{
@@ -207,7 +207,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                   let dd = d.split('-');
                   console.log(work+"/"+busi+"/"+d+"/"+dayOfWeek+"/"+dd)
                   let ori = 0;
-                  axios.post('http://13.124.141.28:3000/selectWorkerEach', {
+                  axios.post('https://일꾼.kr/api/selectWorkerEach', {
                     business: busi,
                     workername: work
                   },
@@ -215,7 +215,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'}
                   })
-                /*let res = await fetch('http://13.124.141.28:3000/selectWorkerEach', {
+                /*let res = await fetch('https://일꾼.kr/api/selectWorkerEach', {
                   method: 'POST',
                   headers: {
                     Accept: 'application/json',
@@ -241,7 +241,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                 }else{
                   oris = 0
                 }
-                axios.post('http://13.124.141.28:3000/addWork', {
+                axios.post('https://일꾼.kr/api/addWork', {
                   business : busi,
                   workername : work,
                   month : dd[1]*1,
@@ -259,7 +259,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
               
                   if (t == 2) {
                     try {
-                      axios.post('http://13.124.141.28:3000/sendMessage', {
+                      axios.post('https://일꾼.kr/api/sendMessage', {
                         f: id,
                         message :"<"+busi+">에서 "+to+"님의 무급 휴가 신청("+d+")을 승인하였습니다.",
                         t: to,
@@ -277,7 +277,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                     
                   } else if(t == 3){
                     try {
-                      axios.post('http://13.124.141.28:3000/sendMessage', {
+                      axios.post('https://일꾼.kr/api/sendMessage', {
                         f: id,
                         message :"<"+busi+">에서 "+to+"님의 유급 휴가 신청("+d+")을 승인하였습니다.",
                         t: to,
@@ -303,7 +303,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
 
     async function alterRead() {
       try {
-        axios.post('http://13.124.141.28:3000/alterReadMessage', {
+        axios.post('https://일꾼.kr/api/alterReadMessage', {
           ind:index,
         },
         {  headers:{
@@ -323,7 +323,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
     async function addBang(){ 
       try {
           let busi = message.split('(')[1].split(')')[0];
-          axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+          axios.post('https://일꾼.kr/api/selectBusinessByName', {
             bname: busi
           },
           {  headers:{
@@ -336,7 +336,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
               console.log("더 이상 사업장이 존재하지 않습니다.")
               alert("더 이상 사업장이 존재하지 않습니다.")
             }else{
-              axios.post('http://13.124.141.28:3000/addBang', {
+              axios.post('https://일꾼.kr/api/addBang', {
                 bang: busi,
                 id: id
               },
@@ -347,7 +347,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
               .then(res => {
                 console.log(res)
               });
-              axios.post('http://13.124.141.28:3000/alterState', {
+              axios.post('https://일꾼.kr/api/alterState', {
                   bang: busi,
                   type : 1,
                   id : id
@@ -359,7 +359,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
               .then(res => {
                 console.log(res.data)
               });
-              axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+              axios.post('https://일꾼.kr/api/selectBusinessByName', {
                 bname : busi
                 },
                 {  headers:{
@@ -369,7 +369,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
                 .then(res => {
                   console.log("<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다");
                   try {
-                    axios.post('http://13.124.141.28:3000/sendMessage', {
+                    axios.post('https://일꾼.kr/api/sendMessage', {
                       f: id,
                       message :"<"+busi+"> 근로자 '"+id+"'가 초대에 응했습니다. 근로계약서를 작성해주세요.",
                       t: res.data[0].id,
@@ -397,7 +397,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
       let busi = message.split('(')[1].split(')')[0];
       if(i == 2){
         try {
-          axios.post('http://13.124.141.28:3000/sendMessage', {
+          axios.post('https://일꾼.kr/api/sendMessage', {
             f: id,
             message :"<"+busi+">에서 "+to+"님의 휴가 신청이 거절되었습니다.",
             t: to,
@@ -414,7 +414,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         }
       }else if(i == 3){
         
-        axios.post('http://13.124.141.28:3000/selectBusinessByName', {
+        axios.post('https://일꾼.kr/api/selectBusinessByName', {
           bname : busi
           },
           {  headers:{
@@ -423,7 +423,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
           })
           .then(res => {
             try {
-              axios.post('http://13.124.141.28:3000/sendMessage', {
+              axios.post('https://일꾼.kr/api/sendMessage', {
                 f: id,
                 message :"<"+busi+"> 근로자 '"+id+"'님이 초대를 거절했습니다.",
                 t: res.data[0].id,
@@ -449,7 +449,7 @@ function setModalVisibility(visible, msg ,t, index, r) {
         [
           { text: "OK", onPress: () => {
             try {
-              axios.post('http://13.124.141.28:3000/delMessage', {
+              axios.post('https://일꾼.kr/api/delMessage', {
                 ind: i
               },
               {  headers:{

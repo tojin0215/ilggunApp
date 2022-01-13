@@ -123,12 +123,12 @@ const WorkerBusinessListScreen = ({navigation}) => {
     ///setId('dd');
     async function fetchData(idid) { 
         try {
-          axios.post('http://13.124.141.28:3000/selectBusinessByWorker', {id:idid},
+          axios.post('https://일꾼.kr/api/selectBusinessByWorker', {id:idid},
           {  headers:{
             'Content-Type': 'application/json',
             'Accept': 'application/json'}
           })
-            /*let res = await fetch('http://13.124.141.28:3000/selectBusinessByWorker', {
+            /*let res = await fetch('https://일꾼.kr/api/selectBusinessByWorker', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
