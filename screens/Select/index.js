@@ -45,6 +45,11 @@ const SelectScreen = ({ onSignIn, navigation }) => {
     console.log("eeeeeeeeeeeeeeeeee")
   }
 
+  const handleOnSelectWorkerPage = () => {
+    empchangeImg();
+    navigation.navigate('Worker Business List');
+  }
+
   return ( 
     <View style={styles.image}>
     <View style={styles.container}>
@@ -61,7 +66,7 @@ const SelectScreen = ({ onSignIn, navigation }) => {
         </TouchableHighlight>
       <TouchableOpacity 
         style={styles.button}
-        onPress={() => {empchangeImg();navigation.navigate('Worker Business List');}}>
+        onPress={handleOnSelectWorkerPage}>
           <Image style={styles.buttonTitle1} source={empImgSelected}></Image>
         </TouchableOpacity>
       </View>

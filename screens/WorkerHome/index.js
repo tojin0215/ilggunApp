@@ -4,6 +4,11 @@ import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
 import axios from 'axios';
+
+import { getUserData } from '../../utils/storage';
+import { postloginHistoryWorker } from '../../api/Api';
+import moment from 'moment';
+
 const styles = StyleSheet.create({
   container: {
     width: "100%", height: "100%",
@@ -101,6 +106,17 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [id,setId] = useState('');
   const [time, setTime] = useState('')
   const [timelog, setTimelog] = useState('')
+
+  useEffect(() => {
+    getUserData()
+    .then(user_data => {
+      postloginHistoryWorker(
+        user_data.name,
+        moment().format('YYYY-MM-DD a h:mm:ss'),
+        route.params.bname
+      )
+    })
+  }, [])
 
   navigation.addListener('focus', () => {
     navigation.setOptions({

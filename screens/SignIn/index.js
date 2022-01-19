@@ -47,6 +47,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
     try {
       postSignIn(id, password)
         .then((user_data) => {
+          console.log(`SignPost::user_data::${user_data}`)
           if (user_data === null) {
             Alert.alert(
               "아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요."
@@ -60,6 +61,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           }
         })
         .catch((e) => {
+          console.log(`SignPost::error::${e}`)
           Alert.alert(
             "아이디 혹은 비밀번호 정보가 잘못되었습니다. 한번 더 확인해주세요."
           );

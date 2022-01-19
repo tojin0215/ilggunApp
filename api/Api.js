@@ -55,3 +55,12 @@ export const getSelectBusiness = (user_id) => (
             id: user_id,
         }, CONFIG_JSON)
 )
+
+export const postloginHistoryWorker = (worker_name, login_time, business_name) => {
+    axios.post(`${SERVER_URL}addLoginHistoryWorker`, {
+        workername: worker_name,
+        login_time: login_time,
+        business_name: business_name,
+    }).then(response => console.log(response))
+    .catch(error => console.log(error))
+}

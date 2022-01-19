@@ -4,6 +4,8 @@ import { View, Text, Button, StyleSheet, TouchableOpacity,ImageBackground } from
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import * as Font from 'expo-font';
 import axios from 'axios';
+
+
 const styles = StyleSheet.create({
   container: {
     width: "100%", height: "100%",
@@ -89,8 +91,7 @@ const WorkerBusinessListScreen = ({navigation}) => {
     const unsubscribe = navigation.addListener('focus', () => {
       AsyncStorage.getItem("userData").then((userData) =>{
         fetchData(JSON.parse(userData).id);
-      });
-     
+      });     
       // The screen is focused
       // Call any action
     });
