@@ -73,7 +73,7 @@ const AddBusinessScreen = ({navigation, route}) => {
             if (Platform.OS !== 'web') {
                 const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
                 if (status !== 'granted') {
-                    alert('Sorry, we need camera roll permissions to make this work!');
+                    alert('죄송합니다. 이 작업을 수행하려면 카메라 롤 권한이 필요합니다!');
                 }
             }
         })();
