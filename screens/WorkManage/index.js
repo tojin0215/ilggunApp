@@ -327,188 +327,188 @@ const WorkManageScreen = ({ navigation, route }) => {
   }, [navigation]);*/
   return (
     <View style={styles.image}>
-      <View style={styles.container}>
-        <View style={styles.calenderArea}>
-          <TouchableOpacity
-            title="Calendar"
-            style={styles.touchArea}
-            onPress={() => navigation.replace('Calendar')}>
-            <Image style={styles.calenderImg} source={require('../../img/calender.png')} />
+    <View style={styles.container}>
+      <View style={styles.calenderArea}>
+        <TouchableOpacity
+          title="Calendar"
+          style={styles.touchArea}
+          onPress={() => navigation.replace('Calendar')}>
+          <Image style={styles.calenderImg} source={require('../../img/calender.png')}/>
+          
+          <Text style={styles.calenderTitle}>{route.params.selecteddate.split(' ')[3]}년 {route.params.selecteddate.split(' ')[1]}월 {route.params.selecteddate.split(' ')[2]}일({day(route.params.selecteddate.split(' ')[0])})</Text>
+          
+          <Image style={styles.rightImg} source={require('../../img/right.png')}/>
+        </TouchableOpacity>
+      </View>
 
-            <Text style={styles.calenderTitle}>{route.params.selecteddate.split(' ')[3]}년 {route.params.selecteddate.split(' ')[1]}월 {route.params.selecteddate.split(' ')[2]}일({day(route.params.selecteddate.split(' ')[0])})</Text>
-
-            <Image style={styles.rightImg} source={require('../../img/right.png')} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.listArea}>
-          <ScrollView>
-            {
-              String(route.params.selecteddate).split(' ')[0] === "Mon" ?
-                business.map((b, id) => (
-                  <View style={styles.workerAera}>
-                    <Image style={styles.userImage} source={require('../../img/user_mint.png')} />
-                    <Text key={id} style={styles.werkerTextName}>{b.workername2} </Text>
-
-                    <View style={styles.colStyle}>
-                      <View style={{ flexDirection: "row", marginBottom: hp('1%') }}>
-                        <Text key={id} style={styles.werkerTextTime}>{(b.time != undefined || b.time != null) ? (b.time.slice(0, 2) + ":" + b.time.slice(2, 4) + " ~ " + b.time.slice(4, 6) + ":" + b.time.slice(6, 8)) : ((b.mon != undefined || b.mon != null) ? b.mon.slice(0, 2) + ":" + b.mon.slice(2, 4) + " ~ " + b.mon.slice(4, 6) + ":" + b.mon.slice(6, 8) : '- -')}</Text>
-                      </View>
-                      <View style={{ flexDirection: "row" }}>
-                        <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername] == undefined || timelog[b.workername] == null ? '출근' : (timelog[b.workername].slice(0, 1) == '' ? '출근' : timelog[b.workername].slice(0, 2) + ":" + timelog[b.workername].slice(2, 4))}</Text>
-                        <Text style={styles.werkerTextTime}> ~ </Text>
-                        <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername] == undefined || timelog[b.workername] == null ? '퇴근' : (timelog[b.workername].slice(4, 5) == '' ? '퇴근' : timelog[b.workername].slice(4, 6) + ":" + timelog[b.workername].slice(6, 8))}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.listStyle}>
-                      <TouchableOpacity style={styles.buttonStyle}
-                        onPress={() => navigation.navigate('Add WorkTodo', { date: route.params.selecteddate, worker: b.workername })}>
-                        <Text style={styles.werkerTextName2}>할일추가</Text>
-                      </TouchableOpacity>
-                    </View>
+<View style={styles.listArea}>
+        <ScrollView>
+      {
+          String(route.params.selecteddate).split(' ')[0]==="Mon"?
+            business.map((b, id) => (
+              <View style={styles.workerAera}>
+                <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
+                    <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
+                    
+                <View style={styles.colStyle}>
+                  <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.mon!=undefined || b.mon!=null)?b.mon.slice(0,2)+":"+b.mon.slice(2,4)+" ~ "+b.mon.slice(4,6)+":"+b.mon.slice(6,8):'- -')}</Text>
                   </View>
-                )) : (String(route.params.selecteddate).split(' ')[0] === "Tue") ?
-                  business.map((b, id) => (
-                    <View style={styles.workerAera}>
-                      <Image style={styles.userImage} source={require('../../img/user_mint.png')} />
-                      <Text key={id} style={styles.werkerTextName}>{b.workername2} </Text>
-
-                      <View style={styles.colStyle}>
-                        <View style={{ flexDirection: "row", marginBottom: hp('1%') }}>
-                          <Text key={id} style={styles.werkerTextTime}>{(b.time != undefined || b.time != null) ? (b.time.slice(0, 2) + ":" + b.time.slice(2, 4) + " ~ " + b.time.slice(4, 6) + ":" + b.time.slice(6, 8)) : ((b.tue != undefined || b.tue != null) ? b.tue.slice(0, 2) + ":" + b.tue.slice(2, 4) + " ~ " + b.tue.slice(4, 6) + ":" + b.tue.slice(6, 8) : '- -')}</Text>
-                        </View>
-                        <View style={{ flexDirection: "row" }}>
-                          <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername] == undefined || timelog[b.workername] == null ? '출근' : timelog[b.workername].slice(0, 2) + ":" + timelog[b.workername].slice(2, 4)} ~ {timelog[b.workername] == undefined || timelog[b.workername] == null ? '퇴근' : timelog[b.workername].slice(4, 6) + ":" + timelog[b.workername].slice(6, 8)}</Text>
-                        </View>
-                      </View>
-                      <View style={styles.listStyle}>
-                        <TouchableOpacity style={styles.buttonStyle}
-                          onPress={() => navigation.navigate('Add WorkTodo', { date: route.params.selecteddate, worker: b.workername })}>
-                          <Text style={styles.werkerTextName2}>할일추가</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  )) : (String(route.params.selecteddate).split(' ')[0] === "Wed") ?
-                    business.map((b, id) => (
-                      <View style={styles.workerAera}>
-                        <Image style={styles.userImage} source={require('../../img/user_mint.png')} />
-                        <Text key={id} style={styles.werkerTextName}>{b.workername2} </Text>
-
-                        <View style={styles.colStyle}>
-                          <View style={{ flexDirection: "row", marginBottom: hp('1%') }}>
-                            <Text key={id} style={styles.werkerTextTime}>{(b.time != undefined || b.time != null) ? (b.time.slice(0, 2) + ":" + b.time.slice(2, 4) + " ~ " + b.time.slice(4, 6) + ":" + b.time.slice(6, 8)) : ((b.wed != undefined || b.wed != null) ? b.wed.slice(0, 2) + ":" + b.wed.slice(2, 4) + " ~ " + b.wed.slice(4, 6) + ":" + b.wed.slice(6, 8) : '- -')}</Text>
-                          </View>
-                          <View style={{ flexDirection: "row" }}>
-                            <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername] == undefined || timelog[b.workername] == null ? '출근' : timelog[b.workername].slice(0, 2) + ":" + timelog[b.workername].slice(2, 4)} ~ {timelog[b.workername] == undefined || timelog[b.workername] == null ? '퇴근' : timelog[b.workername].slice(4, 6) + ":" + timelog[b.workername].slice(6, 8)}</Text>
-                          </View>
-                        </View>
-                        <View style={styles.listStyle}>
-                          <TouchableOpacity style={styles.buttonStyle}
-                            onPress={() => navigation.navigate('Add WorkTodo', { date: route.params.selecteddate, worker: b.workername })}>
-                            <Text style={styles.werkerTextName2}>할일추가</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    )) : (String(route.params.selecteddate).split(' ')[0] === "Thu") ?
-                      business.map((b, id) => (
-
-                        <View style={styles.workerAera}>
-                          <Image style={styles.userImage} source={require('../../img/user_mint.png')} />
-                          <Text key={id} style={styles.werkerTextName}>{b.workername2} </Text>
-                          {console.log(timelog)}
-                          <View style={styles.colStyle}>
-                            <View style={{ flexDirection: "row", marginBottom: hp('1%') }}>
-                              <Text key={id} style={styles.werkerTextTime}>{(b.time != undefined || b.time != null) ? (b.time.slice(0, 2) + ":" + b.time.slice(2, 4) + " ~ " + b.time.slice(4, 6) + ":" + b.time.slice(6, 8)) : ((b.thu != undefined || b.thu != null) ? b.thu.slice(0, 2) + ":" + b.thu.slice(2, 4) + " ~ " + b.thu.slice(4, 6) + ":" + b.thu.slice(6, 8) : '- -')}</Text>
-                            </View>
-                            <View style={{ flexDirection: "row" }}>
-                              <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername] == undefined || timelog[b.workername] == null ? '출근' : timelog[b.workername].slice(0, 2) + ":" + timelog[b.workername].slice(2, 4)} ~ {timelog[b.workername] == undefined || timelog[b.workername] == null ? '퇴근' : timelog[b.workername].slice(4, 6) + ":" + timelog[b.workername].slice(6, 8)}</Text>
-                            </View>
-                          </View>
-                          <View style={styles.listStyle}>
-                            <TouchableOpacity style={styles.buttonStyle}
-                              onPress={() => navigation.navigate('Add WorkTodo', { date: route.params.selecteddate, worker: b.workername })}>
-                              <Text style={styles.werkerTextName2}>할일추가</Text>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      )) : (String(route.params.selecteddate).split(' ')[0] === "Fri") ?
-                        business.map((b, id) => (
-                          <View style={styles.workerAera}>
-                            <Image style={styles.userImage} source={require('../../img/user_mint.png')} />
-                            <Text key={id} style={styles.werkerTextName}>{b.workername2} </Text>
-
-                            <View style={styles.colStyle}>
-                              <View style={{ flexDirection: "row", marginBottom: hp('1%') }}>
-                                <Text key={id} style={styles.werkerTextTime}>{(b.time != undefined || b.time != null) ? (b.time.slice(0, 2) + ":" + b.time.slice(2, 4) + " ~ " + b.time.slice(4, 6) + ":" + b.time.slice(6, 8)) : ((b.fri != undefined || b.fri != null) ? b.fri.slice(0, 2) + ":" + b.fri.slice(2, 4) + " ~ " + b.fri.slice(4, 6) + ":" + b.fri.slice(6, 8) : '- -')}</Text>
-                              </View>
-                              <View style={{ flexDirection: "row" }}>
-                                <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername] == undefined || timelog[b.workername] == null ? '출근' : timelog[b.workername].slice(0, 2) + ":" + timelog[b.workername].slice(2, 4)} ~ {timelog[b.workername] == undefined || timelog[b.workername] == null ? '퇴근' : timelog[b.workername].slice(4, 6) + ":" + timelog[b.workername].slice(6, 8)}</Text>
-                              </View>
-                            </View>
-                            <View style={styles.listStyle}>
-                              <TouchableOpacity style={styles.buttonStyle}
-                                onPress={() => navigation.navigate('Add WorkTodo', { date: route.params.selecteddate, worker: b.workername })}>
-                                <Text style={styles.werkerTextName2}>할일추가</Text>
-                              </TouchableOpacity>
-                            </View>
-                          </View>
-                        )) : (String(route.params.selecteddate).split(' ')[0] === "Sat") ?
-                          business.map((b, id) => (
-                            <View style={styles.workerAera}>
-                              <Image style={styles.userImage} source={require('../../img/user_mint.png')} />
-                              <Text key={id} style={styles.werkerTextName}>{b.workername2} </Text>
-
-                              <View style={styles.colStyle}>
-                                <View style={{ flexDirection: "row", marginBottom: hp('1%') }}>
-                                  <Text key={id} style={styles.werkerTextTime}>{(b.time != undefined || b.time != null) ? (b.time.slice(0, 2) + ":" + b.time.slice(2, 4) + " ~ " + b.time.slice(4, 6) + ":" + b.time.slice(6, 8)) : ((b.sat != undefined || b.sat != null) ? b.sat.slice(0, 2) + ":" + b.sat.slice(2, 4) + " ~ " + b.sat.slice(4, 6) + ":" + b.sat.slice(6, 8) : '- -')}</Text>
-                                </View>
-                                <View style={{ flexDirection: "row" }}>
-                                  <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername] == undefined || timelog[b.workername] == null ? '출근' : timelog[b.workername].slice(0, 2) + ":" + timelog[b.workername].slice(2, 4)} ~ {timelog[b.workername] == undefined || timelog[b.workername] == null ? '퇴근' : timelog[b.workername].slice(4, 6) + ":" + timelog[b.workername].slice(6, 8)}</Text>
-                                </View>
-                              </View>
-                              <View style={styles.listStyle}>
-                                <TouchableOpacity style={styles.buttonStyle}
-                                  onPress={() => navigation.navigate('Add WorkTodo', { date: route.params.selecteddate, worker: b.workername })}>
-                                  <Text style={styles.werkerTextName2}>할일추가</Text>
-                                </TouchableOpacity>
-                              </View>
-                            </View>
-                          )) : (String(route.params.selecteddate).split(' ')[0] === "Sun") ?
-                            business.map((b, id) => (
-                              <View style={styles.workerAera}>
-                                <Image style={styles.userImage} source={require('../../img/user_mint.png')} />
-                                <Text key={id} style={styles.werkerTextName}>{b.workername2} </Text>
-
-                                <View style={styles.colStyle}>
-                                  <View style={{ flexDirection: "row", marginBottom: hp('1%') }}>
-                                    <Text key={id} style={styles.werkerTextTime}>{(b.time != undefined || b.time != null) ? (b.time.slice(0, 2) + ":" + b.time.slice(2, 4) + " ~ " + b.time.slice(4, 6) + ":" + b.time.slice(6, 8)) : ((b.sun != undefined || b.sun != null) ? b.sun.slice(0, 2) + ":" + b.sun.slice(2, 4) + " ~ " + b.sun.slice(4, 6) + ":" + b.sun.slice(6, 8) : '- -')}</Text>
-                                  </View>
-                                  <View style={{ flexDirection: "row" }}>
-                                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername] == undefined || timelog[b.workername] == null ? '출근' : timelog[b.workername].slice(0, 2) + ":" + timelog[b.workername].slice(2, 4)} ~ {timelog[b.workername] == undefined || timelog[b.workername] == null ? '퇴근' : timelog[b.workername].slice(4, 6) + ":" + timelog[b.workername].slice(6, 8)}</Text>
-                                  </View>
-                                </View>
-                                <View style={styles.listStyle}>
-                                  <TouchableOpacity style={styles.buttonStyle}
-                                    onPress={() => navigation.navigate('Add WorkTodo', { date: route.params.selecteddate, worker: b.workername })}>
-                                    <Text style={styles.werkerTextName2}>할일추가</Text>
-                                  </TouchableOpacity>
-                                </View>
-                              </View>
-                            )) : business.map((b, id) => (
-                              <Text key={id}>{b.workername}</Text>
-                            ))
-            }
-          </ScrollView>
-        </View>
+                  <View style={{flexDirection:"row"}}>
+                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':(timelog[b.workername].slice(0,1)==''?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4))}</Text>
+                    <Text style={styles.werkerTextTime}> ~ </Text>
+                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':(timelog[b.workername].slice(4,5)==''?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8))}</Text>
+                  </View>
+                </View>
+                <View style={styles.listStyle}>
+                 <TouchableOpacity style={styles.buttonStyle}
+                    onPress={() => navigation.navigate('Add WorkTodo',{date : route.params.selecteddate, worker:b.workername})}>
+                   <Text style={styles.werkerTextName2}>할일추가</Text>
+                 </TouchableOpacity>
+                </View>
+              </View>
+            )):(String(route.params.selecteddate).split(' ')[0]==="Tue")?
+            business.map((b, id) => (              
+              <View style={styles.workerAera}>
+                <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
+                    <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
+                    
+                <View style={styles.colStyle}>
+                  <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.tue!=undefined || b.tue!=null)?b.tue.slice(0,2)+":"+b.tue.slice(2,4)+" ~ "+b.tue.slice(4,6)+":"+b.tue.slice(6,8):'- -')}</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
+                  </View>
+                  </View>
+                <View style={styles.listStyle}>
+                 <TouchableOpacity style={styles.buttonStyle}
+                    onPress={() => navigation.navigate('Add WorkTodo',{date : route.params.selecteddate, worker:b.workername})}>
+                   <Text style={styles.werkerTextName2}>할일추가</Text>
+                 </TouchableOpacity>
+                </View>
+              </View>
+            )):(String(route.params.selecteddate).split(' ')[0]==="Wed")?
+            business.map((b, id) => ( 
+              <View style={styles.workerAera}>
+                <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
+                    <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
+                    
+                <View style={styles.colStyle}>
+                  <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.wed!=undefined || b.wed!=null)?b.wed.slice(0,2)+":"+b.wed.slice(2,4)+" ~ "+b.wed.slice(4,6)+":"+b.wed.slice(6,8):'- -')}</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
+                  </View>
+                  </View>
+                <View style={styles.listStyle}>
+                 <TouchableOpacity style={styles.buttonStyle}
+                    onPress={() => navigation.navigate('Add WorkTodo',{date : route.params.selecteddate, worker:b.workername})}>
+                   <Text style={styles.werkerTextName2}>할일추가</Text>
+                 </TouchableOpacity>
+                </View>
+              </View>
+            )):(String(route.params.selecteddate).split(' ')[0]==="Thu")?
+            business.map((b, id) => (
+              
+              <View style={styles.workerAera}>
+                <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
+                    <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
+                    {console.log(timelog)}
+                <View style={styles.colStyle}>
+                  <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.thu!=undefined || b.thu!=null)?b.thu.slice(0,2)+":"+b.thu.slice(2,4)+" ~ "+b.thu.slice(4,6)+":"+b.thu.slice(6,8):'- -')}</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
+                  </View>
+                  </View>
+                <View style={styles.listStyle}>
+                 <TouchableOpacity style={styles.buttonStyle}
+                    onPress={() => navigation.navigate('Add WorkTodo',{date : route.params.selecteddate, worker:b.workername})}>
+                   <Text style={styles.werkerTextName2}>할일추가</Text>
+                 </TouchableOpacity>
+                </View>
+              </View>
+            )):(String(route.params.selecteddate).split(' ')[0]==="Fri")?
+            business.map((b, id) => (
+              <View style={styles.workerAera}>
+                <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
+                    <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
+                    
+                <View style={styles.colStyle}>
+                  <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.fri!=undefined || b.fri!=null)?b.fri.slice(0,2)+":"+b.fri.slice(2,4)+" ~ "+b.fri.slice(4,6)+":"+b.fri.slice(6,8):'- -')}</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
+                  </View>
+                  </View>
+                <View style={styles.listStyle}>
+                 <TouchableOpacity style={styles.buttonStyle}
+                    onPress={() => navigation.navigate('Add WorkTodo',{date : route.params.selecteddate, worker:b.workername})}>
+                   <Text style={styles.werkerTextName2}>할일추가</Text>
+                 </TouchableOpacity>
+                </View>
+              </View>
+            )):(String(route.params.selecteddate).split(' ')[0]==="Sat")?
+            business.map((b, id) => (
+              <View style={styles.workerAera}>
+                <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
+                    <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
+                    
+                <View style={styles.colStyle}>
+                  <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.sat!=undefined || b.sat!=null)?b.sat.slice(0,2)+":"+b.sat.slice(2,4)+" ~ "+b.sat.slice(4,6)+":"+b.sat.slice(6,8):'- -')}</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
+                  </View>
+                  </View>
+                <View style={styles.listStyle}>
+                 <TouchableOpacity style={styles.buttonStyle} 
+                  onPress={() => navigation.navigate('Add WorkTodo',{date : route.params.selecteddate, worker:b.workername})}>
+                   <Text style={styles.werkerTextName2}>할일추가</Text>
+                 </TouchableOpacity>
+                </View>
+              </View>
+            )):(String(route.params.selecteddate).split(' ')[0]==="Sun")?
+            business.map((b, id) => (
+              <View style={styles.workerAera}>
+                <Image style={styles.userImage} source={require('../../img/user_mint.png')}/>
+                    <Text key={id} style={styles.werkerTextName}>{b.workername} </Text>
+                    
+                <View style={styles.colStyle}>
+                  <View style={{flexDirection:"row", marginBottom:hp('1%')}}>
+                    <Text key={id} style={styles.werkerTextTime}>{(b.time!=undefined || b.time!=null)?(b.time.slice(0,2)+":"+b.time.slice(2,4) + " ~ " + b.time.slice(4,6)+":"+b.time.slice(6,8) ):((b.sun!=undefined || b.sun!=null)?b.sun.slice(0,2)+":"+b.sun.slice(2,4)+" ~ "+b.sun.slice(4,6)+":"+b.sun.slice(6,8):'- -')}</Text>
+                  </View>
+                  <View style={{flexDirection:"row"}}>
+                    <Text key={id} style={styles.werkerTextTime}>{timelog[b.workername]==undefined||timelog[b.workername]==null?'출근':timelog[b.workername].slice(0,2)+":"+timelog[b.workername].slice(2,4)} ~ {timelog[b.workername]==undefined||timelog[b.workername]==null?'퇴근':timelog[b.workername].slice(4,6)+":"+timelog[b.workername].slice(6,8)}</Text>
+                  </View>
+                  </View>
+                <View style={styles.listStyle}>
+                 <TouchableOpacity style={styles.buttonStyle}
+                    onPress={() => navigation.navigate('Add WorkTodo',{date : route.params.selecteddate, worker:b.workername})}>
+                  <Text style={styles.werkerTextName2}>할일추가</Text>
+                 </TouchableOpacity>
+                </View>
+              </View>
+            )):business.map((b, id) => (
+              <Text key={id}>{b.workername}</Text>
+            ))
+        }
+      </ScrollView>
+      </View>
 
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('alter worker', { date: route.params.selecteddate })}>
+            onPress={() => navigation.navigate('alter worker',{date : route.params.selecteddate})}>
             <Text style={styles.buttonTitle}>근로자 시간 변경</Text>
           </TouchableOpacity>
         </View>
-      </View>
+        </View>
     </View>
 
   );
