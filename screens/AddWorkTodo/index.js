@@ -5,6 +5,7 @@ import { AsyncStorage } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
+import { getWorkTodos } from '../../api/Api';
 const styles = StyleSheet.create({
   image:{
     width:'100%', height:'101%', paddingTop:hp('5%'),
@@ -141,25 +142,38 @@ class AddWorkTodoScreen extends Component{
             worker: this.state.workerr
           }),
         })*/
-        axios.post('http://13.124.141.28:3000/selectWorkTodo',
-        {
-          bang : this.state.bangCode,
-          year : this.state.yearr,
-          month: this.state.monthh,
-          date: this.state.datee,
-          worker: this.state.workerr
-          },
-          {  headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'}
-          })//.then(res => res.json())
-            .then(res => {
-                console.log(res.data[0])
-                if(res.data[0]!=undefined){
-                    this.setState({todo:JSON.parse(res.data[0].todo)})
-            }
+        getWorkTodos(
+          this.state.bangCode,
+          new Date(this.state.yearr, this.state.monthh - 1, this.state.datee),
+          this.state.workerr
+        )
+        .then(todos => {
+          console.log(todos[0])
+          if(todos[0] != undefined) {
+            this.setState({todo:JSON.parse(todos[0].todo)})
+          }
         });
+        // axios.post('http://13.124.141.28:3000/selectWorkTodo',
+        // {
+        //   bang : this.state.bangCode,
+        //   year : this.state.yearr,
+        //   month: this.state.monthh,
+        //   date: this.state.datee,
+        //   worker: this.state.workerr
+        //   },
+        //   {  headers:{
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json'}
+        //   })//.then(res => res.json())
+        //     .then(res => {
+              
+        //         console.log(res.data[0])
+        //         if(res.data[0]!=undefined){
+        //             this.setState({todo:JSON.parse(res.data[0].todo)})
+        //     }
+        // });
     } catch (e) {
+      console.error("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe");
         console.error(e);
       }
 }

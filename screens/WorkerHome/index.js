@@ -18,9 +18,8 @@ import * as Font from "expo-font";
 import axios from "axios";
 
 import { getUserData } from "../../utils/storage";
-import { postloginHistoryWorker } from "../../api/Api";
+import { postloginHistoryWorker, getWorkTodos, getBusinessByWorker, getWorkerTimelog, getWorker, getWorkerByDay, getDayStr } from "../../api/Api";
 import moment from "moment";
-const SERVER_URL = "http://13.124.141.28:3000/";
 
 const styles = StyleSheet.create({
   container: {
@@ -110,82 +109,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const getDayStr = (date_obj) => {
-  switch (date_obj.getDay()) {
-    case 0:
-      return "sun";
-    case 1:
-      return "mon";
-    case 2:
-      return "tue";
-    case 3:
-      return "wed";
-    case 4:
-      return "thu";
-    case 5:
-      return "fir";
-    case 6:
-      return "sat";
-    default:
-      return "sun";
-  }
-};
-
-const getWorkTodos = (business_name, date_obj, worker_id) => {
-  console.log("++getWorkTodo++");
-  const data = {
-    bang: business_name,
-    year: date_obj.getFullYear(),
-    month: date_obj.getMonth() + 1,
-    date: date_obj.getDate(),
-    worker: worker_id,
-  };
-  return axios
-    .post(`${SERVER_URL}selectWorkTodo`, data)
-    .then((response) => response.data);
-};
-
-const getBusinessByWorker = (worker_id) => {
-  return axios
-    .post(`${SERVER_URL}selectBusinessByWorker`, { id: worker_id })
-    .then((response) => response.data[0]);
-};
-
-const getWorkerTimelog = (business_name, date_obj, worker_id) => {
-  const data = {
-    bang: business_name,
-    year: date_obj.getFullYear(),
-    month: date_obj.getMonth() + 1,
-    date: date_obj.getDate(),
-    day: getDayStr(date_obj),
-    workername: worker_id,
-  };
-  return axios
-    .post(`${SERVER_URL}selectTimelogAsWorker`, data)
-    .then((response) => response.data);
-};
-
-const getWorker = (business_name, worker_id) => {
-  const data = {
-    business: business_name,
-    workername: worker_id,
-  };
-  return axios
-    .post(`${SERVER_URL}businessWorker`, data)
-    .then((response) => response.data[0]);
-};
-
-const getWorkerByDay = (business_name, date_obj, worker_id) => {
-  const data = {
-    business: business_name,
-    year: date_obj.getFullYear(),
-    month: date_obj.getMonth() + 1,
-    date: date_obj.getDate(),
-    day: getDayStr(date_obj),
-    workername: worker_id,
-  };
-  return axios.post(`${SERVER_URL}selectWorkerAsDayAsWorker`, data);
-};
 
 const WorkerHomeScreen = ({ navigation, route }) => {
   const [commute, setCommute] = useState([]);
@@ -333,7 +256,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               (timelogs[0].leavee ? timelogs[0].leavee : "----")
           );
         }
-      );
+      )
+      .catch(error => console.error(error));
     } catch (e) {
       console.error(e);
     }
