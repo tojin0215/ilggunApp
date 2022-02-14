@@ -157,11 +157,9 @@ class StatementScreen1 extends React.Component {
       if (select_year > this_year || (select_year === this_year && select_month > this_month)) {
         this.setState({ arrName: [] }, () => this.show());
       } else {
-        await this.load_overtime_work(bangCode, select_year, select_month)
-
-        await this.load_insurance_percentage(bangCode, select_year)
-
-          await getWorkers(bangCode)
+        await this.load_overtime_work(bangCode, select_year, select_month);
+        await this.load_insurance_percentage(bangCode, select_year);
+        await getWorkers(bangCode)
           .then((res) => {
             let rowall = [];
 
