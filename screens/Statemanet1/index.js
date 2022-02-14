@@ -115,20 +115,17 @@ class StatementScreen1 extends React.Component {
   }
 
   fetchData = async (bangCode) => {
+    const select_year = this.state.itemA.split("년")[0] * 1;
+    const select_month = this.state.itemB.split("월")[0] * 1;
+    const this_year = new Date().getFullYear();
+    const this_month = new Date().getMonth() + 1;
     try {
-      if (
-        this.state.itemA.split("년")[0] * 1 > new Date().getFullYear() ||
-        (this.state.itemA.split("년")[0] * 1 == new Date().getFullYear() &&
-          this.state.itemB.split("월")[0] * 1 > new Date().getMonth() + 1)
-      ) {
+      if (select_year > this_year || (select_year === this_year && select_month > this_month)) {
         console.log("????");
         this.setState({ arrName: [] }, () => this.show());
       } else {
-        console.log(bangCode);
-        const year = this.state.itemA.split("년")[0] * 1;
-        const month = this.state.itemB.split("월")[0] * 1;
                 
-        await getOvertimeWork(bangCode, year, month)
+        await getOvertimeWork(bangCode, select_year, select_month)
           .then(async (datas) => {
             console.log("???");
             console.log(datas);
@@ -161,7 +158,7 @@ class StatementScreen1 extends React.Component {
           .then((res) => {
             console.log(
               "_________________________________________몇년",
-              this.state.itemA.split("년")[0]
+              select_year
             );
             for (let i = 0; i < res.data.length; i++) {
               console.log("DB년도", res.data[i].date);
@@ -207,10 +204,10 @@ class StatementScreen1 extends React.Component {
           )
           .then((res) => {
             let rowall = [];
-            const select_year = this.state.itemA.split("년")[0] * 1;
-            const select_month = this.state.itemB.split("월")[0] * 1;
-            const this_year = new Date().getFullYear();
-            const this_month = new Date().getMonth() + 1;
+            // const select_year = this.state.itemA.split("년")[0] * 1;
+            // const select_month = this.state.itemB.split("월")[0] * 1;
+            // const this_year = new Date().getFullYear();
+            // const this_month = new Date().getMonth() + 1;
 
             if (select_year !== this_year || select_month !== this_month) {
               const d = new Date(select_year, select_month, 0)
