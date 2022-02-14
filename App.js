@@ -466,7 +466,7 @@ const App = () => {
 
   function callback() {
     try {
-      const SERVER_URL = 'https://일꾼.kr/api/'
+      const SERVER_URL = 'http://13.124.141.28:3000/'
       axios.post(
         `${SERVER_URL}selectReceivedNewMessage`, { t: realId },
         { headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }}

@@ -27,7 +27,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
   const SignPost = async() => {
     try {
       console.log("!!!!!!!!!!!!!!!!!!!")
-      axios.post('https://일꾼.kr/api/sendMessage', {
+      axios.post('http://13.124.141.28:3000/sendMessage', {
           f: idid,
           message : password,
           t: id,
@@ -37,7 +37,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
       }).then((res) => {
-      /*let res = await fetch('https://일꾼.kr/api/sendMessage', {
+      /*let res = await fetch('http://13.124.141.28:3000/sendMessage', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -58,7 +58,7 @@ const SendMessageScreen = ({ onSignUp, navigation }) => {
   }
   const search = async(search_id) => {
     setAfterClick(false)
-    axios.post('https://일꾼.kr/api/searchId', {id : search_id},
+    axios.post('http://13.124.141.28:3000/searchId', {id : search_id},
     {  headers:{
       'Content-Type': 'application/json',
       'Accept': 'application/json'}

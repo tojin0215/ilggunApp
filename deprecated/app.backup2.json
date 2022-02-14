@@ -47,7 +47,7 @@
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSExceptionDomains": {
-            "https://일꾼.kr/api": {
+            "http://13.124.141.28:3000": {
               "NSTemporaryExceptionAllowsInsecureHTTPLoads": true
             },
             "http://13.124.141.28": {

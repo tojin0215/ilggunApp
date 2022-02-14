@@ -30,7 +30,7 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
             }
             else{
                 console.log('11여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기여기')
-                await axios.post('https://일꾼.kr/api/changeApple', { 
+                await axios.post('http://13.124.141.28:3000/changeApple', { 
                     id: id,
                     sign: savePath,
                     email : email,
@@ -45,7 +45,7 @@ const SignUpAppleScreen = ({ onSignUp, navigation, route }) => {
                     navigation.navigate('Sign In')   
                 })
     
-                /*await axios.post('https://일꾼.kr/api/signupByCode', { 
+                /*await axios.post('http://13.124.141.28:3000/signupByCode', { 
                         id: email,
                         name: name,
                         password: password,

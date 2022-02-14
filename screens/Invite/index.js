@@ -100,12 +100,12 @@ class InviteScreen extends Component{
     try {
       console.log('__________________name:', name)
       if(name!=''){
-      axios.post('https://일꾼.kr/api/searchId', {name : name},
+      axios.post('http://13.124.141.28:3000/searchId', {name : name},
         {  headers:{
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://일꾼.kr/api/searchId', {
+        /*let res = await fetch('http://13.124.141.28:3000/searchId', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -133,7 +133,7 @@ class InviteScreen extends Component{
     }
     sendInviteMessage = async(name) => { 
       try {
-        await axios.post('https://일꾼.kr/api/selectWorkerEach', {
+        await axios.post('http://13.124.141.28:3000/selectWorkerEach', {
           business: this.state.bangCode,
           workername: name,
         },
@@ -159,7 +159,7 @@ class InviteScreen extends Component{
             console.log(`InviteScreen::sendMessage::`)
             const message = `(${this.state.bangCode})님이 ${this.state.bangCode} 사업장에 ${name}님을 초대합니다.\n승낙하시겠습니까?`
             // axios.post('https://xn--zv0bj46b.kr/api/sendMessage', {
-              axios.post('https://일꾼.kr/api/sendMessage',
+              axios.post('http://13.124.141.28:3000/sendMessage',
               data,
             {
               headers: {
@@ -199,7 +199,7 @@ class InviteScreen extends Component{
             });
             
             console.log(`InviteScreen::selectUsername::${name}`)
-            axios.post('https://일꾼.kr/api/selectUsername', {
+            axios.post('http://13.124.141.28:3000/selectUsername', {
               id : name
             },
             {  headers:{
@@ -207,7 +207,7 @@ class InviteScreen extends Component{
               'Accept': 'application/json'}
             })
             .then(res => {
-              axios.post('https://일꾼.kr/api/addWorker', {
+              axios.post('http://13.124.141.28:3000/addWorker', {
                 business: this.state.bangCode,
                 workername : name,
                 workername2 : res.data[0].name,

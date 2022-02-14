@@ -28,7 +28,7 @@ const ModifyNameScreen = ({ onSignIn, navigation }) => {
             Alert.alert('빈 칸을 채워주세요.');
         }
         else{
-            await axios.post('https://일꾼.kr/api/changeName', { 
+            await axios.post('http://13.124.141.28:3000/changeName', { 
                 id: id,
                 name: name, 
                 headers:{

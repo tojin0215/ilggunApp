@@ -99,12 +99,12 @@ class ContractformScreen extends Component{
     })*/
     
     StatementScreen = async() => {
-      axios.post('https://일꾼.kr/api/selectImg', {},
+      axios.post('http://13.124.141.28:3000/selectImg', {},
       {  headers:{
         'Content-Type':'application/json',
       'Accept': 'application/json'}
     })
-      /*fetch("https://일꾼.kr/api/selectImg",{
+      /*fetch("http://13.124.141.28:3000/selectImg",{
         method: 'POST',})*/
           .then(res => 
             {
@@ -236,7 +236,7 @@ class ContractformScreen extends Component{
           
           <div>
             <h1 style="left: 100px; width: 450px; bottom: 140px; font-size: 1.8em; font-weight: bold; position: absolute;">근로계약서</h1>
-            <img style="left: 270px; height:10px; width: 10px; bottom: 180px; font-size: 1.8em; font-weight: bold; position: absolute;" src="https://일꾼.kr/api/11.jpg">
+            <img style="left: 270px; height:10px; width: 10px; bottom: 180px; font-size: 1.8em; font-weight: bold; position: absolute;" src="http://13.124.141.28:3000/11.jpg">
             
           </div>
       </body>

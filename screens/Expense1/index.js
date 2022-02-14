@@ -41,7 +41,7 @@ class ExpenseScreen1 extends Component{
   fetchData = async() => { 
     try {
       console.log('bangCode',this.state.bangCode);
-        axios.post('https://일꾼.kr/api/insurancePercentage', {
+        axios.post('http://13.124.141.28:3000/insurancePercentage', {
           bang : this.state.bangCode
         },
                 {  headers:{

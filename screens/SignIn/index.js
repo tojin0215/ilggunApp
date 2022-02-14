@@ -162,11 +162,11 @@ const SignInScreen = ({ onSignIn, navigation }) => {
         //     'Content-Type': 'application/json',
         //     'Accept': 'application/json'}
         // }
-        // await axios.post('https://일꾼.kr/api/signinByCode', axios_config)
+        // await axios.post('http://13.124.141.28:3000/signinByCode', axios_config)
         // .then((responseData) => {
 
         //   if(responseData.data[0] == undefined || responseData.data[0] == ''){
-        //     axios.post('https://일꾼.kr/api/signupByCode', {
+        //     axios.post('http://13.124.141.28:3000/signupByCode', {
         //       id: user.email,
         //       email:user.email,
         //       name: user.displayName,
@@ -303,7 +303,7 @@ const SignInScreen = ({ onSignIn, navigation }) => {
           // .then((responseData) => {
           //   if(responseData.data[0] == undefined || responseData.data[0] == ''){
           //     console.log('aaaa-------------------------------------------------');
-          //     axios.post('https://일꾼.kr/api/signupByCode', {
+          //     axios.post('http://13.124.141.28:3000/signupByCode', {
           //         id:credential.email,
           //         email:'',
           //         name: credential.fullName.givenName,

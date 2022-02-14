@@ -55,7 +55,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
       } else {
         await axios
           .post(
-            "https://일꾼.kr/api/signup",
+            "http://13.124.141.28:3000/signup",
             {
               id: email,
               email: email,
@@ -72,7 +72,7 @@ const SignUpScreen = ({ onSignUp, navigation }) => {
             }
           )
           .then((res) => {
-            /*let res = await fetch('https://일꾼.kr/api/signup', {
+            /*let res = await fetch('http://13.124.141.28:3000/signup', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

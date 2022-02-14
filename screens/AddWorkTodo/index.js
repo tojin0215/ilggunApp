@@ -127,7 +127,7 @@ class AddWorkTodoScreen extends Component{
   }
   fetchData = async() => { 
     try {
-        /*let res = await fetch('https://일꾼.kr/api/selectWorkTodo', {
+        /*let res = await fetch('http://13.124.141.28:3000/selectWorkTodo', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -141,7 +141,7 @@ class AddWorkTodoScreen extends Component{
             worker: this.state.workerr
           }),
         })*/
-        axios.post('https://일꾼.kr/api/selectWorkTodo',
+        axios.post('http://13.124.141.28:3000/selectWorkTodo',
         {
           bang : this.state.bangCode,
           year : this.state.yearr,
@@ -166,7 +166,7 @@ class AddWorkTodoScreen extends Component{
 savedData = async() => { 
     try {
       if(this.state.item){
-        axios.post('https://일꾼.kr/api/addWorkTodo', {
+        axios.post('http://13.124.141.28:3000/addWorkTodo', {
             bang : this.state.bangCode,
             year : this.state.yearr,
             month: this.state.monthh,
@@ -178,7 +178,7 @@ savedData = async() => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'}
         })
-        /*let res = await fetch('https://일꾼.kr/api/addWorkTodo', {
+        /*let res = await fetch('http://13.124.141.28:3000/addWorkTodo', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -209,7 +209,7 @@ savedData = async() => {
     }
     deleteData = async(key) => { 
         try {
-            axios.post('https://일꾼.kr/api/deleteWorkTodo', {
+            axios.post('http://13.124.141.28:3000/deleteWorkTodo', {
                 bang : this.state.bangCode,
                 year : this.state.yearr,
                 month: this.state.monthh,
@@ -221,7 +221,7 @@ savedData = async() => {
               'Content-Type': 'application/json',
               'Accept': 'application/json'}
             })
-            /*let res = await fetch('https://일꾼.kr/api/deleteWorkTodo', {
+            /*let res = await fetch('http://13.124.141.28:3000/deleteWorkTodo', {
               method: 'POST',
               headers: {
                 Accept: 'application/json',

@@ -27,7 +27,7 @@ const QrAuthScreen = ({ navigation, route }) => {
     try {
       await axios
         .post(
-          "https://일꾼.kr/api/updateCommute",
+          "http://13.124.141.28:3000/updateCommute",
           { bang: route.params.bname, id: idid },
           {
             headers: {
@@ -57,7 +57,7 @@ const QrAuthScreen = ({ navigation, route }) => {
           else if (d == 6) day = "sat";
           axios
             .post(
-              "https://일꾼.kr/api/selectTimelogAsWorker",
+              "http://13.124.141.28:3000/selectTimelogAsWorker",
               {
                 bang: route.params.bname,
                 year: new Date().getFullYear(),
@@ -99,7 +99,7 @@ const QrAuthScreen = ({ navigation, route }) => {
   //   try {
   //     await axios
   //       .post(
-  //         "https://일꾼.kr/api/updateCommute",
+  //         "http://13.124.141.28:3000/updateCommute",
   //         { bang: bname, id: userId },
   //         {
   //           headers: {

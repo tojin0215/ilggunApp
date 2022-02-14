@@ -8,6 +8,7 @@ import axios from 'axios';
 import { getUserData } from '../../utils/storage';
 import { postloginHistoryWorker } from '../../api/Api';
 import moment from 'moment';
+const SERVER_URL = "http://13.124.141.28:3000/"
 
 const styles = StyleSheet.create({
   container: {
@@ -96,16 +97,78 @@ const styles = StyleSheet.create({
   },
 });
 
+const getDayStr = (date_obj) => {
+  switch (date_obj.getDay()) {
+    case 0: return 'sun';
+    case 1: return 'mon';
+    case 2: return 'tue';
+    case 3: return 'wed';
+    case 4: return 'thu';
+    case 5: return 'fir';
+    case 6: return 'sat';
+    default: return 'sun';
+  }
+}
+
+const getWorkTodos = (business_name, date_obj, worker_id) => {
+  console.log("++getWorkTodo++")
+  const data = {
+    bang: business_name,
+    year: date_obj.getFullYear(),
+    month: date_obj.getMonth() + 1,
+    date: date_obj.getDate(),
+    worker: worker_id
+  }
+  return axios.post(`${SERVER_URL}selectWorkTodo`, data).then(response => response.data)
+}
+
+const getBusinessByWorker = (worker_id) => {
+  return axios.post(`${SERVER_URL}selectBusinessByWorker`, { id: worker_id }).then(response => response.data[0])
+}
+
+const getWorkerTimelog = (business_name, date_obj, worker_id) => {
+  const data = {
+    bang: business_name,
+    year: date_obj.getFullYear(),
+    month: date_obj.getMonth() + 1,
+    date: date_obj.getDate(),
+    day: getDayStr(date_obj),
+    workername: worker_id
+  }
+  return axios.post(`${SERVER_URL}selectTimelogAsWorker`, data).then(response => response.data)
+}
+
+const getWorker = (business_name, worker_id) => {
+  const data = {
+    business: business_name,
+    workername: worker_id,
+  }
+  return axios.post(`${SERVER_URL}businessWorker`, data).then(response => response.data[0])
+}
+
+const getWorkerByDay = (business_name, date_obj, worker_id) => {
+  const data = {
+    business: business_name,
+    year: date_obj.getFullYear(),
+    month: date_obj.getMonth() + 1,
+    date: date_obj.getDate(),
+    day: getDayStr(date_obj),
+    workername: worker_id
+  }
+  return axios.post(`${SERVER_URL}selectWorkerAsDayAsWorker`, data)
+}
+
 
 const WorkerHomeScreen = ({ navigation, route }) => {
   
   const [commute, setCommute] = useState([]);
-  const [todo, setTodo] = useState([]);
-  const [onlyOne, setOnlyOne] = useState(0);
-  const [business, setBusiness] = useState([]);
-  const [id,setId] = useState('');
+  // const [todo, setTodo] = useState([]);
+  // const [onlyOne, setOnlyOne] = useState(0);
+  // const [business, setBusiness] = useState([]);
+  // const [id,setId] = useState('');
   const [time, setTime] = useState('')
   const [timelog, setTimelog] = useState('')
+
 
   useEffect(() => {
     getUserData()
@@ -133,8 +196,8 @@ const WorkerHomeScreen = ({ navigation, route }) => {
           </View>
         ),
     });
-    setBusiness(route.params.bname);
-    setId(route.params.id);
+    // setBusiness(route.params.bname);
+    // setId(route.params.id);
     let isMounted = true;
 
     function f(){
@@ -152,48 +215,67 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [worktodo, setWorktodo] = useState(0);
   useEffect(() => {
     navigation.addListener('focus', () => {
-      axios.post('https://일꾼.kr/api/selectWorkTodo', {
-           bang : route.params.bname,
-           year : new Date().getFullYear(),
-           month: new Date().getMonth() + 1,
-           date: new Date().getDate(),
-           worker: route.params.id
-       },
-       {  headers:{
-         'Content-Type': 'application/json',
-         'Accept': 'application/json'}
-       })
-       .then(res => {
-         
-         if(res.data[0]==undefined){
+      // axios.post('http://13.124.141.28:3000/selectWorkTodo', {
+      //      bang : route.params.bname,
+      //      year : new Date().getFullYear(),
+      //      month: new Date().getMonth() + 1,
+      //      date: new Date().getDate(),
+      //      worker: route.params.id
+      //  },
+      //  {  headers:{
+      //    'Content-Type': 'application/json',
+      //    'Accept': 'application/json'}
+      //  })
+       getWorkTodos(route.params.bname, new Date(), route.params.id)
+       .then(todos => {
+         if (todos[0] === undefined) {
            setWorktodo(0);
          }
-         else{
-           let dict = JSON.parse(res.data[0].todo);
-           let td = 0;
-           for(var key in dict){
-             if(dict[key]==0){
-               td=1;
-               break;
-             }
-           }
-           setWorktodo(td);
+         else {
+          let dict = JSON.parse(todos[0].todo);
+          let td = 0;
+          for(var key in dict){
+            if(dict[key]==0){
+              td=1;
+              break;
+            }
+          }
+          setWorktodo(td);
          }
-    });
+       });
+    //    .then(res => {
+         
+    //      if(res.data[0]==undefined){
+    //        setWorktodo(0);
+    //      }
+    //      else{
+    //        let dict = JSON.parse(res.data[0].todo);
+    //        let td = 0;
+    //        for(var key in dict){
+    //          if(dict[key]==0){
+    //            td=1;
+    //            break;
+    //          }
+    //        }
+    //        setWorktodo(td);
+    //      }
+    // });
     
-    axios.post('https://일꾼.kr/api/businessWorker', {
-      business:route.params.bname,
-      workername:route.params.id,
-    },
-    {headers:{
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'}
-    })
-    .then(res => {
-      console.log("WorkerHome::businessWorker")
-      console.log(res.data)
-      setState(res.data[0].state);
-    });
+    // axios.post('http://13.124.141.28:3000/businessWorker', {
+    //   business:route.params.bname,
+    //   workername:route.params.id,
+    // },
+    // {headers:{
+    //   'Content-Type': 'application/json',
+    //   'Accept': 'application/json'}
+    // })
+    // .then(res => {
+    //   console.log("WorkerHome::businessWorker")
+    //   console.log(res.data)
+    //   setState(res.data[0].state);
+    // });
+    getWorker(route.params.bname, route.params.id)
+    .then(worker => setState(worker.state))
   },[]);
   }, [navigation]);
     //fetchData();
@@ -213,25 +295,22 @@ const WorkerHomeScreen = ({ navigation, route }) => {
       }, []);
     }*/
       
-  async function fetchData(bangCode,idid) { 
+  async function fetchData(bangCode, idid) {
+    const SERVER_URL = "http://13.124.141.28:3000/"
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    }
+
+
     try {
-        /*let res = await fetch('https://일꾼.kr/api/selectBusinessByWorker', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            //id : idid
-          }),
-        })*/
-        await axios.post('https://일꾼.kr/api/selectBusinessByWorker', {id:idid},
-          {  headers:{
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'}
-          })//.then(res => res.json())
-        .then(res => {
-            let dic = JSON.parse(res.data[0].bang);
+        // await axios.post(`${SERVER_URL}selectBusinessByWorker`, { id: idid }, config)//.then(res => res.json())
+        await getBusinessByWorker(idid)
+        .then(business => {
+
+            let dic = JSON.parse(business.bang);
             //console.log(res.data[0].bang+" "+bangCode+ " " +dic[String(bangCode)]+"???");
             
             setCommute(dic[String(route.params.bname)]?'퇴근':'출근');
@@ -255,25 +334,27 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               else if(d==6) day = 'sat';
 
               //console.log(d);
-              await axios.post('https://일꾼.kr/api/selectWorkerAsDayAsWorker', {
-                  business: bangCode,
-                  year : new Date().getFullYear(),
-                  month: new Date().getMonth() + 1,
-                  date: new Date().getDate(),
-                  day: day,
-                  workername: idid,
-              },
-              {  headers:{
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-              }
-              })
+              // await axios.post('http://13.124.141.28:3000/selectWorkerAsDayAsWorker', {
+              //     business: bangCode,
+              //     year : new Date().getFullYear(),
+              //     month: new Date().getMonth() + 1,
+              //     date: new Date().getDate(),
+              //     day: day,
+              //     workername: idid,
+              // },
+              // {  headers:{
+              //   'Content-Type': 'application/json',
+              //   'Accept': 'application/json'
+              // }
+              // })
+              await getWorkerByDay(bangCode, new Date(), idid)
               .then(async(res) => 
                 {
                   let resultData = res.data.ori;
+                  let alter = res.data.alter;
                   console.log(res.data.ori);
                   console.log(res.data.alter);
-                  let alter = res.data.alter;
+
                   if(resultData.length == 0){
                     resultData = res.data.alter
     
@@ -292,7 +373,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
                           if(resultData[i].workername == alter[j].workername){
                             flag=1;
                             if(alter[j].time=='0'){
-                              console.log("121221212212")
+                              console.log("++++++++++++ alter[j].time=='0' ++++++++++")
                               resultData[i] = null
                             }
                             else{
@@ -315,38 +396,37 @@ const WorkerHomeScreen = ({ navigation, route }) => {
                   console.log(resultData)
                   
                   console.log("-------------------------------------")
+
                   if(resultData[0] !== undefined){
+                    const worker = resultData[0];
+                    setTime(worker.time == null ? worker[day] : worker.time)
                    
-                    if(resultData[0].time == null){
-                      setTime(resultData[0][day])
-                    }else{
-                      setTime(resultData[0].time)
-                    }
                   }
                   else { setTime(undefined) }
                 });
               
-              await axios.post('https://일꾼.kr/api/selectTimelogAsWorker', {
-                        bang: bangCode,
-                        year : new Date().getFullYear(),
-                        month: new Date().getMonth() + 1,
-                        date: new Date().getDate(),
-                        day: day,
-                        workername: idid,
-                    },
-                    {  headers:{
-                      'Content-Type': 'application/json',
-                      'Accept': 'application/json'}
-                    })
-                  .then(async(res) => {
-                      setTimelog(
-                        ((res.data[0].goto)? res.data[0].goto : '----')
-                        + ((res.data[0].leavee)? res.data[0].leavee : '----')
-                      )
-                      console.log("-------------------------------------")
-                      // setTimelog(dic[idid]);
-                    
-                    });
+              // await axios.post('http://13.124.141.28:3000/selectTimelogAsWorker', {
+              //           bang: bangCode,
+              //           year : new Date().getFullYear(),
+              //           month: new Date().getMonth() + 1,
+              //           date: new Date().getDate(),
+              //           day: day,
+              //           workername: idid,
+              //       },
+              //       {  headers:{
+              //         'Content-Type': 'application/json',
+              //         'Accept': 'application/json'}
+              //       })
+              await getWorkerTimelog(bangCode, new Date(), idid)
+              .then(async(timelogs) => {
+                // console.log("++++++++++res++++++++++", res.data)
+                setTimelog(
+                  ((timelogs[0].goto)? timelogs[0].goto : '----')
+                  + ((timelogs[0].leavee)? timelogs[0].leavee : '----')
+                  )
+                  // console.log("-------------------------------------")
+                  // setTimelog(dic[idid]);
+                });
 
 
     } catch (e) {
@@ -356,7 +436,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
     async function commuteData(idid) { 
       let err;  
       try {
-          await axios.post('https://일꾼.kr/api/updateCommute',
+          await axios.post('http://13.124.141.28:3000/updateCommute',
           {bang : route.params.bname, id:idid},
           {  headers:{
             'Content-Type': 'application/json',
@@ -386,7 +466,7 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               else if(d==5) day = 'fri';
               else if(d==6) day = 'sat';
 
-              axios.post('https://일꾼.kr/api/selectTimelogAsWorker', {
+              axios.post('http://13.124.141.28:3000/selectTimelogAsWorker', {
                         bang: route.params.bname,
                         year : new Date().getFullYear(),
                         month: new Date().getMonth() + 1,
@@ -443,46 +523,35 @@ const WorkerHomeScreen = ({ navigation, route }) => {
   const [clicked3, setClicked3] = useState(-1);
   const [clicked4, setClicked4] = useState(-1);  
     
-  return (
-    <View style={styles.image}>
-      <View style={styles.container}>
-      <View style={styles.timeText}>
-        <Text style={styles.textTitle1}>근무 시간   {time==undefined?<Text style={styles.text1}>-- : --  -  -- : --</Text>:<Text style={styles.text1}>{time.substring(0,2)}:{time.substring(2,4)} - {time.substring(4,6)}:{time.substring(6,8)}</Text>}</Text>
-        <Text style={styles.textTitle2}>출근/퇴근  {timelog==undefined ?<Text style={styles.text2}>-- : --  -  -- : --</Text>:<Text style={styles.text2}>{timelog.substring(0,2)}:{timelog.substring(2,4)} - {timelog.substring(4,6)}:{timelog.substring(6,8)}</Text>}</Text>
-      </View>
-      <View style={styles.buttonArea1}>    
-      <TouchableOpacity 
-        style={styles.button}
-        onPress={() => { 
-          
-          //출근/퇴근기록
-          console.log("state???"+route.params.state)
-          if (state === 2) {
-            if(commute=='출근' && worktodo==1){
-              Alert.alert(
-                "퇴근하기",
-                "할 일이 남아있습니다. 미완료로 퇴근하시겠습니까?",
-                [
-                  {
-                    text: "아니오",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                  },
-                  { text: "네", onPress: () => {
-                    navigation.navigate('QrAuth',{
-                      bname:route.params.bname,
-                      userId:route.params.id,
-                      commute:commute
-                    });
-                    // setCommute(commute=='출근'?'퇴근':'출근');
-                    // commuteData(route.params.id);
-                    commuteChangeImg(commute=='출근'?'퇴근':'출근');
-                  }}
-                ],
-                { cancelable: false }
-              );
-            }
-            else{
+
+  const viewWorkTime = () => `${time.substring(0,2)}:${time.substring(2,4)} - ${time.substring(4,6)}:${time.substring(6,8)}`
+  const viewInOutTime = () => `${timelog.substring(0,2)}:${timelog.substring(2,4)} - ${timelog.substring(4,6)}:${timelog.substring(6,8)}`
+  const handleOnPressInOut = () => {
+    console.log("출퇴 기록:", route.params.state)
+
+    if (state !== 2) {
+      Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
+    }
+    else {
+      if (commute !== '출근' || worktodo !== 1) {
+        navigation.navigate('QrAuth',{
+          bname:route.params.bname,
+          userId:route.params.id,
+          commute:commute
+        });
+        commuteChangeImg(commute=='출근'?'퇴근':'출근');
+      }
+      else {
+        Alert.alert(
+          "퇴근하기",
+          "할 일이 남아있습니다. 미완료로 퇴근하시겠습니까?",
+          [
+            {
+              text: "아니오",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "네", onPress: () => {
               navigation.navigate('QrAuth',{
                 bname:route.params.bname,
                 userId:route.params.id,
@@ -491,12 +560,24 @@ const WorkerHomeScreen = ({ navigation, route }) => {
               // setCommute(commute=='출근'?'퇴근':'출근');
               // commuteData(route.params.id);
               commuteChangeImg(commute=='출근'?'퇴근':'출근');
-            }
-          }
-          else{
-            Alert.alert("[문서함>계약서]를 먼저 작성해주세요.")
-          }
-        }}>
+            }}
+          ],
+          { cancelable: false }
+        );
+      }
+    }
+  }
+  return (
+    <View style={styles.image}>
+      <View style={styles.container}>
+      <View style={styles.timeText}>
+        <Text style={styles.textTitle1}>근무 시간   <Text style={styles.text1}>{time==undefined?"-- : --  -  -- : --": viewWorkTime() }</Text></Text>
+        <Text style={styles.textTitle2}>출근/퇴근  <Text style={styles.text2}>{timelog==undefined ?"-- : --  -  -- : --":viewInOutTime()}</Text></Text>
+      </View>
+      <View style={styles.buttonArea1}>    
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={handleOnPressInOut}>
           <Image style={styles.buttonImg} source={commuteImgSelected}/>
         {/* <Text style={styles.buttonTitle}>{commute}</Text> */}
       </TouchableOpacity>

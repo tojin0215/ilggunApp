@@ -20,7 +20,7 @@ const ModifySignScreen = ({ onSignUp, navigation, route }) => {
   React.useEffect(() => {
     AsyncStorage.getItem("userData").then((userData) =>{
         setId(id => JSON.parse(userData).id);
-        axios.post('https://일꾼.kr/api/selectSign', { 
+        axios.post('http://13.124.141.28:3000/selectSign', { 
             id: JSON.parse(userData).id,
             id2: JSON.parse(userData).id,
         },{
@@ -39,7 +39,7 @@ const ModifySignScreen = ({ onSignUp, navigation, route }) => {
             Alert.alert('sign을 채워주세요.');
         }
         else{
-            await axios.post('https://일꾼.kr/api/changeSign', { 
+            await axios.post('http://13.124.141.28:3000/changeSign', { 
                     id: id,
                     sign: savePath,
             },{

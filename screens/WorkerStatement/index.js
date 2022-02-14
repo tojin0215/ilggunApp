@@ -52,7 +52,7 @@ class WorkerStatementScreen extends Component{
       let t = this.state.tableData[0];
       let signOrStamp = '';
       
-      await axios.post('https://일꾼.kr/api/selectBusinessByName', {
+      await axios.post('http://13.124.141.28:3000/selectBusinessByName', {
           bname : this.state.bangCode
           },
           {  headers:{
@@ -61,7 +61,7 @@ class WorkerStatementScreen extends Component{
           })
           .then(async(res) => {
               if(res.data[0].stamp == 1){
-                  signOrStamp = `<img src="https://일꾼.kr/api/${this.state.bangCode}.png" alt="도장" z-index="2" width="100" height="100"></img>`
+                  signOrStamp = `<img src="http://13.124.141.28:3000/${this.state.bangCode}.png" alt="도장" z-index="2" width="100" height="100"></img>`
                   html =`
                       <!DOCTYPE html>
                       <html>
@@ -109,7 +109,7 @@ class WorkerStatementScreen extends Component{
               }
               else{
                 let idid = res.data[0].id;
-                axios.post('https://일꾼.kr/api/selectSign', {
+                axios.post('http://13.124.141.28:3000/selectSign', {
                     id:idid,
                     id2: idid
                 },
@@ -254,7 +254,7 @@ class WorkerStatementScreen extends Component{
     fetchData = async(bangCode,idid) => { 
       try {
 
-        axios.post('https://일꾼.kr/api/selectOvertimework', {
+        axios.post('http://13.124.141.28:3000/selectOvertimework', {
           business: bangCode,
           year : this.state.itemAA.split('년')[0]*1,
           month : this.state.itemBB.split('월')[0]*1,
@@ -278,7 +278,7 @@ class WorkerStatementScreen extends Component{
               console.log(dic);
             this.setState({addtime : dic})
             
-            axios.post('https://일꾼.kr/api/insurancePercentage',{
+            axios.post('http://13.124.141.28:3000/insurancePercentage',{
               bang : bangCode
             },
             {  headers:{
@@ -308,7 +308,7 @@ class WorkerStatementScreen extends Component{
             
           
           console.log(bangCode);
-          axios.post('https://일꾼.kr/api/selectWorkerEach', {
+          axios.post('http://13.124.141.28:3000/selectWorkerEach', {
             workername : idid,
             business : bangCode
           },

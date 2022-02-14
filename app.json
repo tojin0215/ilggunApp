@@ -2,7 +2,7 @@
   "expo": {
     "name": "일꾼",
     "slug": "pro1",
-    "version": "1.0.19",
+    "version": "1.0.20",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
@@ -28,13 +28,13 @@
             "certificateHash": "3d:03:fa:2b:3d:0b:54:77:16:e6:94:14:7c:af:14:8e:f0:8d:80:67"
         }
       },
-      "versionCode": 19,
+      "versionCode": 20,
       "package": "com.tojin.ilggun2",
       "icon" : "./img/logo.png"
     },
     "ios": {
       "bundleIdentifier": "com.tojin.ilggun",
-      "buildNumber":"1.0.19",
+      "buildNumber":"1.0.20",
       "icon" : "./img/logo_ios.png",
       "supportsTablet": false,
       "usesAppleSignIn": true,

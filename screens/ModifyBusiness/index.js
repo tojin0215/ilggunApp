@@ -55,7 +55,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
                     </View>
                 ),
               });
-            axios.post("https://일꾼.kr/api/selectBusinessByName",
+            axios.post("http://13.124.141.28:3000/selectBusinessByName",
             { bname: bangCode },
             {
                 method: 'POST',
@@ -90,7 +90,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
     });
     AsyncStorage.getItem("userData").then((userData) =>{
       setId(id => JSON.parse(userData).id);
-      axios.post('https://일꾼.kr/api/selectSign', { 
+      axios.post('http://13.124.141.28:3000/selectSign', { 
             id: JSON.parse(userData).id,
             id2: JSON.parse(userData).id,
         },{
@@ -151,7 +151,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
             "사업장을 삭제하면 복구할 수 없습니다. 그래도 삭제하시겠습니까?",
             [
               { text: "OK", onPress: () => {
-                axios.post('https://일꾼.kr/api/delBusiness', { 
+                axios.post('http://13.124.141.28:3000/delBusiness', { 
                     bang: bc,
                 },{
                 headers:{
@@ -183,7 +183,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
       }else if(!regPlace.test(workplace)){
         Alert.alert("사업장 이름에 공백, 특수기호는 들어갈 수 없습니다.")
       }else{
-        /*let res = await fetch('https://일꾼.kr/api/addBusiness', {
+        /*let res = await fetch('http://13.124.141.28:3000/addBusiness', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -202,7 +202,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
         let err = false;
         if(r==0 || (r==1 && selectedFile===null)){
           console.log("aaaaaaaaaaaaaaa"+id+businessOwner+workplace+businessRegistrationNumber+r+radioIndex)
-            axios.post('https://일꾼.kr/api/updateBusiness',{
+            axios.post('http://13.124.141.28:3000/updateBusiness',{
                 id : id,
                 name : businessOwner,
                 bname: workplace,
@@ -235,7 +235,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
               type: `image/jpg`,
             });
           
-            axios.post("https://일꾼.kr/api/uploadStamp", {
+            axios.post("http://13.124.141.28:3000/uploadStamp", {
               method: 'POST',
               headers: {
                 Accept: 'application/json',
@@ -246,7 +246,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
                 bname: workplace
               }),
             }).then(async(res) => {
-                axios.post('https://일꾼.kr/api/updateBusiness',{
+                axios.post('http://13.124.141.28:3000/updateBusiness',{
                     id : id,
                     name : businessOwner,
                     bname: workplace,
@@ -412,7 +412,7 @@ const ModifyBusinessScreen = ({ onSignUp, navigation, route }) => {
                   onPress={pickImage}>
                   <Text style={styles.textStyle}>도장 사진 가져오기</Text>
                 </TouchableOpacity> 
-                <Image contentContainerStyle={{ flex: 1}} source={{ uri: selectedFile?selectedFile:`https://일꾼.kr/api/${workplace}.png` }} style={{ width: 200, height: 200, flex:1,marginTop:hp('1%') }} />
+                <Image contentContainerStyle={{ flex: 1}} source={{ uri: selectedFile?selectedFile:`http://13.124.141.28:3000/${workplace}.png` }} style={{ width: 200, height: 200, flex:1,marginTop:hp('1%') }} />
 
                 
               </View>

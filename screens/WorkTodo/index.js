@@ -83,7 +83,7 @@ class WorkTodoScreen extends Component{
   }
   fetchData = async() => { 
     try {
-       await axios.post('https://일꾼.kr/api/selectWorkTodo', {
+       await axios.post('http://13.124.141.28:3000/selectWorkTodo', {
             bang : this.state.bangCode,
             year : new Date().getFullYear(),
             month: new Date().getMonth() + 1,
@@ -106,7 +106,7 @@ class WorkTodoScreen extends Component{
 savedData = async(td) => { 
   const err = 0;
     try {
-      await axios.post('https://일꾼.kr/api/addWorkTodoCheck', {
+      await axios.post('http://13.124.141.28:3000/addWorkTodoCheck', {
         bang : this.state.bangCode,
         year : new Date().getFullYear(),
         month: new Date().getMonth() + 1,
