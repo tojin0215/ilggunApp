@@ -33,11 +33,33 @@ import * as Sharing from "expo-sharing";
 
 import XLSX from "xlsx";
 import * as FileSystem from "expo-file-system";
+import { getOvertimeWork } from "../../api/Api";
 
 //data 순서 : 입사일/월급(보수총액)->DB/추가금액->DB/공제액->계산/실지금액->계산
 
 //정규공제) SocialInsurance:사대보험 (국민연금+건강보험+고용보험) / IncomeTax:갑근세 / InhabitantsTax:주민세
 //알바공제) WithholdingTax:3.3세금공제
+
+const calculateAndCutToday = (start_year, start_month, start_date) => {
+  let nn = Math.floor((start_date - 1) / 7);
+  let weekk = [nn, nn, nn, nn, nn, nn, nn];
+  let dd = new Date(start_year, start_month - 1, 1).getDay();
+  console.log("오늘 날짜까지 끊자!" + dd);
+  for (let j = 0; j < (start_date - 1) % 7; j++) {
+    weekk[dd]++;
+    dd++;
+    dd = dd % 7;
+  }
+  return weekk;
+}
+
+const calculatePayByMinimumPayPerHour = (minimum_pay, start_year, start_month, start_date) => {
+  return Math.floor(minimum_pay * (
+    (new Date(start_year, start_month, 0).getDate() - start_date + 1)
+    / new Date(start_year, start_month, 0).getDate())
+    );
+}
+
 
 class StatementScreen1 extends React.Component {
   // 급여대장
@@ -91,21 +113,25 @@ class StatementScreen1 extends React.Component {
         this.setState({ arrName: [] }, () => this.show());
       } else {
         console.log(bangCode);
-        await axios
-          .post(
-            "http://13.124.141.28:3000/selectOvertimework",
-            {
-              business: bangCode,
-              year: this.state.itemA.split("년")[0] * 1,
-              month: this.state.itemB.split("월")[0] * 1,
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            }
-          )
+        const year = this.state.itemA.split("년")[0] * 1;
+        const month = this.state.itemB.split("월")[0] * 1;
+
+
+        // await axios
+        //   .post(
+        //     "http://13.124.141.28:3000/selectOvertimework",
+        //     {
+        //       business: bangCode,
+        //       year: this.state.itemA.split("년")[0] * 1,
+        //       month: this.state.itemB.split("월")[0] * 1,
+        //     },
+        //     {
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         Accept: "application/json",
+        //       },
+        //     }
+        //   )
           /*  await fetch('http://13.124.141.28:3000/selectOvertimework', {
                   method: 'POST',
                   headers: {
@@ -117,15 +143,17 @@ class StatementScreen1 extends React.Component {
                     month : this.state.itemB.split('월')[0]*1,
                   }),
                 }).then(res => res.json())*/
-          .then(async (res) => {
+                
+        await getOvertimeWork(bangCode, year, month)
+          .then(async (datas) => {
             console.log("???");
-            console.log(res.data);
+            console.log(datas);
             let dic = {};
-            for (let i = 0; i < res.data.length; i++) {
-              if (!dic[res.data[i].workername]) {
-                dic[res.data[i].workername] = res.data[i].subt;
+            for (let i = 0; i < datas.length; i++) {
+              if (!dic[datas[i].workername]) {
+                dic[datas[i].workername] = datas[i].subt;
               } else {
-                dic[res.data[i].workername] += res.data[i].subt; //this.setState({addtime :{...this.state.addtime, n : s}});
+                dic[datas[i].workername] += datas[i].subt; //this.setState({addtime :{...this.state.addtime, n : s}});
               }
             }
             console.log("???");
@@ -211,99 +239,54 @@ class StatementScreen1 extends React.Component {
               },
             }
           )
-          /*let res = await fetch('http://13.124.141.28:3000/selectWorker', {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                business : bangCode
-              }),
-            }).then(res => res.json())*/
           .then((res) => {
             let rowall = [];
-            if (
-              this.state.itemA.split("년")[0] * 1 != new Date().getFullYear() ||
-              this.state.itemB.split("월")[0] != new Date().getMonth() + 1
-            ) {
+            const select_year = this.state.itemA.split("년")[0] * 1;
+            const select_month = this.state.itemB.split("월")[0] * 1;
+            const this_year = new Date().getFullYear();
+            const this_month = new Date().getMonth() + 1;
+
+            if (select_year !== this_year || select_month !== this_month) {
+              const d = new Date(select_year, select_month, 0)
               let week = [4, 4, 4, 4, 4, 4, 4];
 
-              // console.log(this.state.itemA.split('년')[0]+' '+ this.state.itemB.split('월')[0])
-              let nalsu = new Date(
-                this.state.itemA.split("년")[0],
-                this.state.itemB.split("월")[0],
-                0
-              ).getDate();
+              let it = d.getDay();
+              let nalsu = d.getDate();
               let namugi = nalsu % 7;
-              let it = new Date(
-                this.state.itemA.split("년")[0],
-                this.state.itemB.split("월")[0],
-                0
-              ).getDay();
-              console.log(
-                nalsu,
-                namugi,
-                it,
-                this.state.itemA.split("년")[0],
-                this.state.itemB.split("월")[0]
-              );
+
               for (let i = 0; i < namugi; i++) {
                 week[(it - i) % 7]++;
               }
 
               for (let i = 0; i < res.data.length; i++) {
-                console.log(
-                  this.state.itemA.split("년")[0],
-                  res.data[i].startdate.split("/")[0],
-                  this.state.itemB.split("월")[0],
-                  res.data[i].startdate.split("/")[1]
-                );
-                if (
-                  this.state.itemA.split("년")[0] * 1 <
-                    res.data[i].startdate.split("/")[0] * 1 ||
-                  (this.state.itemA.split("년")[0] * 1 ==
-                    res.data[i].startdate.split("/")[0] * 1 &&
-                    this.state.itemB.split("월")[0] * 1 <
-                      res.data[i].startdate.split("/")[1] * 1)
-                ) {
+                const start_year = res.data[i].startdate.split("/")[0] * 1;
+                const start_month = res.data[i].startdate.split("/")[1] * 1;
+                const start_date = res.data[i].startdate.split("/")[2] * 1;
+
+                if (select_year < start_year || (select_year === start_year && select_month < start_month)) {
                   break;
                 }
+
                 if (res.data[i].type == 1) {
                   //==========================================
                   let weekk = [0, 0, 0, 0, 0, 0, 0];
-                  if (
-                    this.state.itemA.split("년")[0] * 1 ==
-                      res.data[i].startdate.split("/")[0] &&
-                    this.state.itemB.split("월")[0] ==
-                      res.data[i].startdate.split("/")[1]
-                  ) {
-                    let nn = Math.floor(
-                      (res.data[i].startdate.split("/")[2] - 1) / 7
-                    );
-                    weekk = [nn, nn, nn, nn, nn, nn, nn];
-                    console.log(
-                      res.data[i].startdate.split("/")[0],
-                      res.data[i].startdate.split("/")[1],
-                      res.data[i].startdate.split("/")[2]
-                    );
-                    let dd = new Date(
-                      res.data[i].startdate.split("/")[0],
-                      res.data[i].startdate.split("/")[1] * 1 - 1,
-                      1
-                    ).getDay();
-                    console.log("오늘 날짜까지 끊자!" + dd);
-                    for (
-                      let j = 0;
-                      j < (res.data[i].startdate.split("/")[2] - 1) % 7;
-                      j++
-                    ) {
-                      weekk[dd]++;
-                      dd++;
-                      dd = dd % 7;
-                    }
-                    console.log("///////////////////////////////////////////");
-                    console.log(weekk);
+                  if (select_year === start_year && select_month === start_month) {
+                    weekk = calculateAndCutToday(start_year, start_month, start_date)
+                    // let nn = Math.floor((start_date - 1) / 7);
+                    // weekk = [nn, nn, nn, nn, nn, nn, nn];
+                    // let dd = new Date(start_year, start_month - 1, 1).getDay();
+                    // console.log("오늘 날짜까지 끊자!" + dd);
+                    // for (
+                    //   let j = 0;
+                    //   j < (start_date - 1) % 7;
+                    //   j++
+                    // ) {
+                    //   weekk[dd]++;
+                    //   dd++;
+                    //   dd = dd % 7;
+                    // }
+                    // console.log("///////////////////////////////////////////");
+                    // console.log(weekk);
                   }
                   //==========================================
                   let sum = 0;
@@ -319,9 +302,7 @@ class StatementScreen1 extends React.Component {
                   console.log(res.data);
                   console.log(">>>");
                   rowall.push([
-                    this.state.itemA.split("년")[0] +
-                      "." +
-                      this.state.itemB.split("월")[0],
+                    select_year + "." + select_month,
                     res.data[i].workername2,
                     "알바",
                     String(this.state.pay11 /*시급*/),
@@ -334,32 +315,11 @@ class StatementScreen1 extends React.Component {
                   ]);
                 } else {
                   let pay = this.state.pay11; //(date/new Date(new Date().getFullYear(), new Date().getMonth()+1, 0).getDate());
-                  if (
-                    this.state.itemA.split("년")[0] * 1 ==
-                      res.data[i].startdate.split("/")[0] * 1 &&
-                    this.state.itemB.split("월")[0] * 1 ==
-                      res.data[i].startdate.split("/")[1] * 1
-                  ) {
-                    pay = Math.floor(
-                      this.state.pay11 *
-                        ((new Date(
-                          res.data[i].startdate.split("/")[0] * 1,
-                          res.data[i].startdate.split("/")[1] * 1,
-                          0
-                        ).getDate() -
-                          res.data[i].startdate.split("/")[2] * 1 +
-                          1) /
-                          new Date(
-                            res.data[i].startdate.split("/")[0] * 1,
-                            res.data[i].startdate.split("/")[1] * 1,
-                            0
-                          ).getDate())
-                    );
+                  if (select_year === start_year && select_month === start_month) {
+                    pay = calculatePayByMinimumPayPerHour(this.state.pay11, start_year, start_month, start_date)
                   }
                   rowall.push([
-                    this.state.itemA.split("년")[0] +
-                      "." +
-                      this.state.itemB.split("월")[0],
+                    select_year + "." + select_month,
                     res.data[i].workername2,
                     "정규직",
                     String(pay),
@@ -372,95 +332,72 @@ class StatementScreen1 extends React.Component {
                 }
               }
             } else {
-              let n = Math.floor(new Date().getDate() / 7);
-              let week = [n, n, n, n, n, n, n];
-              console.log(week);
-              console.log(new Date().getFullYear(), new Date().getMonth(), 1);
-              let d = new Date(
-                new Date().getFullYear(),
-                new Date().getMonth(),
-                1
-              ).getDay();
-              console.log("오늘 날짜까지 끊자!" + d);
-              for (let i = 0; i < new Date().getDate() % 7; i++) {
-                week[d]++;
-                d++;
-                d = d % 7;
-              }
+              let week = calculateAndCutToday(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate() + 1);
+              // let n = Math.floor(new Date().getDate() / 7);
+              // let week = [n, n, n, n, n, n, n];
+              // console.log(week);
+              // console.log(new Date().getFullYear(), new Date().getMonth(), 1);
+              // let d = new Date(
+              //   new Date().getFullYear(),
+              //   new Date().getMonth(),
+              //   1
+              // ).getDay();
+              // console.log("오늘 날짜까지 끊자!" + d);
+              // for (let i = 0; i < new Date().getDate() % 7; i++) {
+              //   week[d]++;
+              //   d++;
+              //   d = d % 7;
+              // }
 
               for (let i = 0; i < res.data.length; i++) {
-                if (
-                  this.state.itemA.split("년")[0] * 1 <
-                    res.data[i].startdate.split("/")[0] * 1 ||
-                  (this.state.itemA.split("년")[0] * 1 ==
-                    res.data[i].startdate.split("/")[0] * 1 &&
-                    this.state.itemB.split("월")[0] * 1 <
-                      res.data[i].startdate.split("/")[1] * 1)
-                ) {
+                const start_year = res.data[i].startdate.split("/")[0] * 1;
+                const start_month = res.data[i].startdate.split("/")[1] * 1;
+                const start_date = res.data[i].startdate.split("/")[2] * 1;
+
+                if (select_year < start_year || (select_year === start_year && select_month < start_month)) {
                   break;
                 }
-                console.log(res.data);
+                
                 if (res.data[i].type == 1) {
                   let weekk = [0, 0, 0, 0, 0, 0, 0];
-                  if (
-                    this.state.itemA.split("년")[0] * 1 ==
-                      res.data[i].startdate.split("/")[0] * 1 &&
-                    this.state.itemB.split("월")[0] * 1 ==
-                      res.data[i].startdate.split("/")[1] * 1
-                  ) {
-                    let nn = Math.floor(
-                      (res.data[i].startdate.split("/")[2] - 1) / 7
-                    );
-                    weekk = [nn, nn, nn, nn, nn, nn, nn];
-                    console.log(
-                      res.data[i].startdate.split("/")[0],
-                      res.data[i].startdate.split("/")[1],
-                      res.data[i].startdate.split("/")[2]
-                    );
-                    let dd = new Date(
-                      res.data[i].startdate.split("/")[0],
-                      res.data[i].startdate.split("/")[1] * 1 - 1,
-                      1
-                    ).getDay();
-                    console.log("오늘 날짜까지 끊자!" + dd);
-                    for (
-                      let j = 0;
-                      j < (res.data[i].startdate.split("/")[2] - 1) % 7;
-                      j++
-                    ) {
-                      weekk[dd]++;
-                      dd++;
-                      dd = dd % 7;
-                    }
-                    console.log(
-                      "///////////////////////////////////////////22"
-                    );
-                    console.log(weekk);
+                  if (select_year === start_year && select_month === start_month) {
+                    weekk = calculateAndCutToday(start_year, start_month, start_date);
+                    // let nn = Math.floor((start_date - 1) / 7);
+                    // weekk = [nn, nn, nn, nn, nn, nn, nn];
+                    // let dd = new Date(start_year, start_month - 1, 1).getDay();
+                    // console.log("오늘 날짜까지 끊자!" + dd);
+                    // for (let j = 0; j < (start_date - 1) % 7; j++) {
+                    //   weekk[dd]++;
+                    //   dd++;
+                    //   dd = dd % 7;
+                    // }
+                    // console.log(
+                    //   "///////////////////////////////////////////22"
+                    // );
+                    // console.log(weekk);
                   }
 
                   let sum = 0;
                   let eachtime = res.data[i].eachtime.split("/");
                   for (let i = 0; i < 7; i++) {
-                    console.log(eachtime[i] * 1, week[i], weekk[i]);
+                    // console.log(eachtime[i] * 1, week[i], weekk[i]);
                     sum += eachtime[i] * 1 * (week[i] - weekk[i]);
                   }
-                  console.log(">>>");
-                  console.log(
-                    String(this.state.pay11 /*시급*/),
-                    ">>>>>",
-                    String(sum /* 시간 */),
-                    ">>>>>",
-                    String(
-                      (this.state.addtime[res.data[i].workername]
-                        ? this.state.addtime[res.data[i].workername]
-                        : 0) * this.state.pay11 /*시급*/
-                    )
-                  );
-                  console.log(">>>");
+                  // console.log(">>>");
+                  // console.log(
+                  //   String(this.state.pay11 /*시급*/),
+                  //   ">>>>>",
+                  //   String(sum /* 시간 */),
+                  //   ">>>>>",
+                  //   String(
+                  //     (this.state.addtime[res.data[i].workername]
+                  //       ? this.state.addtime[res.data[i].workername]
+                  //       : 0) * this.state.pay11 /*시급*/
+                  //   )
+                  // );
+                  // console.log(">>>");
                   rowall.push([
-                    this.state.itemA.split("년")[0] +
-                      "." +
-                      this.state.itemB.split("월")[0],
+                    select_year + "." + select_month,
                     res.data[i].workername2,
                     "알바",
                     String(this.state.pay11 /*시급*/),
@@ -473,43 +410,18 @@ class StatementScreen1 extends React.Component {
                   ]);
                 } else {
                   let date = new Date().getDate();
-                  if (
-                    this.state.itemA.split("년")[0] * 1 ==
-                      res.data[i].startdate.split("/")[0] * 1 &&
-                    this.state.itemB.split("월")[0] * 1 ==
-                      res.data[i].startdate.split("/")[1] * 1
-                  ) {
-                    if (date <= res.data[i].startdate.split("/")[2] * 1)
+                  if (select_year === start_year && select_month === start_month) {
+                    if (date <= start_date)
                       date = 0;
                     else {
-                      date = date - res.data[i].startdate.split("/")[2] * 1;
+                      date = date - start_date;
                     }
                   }
-                  console.log(
-                    new Date().getDate() /
-                      new Date(
-                        new Date().getFullYear(),
-                        new Date().getMonth() + 1,
-                        0
-                      ).getDate()
-                  );
                   rowall.push([
-                    this.state.itemA.split("년")[0] +
-                      "." +
-                      this.state.itemB.split("월")[0],
+                    select_year + "." + select_month,
                     res.data[i].workername2,
                     "정규직",
-                    String(
-                      Math.floor(
-                        this.state.pay11 *
-                          (date /
-                            new Date(
-                              new Date().getFullYear(),
-                              new Date().getMonth() + 1,
-                              0
-                            ).getDate())
-                      )
-                    ),
+                    String(Math.floor(this.state.pay11 * (date / new Date(this_year, this_month, 0).getDate()))),
                     String(
                       this.state.addtime[res.data[i].workername]
                         ? this.state.addtime[res.data[i].workername]

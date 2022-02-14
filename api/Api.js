@@ -140,3 +140,13 @@ export const getWorkerByDay = (business_name, date_obj, worker_id) => {
     };
     return axios.post(`${SERVER_URL}selectWorkerAsDayAsWorker`, data);
 };
+
+export const getOvertimeWork = (business_name, year, month) => {
+  const data = { business: business_name, year, month }
+  return axios.post(`${SERVER_URL}selectOvertimework`, data).then(response => response.data)
+}
+
+export const getWorkers = (business_name) => {
+  const data = {business: business_name}
+  return axios.post(`${SERVER_URL}selectWorker`, data).then(response => response.data)
+}
