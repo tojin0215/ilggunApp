@@ -72,6 +72,16 @@ const calculateSumTime = (eachtime, week, weekk) => {
   return sum
 }
 
+const getInsurancePercentage = (business_name, select_year) => {
+  const data = {bang: business_name};
+  return axios.post("http://13.124.141.28:3000/insurancePercentage", data).then(response => response.data.filter(value => String(value.date) === String(select_year))).then(result => result[0])
+}
+
+const getWorkers = (business_name) => {
+  const data = {business: business_name};
+  return axios.post("http://13.124.141.28:3000/selectWorker", data)
+}
+
 
 class StatementScreen1 extends React.Component {
   // 급여대장
@@ -101,6 +111,7 @@ class StatementScreen1 extends React.Component {
       HealthInsurancePercentage: 0,
       NationalPensionPercentage: 0,
       RegularCarePercentage: 0,
+      HourlyWage: 0,
       pay11: 0,
       bangCode: null,
     };
@@ -114,6 +125,29 @@ class StatementScreen1 extends React.Component {
     });
   }
 
+  load_overtime_work = async (bangCode, select_year, select_month) => {
+    getOvertimeWork(bangCode, select_year, select_month)
+    .then(async (datas) => {
+      let dic = {};
+      for (let i = 0; i < datas.length; i++) {
+        if (!dic[datas[i].workername]) {
+          dic[datas[i].workername] = datas[i].subt;
+        } else {
+          dic[datas[i].workername] += datas[i].subt; 
+        }
+      }
+      this.setState({ addtime: dic });
+    });
+  }
+
+  load_insurance_percentage = async (bangCode, select_year) => {
+    getInsurancePercentage(bangCode, select_year)
+    .then(data => {
+      data.pay11 = data.HourlyWage;
+      this.setState(data)
+    })
+  }
+
   fetchData = async (bangCode) => {
     const select_year = this.state.itemA.split("년")[0] * 1;
     const select_month = this.state.itemB.split("월")[0] * 1;
@@ -121,93 +155,85 @@ class StatementScreen1 extends React.Component {
     const this_month = new Date().getMonth() + 1;
     try {
       if (select_year > this_year || (select_year === this_year && select_month > this_month)) {
-        console.log("????");
         this.setState({ arrName: [] }, () => this.show());
       } else {
-                
-        await getOvertimeWork(bangCode, select_year, select_month)
-          .then(async (datas) => {
-            console.log("???");
-            console.log(datas);
-            let dic = {};
-            for (let i = 0; i < datas.length; i++) {
-              if (!dic[datas[i].workername]) {
-                dic[datas[i].workername] = datas[i].subt;
-              } else {
-                dic[datas[i].workername] += datas[i].subt; 
-              }
-            }
-            console.log("???");
-            console.log(dic);
-            this.setState({ addtime: dic });
-          });
+        await this.load_overtime_work(bangCode, select_year, select_month)
+        // await getOvertimeWork(bangCode, select_year, select_month)
+        //   .then(async (datas) => {
+        //     let dic = {};
+        //     for (let i = 0; i < datas.length; i++) {
+        //       if (!dic[datas[i].workername]) {
+        //         dic[datas[i].workername] = datas[i].subt;
+        //       } else {
+        //         dic[datas[i].workername] += datas[i].subt; 
+        //       }
+        //     }
+        //     console.log("???");
+        //     console.log(dic);
+        //     this.setState({ addtime: dic });
+        //   });
 
-        axios
-          .post(
-            "http://13.124.141.28:3000/insurancePercentage",
-            {
-              bang: bangCode,
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            }
-          )
-          .then((res) => {
-            console.log(
-              "_________________________________________몇년",
-              select_year
-            );
-            for (let i = 0; i < res.data.length; i++) {
-              console.log("DB년도", res.data[i].date);
+        await this.load_insurance_percentage(bangCode, select_year)
 
-              if (res.data[i].date === this.state.itemA.split("년")[0]) {
-                console.log("국민연금", res.data[i].NationalPensionPercentage);
-                console.log("건강보험", res.data[i].HealthInsurancePercentage);
-                console.log(
-                  "건강보험(장기)",
-                  res.data[i].RegularCarePercentage
-                );
-                console.log(
-                  "고용보험",
-                  res.data[i].EmploymentInsurancePercentage
-                );
-                console.log("시급", res.data[i].HourlyWage);
-                this.setState({
-                  NationalPensionPercentage:
-                    res.data[i].NationalPensionPercentage,
-                  HealthInsurancePercentage:
-                    res.data[i].HealthInsurancePercentage,
-                  RegularCarePercentage: res.data[i].RegularCarePercentage,
-                  EmploymentInsurancePercentage:
-                    res.data[i].EmploymentInsurancePercentage,
-                  pay11: res.data[i].HourlyWage,
-                });
-              }
-            }
-          });
+        // axios
+        //   .post(
+        //     "http://13.124.141.28:3000/insurancePercentage",
+        //     {
+        //       bang: bangCode,
+        //     },
+        //     {
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         Accept: "application/json",
+        //       },
+        //     }
+        //   )
+        //   .then((res) => {
+        //     for (let i = 0; i < res.data.length; i++) {
+        //       console.log("DB년도", res.data[i].date);
 
-        await axios
-          .post(
-            "http://13.124.141.28:3000/selectWorker",
-            {
-              business: bangCode,
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-              },
-            }
-          )
+        //       if (res.data[i].date === this.state.itemA.split("년")[0]) {
+        //         console.log("국민연금", res.data[i].NationalPensionPercentage);
+        //         console.log("건강보험", res.data[i].HealthInsurancePercentage);
+        //         console.log(
+        //           "건강보험(장기)",
+        //           res.data[i].RegularCarePercentage
+        //         );
+        //         console.log(
+        //           "고용보험",
+        //           res.data[i].EmploymentInsurancePercentage
+        //         );
+        //         console.log("시급", res.data[i].HourlyWage);
+        //         this.setState({
+        //           NationalPensionPercentage:
+        //             res.data[i].NationalPensionPercentage,
+        //           HealthInsurancePercentage:
+        //             res.data[i].HealthInsurancePercentage,
+        //           RegularCarePercentage: res.data[i].RegularCarePercentage,
+        //           EmploymentInsurancePercentage:
+        //             res.data[i].EmploymentInsurancePercentage,
+        //           pay11: res.data[i].HourlyWage,
+        //         });
+        //       }
+        //     }
+        //   });
+
+        // await axios
+        //   .post(
+        //     "http://13.124.141.28:3000/selectWorker",
+        //     {
+        //       business: bangCode,
+        //     },
+        //     {
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         Accept: "application/json",
+        //       },
+        //     }
+        //   )
+          await getWorkers(bangCode)
           .then((res) => {
             let rowall = [];
-            // const select_year = this.state.itemA.split("년")[0] * 1;
-            // const select_month = this.state.itemB.split("월")[0] * 1;
-            // const this_year = new Date().getFullYear();
-            // const this_month = new Date().getMonth() + 1;
 
             if (select_year !== this_year || select_month !== this_month) {
               const d = new Date(select_year, select_month, 0)
@@ -237,14 +263,6 @@ class StatementScreen1 extends React.Component {
                   }
                   
                   const sum = calculateSumTime(res.data[i].eachtime.split("/"), week, weekk);
-                  // let sum = 0;
-                  // let eachtime = res.data[i].eachtime.split("/");
-                  // for (let i = 0; i < 7; i++) {
-                  //   console.log(eachtime[i] * 1, week[i], weekk[i]);
-                  //   if (weekk[i] <= week[i]) {
-                  //     sum += eachtime[i] * 1 * (week[i] - weekk[i]);
-                  //   }
-                  // }
 
                   rowall.push([
                     select_year + "." + select_month,
@@ -294,12 +312,6 @@ class StatementScreen1 extends React.Component {
                     weekk = calculateAndCutToday(start_year, start_month, start_date);
                   }
 
-                  // let sum = 0;
-                  // let eachtime = res.data[i].eachtime.split("/");
-                  // for (let i = 0; i < 7; i++) {
-                  //   // console.log(eachtime[i] * 1, week[i], weekk[i]);
-                  //   sum += eachtime[i] * 1 * (week[i] - weekk[i]);
-                  // }
                   const sum = calculateSumTime(res.data[i].eachtime.split("/"), week, weekk);
                   rowall.push([
                     select_year + "." + select_month,
