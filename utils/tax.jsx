@@ -1,3 +1,9 @@
+/**
+ * 소득세를 계산한다
+ * 
+ * @param {number} monthly_salary 월급
+ * @returns {number} 소득세 계산
+ */
 function calculate_income_tax(monthly_salary) {
   // IncomeTax : 갑근세(소득세) : 보수총액*3.0%
   //let IncomeTax = (parseInt(monthly_salary)*0.03).toFixed(0)
@@ -209,6 +215,13 @@ function calculate_income_tax(monthly_salary) {
   return IncomeTax;
 }
 
+/**
+ * 국민연금 계산
+ * 
+ * @param {number} MonthlySalary 월급
+ * @param {number} NationalPensionPercentage 국민연금 요율
+ * @returns 
+ */
 export function getNationalPension(MonthlySalary, NationalPensionPercentage) {
   return (
     Math.floor(
@@ -218,6 +231,13 @@ export function getNationalPension(MonthlySalary, NationalPensionPercentage) {
   );
 }
 
+/**
+ * 건강보험 계산
+ * 
+ * @param {number} MonthlySalary 월급
+ * @param {number} HealthInsurancePercentage 건강보험 요율
+ * @returns 
+ */
 export function getHealthInsurance(MonthlySalary, HealthInsurancePercentage) {
   return (
     Math.floor(
@@ -227,6 +247,13 @@ export function getHealthInsurance(MonthlySalary, HealthInsurancePercentage) {
   );
 }
 
+/**
+ * 건강보험(정기요양) 계산
+ * 
+ * @param {number} HealthInsurance 월급
+ * @param {number} RegularCarePercentage 건강보험(정기요양) 요율
+ * @returns 
+ */
 export function getRegularCare(HealthInsurance, RegularCarePercentage) {
   return (
     Math.floor(
@@ -235,6 +262,13 @@ export function getRegularCare(HealthInsurance, RegularCarePercentage) {
   );
 }
 
+/**
+ * 고용보험 계산
+ * 
+ * @param {number} MonthlySalary 월급
+ * @param {number} EmploymentInsurancePercentage 고용보험 요율
+ * @returns 
+ */
 export function getEmploymentInsurance(
   MonthlySalary,
   EmploymentInsurancePercentage

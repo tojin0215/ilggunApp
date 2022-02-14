@@ -34,6 +34,7 @@ import * as Sharing from "expo-sharing";
 import XLSX from "xlsx";
 import * as FileSystem from "expo-file-system";
 import { getOvertimeWork } from "../../api/Api";
+import calculate_income_tax, { getEmploymentInsurance, getHealthInsurance, getNationalPension, getRegularCare } from "../../utils/tax";
 
 //data 순서 : 입사일/월급(보수총액)->DB/추가금액->DB/공제액->계산/실지금액->계산
 
@@ -58,6 +59,17 @@ const calculatePayByMinimumPayPerHour = (minimum_pay, start_year, start_month, s
     (new Date(start_year, start_month, 0).getDate() - start_date + 1)
     / new Date(start_year, start_month, 0).getDate())
     );
+}
+
+const calculateSumTime = (eachtime, week, weekk) => {
+  let sum = 0;
+  for (let i = 0; i < 7; i++) {
+    if (weekk[i] <= week[i]) {
+      sum += eachtime[i] * 1 * (week[i] - weekk[i]);
+    }
+  }
+
+  return sum
 }
 
 
@@ -115,34 +127,6 @@ class StatementScreen1 extends React.Component {
         console.log(bangCode);
         const year = this.state.itemA.split("년")[0] * 1;
         const month = this.state.itemB.split("월")[0] * 1;
-
-
-        // await axios
-        //   .post(
-        //     "http://13.124.141.28:3000/selectOvertimework",
-        //     {
-        //       business: bangCode,
-        //       year: this.state.itemA.split("년")[0] * 1,
-        //       month: this.state.itemB.split("월")[0] * 1,
-        //     },
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         Accept: "application/json",
-        //       },
-        //     }
-        //   )
-          /*  await fetch('http://13.124.141.28:3000/selectOvertimework', {
-                  method: 'POST',
-                  headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    year : this.state.itemA.split('년')[0]*1,
-                    month : this.state.itemB.split('월')[0]*1,
-                  }),
-                }).then(res => res.json())*/
                 
         await getOvertimeWork(bangCode, year, month)
           .then(async (datas) => {
@@ -153,31 +137,13 @@ class StatementScreen1 extends React.Component {
               if (!dic[datas[i].workername]) {
                 dic[datas[i].workername] = datas[i].subt;
               } else {
-                dic[datas[i].workername] += datas[i].subt; //this.setState({addtime :{...this.state.addtime, n : s}});
+                dic[datas[i].workername] += datas[i].subt; 
               }
             }
             console.log("???");
             console.log(dic);
             this.setState({ addtime: dic });
           });
-
-        // axios.post('http://13.124.141.28:3000/otherAllowance', {
-        //   //id: this.state.id,
-        //   year : this.state.itemAA.split('년')[0]*1,
-        //   month : this.state.itemBB.split('월')[0]*1,
-        // },
-        // {  headers:{
-        //   'Content-Type': 'application/json',
-        //   'Accept': 'application/json'}
-        // })
-        //   .then(res => {
-        //     console.log(this.state.id,'_',this.state.itemAA.split('년')[0]*1, '_', this.state.itemBB.split('월')[0]*1)
-        //     for(let i=0 ; i<res.data.length ; i++){
-        //       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!_______________!여기_',res.data[i])
-
-        //     }
-
-        // });
 
         axios
           .post(
@@ -268,39 +234,21 @@ class StatementScreen1 extends React.Component {
                 }
 
                 if (res.data[i].type == 1) {
-                  //==========================================
                   let weekk = [0, 0, 0, 0, 0, 0, 0];
                   if (select_year === start_year && select_month === start_month) {
                     weekk = calculateAndCutToday(start_year, start_month, start_date)
-                    // let nn = Math.floor((start_date - 1) / 7);
-                    // weekk = [nn, nn, nn, nn, nn, nn, nn];
-                    // let dd = new Date(start_year, start_month - 1, 1).getDay();
-                    // console.log("오늘 날짜까지 끊자!" + dd);
-                    // for (
-                    //   let j = 0;
-                    //   j < (start_date - 1) % 7;
-                    //   j++
-                    // ) {
-                    //   weekk[dd]++;
-                    //   dd++;
-                    //   dd = dd % 7;
-                    // }
-                    // console.log("///////////////////////////////////////////");
-                    // console.log(weekk);
                   }
-                  //==========================================
-                  let sum = 0;
-                  let eachtime = res.data[i].eachtime.split("/");
-                  for (let i = 0; i < 7; i++) {
-                    console.log(eachtime[i] * 1, week[i], weekk[i]);
-                    if (weekk[i] <= week[i]) {
-                      sum += eachtime[i] * 1 * (week[i] - weekk[i]);
-                    }
-                  }
+                  
+                  const sum = calculateSumTime(res.data[i].eachtime.split("/"), week, weekk);
+                  // let sum = 0;
+                  // let eachtime = res.data[i].eachtime.split("/");
+                  // for (let i = 0; i < 7; i++) {
+                  //   console.log(eachtime[i] * 1, week[i], weekk[i]);
+                  //   if (weekk[i] <= week[i]) {
+                  //     sum += eachtime[i] * 1 * (week[i] - weekk[i]);
+                  //   }
+                  // }
 
-                  console.log(">>>");
-                  console.log(res.data);
-                  console.log(">>>");
                   rowall.push([
                     select_year + "." + select_month,
                     res.data[i].workername2,
@@ -333,21 +281,6 @@ class StatementScreen1 extends React.Component {
               }
             } else {
               let week = calculateAndCutToday(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate() + 1);
-              // let n = Math.floor(new Date().getDate() / 7);
-              // let week = [n, n, n, n, n, n, n];
-              // console.log(week);
-              // console.log(new Date().getFullYear(), new Date().getMonth(), 1);
-              // let d = new Date(
-              //   new Date().getFullYear(),
-              //   new Date().getMonth(),
-              //   1
-              // ).getDay();
-              // console.log("오늘 날짜까지 끊자!" + d);
-              // for (let i = 0; i < new Date().getDate() % 7; i++) {
-              //   week[d]++;
-              //   d++;
-              //   d = d % 7;
-              // }
 
               for (let i = 0; i < res.data.length; i++) {
                 const start_year = res.data[i].startdate.split("/")[0] * 1;
@@ -362,40 +295,15 @@ class StatementScreen1 extends React.Component {
                   let weekk = [0, 0, 0, 0, 0, 0, 0];
                   if (select_year === start_year && select_month === start_month) {
                     weekk = calculateAndCutToday(start_year, start_month, start_date);
-                    // let nn = Math.floor((start_date - 1) / 7);
-                    // weekk = [nn, nn, nn, nn, nn, nn, nn];
-                    // let dd = new Date(start_year, start_month - 1, 1).getDay();
-                    // console.log("오늘 날짜까지 끊자!" + dd);
-                    // for (let j = 0; j < (start_date - 1) % 7; j++) {
-                    //   weekk[dd]++;
-                    //   dd++;
-                    //   dd = dd % 7;
-                    // }
-                    // console.log(
-                    //   "///////////////////////////////////////////22"
-                    // );
-                    // console.log(weekk);
                   }
 
-                  let sum = 0;
-                  let eachtime = res.data[i].eachtime.split("/");
-                  for (let i = 0; i < 7; i++) {
-                    // console.log(eachtime[i] * 1, week[i], weekk[i]);
-                    sum += eachtime[i] * 1 * (week[i] - weekk[i]);
-                  }
-                  // console.log(">>>");
-                  // console.log(
-                  //   String(this.state.pay11 /*시급*/),
-                  //   ">>>>>",
-                  //   String(sum /* 시간 */),
-                  //   ">>>>>",
-                  //   String(
-                  //     (this.state.addtime[res.data[i].workername]
-                  //       ? this.state.addtime[res.data[i].workername]
-                  //       : 0) * this.state.pay11 /*시급*/
-                  //   )
-                  // );
-                  // console.log(">>>");
+                  // let sum = 0;
+                  // let eachtime = res.data[i].eachtime.split("/");
+                  // for (let i = 0; i < 7; i++) {
+                  //   // console.log(eachtime[i] * 1, week[i], weekk[i]);
+                  //   sum += eachtime[i] * 1 * (week[i] - weekk[i]);
+                  // }
+                  const sum = calculateSumTime(res.data[i].eachtime.split("/"), week, weekk);
                   rowall.push([
                     select_year + "." + select_month,
                     res.data[i].workername2,
@@ -607,38 +515,14 @@ class StatementScreen1 extends React.Component {
         console.log("고용보험(%) : ", this.state.EmploymentInsurancePercentage);
 
         // NationalPension:국민연금 (보수총액*4.5%)
-        let NationalPension =
-          Math.floor(
-            (
-              (parseInt(MonthlySalary) * this.state.NationalPensionPercentage) /
-              100
-            ).toFixed(0) / 10
-          ) * 10;
+        let NationalPension = getNationalPension(MonthlySalary, this.state.NationalPensionPercentage)
+
         // HealthInsurance:건강보험 (보수총액*3.3335%)
-        let HealthInsurance =
-          Math.floor(
-            (
-              (parseInt(MonthlySalary) * this.state.HealthInsurancePercentage) /
-              100
-            ).toFixed(0) / 10
-          ) * 10;
+        let HealthInsurance = getHealthInsurance(MonthlySalary, this.state.HealthInsurancePercentage)
         // RegularCare:건강보험(정기요양) (건강보험료*5.125%)
-        let RegularCare =
-          Math.floor(
-            (
-              (HealthInsurance * this.state.RegularCarePercentage) /
-              100
-            ).toFixed(0) / 10
-          ) * 10;
+        let RegularCare = getRegularCare(MonthlySalary, this.state.RegularCarePercentage)
         // EmploymentInsurance : 고용보험 (보수총액*0.8%)
-        let EmploymentInsurance =
-          Math.floor(
-            (
-              (parseInt(MonthlySalary) *
-                this.state.EmploymentInsurancePercentage) /
-              100
-            ).toFixed(0) / 10
-          ) * 10; //근로자_고용보험
+        let EmploymentInsurance = getEmploymentInsurance(MonthlySalary, this.state.EmploymentInsurancePercentage)
         // SocialInsurance:사대보험 (국민연금+건강보험+고용보험)
         let SocialInsurance = (
           parseInt(NationalPension) +
@@ -648,211 +532,8 @@ class StatementScreen1 extends React.Component {
         ).toFixed(0);
 
         // WithholdingTax:원천과세(IncomeTax+InhabitantsTax)
-        var IncomeTax = 0;
+        const IncomeTax = calculate_income_tax(MonthlySalary);
 
-        if (parseInt(MonthlySalary) < 1060000) {
-          IncomeTax = 0;
-        } else if (
-          (parseInt(MonthlySalary) >= 1060000) &
-          (parseInt(MonthlySalary) <= 1100000)
-        ) {
-          IncomeTax = 1600;
-        } else if (
-          (parseInt(MonthlySalary) > 1100000) &
-          (parseInt(MonthlySalary) <= 1200000)
-        ) {
-          IncomeTax = 2990;
-        } else if (
-          (parseInt(MonthlySalary) > 1200000) &
-          (parseInt(MonthlySalary) <= 1300000)
-        ) {
-          IncomeTax = 4740;
-        } else if (
-          (parseInt(MonthlySalary) > 1300000) &
-          (parseInt(MonthlySalary) <= 1400000)
-        ) {
-          IncomeTax = 6800;
-        } else if (
-          (parseInt(MonthlySalary) > 1400000) &
-          (parseInt(MonthlySalary) <= 1500000)
-        ) {
-          IncomeTax = 8920;
-        } else if (
-          (parseInt(MonthlySalary) > 1500000) &
-          (parseInt(MonthlySalary) <= 1600000)
-        ) {
-          IncomeTax = 10980;
-        } else if (
-          (parseInt(MonthlySalary) > 1600000) &
-          (parseInt(MonthlySalary) <= 1700000)
-        ) {
-          IncomeTax = 13050;
-        } else if (
-          (parseInt(MonthlySalary) > 1700000) &
-          (parseInt(MonthlySalary) <= 1800000)
-        ) {
-          IncomeTax = 15110;
-        } else if (
-          (parseInt(MonthlySalary) > 1800000) &
-          (parseInt(MonthlySalary) <= 1900000)
-        ) {
-          IncomeTax = 17180;
-        } else if (
-          (parseInt(MonthlySalary) > 1900000) &
-          (parseInt(MonthlySalary) <= 2000000)
-        ) {
-          IncomeTax = 19520;
-        } else if (
-          (parseInt(MonthlySalary) > 2000000) &
-          (parseInt(MonthlySalary) <= 2100000)
-        ) {
-          IncomeTax = 22740;
-        } else if (
-          (parseInt(MonthlySalary) > 2100000) &
-          (parseInt(MonthlySalary) <= 2200000)
-        ) {
-          IncomeTax = 25950;
-        } else if (
-          (parseInt(MonthlySalary) > 2200000) &
-          (parseInt(MonthlySalary) <= 2300000)
-        ) {
-          IncomeTax = 29160;
-        } else if (
-          (parseInt(MonthlySalary) > 2300000) &
-          (parseInt(MonthlySalary) <= 2400000)
-        ) {
-          IncomeTax = 33570;
-        } else if (
-          (parseInt(MonthlySalary) > 2400000) &
-          (parseInt(MonthlySalary) <= 2500000)
-        ) {
-          IncomeTax = 41630;
-        } else if (
-          (parseInt(MonthlySalary) > 2500000) &
-          (parseInt(MonthlySalary) <= 2600000)
-        ) {
-          IncomeTax = 50190;
-        } else if (
-          (parseInt(MonthlySalary) > 2600000) &
-          (parseInt(MonthlySalary) <= 2700000)
-        ) {
-          IncomeTax = 58750;
-        } else if (
-          (parseInt(MonthlySalary) > 2700000) &
-          (parseInt(MonthlySalary) <= 2800000)
-        ) {
-          IncomeTax = 67300;
-        } else if (
-          (parseInt(MonthlySalary) > 2800000) &
-          (parseInt(MonthlySalary) <= 2900000)
-        ) {
-          IncomeTax = 75860;
-        } else if (
-          (parseInt(MonthlySalary) > 2900000) &
-          (parseInt(MonthlySalary) <= 3000000)
-        ) {
-          IncomeTax = 84850;
-        } else if (
-          (parseInt(MonthlySalary) > 3000000) &
-          (parseInt(MonthlySalary) <= 3100000)
-        ) {
-          IncomeTax = 93400;
-        } else if (
-          (parseInt(MonthlySalary) > 3100000) &
-          (parseInt(MonthlySalary) <= 3200000)
-        ) {
-          IncomeTax = 105540;
-        } else if (
-          (parseInt(MonthlySalary) > 3200000) &
-          (parseInt(MonthlySalary) <= 3300000)
-        ) {
-          IncomeTax = 117770;
-        } else if (
-          (parseInt(MonthlySalary) > 3300000) &
-          (parseInt(MonthlySalary) <= 3400000)
-        ) {
-          IncomeTax = 129990;
-        } else if (
-          (parseInt(MonthlySalary) > 3400000) &
-          (parseInt(MonthlySalary) <= 3500000)
-        ) {
-          IncomeTax = 142220;
-        } else if (
-          (parseInt(MonthlySalary) > 3500000) &
-          (parseInt(MonthlySalary) <= 3600000)
-        ) {
-          IncomeTax = 154440;
-        } else if (
-          (parseInt(MonthlySalary) > 3600000) &
-          (parseInt(MonthlySalary) <= 3700000)
-        ) {
-          IncomeTax = 166670;
-        } else if (
-          (parseInt(MonthlySalary) > 3700000) &
-          (parseInt(MonthlySalary) <= 3800000)
-        ) {
-          IncomeTax = 184260;
-        } else if (
-          (parseInt(MonthlySalary) > 3800000) &
-          (parseInt(MonthlySalary) <= 3900000)
-        ) {
-          IncomeTax = 197610;
-        } else if (
-          (parseInt(MonthlySalary) > 3900000) &
-          (parseInt(MonthlySalary) <= 4000000)
-        ) {
-          IncomeTax = 210960;
-        } else if (
-          (parseInt(MonthlySalary) > 4000000) &
-          (parseInt(MonthlySalary) <= 4100000)
-        ) {
-          IncomeTax = 224310;
-        } else if (
-          (parseInt(MonthlySalary) > 4100000) &
-          (parseInt(MonthlySalary) <= 4200000)
-        ) {
-          IncomeTax = 237660;
-        } else if (
-          (parseInt(MonthlySalary) > 4200000) &
-          (parseInt(MonthlySalary) <= 4300000)
-        ) {
-          IncomeTax = 251010;
-        } else if (
-          (parseInt(MonthlySalary) > 4300000) &
-          (parseInt(MonthlySalary) <= 4400000)
-        ) {
-          IncomeTax = 264360;
-        } else if (
-          (parseInt(MonthlySalary) > 4400000) &
-          (parseInt(MonthlySalary) <= 4500000)
-        ) {
-          IncomeTax = 277840;
-        } else if (
-          (parseInt(MonthlySalary) > 4500000) &
-          (parseInt(MonthlySalary) <= 4600000)
-        ) {
-          IncomeTax = 294370;
-        } else if (
-          (parseInt(MonthlySalary) > 4600000) &
-          (parseInt(MonthlySalary) <= 4700000)
-        ) {
-          IncomeTax = 308390;
-        } else if (
-          (parseInt(MonthlySalary) > 4700000) &
-          (parseInt(MonthlySalary) <= 4800000)
-        ) {
-          IncomeTax = 322420;
-        } else if (
-          (parseInt(MonthlySalary) > 4800000) &
-          (parseInt(MonthlySalary) <= 4900000)
-        ) {
-          IncomeTax = 336440;
-        } else if (
-          (parseInt(MonthlySalary) > 4900000) &
-          (parseInt(MonthlySalary) <= 5000000)
-        ) {
-          IncomeTax = 350470;
-        }
         // InhabitantsTax : 주민세 (갑근세의 10%)
         let InhabitantsTax =
           Math.floor((parseInt(IncomeTax) * 0.1).toFixed(0) / 10) * 10;
