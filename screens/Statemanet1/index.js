@@ -158,79 +158,9 @@ class StatementScreen1 extends React.Component {
         this.setState({ arrName: [] }, () => this.show());
       } else {
         await this.load_overtime_work(bangCode, select_year, select_month)
-        // await getOvertimeWork(bangCode, select_year, select_month)
-        //   .then(async (datas) => {
-        //     let dic = {};
-        //     for (let i = 0; i < datas.length; i++) {
-        //       if (!dic[datas[i].workername]) {
-        //         dic[datas[i].workername] = datas[i].subt;
-        //       } else {
-        //         dic[datas[i].workername] += datas[i].subt; 
-        //       }
-        //     }
-        //     console.log("???");
-        //     console.log(dic);
-        //     this.setState({ addtime: dic });
-        //   });
 
         await this.load_insurance_percentage(bangCode, select_year)
 
-        // axios
-        //   .post(
-        //     "http://13.124.141.28:3000/insurancePercentage",
-        //     {
-        //       bang: bangCode,
-        //     },
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         Accept: "application/json",
-        //       },
-        //     }
-        //   )
-        //   .then((res) => {
-        //     for (let i = 0; i < res.data.length; i++) {
-        //       console.log("DB년도", res.data[i].date);
-
-        //       if (res.data[i].date === this.state.itemA.split("년")[0]) {
-        //         console.log("국민연금", res.data[i].NationalPensionPercentage);
-        //         console.log("건강보험", res.data[i].HealthInsurancePercentage);
-        //         console.log(
-        //           "건강보험(장기)",
-        //           res.data[i].RegularCarePercentage
-        //         );
-        //         console.log(
-        //           "고용보험",
-        //           res.data[i].EmploymentInsurancePercentage
-        //         );
-        //         console.log("시급", res.data[i].HourlyWage);
-        //         this.setState({
-        //           NationalPensionPercentage:
-        //             res.data[i].NationalPensionPercentage,
-        //           HealthInsurancePercentage:
-        //             res.data[i].HealthInsurancePercentage,
-        //           RegularCarePercentage: res.data[i].RegularCarePercentage,
-        //           EmploymentInsurancePercentage:
-        //             res.data[i].EmploymentInsurancePercentage,
-        //           pay11: res.data[i].HourlyWage,
-        //         });
-        //       }
-        //     }
-        //   });
-
-        // await axios
-        //   .post(
-        //     "http://13.124.141.28:3000/selectWorker",
-        //     {
-        //       business: bangCode,
-        //     },
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         Accept: "application/json",
-        //       },
-        //     }
-        //   )
           await getWorkers(bangCode)
           .then((res) => {
             let rowall = [];
